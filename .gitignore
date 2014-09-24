@@ -26,5 +26,6 @@ DerivedData
 # Pods/
 
 .svn/*
+*.svn*
 .db
 .DS_Store
