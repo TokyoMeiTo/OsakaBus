@@ -1,0 +1,12 @@
+﻿DELETE FROM CMNT04_IMAGE WHERE 1=1;
+
+INSERT INTO CMNT04_IMAGE
+ (IMAG_ID,IMAG_PATH,IMAG_URL)
+VALUES
+('1','1','1')
+,('2','2','2')
+,('3','3','3')
+,('4','4','4')
+,('5','5','5')
+;
+
