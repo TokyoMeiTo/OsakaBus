@@ -33,8 +33,10 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
     var lines:Array<MstT01LineTable> = Array<MstT01LineTable>()
     /* stations */
     var stations:Array<MstT02StationTable> = Array<MstT02StationTable>()
+    /* UsrT01ArrivalAlarmTable 参数 */
+    var tableUsrT01: UsrT01ArrivalAlarmTable?
     /* fromStations */
-    var fromStations:Array<String> = ["后乐园","本乡三丁目","银座","日本桥","东京","新宿","上野"]
+    var fromStations:Array<String> = ["浅草","本乡三丁目","银座","日本桥","东京","新宿","上野"]
     /* 提醒方式 */
     var remindsMethod:Array<String> = ["铃声","震动"]
     /* 提醒时间 */
@@ -42,9 +44,9 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
     /* line */
     var line:String = "東西線"
     /* station */
-    var station:String = "后乐园"
+    var station:String = "浅草"
     /* fromStation */
-    var fromStation:String = "后乐园"
+    var fromStation:String = "浅草"
     /* 提醒方式 */
     var remindType:Int = 0
     /* 提醒时间 */
@@ -94,6 +96,11 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
      *
      */
     func intitValue(){
+        println(self.navigationItem.leftBarButtonItem)
+        self.navigationItem.leftBarButtonItem = nil
+        // 返回按钮点击事件
+        var backButton:UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Redo, target: self, action: "buttonAction:")
+        self.navigationItem.leftBarButtonItem = backButton
         // 查询线路
         lines = selectLineTable()
         // 查询站点
@@ -106,10 +113,59 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
     }
     
     /**
+     * ボタン点击事件
+     * @param sender
+     */
+    func buttonAction(sender: UIButton){
+        switch sender{
+        case self.navigationItem.leftBarButtonItem:
+            if(segIndex == NUM_0){
+                // 保存到站提醒
+                saveArriveStation()
+            }else if(segIndex == NUM_1){
+                // 保存末班车提醒
+                saveLastMetro()
+            }
+        case self.navigationItem.rightBarButtonItem:
+            RemindDetailController.showMessage(MSG_0002, msg:MSG_0001,buttons:[MSG_0003, MSG_0004], delegate: nil)
+        default:
+            println("nothing")
+        }
+    }
+    
+    /**
      * 编辑到站提醒
      */
     func editArriveStation(){
         self.navigationItem.rightBarButtonItem = nil
+        
+        if(tableUsrT01 == nil){
+            tableUsrT01 = UsrT01ArrivalAlarmTable()
+            tableUsrT01!.lineFromId = "28001"
+            tableUsrT01!.lineFromNameLocl = "銀座線"
+            tableUsrT01!.statFromId = "2800101"
+            tableUsrT01!.statFromNameLocl = "浅草"
+            tableUsrT01!.lineToId = "28001"
+            tableUsrT01!.lineToNameLocl = "銀座線"
+            tableUsrT01!.statToId = "2800101"
+            tableUsrT01!.statToNameLocl = "浅草"
+            tableUsrT01!.beepFlag = "1"
+            tableUsrT01!.voleFlag = "0"
+            tableUsrT01!.costTime = "002289"
+            tableUsrT01!.alarmTime = "0"
+            tableUsrT01!.saveTime = RemindDetailController.convertDate2LocalTime(NSDate.date())
+            tableUsrT01!.onboardTime = "000000000000"
+            tableUsrT01!.cancelFlag = "0"
+            tableUsrT01!.cancelTime = "00000000000000"
+        }
+        station = "\(tableUsrT01!.item(USRT01_ARRIVAL_ALARM_STAT_TO_NAME_LOCL))"
+        fromStation = "\(tableUsrT01!.item(USRT01_ARRIVAL_ALARM_STAT_FROM_NAME_LOCL))"
+        if(tableUsrT01!.item(USRT01_ARRIVAL_ALARM_BEEP_FLAG).integerValue == 1){
+            remindType = 0
+        }else{
+            remindType = 1
+        }
+        remindTime = tableUsrT01!.item(USRT01_ARRIVAL_ALARM_ALARM_TIME).integerValue / 60 - 1
         
         loadArriveStationItems()
         
@@ -126,7 +182,6 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
         pickFromStations.hidden = true
         pickFromStations.delegate = self
         pickFromStations.dataSource = self
-        
         pickLineStations.append(pickFromStations)
     }
     
@@ -154,6 +209,60 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
     }
     
     /**
+     * 保存到站提醒
+     */
+    func saveArriveStation(){
+        var alarms:Array<UsrT01ArrivalAlarmTable>? = selectArrivalAlarmTable()
+        if(alarms!.count > 1){
+            var alarm:UsrT01ArrivalAlarmTable? = alarms![alarms!.count - NUM_1]
+            if(alarm!.item(USRT01_ARRIVAL_ALARM_CANCEL_FLAG) != nil && alarm!.item(USRT01_ARRIVAL_ALARM_CANCEL_FLAG).integerValue == 1){
+                tableUsrT01!.arriAlamId = "\(alarm!.item(USRT01_ARRIVAL_ALARM_ARRI_ALAM_ID).integerValue + 1)"
+                if(tableUsrT01!.insert()){
+                    var controllers:AnyObject? = self.navigationController!.viewControllers
+                    if(controllers!.count > 1){
+                        var lastController:RemindListController = controllers![controllers!.count - 2] as RemindListController
+                        lastController.viewDidLoad()
+                    }
+                    self.navigationController!.popViewControllerAnimated(true)
+                }else{
+                    self.navigationController!.popViewControllerAnimated(true)
+                }
+            }else{
+                if(tableUsrT01!.update()){
+                    var controllers:AnyObject? = self.navigationController!.viewControllers
+                    if(controllers!.count > 1){
+                        var lastController:RemindListController = controllers![controllers!.count - 2] as RemindListController
+                        lastController.viewDidLoad()
+                    }
+                    self.navigationController!.popViewControllerAnimated(true)
+                }else{
+                    self.navigationController!.popViewControllerAnimated(true)
+                }
+            }
+        }else{
+            tableUsrT01!.arriAlamId = "1"
+            if(tableUsrT01!.insert()){
+                var controllers:AnyObject? = self.navigationController!.viewControllers
+                if(controllers!.count > 1){
+                    var lastController:RemindListController = controllers![controllers!.count - 2] as RemindListController
+                    lastController.viewDidLoad()
+                }
+                self.navigationController!.popViewControllerAnimated(true)
+            }else{
+                self.navigationController!.popViewControllerAnimated(true)
+                
+            }
+        }
+    }
+    
+    /**
+     * 保存末班车提醒
+     */
+    func saveLastMetro(){
+        
+    }
+    
+    /**
      * 加载items
      */
     func loadArriveStationItems(){
@@ -174,19 +283,6 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
         items.addObject(["提醒时间：",remindsTime])
     }
     
-    /**
-     * ボタン点击事件
-     * @param sender
-     */
-    func buttonAction(sender: UIButton){
-        switch sender{
-        case self.navigationItem.rightBarButtonItem:
-            RemindDetailController.showMessage(MSG_0002, msg:MSG_0001,buttons:[MSG_0003, MSG_0004], delegate: nil)
-        default:
-            println("nothing")
-        }
-    }
-
     /**
      * 改变pickview的高度
      * @param sender
@@ -216,7 +312,17 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
     }
     
     /**
-     * showMessage
+     * 从DB查询到站信息
+     */
+    func selectArrivalAlarmTable() -> Array<UsrT01ArrivalAlarmTable>{
+        var tableUsrT01 = UsrT01ArrivalAlarmTable()
+        var arrivalAlarms:Array<UsrT01ArrivalAlarmTable> = tableUsrT01.selectAll() as Array<UsrT01ArrivalAlarmTable>
+        return arrivalAlarms
+    }
+
+    
+    /**
+     * alertView
      * @param msg
      */
     class func showMessage(title:String, msg:String, buttons:Array<String>, delegate: AnyObject?){
@@ -230,6 +336,17 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
             alertView.delegate = delegate
         }
         alertView.show()
+    }
+
+    /**
+     * 设置当前时区
+     */
+    class func convertDate2LocalTime(forDate:NSDate) -> String{
+        var formatter:NSDateFormatter = NSDateFormatter()
+        formatter.setLocalizedDateFormatFromTemplate("yyyyMMddHHmmss")
+        formatter.timeZone = NSTimeZone.localTimeZone()
+        let nsDate = formatter.stringFromDate(forDate)
+        return nsDate
     }
 
     
@@ -279,16 +396,37 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
         if(segIndex == NUM_0){
             if(didSelectRowAtIndexPath.section == 2){
                 remindType = didSelectRowAtIndexPath.row
+                // 提醒方式
+                if(remindType == NUM_0){
+                    tableUsrT01!.beepFlag = "1"
+                    tableUsrT01!.voleFlag = "0"
+                }else{
+                    tableUsrT01!.beepFlag = "0"
+                    tableUsrT01!.voleFlag = "1"
+                }
             }else if(didSelectRowAtIndexPath.section == 3){
                 remindTime = didSelectRowAtIndexPath.row
+                // 提醒时间
+                tableUsrT01!.alarmTime = "\((remindTime + 1) * 60)"
             }
         }else if(segIndex == NUM_1){
             if(didSelectRowAtIndexPath.section == 1){
                 remindType = didSelectRowAtIndexPath.row
+                // 提醒方式
+                if(remindType == NUM_0){
+                    tableUsrT01!.beepFlag = "1"
+                    tableUsrT01!.voleFlag = "0"
+                }else{
+                    tableUsrT01!.beepFlag = "0"
+                    tableUsrT01!.voleFlag = "1"
+                }
             }else if(didSelectRowAtIndexPath.section == 2){
                 remindTime = didSelectRowAtIndexPath.row
+                // 提醒时间
+                tableUsrT01!.alarmTime = "\((remindTime + 1) * 60)"
             }
         }
+        
         for(var i=0; i < items[didSelectRowAtIndexPath.section][1].count;i++){
             var indexPath = NSIndexPath(forRow: i, inSection: didSelectRowAtIndexPath.section)
             var cell = tableView.cellForRowAtIndexPath(indexPath)
@@ -417,23 +555,39 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
     func pickerView(pickerView: UIPickerView!, didSelectRow row: Int, inComponent component: Int){
         if(pickerView == pickStations){
             if(component == NUM_0){
+                // 线路
                 line = "\(lines[row].lineName)"
+                tableUsrT01!.lineToId = lines[row].lineId
+                tableUsrT01!.lineToNameLocl = lines[row].lineName
+                // 站点
                 stations = selectStationTable(lines[row].lineId)
                 pickerView.reloadComponent(NUM_1)
                 pickerView.selectRow(NUM_0, inComponent: NUM_1, animated: true)
                 station = "\(stations[NUM_0].statName)"
+                tableUsrT01!.statToId = stations[NUM_0].statId
+                tableUsrT01!.statToNameLocl = stations[NUM_0].statName
             }else{
                 station = "\(stations[row].statName)"
+                tableUsrT01!.statToId = stations[row].statId
+                tableUsrT01!.statToNameLocl = stations[row].statName
             }
         }else if(pickerView == pickFromStations){
             if(component == NUM_0){
+                // 线路
                 line = lines[row].lineName as String
+                tableUsrT01!.lineFromId = lines[row].lineId
+                tableUsrT01!.lineFromNameLocl = lines[row].lineName
+                // 站点
                 stations = selectStationTable(lines[row].lineId)
                 pickerView.reloadComponent(NUM_1)
                 pickerView.selectRow(NUM_0, inComponent: NUM_1, animated: true)
                 station = "\(stations[NUM_0].statName)"
+                tableUsrT01!.statFromId = stations[NUM_0].statId
+                tableUsrT01!.statFromNameLocl = stations[NUM_0].statName
             }else{
                 fromStation = "\(stations[row].statName)"
+                tableUsrT01!.statFromId = stations[row].statId
+                tableUsrT01!.statFromNameLocl = stations[row].statName
             }
         }
         if(segIndex == NUM_0){

@@ -32,6 +32,8 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
     @IBOutlet weak var lblSec: UILabel!
     /* 到达站点的线路及方向信息 */
     @IBOutlet weak var lblArriveInfo: UILabel!
+    /* 到达站点信息 */
+    @IBOutlet weak var lblArriveStation: UILabel!
     
     /* 0 */
     let NUM_0 = 0
@@ -58,8 +60,8 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
     /* 末班车提醒 */
     let LAST_METRO_TITLE = "编辑末班车提醒"
     
-    /* 提醒信息 */
-    var reminds:Array<AnyObject>?
+    /* 到站提醒当前条目 */
+    var alarm:UsrT01ArrivalAlarmTable?
     /* TableView条目 */
     var items: NSMutableArray = NSMutableArray.array()
     /* 线路 */
@@ -102,7 +104,7 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
      *
      */
     func intitValue(){
-        sgmMain.selectedSegmentIndex = NUM_0
+        //sgmMain.selectedSegmentIndex = NUM_0
         sgmMain.addTarget(self, action: "segmentChanged:", forControlEvents: UIControlEvents.ValueChanged)
         loadItems()
         lblArriveInfo.textColor = UIColor.lightGrayColor()
@@ -130,23 +132,35 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
     func arriveStation(){
         self.navigationItem.rightBarButtonItem = nil
         tbList.hidden = true
-        reminds = selectArrivalAlarmTable()
         // button点击事件
         btnCancel.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
         btnStart.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
         btnEdit.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
-        
-        // 开启线程计时
-        var timerThread = TimerThread.shareInstance()
-        timerThread.sender = self
-        if(timerThread.arriveTime == NO_STATION){
-            btnCancel.enabled = false
-            btnStart.enabled = true
+        var alarms:Array<UsrT01ArrivalAlarmTable>? = selectArrivalAlarmTable()
+        if(alarms?.count > 1){
+            alarm = alarms![alarms!.count - NUM_1]
+            if(alarm!.item(USRT01_ARRIVAL_ALARM_CANCEL_FLAG) != nil && alarm!.item(USRT01_ARRIVAL_ALARM_CANCEL_FLAG).integerValue == 1){
+                // 当前没有到站提醒
+                noAlarm()
+            }else{
+                lblArriveStation.text = "\(alarm!.item(USRT01_ARRIVAL_ALARM_STAT_TO_NAME_LOCL))"
+                lblArriveInfo.text = "\(alarm!.item(USRT01_ARRIVAL_ALARM_LINE_TO_NAME_LOCL))"
+                // 开启线程计时
+                var timerThread = TimerThread.shareInstance()
+                timerThread.sender = self
+                if(timerThread.arriveTime == NO_STATION){
+                    // 没有上车
+                    btnCancel.enabled = false
+                    btnStart.enabled = true
+                }else{
+                    btnCancel.enabled = true
+                    btnStart.enabled = false
+                    // 线程已经运行,显示当前剩余时间
+                    showTime(convertTime(timerThread.surplusTime))
+                }
+            }
         }else{
-            btnCancel.enabled = true
-            btnStart.enabled = false
-            // 线程已经运行,显示当前剩余时间
-            showTime(convertTime(timerThread.surplusTime))
+            noAlarm()
         }
     }
     
@@ -158,7 +172,7 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
         let addButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "buttonAction:")
         self.navigationItem.rightBarButtonItem = addButton
         tbList.hidden = false
-        reminds = selectTrainAlarmTable()
+        //reminds = selectTrainAlarmTable()
         tbList.delegate = self
         tbList.dataSource = self
         tbList.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell")
@@ -174,26 +188,33 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
         case btnCancel:
             RemindDetailController.showMessage(MSG_0001, msg:MSG_0002,buttons:[MSG_0003, MSG_0004], delegate: self)
         case btnStart:
-            btnStart.enabled = false
-            btnCancel.enabled = true
-            btnEdit.enabled = false
             // 开启线程计时
             var timerThread = TimerThread.shareInstance()
             timerThread.sender = self
             if(timerThread.arriveTime == NO_STATION){
+                if(timerThread.executing){
+                    return
+                }
+                var costTime:Int = alarm!.item(USRT01_ARRIVAL_ALARM_COST_TIME).integerValue
                 // 线程未运行
-                timerThread.arriveTime = 65
+                timerThread.arriveTime = costTime
+                alarm!.onboardTime = RemindDetailController.convertDate2LocalTime(NSDate.date())
+                alarm!.update()
                 queue.addOperation(timerThread)
             }else{
                 // 线程已经运行,显示当前剩余时间
                 showTime(convertTime(timerThread.surplusTime))
             }
+            btnStart.enabled = false
+            btnCancel.enabled = true
+            btnEdit.enabled = false
         case btnEdit:
             var remindDetailController = self.storyboard!.instantiateViewControllerWithIdentifier("reminddetail") as RemindDetailController
             remindDetailController.title = ARRIVE_STATION_TITLE
             remindDetailController.segIndex = NUM_0
+            remindDetailController.tableUsrT01 = alarm!
             self.navigationController!.pushViewController(remindDetailController, animated:true)
-        case self.navigationItem.rightBarButtonItem:
+        case self.navigationItem.rightBarButtonItem!:
             var remindDetailController = self.storyboard!.instantiateViewControllerWithIdentifier("reminddetail") as RemindDetailController
             if(sgmMain.selectedSegmentIndex == NUM_0){
                 remindDetailController.title = ARRIVE_STATION_TITLE
@@ -210,6 +231,17 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
     }
     
     /**
+     * 当前没有提醒
+     */
+    func noAlarm(){
+        println("no alarm !")
+        btnCancel.enabled = false
+        btnStart.enabled = false
+        lblArriveStation.text = ""
+        lblArriveInfo.text = "当前没有设置提醒"
+    }
+    
+    /**
      * 更新剩余时间
      */
     func updateTime(time: Int){
@@ -222,10 +254,16 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
             self.showTime(times)
             if(time == self.NUM_0){
                 self.pushNotification("您到达了银座",min: self.NUM_NEGATIVE_1)
-                self.btnStart.enabled = true
+                self.alarm!.cancelFlag = "1"
+                self.alarm!.cancelTime = RemindDetailController.convertDate2LocalTime(NSDate.date())
+                self.alarm!.update()
+                self.btnStart.enabled = false
                 self.btnCancel.enabled = false
             }else{
-                self.pushNotification(nil,min: (time/60)%60 + 1)
+                var costTime:Int = self.alarm!.item(USRT01_ARRIVAL_ALARM_COST_TIME).integerValue
+                if(time % 60 == 0){
+                    self.pushNotification(nil,min: (time/60)%60)
+                }
             }
         }
     }
@@ -339,9 +377,9 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
-        cell.textLabel.text = items[indexPath.section][1][indexPath.row] as String
-        cell.textLabel.textColor = UIColor.blackColor()
-        cell.textLabel.font = UIFont(name:"Helvetica-Bold", size:13)
+        cell.textLabel!.text = items[indexPath.section][1][indexPath.row] as? String
+        cell.textLabel!.textColor = UIColor.blackColor()
+        cell.textLabel!.font = UIFont(name:"Helvetica-Bold", size:13)
         var lblLastMetroTime = UILabel(frame: CGRect(x:15,y:0,width:290,height:43))
         lblLastMetroTime.text = "23:15:00"
         lblLastMetroTime.textAlignment = NSTextAlignment.Right
@@ -367,15 +405,19 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
     func alertView(alertView: UIAlertView!, didDismissWithButtonIndex buttonIndex: Int){
         switch buttonIndex{
         case NUM_0:
-            btnCancel.enabled = false
-            btnStart.enabled = true
-            btnEdit.enabled = true
             // 停止计时
             var timerThread = TimerThread.shareInstance()
             timerThread.cancel()
-            
-            updateTime(0)
+            self.lblHour.text = "00"
+            self.lblMin.text = "00"
+            self.lblSec.text = "00"
+            btnCancel.enabled = false
+            btnStart.enabled = false
+            btnEdit.enabled = true
             pushNotification(nil,min: NUM_NEGATIVE_1)
+            alarm!.cancelFlag = "1"
+            alarm!.cancelTime = RemindDetailController.convertDate2LocalTime(NSDate.date())
+            alarm!.update()
         default:
             println("nothing")
         }
@@ -405,10 +447,6 @@ class TimerThread: NSOperation{
             static var predicate:dispatch_once_t = 0;
             static var instance:TimerThread? = nil
         }
-        // 保证单例只创建一次
-//        dispatch_once(&qzSingle.predicate,{
-//            qzSingle.instance = TimerThread()
-//        })
         if(qzSingle.instance == nil){
             qzSingle.instance = TimerThread()
         }else if(qzSingle.instance!.finished){
@@ -424,16 +462,16 @@ class TimerThread: NSOperation{
     override func main() {
         for(var i=0;i <= arriveTime;i++){
             var surplusTime = arriveTime - i
-            sender!.updateTime(surplusTime)
             self.surplusTime = surplusTime
+            sender!.updateTime(surplusTime)
+            
             sleep(1)
         }
         println("NSOperation over.")
-     }
+    }
     
     override func cancel() {
         super.cancel()
-        sender = nil
         arriveTime = -1
     }
 }

@@ -32,9 +32,9 @@ class LandMarkListController: UIViewController, UITableViewDelegate, NSObjectPro
         tbList.dataSource = self
         tbList.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         // 查询按钮点击事件
-        var searchButton:UIBarButtonItem = self.navigationItem.rightBarButtonItem
-        searchButton.target = self
-        searchButton.action = "buttonAction:"
+        var searchButton:UIBarButtonItem? = self.navigationItem.rightBarButtonItem
+        searchButton!.target = self
+        searchButton!.action = "buttonAction:"
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -47,7 +47,7 @@ class LandMarkListController: UIViewController, UITableViewDelegate, NSObjectPro
      */
     func buttonAction(sender: UIButton){
         switch sender{
-        case self.navigationItem.rightBarButtonItem:
+        case self.navigationItem.rightBarButtonItem!:
             var landMarkSearchController = self.storyboard!.instantiateViewControllerWithIdentifier("landmarksearch") as LandMarkSearchController
             self.navigationController!.pushViewController(landMarkSearchController, animated:true)
         default:
@@ -95,7 +95,7 @@ class LandMarkListController: UIViewController, UITableViewDelegate, NSObjectPro
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
-        cell.textLabel.text = landMarks[indexPath.row]
+        cell.textLabel!.text = landMarks[indexPath.row]
         return cell
     }
     

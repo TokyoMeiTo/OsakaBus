@@ -32,7 +32,7 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
         tbList.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         tbList.reloadData()
         // 删除按钮点击事件
-        var searchButton:UIBarButtonItem = self.navigationItem.rightBarButtonItem
+        var searchButton:UIBarButtonItem = self.navigationItem.rightBarButtonItem!
         searchButton.target = self
         searchButton.action = "buttonAction:"
     }
@@ -47,7 +47,7 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
      */
     func buttonAction(sender: UIButton){
         switch sender{
-        case self.navigationItem.rightBarButtonItem:
+        case self.navigationItem.rightBarButtonItem!:
             self.navigationController!.popViewControllerAnimated(true)
         default:
             println("nothing")
@@ -72,7 +72,7 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
                 var indexPath = NSIndexPath(forRow: i, inSection: 0)
                 var cell = tableView.cellForRowAtIndexPath(indexPath)
                 if(cell != nil){
-                    cell.accessoryType = UITableViewCellAccessoryType.None
+                    cell!.accessoryType = UITableViewCellAccessoryType.None
                 }
             }
         }else if(didSelectRowAtIndexPath.section == 1){
@@ -81,11 +81,11 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
                 var indexPath = NSIndexPath(forRow: i, inSection: 1)
                 var cell = tableView.cellForRowAtIndexPath(indexPath)
                 if(cell != nil){
-                    cell.accessoryType = UITableViewCellAccessoryType.None
+                    cell!.accessoryType = UITableViewCellAccessoryType.None
                 }
             }
         }
-        tableView.cellForRowAtIndexPath(didSelectRowAtIndexPath).accessoryType =
+        tableView.cellForRowAtIndexPath(didSelectRowAtIndexPath)!.accessoryType =
             UITableViewCellAccessoryType.Checkmark
     }
     
@@ -99,7 +99,7 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
-        cell.textLabel.text = items[indexPath.section][1][indexPath.row] as String
+        cell.textLabel!.text = items[indexPath.section][1][indexPath.row] as? String
         if(indexPath.row == landMarkType && indexPath.section == 0){
             cell.accessoryType = UITableViewCellAccessoryType.Checkmark
         }else if(indexPath.row == landMarkRange && indexPath.section == 1){
