@@ -55,10 +55,6 @@
 		3B24211219B5B5BC00DAE392 /* ODBDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B24210919B5B5BC00DAE392 /* ODBDataBase.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		3B24211319B5B5BC00DAE392 /* ODBDataTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B24210B19B5B5BC00DAE392 /* ODBDataTable.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		3B6F98F819B6EF30001C0DC1 /* OAPAsyncJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B6F98F719B6EF30001C0DC1 /* OAPAsyncJSONParser.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-<<<<<<< HEAD
-		A136166419D3B337004163BB /* work.db in Resources */ = {isa = PBXBuildFile; fileRef = A136166319D3B337004163BB /* work.db */; };
-=======
->>>>>>> FETCH_HEAD
 		A1ECD47919D2D41F00D5A0E2 /* Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1ECD43119D2D41F00D5A0E2 /* Main.swift */; };
 		A1ECD47A19D2D41F00D5A0E2 /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1ECD43319D2D41F00D5A0E2 /* SearchResult.swift */; };
 		A1ECD47B19D2D41F00D5A0E2 /* SESearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1ECD43419D2D41F00D5A0E2 /* SESearch.swift */; };
@@ -118,9 +114,9 @@
 		3B0AF90D19D3BC4600A7DF1E /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
 		3B0AF90F19D3BC4E00A7DF1E /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Main.strings"; sourceTree = "<group>"; };
 		3B0AF91119D3BC8900A7DF1E /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "TokyoMetro/zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
-		3B0AF91319D3BCC500A7DF1E /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		3B0AF91619D3BDB000A7DF1E /* String+Convert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Convert.swift"; sourceTree = "<group>"; };
 		3B0AF91819D3BEE800A7DF1E /* String+Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Item.swift"; sourceTree = "<group>"; };
+		3B0AF91D19D3E9DE00A7DF1E /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "TokyoMetro/zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		3B241FEF19B5A5CF00DAE392 /* TokyoMetro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TokyoMetro.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B241FF319B5A5CF00DAE392 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3B241FF419B5A5CF00DAE392 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -223,10 +219,6 @@
 		3B64660519B5B7A900DB8DA1 /* OAP.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OAP.h; sourceTree = "<group>"; };
 		3B6F98F719B6EF30001C0DC1 /* OAPAsyncJSONParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAPAsyncJSONParser.m; sourceTree = "<group>"; };
 		3B6F98F919B6EF50001C0DC1 /* OAPAsyncJSONParser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OAPAsyncJSONParser.h; sourceTree = "<group>"; };
-<<<<<<< HEAD
-		A136166319D3B337004163BB /* work.db */ = {isa = PBXFileReference; lastKnownFileType = file; name = work.db; path = ../Database/work.db; sourceTree = "<group>"; };
-=======
->>>>>>> FETCH_HEAD
 		A1ECD43119D2D41F00D5A0E2 /* Main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Main.swift; sourceTree = "<group>"; };
 		A1ECD43319D2D41F00D5A0E2 /* SearchResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
 		A1ECD43419D2D41F00D5A0E2 /* SESearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SESearch.swift; sourceTree = "<group>"; };
@@ -316,12 +308,8 @@
 		3B241FE619B5A5CF00DAE392 = {
 			isa = PBXGroup;
 			children = (
-<<<<<<< HEAD
-				A136166319D3B337004163BB /* work.db */,
-=======
 				3B0AF91019D3BC8900A7DF1E /* Localizable.strings */,
 				3B0AF90619D3B5E400A7DF1E /* work.db */,
->>>>>>> FETCH_HEAD
 				3B241FF119B5A5CF00DAE392 /* TokyoMetro */,
 				3B24200419B5A5CF00DAE392 /* TokyoMetroTests */,
 				3B24203019B5ABFD00DAE392 /* Libraries */,
@@ -875,13 +863,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-<<<<<<< HEAD
-				A136166419D3B337004163BB /* work.db in Resources */,
-				3B241FFA19B5A5CF00DAE392 /* Main.storyboard in Resources */,
-=======
 				3B0AF91C19D3E19600A7DF1E /* Localizable.strings in Resources */,
 				3B0AF90719D3B5E400A7DF1E /* work.db in Resources */,
->>>>>>> FETCH_HEAD
 				3B241FFC19B5A5CF00DAE392 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1009,7 +992,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				3B0AF91119D3BC8900A7DF1E /* zh-Hant */,
-				3B0AF91319D3BCC500A7DF1E /* zh-Hans */,
+				3B0AF91D19D3E9DE00A7DF1E /* zh-Hans */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
