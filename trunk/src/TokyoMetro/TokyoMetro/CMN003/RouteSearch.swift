@@ -7,8 +7,7 @@
 //
 
 import Foundation
-class SESearch : UIViewController, UITableViewDelegate, UITableViewDataSource
-{
+class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource {
     var items : NSArray!
     var localItems : NSMutableArray = NSMutableArray()
     
@@ -16,6 +15,7 @@ class SESearch : UIViewController, UITableViewDelegate, UITableViewDataSource
     @IBOutlet weak var stationStart: UITextField!
     @IBOutlet weak var stationEnd: UITextField!
     @IBOutlet weak var tbView: UITableView!
+    @IBOutlet weak var btnSearchRoute: UIButton!
     
     var focusNumber : String = "1"
     
@@ -31,40 +31,44 @@ class SESearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         self.items = ["银座", "大手町", "东京", "日本桥", "门前仲町" ]
        
         btnExchange.addTarget(self, action: "exchangeAction", forControlEvents: UIControlEvents.TouchUpInside)
-//        btnSearchWay.addTarget(self, action: "searchWayAction", forControlEvents: UIControlEvents.TouchUpInside)
+
         // 点击textFile后记住焦点的位置
         stationStart.addTarget(self, action: "foucsChangeTo1", forControlEvents: UIControlEvents.AllEditingEvents)
         stationEnd.addTarget(self, action: "foucsChangeTo2", forControlEvents: UIControlEvents.AllEditingEvents)
         
+        btnSearchRoute.addTarget(self, action: "searchWayAction", forControlEvents: UIControlEvents.TouchUpInside)
+        
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView!) -> Int
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int
     {
         return 1
     }
     
-    func tableView(tableView: UITableView!, numberOfRowsInSection section: Int) -> Int
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
         return self.items.count
     }
+
     
-    func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndexPath!) -> UITableViewCell!
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
     {
-        let cell = tableView.dequeueReusableCellWithIdentifier("SECell", forIndexPath: indexPath) as UITableViewCell!
-        cell.textLabel.text = self.items!.objectAtIndex(indexPath.row) as String
+        let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("SECell", forIndexPath: indexPath) as UITableViewCell
+        cell.textLabel?.text = self.items!.objectAtIndex(indexPath.row) as? String
         return cell
     }
     
     
-    func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let cell = tableView.cellForRowAtIndexPath(indexPath) as UITableViewCell!
-        var stationName:String = cell.textLabel.text
-        if focusNumber == "1" {
-            
+        var stationName : String? =  cell.textLabel?.text
+        
+      if focusNumber == "1" {
+        
             if !(stationName == self.stationEnd.text)  {
                 self.stationStart.text = stationName
             } else {
-                 errAlertView("错误信息",errMgs: "站点名相同",errBtnTitle: "确认")
+                 errAlertView("错误信息", errMgs: "站点名相同", errBtnTitle: "确认")
             }
             
         } else if focusNumber == "2" {
@@ -72,7 +76,7 @@ class SESearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             if !(stationName == self.stationStart.text) {
                 self.stationEnd.text = stationName
             } else {
-                errAlertView("错误信息",errMgs: "站点名相同",errBtnTitle: "确认")
+                errAlertView("错误信息", errMgs: "站点名相同", errBtnTitle: "确认")
             }
             
         }
@@ -93,15 +97,17 @@ class SESearch : UIViewController, UITableViewDelegate, UITableViewDataSource
     }
     
     func searchWayAction(){
+        
+       // 判断合法性
         var nilResult:Bool
-        if ( self.stationStart.text == nil || self.stationEnd.text == nil || self.stationStart.text == self.stationEnd.text) {
-            
+        if ( self.stationStart.text == "" || self.stationEnd.text == "" || self.stationStart.text == self.stationEnd.text) {
+            errAlertView("提示信息", errMgs: "请重新输入车站名", errBtnTitle: "确认")
         } else {
-            
-            
+            var routeResult : RouteSearchResult = self.storyboard?.instantiateViewControllerWithIdentifier("RouteSearchResult") as RouteSearchResult
+            routeResult.routeStart = self.stationStart.text
+            routeResult.routeEnd = self.stationEnd.text
+            self.navigationController?.pushViewController(routeResult, animated:true)
         }
-        
-        
     }
     
     func foucsChangeTo1 () {
@@ -123,7 +129,6 @@ class SESearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         eAv.message = errMgs
         eAv.addButtonWithTitle(errBtnTitle)
         eAv.show()
-        
     }
     
     func hideKeyBoard() {
@@ -140,32 +145,32 @@ class SESearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         }
     }
     
-    // 放置本地数据
-    func setCache() {
-        
-        var accoutDefault : NSUserDefaults = NSUserDefaults()
-        var historyStationdate: NSMutableArray = NSMutableArray()
-        if accoutDefault.objectForKey("historyStationdata") != nil {
-            historyStationdate = accoutDefault.objectForKey("historyStationdata") as NSMutableArray
-        }
-        historyStationdate.addObject(stationStart.text)
-        historyStationdate.addObject(stationEnd.text)
-        accoutDefault.setObject(historyStationdate, forKey: "historyStationdata")
-    }
-    
-    // 读取本地数据
-    func readCache() {
-        var accoutDefaultRead : NSUserDefaults = NSUserDefaults()
-        if accoutDefaultRead.objectForKey("historyStationdata") != nil {
-            var readdate : NSMutableArray = accoutDefaultRead.objectForKey("historyStationdata") as NSMutableArray
-            self.localItems = readdate
-        }
-    }
-    
-    //  清空本地数据
-    func clearCache() {
-        var accoutDefaultClear : NSUserDefaults = NSUserDefaults()
-        accoutDefaultClear.setObject("", forKey: "historyStationdata")
-    }
+//    // 放置本地数据
+//    func setCache() {
+//        
+//        var accoutDefault : NSUserDefaults = NSUserDefaults()
+//        var historyStationdate: NSMutableArray = NSMutableArray()
+//        if accoutDefault.objectForKey("historyStationdata") != nil {
+//            historyStationdate = accoutDefault.objectForKey("historyStationdata") as NSMutableArray
+//        }
+//        historyStationdate.addObject(stationStart.text)
+//        historyStationdate.addObject(stationEnd.text)
+//        accoutDefault.setObject(historyStationdate, forKey: "historyStationdata")
+//    }
+//    
+//    // 读取本地数据
+//    func readCache() {
+//        var accoutDefaultRead : NSUserDefaults = NSUserDefaults()
+//        if accoutDefaultRead.objectForKey("historyStationdata") != nil {
+//            var readdate : NSMutableArray = accoutDefaultRead.objectForKey("historyStationdata") as NSMutableArray
+//            self.localItems = readdate
+//        }
+//    }
+//    
+//    //  清空本地数据
+//    func clearCache() {
+//        var accoutDefaultClear : NSUserDefaults = NSUserDefaults()
+//        accoutDefaultClear.setObject("", forKey: "historyStationdata")
+//    }
     
 }

@@ -7,9 +7,11 @@
 //
 
 import Foundation
-class SearchResult : UIViewController, UITableViewDelegate, UITableViewDataSource
+class RouteSearchResult : UIViewController, UITableViewDelegate, UITableViewDataSource
 {
     var items : NSArray!
+    var routeStart : String = ""
+    var routeEnd : String = ""
     
     @IBOutlet weak var tbSResult: UITableView!
     

@@ -36,6 +36,16 @@ class Main: UIViewController,UIScrollViewDelegate {
         myTapGesture.numberOfTapsRequired = 2
         myTapGesture.numberOfTouchesRequired = 1
         lineImage.addGestureRecognizer(myTapGesture)
+        
+        // 设置单击读取改点信息事件
+        var mySingleTapGesture :UITapGestureRecognizer = UITapGestureRecognizer()
+        mySingleTapGesture.addTarget(self, action: "singleTapAction")
+        self.lineImage.userInteractionEnabled = true
+        mySingleTapGesture.numberOfTapsRequired = 1
+        mySingleTapGesture.numberOfTouchesRequired = 1
+        lineImage.addGestureRecognizer(mySingleTapGesture)
+        
+     
     }
     
     
@@ -56,16 +66,6 @@ class Main: UIViewController,UIScrollViewDelegate {
     }
     
     func viewForZoomingInScrollView(scrollView: UIScrollView!) -> UIView! {
-//        
-//        for view in scroll.subviews {
-//            if (view.isKindOfClass(UIImageView)) {
-//                
-//                return view as UIView
-//            }
-//            
-//        }
-//        
-//        return nil
         return lineImage
     }
     // 双击之后真个scrollView放大
@@ -75,8 +75,11 @@ class Main: UIViewController,UIScrollViewDelegate {
         var offsetY:CGFloat = (scroll.bounds.size.height >
             scroll.contentSize.height) ? (scroll.bounds.size.height - scroll.contentSize.height)/2 : 0.0
         self.lineImage.center = CGPointMake(scroll.contentSize.width * 0.5 + offsetX , scroll.contentSize.height * 0.5 + offsetY)
-        
-        scroll.zoomScale = (scroll.zoomScale + 0.2)
+
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.scroll.zoomScale = (self.scroll.zoomScale + 1)
+        })
+
     }
     
     
@@ -111,5 +114,29 @@ class Main: UIViewController,UIScrollViewDelegate {
         }
         
     }
+    // 根据点击的像素点从db中获取车站id
+    func singleTapAction() {
+        
+        var cmnt03table = CmnT03StationGridTable()
+        var cmnt03row = cmnt03table.excuteQuery("select STAT_ID from CMNT03_STATION_GRID where PONT_X_FROM < 2300 and PONT_X_TO > 2300 and PONT_Y_FROM < 1250 and PONT_Y_TO > 1250")
+        
+        if cmnt03row != nil {
+            for value in cmnt03row{
+                value as CmnT03StationGridTable
+                var stationId:AnyObject = value.item(CMNT03_STAT_ID)
+                println("【2300,1250】2800108 车站信息")
+                println("\(stationId)")
+            }
+        }
+         self.scroll = CGPointMake(2300 , 1250)
+    }
+    
+//    func addPopView() {
+//        
+//    }
+    
+    
+    
+    
     
 }

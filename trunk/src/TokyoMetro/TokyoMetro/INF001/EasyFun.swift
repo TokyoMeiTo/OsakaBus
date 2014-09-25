@@ -8,8 +8,7 @@
 
 import Foundation
 
-class EasyFun : UIViewController, UITableViewDelegate, UITableViewDataSource
-{
+class EasyFun : UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var items : NSMutableArray = NSMutableArray.array()
     let PAGE_NUMBER_ALL : Int16 = 0  // 表示显示全部
