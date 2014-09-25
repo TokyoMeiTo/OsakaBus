@@ -97,18 +97,18 @@ class EasyFun : UIViewController, UITableViewDelegate, UITableViewDataSource {
         return 1
     }
     
-    func tableView(tableView: UITableView!, numberOfRowsInSection section: Int) -> Int
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
         return self.items.count
     }
     
-    func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndexPath!) -> UITableViewCell!
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
     {
-        let cell = tableView.dequeueReusableCellWithIdentifier("FunFindCell", forIndexPath: indexPath) as UITableViewCell!
+        let cell:UITableViewCell = tableView.dequeueReusableCellWithIdentifier("FunFindCell", forIndexPath: indexPath) as UITableViewCell
         var shopName = cell.viewWithTag(1011) as UILabel
         var shopDistance = cell.viewWithTag(1012) as UILabel
         var tempDic:NSDictionary = items.objectAtIndex(indexPath.row) as NSDictionary
-        shopName.text = tempDic["Name"] as String
+        shopName.text = tempDic["Name"] as? String
         var distances = tempDic["Distance"] as String
         shopDistance.text = "相距" + distances
         
@@ -121,9 +121,9 @@ class EasyFun : UIViewController, UITableViewDelegate, UITableViewDataSource {
         var shopdetial : ShopDetial = self.storyboard?.instantiateViewControllerWithIdentifier("ShopDetial") as ShopDetial
         
         var webSiteDic:NSDictionary = items.objectAtIndex(indexPath.row) as NSDictionary
-        shopdetial.title = webSiteDic["Name"] as String
+        shopdetial.title = webSiteDic["Name"] as? String
         shopdetial.webSite = webSiteDic["ShopWeb"] as String
-        self.navigationController.pushViewController(shopdetial, animated:true)
+        self.navigationController?.pushViewController(shopdetial, animated:true)
  
         
     }

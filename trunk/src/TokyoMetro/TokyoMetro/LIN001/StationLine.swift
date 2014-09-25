@@ -80,7 +80,7 @@ class StationLine: UIViewController, UITableViewDataSource, UITableViewDelegate 
     }
     
     
-    func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if (segment.selectedSegmentIndex == 0) {
             return 55
         } else {
@@ -88,7 +88,7 @@ class StationLine: UIViewController, UITableViewDataSource, UITableViewDelegate 
         }
     }
     
-    func tableView(tableView: UITableView!, numberOfRowsInSection section: Int) -> Int {
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if (segment.selectedSegmentIndex == 0) {
             return LineArr.count
         } else {
@@ -96,7 +96,7 @@ class StationLine: UIViewController, UITableViewDataSource, UITableViewDelegate 
         }
     }
     
-    func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndexPath!) -> UITableViewCell! {
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         if (segment.selectedSegmentIndex == 0) {
         
@@ -105,10 +105,10 @@ class StationLine: UIViewController, UITableViewDataSource, UITableViewDelegate 
             var lineMap: MstT01LineTable = LineArr[indexPath.row] as MstT01LineTable
             
             var lineName = cell.viewWithTag(302) as UILabel
-            lineName.text = lineMap.item(MSTT01_LINE_NAME) as String
+            lineName.text = lineMap.item(MSTT01_LINE_NAME) as? String
             
             var lineJPName = cell.viewWithTag(303) as UILabel
-            lineJPName.text = lineMap.item(MSTT01_LINE_NAME) as String
+            lineJPName.text = lineMap.item(MSTT01_LINE_NAME) as? String
             
             var imgLine = cell.viewWithTag(301) as UIImageView
             imgLine.image = lineImageNormal(lineMap.item(MSTT01_LINE_ID) as String)
@@ -121,7 +121,7 @@ class StationLine: UIViewController, UITableViewDataSource, UITableViewDelegate 
             var map: MstT02StationTable = stationArr[indexPath.row] as MstT02StationTable
             
             var textName = cell.viewWithTag(201) as UILabel
-            textName.text = map.item(MSTT02_STAT_NAME) as String
+            textName.text = map.item(MSTT02_STAT_NAME) as? String
             
             var view = cell.viewWithTag(202) as UIView!
             
@@ -142,7 +142,7 @@ class StationLine: UIViewController, UITableViewDataSource, UITableViewDelegate 
     }
     
     
-    func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
         if (segment.selectedSegmentIndex == 0) {
             var lineList: LineStationList = self.storyboard?.instantiateViewControllerWithIdentifier("LineStationList") as LineStationList

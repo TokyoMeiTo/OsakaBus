@@ -108,13 +108,13 @@ class LineStationList: UIViewController, UITableViewDelegate, UITableViewDataSou
     }
     
     
-    func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndexPath!) -> UITableViewCell! {
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("LineStationListCell", forIndexPath: indexPath) as UITableViewCell
         
         var map: MstT02StationTable = stationArr[indexPath.row] as MstT02StationTable
         
         var textName = cell.viewWithTag(201) as UILabel
-        textName.text = map.item(MSTT02_STAT_NAME) as String
+        textName.text = map.item(MSTT02_STAT_NAME) as? String
         
         var btnImg: UIImageView = cell.viewWithTag(203) as UIImageView
         btnImg.image = lineStationImage(map.item(MSTT02_STAT_SEQ) as String)
@@ -145,15 +145,15 @@ class LineStationList: UIViewController, UITableViewDelegate, UITableViewDataSou
         return cell
     }
     
-    func tableView(tableView: UITableView!, numberOfRowsInSection section: Int) -> Int {
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return stationArr.count
     }
     
-    func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 45
     }
     
-    func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         var detail: StationDetail = self.storyboard?.instantiateViewControllerWithIdentifier("StationDetail") as StationDetail
         
         var map: MstT02StationTable = stationArr[indexPath.row] as MstT02StationTable

@@ -20,19 +20,19 @@ class RouteSearchResult : UIViewController, UITableViewDelegate, UITableViewData
         self.items = ["银座", "大手町", "东京", "日本桥" ]
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView!) -> Int
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int
     {
         return 1
     }
     
-    func tableView(tableView: UITableView!, numberOfRowsInSection section: Int) -> Int
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
         return self.items.count
     }
     
-    func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndexPath!) -> UITableViewCell!
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
     {
-        let cell = tableView.dequeueReusableCellWithIdentifier("SResultCell", forIndexPath: indexPath) as UITableViewCell!
+        let cell:UITableViewCell = tableView.dequeueReusableCellWithIdentifier("SResultCell", forIndexPath: indexPath) as UITableViewCell
         var stationTime = cell.viewWithTag(1000) as UILabel
         var stationPosition = cell.viewWithTag(1001) as UILabel
         var stationName = cell.viewWithTag(1002) as UILabel
@@ -51,7 +51,7 @@ class RouteSearchResult : UIViewController, UITableViewDelegate, UITableViewData
             stationTime.text = "32分钟"
         }
         
-        stationName.text = self.items!.objectAtIndex(indexPath.row) as String
+        stationName.text = self.items!.objectAtIndex(indexPath.row) as? String
         return cell
     }
 

@@ -43,36 +43,36 @@ class Setting : UIViewController, UITableViewDelegate, UITableViewDataSource, OA
         return arrList.count
     }
     
-    func tableView(tableView: UITableView!, titleForHeaderInSection section: Int) -> String! {
-        return arrList[section][0] as String
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return arrList[section][0] as? String
     }
     
-    func tableView(tableView: UITableView!, numberOfRowsInSection section: Int) -> Int {
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return arrList[section][1].count
     }
     
-    func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndexPath!) -> UITableViewCell! {
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCellWithIdentifier("settingCell", forIndexPath: indexPath) as UITableViewCell
-        cell.textLabel.text = arrList[indexPath.section][1][indexPath.row] as String
+        cell.textLabel!.text = arrList[indexPath.section][1][indexPath.row] as? String
         return cell
     }
     
-    func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 50
     }
     
-    func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
 
         if indexPath.section == 0 {
             for(var i=0; i < arrList[indexPath.section][1].count;i++){
                 var indexPath = NSIndexPath(forRow: i, inSection: indexPath.section)
                 var cellOther = tableView.cellForRowAtIndexPath(indexPath)
                 if(cellOther != nil){
-                    cellOther.accessoryType = UITableViewCellAccessoryType.None
+                    cellOther!.accessoryType = UITableViewCellAccessoryType.None
                 }
             }
             var cell = tableView.cellForRowAtIndexPath(indexPath)
-            cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+            cell!.accessoryType = UITableViewCellAccessoryType.Checkmark
             return
 
         } else if indexPath.section == 1 {

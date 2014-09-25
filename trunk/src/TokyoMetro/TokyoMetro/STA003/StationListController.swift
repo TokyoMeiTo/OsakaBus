@@ -87,7 +87,7 @@ class StationListController: UIViewController, GPSDelegate{
         sgmMain.selectedSegmentIndex = NUM_0
         sgmMain.addTarget(self, action: "segmentChanged:", forControlEvents: UIControlEvents.ValueChanged)
         // 定位按钮点击事件
-        var reLocationButton:UIBarButtonItem = self.navigationItem.rightBarButtonItem
+        var reLocationButton:UIBarButtonItem = self.navigationItem.rightBarButtonItem!
         reLocationButton.target = self
         reLocationButton.action = "buttonAction:"
     }
@@ -124,7 +124,7 @@ class StationListController: UIViewController, GPSDelegate{
     */
     func buttonAction(sender: UIButton){
         switch sender{
-        case self.navigationItem.rightBarButtonItem:
+        case self.navigationItem.rightBarButtonItem!:
             RemindDetailController.showMessage(MSG_0002, msg:MSG_0001,buttons:[MSG_0003, MSG_0004], delegate: nil)
         default:
             println("nothing")
@@ -352,7 +352,7 @@ class ListController: UITableViewController {
         var tableMstT02 = items![indexPath.row] as MstT02StationTable
         var statNm:String = ""
         statNm = tableMstT02.item(MSTT02_STAT_NAME) as String
-        cell.textLabel.text = statNm
+        cell.textLabel?.text = statNm
         return cell
     }
     

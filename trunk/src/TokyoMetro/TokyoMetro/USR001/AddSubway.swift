@@ -58,7 +58,7 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     
-    func tableView(tableView: UITableView!, numberOfRowsInSection section: Int) -> Int {
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if (segment.selectedSegmentIndex == 0) {
             
@@ -72,7 +72,7 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
     }
     
-    func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndexPath!) -> UITableViewCell! {
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         if (segment.selectedSegmentIndex == 1) {
             let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("CollectCell", forIndexPath: indexPath) as UITableViewCell
@@ -80,7 +80,7 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
             var map: MstT02StationTable = stationArr[indexPath.row] as MstT02StationTable
             
             var textName = cell.viewWithTag(201) as UILabel
-            textName.text = map.item(MSTT02_STAT_NAME) as String
+            textName.text = map.item(MSTT02_STAT_NAME) as? String
             
             var view = cell.viewWithTag(202) as UIView!
             
@@ -126,7 +126,7 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     
-    func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         
         if (segment.selectedSegmentIndex == 1) {
             return 43
@@ -144,7 +144,7 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
         table.setEditing(editing, animated: animated)
     }
     
-   func tableView(tableView: UITableView!, editingStyleForRowAtIndexPath indexPath: NSIndexPath!) -> UITableViewCellEditingStyle {
+   func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath!) -> UITableViewCellEditingStyle {
 //       if (table.editing) {
             return UITableViewCellEditingStyle.Delete
 //        } else {
@@ -179,7 +179,7 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
         return true
     }
     
-    func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }

@@ -118,7 +118,7 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
      */
     func buttonAction(sender: UIButton){
         switch sender{
-        case self.navigationItem.leftBarButtonItem:
+        case self.navigationItem.leftBarButtonItem!:
             if(segIndex == NUM_0){
                 // 保存到站提醒
                 saveArriveStation()
@@ -126,7 +126,7 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
                 // 保存末班车提醒
                 saveLastMetro()
             }
-        case self.navigationItem.rightBarButtonItem:
+        case self.navigationItem.rightBarButtonItem!:
             RemindDetailController.showMessage(MSG_0002, msg:MSG_0001,buttons:[MSG_0003, MSG_0004], delegate: nil)
         default:
             println("nothing")
@@ -190,7 +190,7 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
      */
     func editLastMetro(){
         // 删除按钮点击事件
-        var delButton:UIBarButtonItem = self.navigationItem.rightBarButtonItem
+        var delButton:UIBarButtonItem! = self.navigationItem.rightBarButtonItem
         delButton.target = self
         delButton.action = "buttonAction:"
         
@@ -431,22 +431,22 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
             var indexPath = NSIndexPath(forRow: i, inSection: didSelectRowAtIndexPath.section)
             var cell = tableView.cellForRowAtIndexPath(indexPath)
             if(cell != nil){
-                cell.accessoryType = UITableViewCellAccessoryType.None
+                cell!.accessoryType = UITableViewCellAccessoryType.None
             }
         }
-        tableView.cellForRowAtIndexPath(didSelectRowAtIndexPath).accessoryType =
+        tableView.cellForRowAtIndexPath(didSelectRowAtIndexPath)!.accessoryType =
             UITableViewCellAccessoryType.Checkmark
     }
     
-    func tableView(tableView: UITableView!, titleForHeaderInSection section: Int) -> String! {
-        return items[section][0] as String
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return items[section][0] as? String
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return items[section][1].count
     }
     
-    func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if(segIndex == NUM_0){
             if((indexPath.section == 0 || indexPath.section == 1) && indexPath.row == 1){
                 if(pickerViewHeight == 0 || indexPath.section != pickerViewSection){
@@ -492,7 +492,7 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
             }
         }
         
-        cell.textLabel.text = items[indexPath.section][1][indexPath.row] as String
+        cell.textLabel!.text = items[indexPath.section][1][indexPath.row] as? String
         return cell
     }
     
@@ -511,7 +511,7 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
     }
     
     
-    func pickerView(pickerView: UIPickerView!, titleForRow row: Int, forComponent component: Int) -> String!{
+    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String!{
         var title = ""
         if(pickerView == pickStations){
             if(component == NUM_0){
@@ -530,12 +530,12 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
     }
     
     // returns the number of 'columns' to display.
-    func numberOfComponentsInPickerView(pickerView: UIPickerView!) -> Int{
+    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int{
         return 2
     }
     
     // returns the # of rows in each component..
-    func pickerView(pickerView: UIPickerView!, numberOfRowsInComponent component: Int) -> Int{
+    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int{
         if(pickerView == pickStations){
             if(component == NUM_0){
                 return lines.count
@@ -552,7 +552,7 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
         return 0
     }
 
-    func pickerView(pickerView: UIPickerView!, didSelectRow row: Int, inComponent component: Int){
+    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int){
         if(pickerView == pickStations){
             if(component == NUM_0){
                 // 线路

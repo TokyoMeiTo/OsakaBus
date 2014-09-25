@@ -50,23 +50,23 @@ class FunFind : UIViewController, UITextFieldDelegate
     func selectAction(sender : UIButton) {
         switch sender {
         case btnAnimation :
-            KeyWord.text = btnAnimation.titleLabel.text
+            KeyWord.text = btnAnimation.titleLabel!.text
         case btnHotSpring :
-            KeyWord.text = btnHotSpring.titleLabel.text
+            KeyWord.text = btnHotSpring.titleLabel!.text
         case btnMobil :
-            KeyWord.text = btnMobil.titleLabel.text
+            KeyWord.text = btnMobil.titleLabel!.text
         case btnBar :
-            KeyWord.text = btnBar.titleLabel.text
+            KeyWord.text = btnBar.titleLabel!.text
         case btnParty :
-            KeyWord.text = btnParty.titleLabel.text
+            KeyWord.text = btnParty.titleLabel!.text
         case btnCon :
-            KeyWord.text = btnCon.titleLabel.text
+            KeyWord.text = btnCon.titleLabel!.text
         case btnNooldes :
-            KeyWord.text = btnNooldes.titleLabel.text
+            KeyWord.text = btnNooldes.titleLabel!.text
         case btnSushi :
-            KeyWord.text = btnSushi.titleLabel.text
+            KeyWord.text = btnSushi.titleLabel!.text
         case btnPopolar :
-            KeyWord.text = btnPopolar.titleLabel.text
+            KeyWord.text = btnPopolar.titleLabel!.text
         default:
             KeyWord.text = ""
         }

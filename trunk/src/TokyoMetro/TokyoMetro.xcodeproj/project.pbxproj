@@ -56,8 +56,6 @@
 		3B24211319B5B5BC00DAE392 /* ODBDataTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B24210B19B5B5BC00DAE392 /* ODBDataTable.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		3B6F98F819B6EF30001C0DC1 /* OAPAsyncJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B6F98F719B6EF30001C0DC1 /* OAPAsyncJSONParser.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		A1ECD47919D2D41F00D5A0E2 /* Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1ECD43119D2D41F00D5A0E2 /* Main.swift */; };
-		A1ECD47A19D2D41F00D5A0E2 /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1ECD43319D2D41F00D5A0E2 /* SearchResult.swift */; };
-		A1ECD47B19D2D41F00D5A0E2 /* SESearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1ECD43419D2D41F00D5A0E2 /* SESearch.swift */; };
 		A1ECD47C19D2D41F00D5A0E2 /* CmnT03StationGridTable.m in Sources */ = {isa = PBXBuildFile; fileRef = A1ECD43919D2D41F00D5A0E2 /* CmnT03StationGridTable.m */; };
 		A1ECD47D19D2D41F00D5A0E2 /* InfT02TipsTable.m in Sources */ = {isa = PBXBuildFile; fileRef = A1ECD43B19D2D41F00D5A0E2 /* InfT02TipsTable.m */; };
 		A1ECD47E19D2D41F00D5A0E2 /* InfT03RescureTable.m in Sources */ = {isa = PBXBuildFile; fileRef = A1ECD43D19D2D41F00D5A0E2 /* InfT03RescureTable.m */; };
@@ -97,6 +95,9 @@
 		A1ECD4A019D2D41F00D5A0E2 /* AddSubway.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1ECD47519D2D41F00D5A0E2 /* AddSubway.swift */; };
 		A1ECD4A119D2D41F00D5A0E2 /* RemindDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1ECD47719D2D41F00D5A0E2 /* RemindDetailController.swift */; };
 		A1ECD4A219D2D41F00D5A0E2 /* RemindListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1ECD47819D2D41F00D5A0E2 /* RemindListController.swift */; };
+		A1EE754019D445190064BC90 /* Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EE753F19D445190064BC90 /* Setting.swift */; };
+		A1EE754319D445490064BC90 /* RouteSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EE754119D445490064BC90 /* RouteSearch.swift */; };
+		A1EE754419D445490064BC90 /* RouteSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EE754219D445490064BC90 /* RouteSearchResult.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -220,8 +221,6 @@
 		3B6F98F719B6EF30001C0DC1 /* OAPAsyncJSONParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAPAsyncJSONParser.m; sourceTree = "<group>"; };
 		3B6F98F919B6EF50001C0DC1 /* OAPAsyncJSONParser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OAPAsyncJSONParser.h; sourceTree = "<group>"; };
 		A1ECD43119D2D41F00D5A0E2 /* Main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Main.swift; sourceTree = "<group>"; };
-		A1ECD43319D2D41F00D5A0E2 /* SearchResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
-		A1ECD43419D2D41F00D5A0E2 /* SESearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SESearch.swift; sourceTree = "<group>"; };
 		A1ECD43819D2D41F00D5A0E2 /* CmnT03StationGridTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CmnT03StationGridTable.h; sourceTree = "<group>"; };
 		A1ECD43919D2D41F00D5A0E2 /* CmnT03StationGridTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CmnT03StationGridTable.m; sourceTree = "<group>"; };
 		A1ECD43A19D2D41F00D5A0E2 /* InfT02TipsTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfT02TipsTable.h; sourceTree = "<group>"; };
@@ -273,6 +272,9 @@
 		A1ECD47519D2D41F00D5A0E2 /* AddSubway.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddSubway.swift; sourceTree = "<group>"; };
 		A1ECD47719D2D41F00D5A0E2 /* RemindDetailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemindDetailController.swift; sourceTree = "<group>"; };
 		A1ECD47819D2D41F00D5A0E2 /* RemindListController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemindListController.swift; sourceTree = "<group>"; };
+		A1EE753F19D445190064BC90 /* Setting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Setting.swift; sourceTree = "<group>"; };
+		A1EE754119D445490064BC90 /* RouteSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RouteSearch.swift; path = TokyoMetro/CMN003/RouteSearch.swift; sourceTree = SOURCE_ROOT; };
+		A1EE754219D445490064BC90 /* RouteSearchResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RouteSearchResult.swift; path = TokyoMetro/CMN003/RouteSearchResult.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -602,8 +604,8 @@
 		A1ECD43219D2D41F00D5A0E2 /* CMN003 */ = {
 			isa = PBXGroup;
 			children = (
-				A1ECD43319D2D41F00D5A0E2 /* SearchResult.swift */,
-				A1ECD43419D2D41F00D5A0E2 /* SESearch.swift */,
+				A1EE754119D445490064BC90 /* RouteSearch.swift */,
+				A1EE754219D445490064BC90 /* RouteSearchResult.swift */,
 			);
 			path = CMN003;
 			sourceTree = "<group>";
@@ -751,6 +753,7 @@
 				A1ECD46D19D2D41F00D5A0E2 /* StationDetail.swift */,
 				A1ECD46E19D2D41F00D5A0E2 /* StationImg.swift */,
 				A1ECD46F19D2D41F00D5A0E2 /* TimeTable.swift */,
+				A1EE753E19D445190064BC90 /* CMN009 */,
 			);
 			path = STA002;
 			sourceTree = "<group>";
@@ -781,6 +784,15 @@
 			);
 			path = USR002;
 			sourceTree = "<group>";
+		};
+		A1EE753E19D445190064BC90 /* CMN009 */ = {
+			isa = PBXGroup;
+			children = (
+				A1EE753F19D445190064BC90 /* Setting.swift */,
+			);
+			name = CMN009;
+			path = TokyoMetro/CMN009;
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
@@ -886,7 +898,6 @@
 				3B2420DB19B5AD1500DAE392 /* NSString+Convert.m in Sources */,
 				3B2420AC19B5ABFD00DAE392 /* ONWRequest.m in Sources */,
 				3B24209519B5ABFD00DAE392 /* OAPAsyncCsvParser.m in Sources */,
-				A1ECD47B19D2D41F00D5A0E2 /* SESearch.swift in Sources */,
 				A1ECD48C19D2D41F00D5A0E2 /* LandMarkListController.swift in Sources */,
 				A1ECD49D19D2D41F00D5A0E2 /* GPSDelegate.swift in Sources */,
 				A1ECD49619D2D41F00D5A0E2 /* SearchStationList.swift in Sources */,
@@ -909,8 +920,10 @@
 				A1ECD47D19D2D41F00D5A0E2 /* InfT02TipsTable.m in Sources */,
 				A1ECD47919D2D41F00D5A0E2 /* Main.swift in Sources */,
 				A1ECD48619D2D41F00D5A0E2 /* UsrT01ArrivalAlarmTable.m in Sources */,
+				A1EE754419D445490064BC90 /* RouteSearchResult.swift in Sources */,
 				3B2420A919B5ABFD00DAE392 /* AsyncUdpSocket.m in Sources */,
 				A1ECD4A219D2D41F00D5A0E2 /* RemindListController.swift in Sources */,
+				A1EE754319D445490064BC90 /* RouteSearch.swift in Sources */,
 				3B24210D19B5B5BC00DAE392 /* FMDatabase.m in Sources */,
 				A1ECD48D19D2D41F00D5A0E2 /* LandMarkMapController.swift in Sources */,
 				A1ECD4A119D2D41F00D5A0E2 /* RemindDetailController.swift in Sources */,
@@ -920,7 +933,6 @@
 				3B2420A819B5ABFD00DAE392 /* AsyncSocket.m in Sources */,
 				A1ECD49419D2D41F00D5A0E2 /* StationLine.swift in Sources */,
 				3B0AF91919D3BEE800A7DF1E /* String+Item.swift in Sources */,
-				A1ECD47A19D2D41F00D5A0E2 /* SearchResult.swift in Sources */,
 				3B2420A219B5ABFD00DAE392 /* ASIDownloadCache.m in Sources */,
 				A1ECD49019D2D41F00D5A0E2 /* HelpContentList.swift in Sources */,
 				3B2420DF19B5AD1500DAE392 /* NSString+Encrypto.m in Sources */,
@@ -957,6 +969,7 @@
 				A1ECD49519D2D41F00D5A0E2 /* LineStationList.swift in Sources */,
 				3B241FF519B5A5CF00DAE392 /* AppDelegate.swift in Sources */,
 				3B2420AE19B5ABFD00DAE392 /* OWINFilterSocketRequest.m in Sources */,
+				A1EE754019D445190064BC90 /* Setting.swift in Sources */,
 				A1ECD4A019D2D41F00D5A0E2 /* AddSubway.swift in Sources */,
 				3B24210F19B5B5BC00DAE392 /* FMDatabasePool.m in Sources */,
 				3B2420A319B5ABFD00DAE392 /* ASIFormDataRequest.m in Sources */,

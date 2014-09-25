@@ -49,28 +49,28 @@ class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     
-    func numberOfSectionsInTableView(tableView: UITableView!) -> Int {
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return arrList.count
     }
     
-    func tableView(tableView: UITableView!, titleForHeaderInSection section: Int) -> String! {
-        return arrList[section][0] as String
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return arrList[section][0] as? String
     }
     
-    func tableView(tableView: UITableView!, numberOfRowsInSection section: Int) -> Int {
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return arrList[section][1].count
     }
     
-    func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndexPath!) -> UITableViewCell! {
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("ExitInfoCell", forIndexPath: indexPath) as UITableViewCell
         
-        cell.textLabel.text = arrList[indexPath.section][1][indexPath.row] as String
+        cell.textLabel!.text = arrList[indexPath.section][1][indexPath.row] as? String
         
         return cell
     }
     
-    func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 43
     }
     

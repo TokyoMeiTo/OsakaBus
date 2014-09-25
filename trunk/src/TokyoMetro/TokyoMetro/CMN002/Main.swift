@@ -128,7 +128,7 @@ class Main: UIViewController,UIScrollViewDelegate {
                 println("\(stationId)")
             }
         }
-         self.scroll = CGPointMake(2300 , 1250)
+//         self.scroll = CGPointMake(2300 , 1250)
     }
     
 //    func addPopView() {
