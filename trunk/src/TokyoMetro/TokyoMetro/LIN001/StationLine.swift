@@ -55,7 +55,7 @@ class StationLine: UIViewController, UITableViewDataSource, UITableViewDelegate 
     func odbStation(){
         var table = MstT02StationTable()
         
-        var rows: NSArray = table.excuteQuery("select * from MSTT02_STATION where 1 = 1 and STAT_ID = STAT_GROUP_ID")
+        var rows: NSArray = table.excuteQuery("select *,count(distinct STAT_NAME) from MSTT02_STATION where 1 = 1 group by STAT_NAME")
         
         for key in rows {
             

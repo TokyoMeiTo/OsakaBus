@@ -28,7 +28,7 @@ class SearchStationList: UIViewController, UITableViewDelegate, UITableViewDataS
     func odbStation(){
         var table = MstT02StationTable()
         
-        var rows: NSArray = table.excuteQuery("select * from MSTT02_STATION where 1 = 1 and STAT_ID = STAT_GROUP_ID")
+        var rows: NSArray = table.excuteQuery("select *,count(distinct STAT_NAME) from MSTT02_STATION where 1 = 1 group by STAT_NAME")
         
         for key in rows {
             
@@ -43,7 +43,7 @@ class SearchStationList: UIViewController, UITableViewDelegate, UITableViewDataS
         var table = MstT02StationTable()
         
         table.statName = name
-        var rows: NSArray = table.excuteQuery("select * from MSTT02_STATION where 1 = 1 and STAT_NAME like '%\(name)%'  and STAT_ID = STAT_GROUP_ID")
+        var rows: NSArray = table.excuteQuery("select *,count(distinct STAT_NAME) from MSTT02_STATION where 1 = 1 and STAT_NAME like '%\(name)%' group by STAT_NAME")
         
         stationArr.removeAllObjects()
         for key in rows {
@@ -52,15 +52,14 @@ class SearchStationList: UIViewController, UITableViewDelegate, UITableViewDataS
             
         }
     }
-    
-    
-    func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndexPath!) -> UITableViewCell! {
+        
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("SearchStationCell", forIndexPath: indexPath) as UITableViewCell
         
         var map: MstT02StationTable = stationArr[indexPath.row] as MstT02StationTable
         
         var textName = cell.viewWithTag(201) as UILabel
-        textName.text = map.item(MSTT02_STAT_NAME) as String
+        textName.text = map.item(MSTT02_STAT_NAME) as? String
         
         var view = cell.viewWithTag(202) as UIView!
         
@@ -82,15 +81,17 @@ class SearchStationList: UIViewController, UITableViewDelegate, UITableViewDataS
         return 43
     }
     
-    func tableView(tableView: UITableView!, numberOfRowsInSection section: Int) -> Int {
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return stationArr.count
     }
     
-    func tableView(tableView: UITableView!, sectionForSectionIndexTitle title: String!, atIndex index: Int) -> Int {
+
+    func tableView(tableView: UITableView, sectionForSectionIndexTitle title: String, atIndex index: Int) -> Int {
         return 1
     }
     
-    func tableView(tableView: UITableView!, titleForHeaderInSection section: Int) -> String! {
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return "\(stationArr.count)条检索结果"
     }
     

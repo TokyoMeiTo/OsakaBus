@@ -15,6 +15,7 @@ class ViewController: UIViewController,OAPAsyncParserDelegate {
         // Do any additional setup after loading the view, typically from a nib.
         
         self.odbSample();
+        testString()
     }
     
     
@@ -68,6 +69,14 @@ class ViewController: UIViewController,OAPAsyncParserDelegate {
 //        var id:AnyObject = table.item(MSTT01_LINE_ID)
 //         println("\(id)")
         
+    }
+    
+    func testString() {
+        var test1: String = ""
+        println("blankIsNil:\(test1.blankIsNil())")
+        println("blankIsSpace:" + test1.blankIsSpace())
+        println("blankIsZero:" + test1.blankIsZero())
+        println("blankIs:" + test1.blankIs("test"))
     }
     
     

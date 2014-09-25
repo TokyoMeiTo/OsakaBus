@@ -86,6 +86,14 @@ class StationDetail: UIViewController, UIAlertViewDelegate {
     }
     
     
+    @IBAction func addSubway() {
+    
+        var date: String = NSDate.date().description.yyyyMMddHHmmss()
+        
+        println(date)
+    }
+    
+    
     @IBAction func cellectSubway() {
         
         var sureBtn: UIAlertView = UIAlertView(title: "", message: "你确定要收藏吗？", delegate: self, cancelButtonTitle: "取消", otherButtonTitles: "确定")
@@ -288,6 +296,92 @@ class StationDetail: UIViewController, UIAlertViewDelegate {
         
         return color
     }
+    
+    
+    func stationIcon(statSeq: String) -> UIImage {
+        var image = UIImage(named: "station_icon_c-01.png")
+        
+        switch(statSeq) {
+        case "C01":
+            image = UIImage(named: "station_icon_c-01.png")
+        case "C02":
+            image = UIImage(named: "station_icon_c-02.png")
+        case "C03":
+            image = UIImage(named: "station_icon_c-03.png")
+        case "C04":
+            image = UIImage(named: "station_icon_c-04.png")
+        case "C05":
+            image = UIImage(named: "station_icon_c-05.png")
+        case "C06":
+            image = UIImage(named: "station_icon_c-06.png")
+        case "C07":
+            image = UIImage(named: "station_icon_c-07.png")
+        case "C08":
+            image = UIImage(named: "station_icon_c-08.png")
+        case "C09":
+            image = UIImage(named: "station_icon_c-09.png")
+        case "C10":
+            image = UIImage(named: "station_icon_c-10.png")
+        case "C11":
+            image = UIImage(named: "station_icon_c-11.png")
+        case "C12":
+            image = UIImage(named: "station_icon_c-12.png")
+        case "C13":
+            image = UIImage(named: "station_icon_c-13.png")
+        case "C14":
+            image = UIImage(named: "station_icon_c-14.png")
+        case "C15":
+            image = UIImage(named: "station_icon_c-15.png")
+        case "C16":
+            image = UIImage(named: "station_icon_c-16.png")
+        case "C17":
+            image = UIImage(named: "station_icon_c-17.png")
+        case "C18":
+            image = UIImage(named: "station_icon_c-18.png")
+        case "C19":
+            image = UIImage(named: "station_icon_c-19.png")
+        case "C20":
+            image = UIImage(named: "station_icon_c-20.png")
+        case "F01":
+            image = UIImage(named: "station_icon_f-01.png")
+        case "F02":
+            image = UIImage(named: "station_icon_f-02.png")
+        case "F03":
+            image = UIImage(named: "station_icon_f-03.png")
+        case "F04":
+            image = UIImage(named: "station_icon_f-04.png")
+        case "F05":
+            image = UIImage(named: "station_icon_f-05.png")
+        case "F06":
+            image = UIImage(named: "station_icon_f-06.png")
+        case "F07":
+            image = UIImage(named: "station_icon_f-07.png")
+        case "F08":
+            image = UIImage(named: "station_icon_f-08.png")
+        case "F09":
+            image = UIImage(named: "station_icon_f-09.png")
+        case "F10":
+            image = UIImage(named: "station_icon_f-10.png")
+        case "F11":
+            image = UIImage(named: "station_icon_f-11.png")
+        case "F12":
+            image = UIImage(named: "station_icon_f-12.png")
+        case "F13":
+            image = UIImage(named: "station_icon_f-13.png")
+        case "F14":
+            image = UIImage(named: "station_icon_f-14.png")
+        case "F15":
+            image = UIImage(named: "station_icon_f-15.png")
+        case "F16":
+            image = UIImage(named: "station_icon_f-16.png")
+            
+        default:
+            image = UIImage(named: "station_icon_c-01.png")
+        }
+        
+        return image
+    }
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6206.8" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="F1F-Fs-9ra">
     <dependencies>
-        <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7026.1"/>
     </dependencies>
     <scenes>
@@ -877,11 +876,7 @@
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="GCi-3H-VFI">
-                        <barButtonItem key="rightBarButtonItem" systemItem="bookmarks" id="dzz-2X-4Vd">
-                            <connections>
-                                <segue destination="JS5-VB-BnW" kind="push" id="e1M-g2-ITz"/>
-                            </connections>
-                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="bookmarks" id="dzz-2X-4Vd"/>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
@@ -2264,7 +2259,7 @@
         <!--设定-->
         <scene sceneID="DpM-QI-1rF">
             <objects>
-                <viewController id="4Wh-bs-DPD" customClass="option" customModule="TokyoMetro" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="4Wh-bs-DPD" customClass="ViewController" customModule="TokyoMetro" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="tgt-74-f4v"/>
                         <viewControllerLayoutGuide type="bottom" id="8bt-Zn-UjS"/>
