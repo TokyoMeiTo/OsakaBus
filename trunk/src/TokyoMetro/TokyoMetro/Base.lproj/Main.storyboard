@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6206.8" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="F1F-Fs-9ra">
     <dependencies>
+        <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7026.1"/>
     </dependencies>
     <scenes>
@@ -16,6 +17,11 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Qpy-E8-sBy">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="barTintColor" red="0.17254902420000001" green="0.66666668650000005" blue="0.94901967050000002" alpha="1" colorSpace="deviceRGB"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </textAttributes>
                     </navigationBar>
                     <connections>
                         <segue destination="0Uf-t0-ZZH" kind="relationship" relationship="rootViewController" id="XFQ-kn-59D"/>
@@ -402,7 +408,7 @@
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ouf-zG-xBa">
                                                 <rect key="frame" x="12" y="0.0" width="56" height="56"/>
-                                                <state key="normal" backgroundImage="tablecell_lineicon_m.png">
+                                                <state key="normal" backgroundImage="tablecell_lineicon_m">
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <connections>
@@ -429,7 +435,7 @@
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="plR-iZ-h0K">
                                                 <rect key="frame" x="12" y="0.0" width="56" height="56"/>
-                                                <state key="normal" backgroundImage="tablecell_lineicon_t.png">
+                                                <state key="normal" backgroundImage="tablecell_lineicon_t">
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                             </button>
@@ -441,7 +447,7 @@
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZTG-uR-2Xw">
                                                 <rect key="frame" x="12" y="0.0" width="56" height="56"/>
-                                                <state key="normal" backgroundImage="tablecell_lineicon_c.png">
+                                                <state key="normal" backgroundImage="tablecell_lineicon_c">
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                             </button>
@@ -459,7 +465,7 @@
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XnA-7f-G0b">
                                                 <rect key="frame" x="12" y="0.0" width="56" height="56"/>
-                                                <state key="normal" backgroundImage="tablecell_lineicon_h.png">
+                                                <state key="normal" backgroundImage="tablecell_lineicon_h">
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                             </button>
@@ -477,7 +483,7 @@
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xUO-L1-kX1">
                                                 <rect key="frame" x="12" y="0.0" width="56" height="56"/>
-                                                <state key="normal" backgroundImage="tablecell_lineicon_y.png">
+                                                <state key="normal" backgroundImage="tablecell_lineicon_y">
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                             </button>
@@ -495,7 +501,7 @@
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="03n-oW-TCF">
                                                 <rect key="frame" x="12" y="0.0" width="56" height="56"/>
-                                                <state key="normal" backgroundImage="tablecell_lineicon_n.png">
+                                                <state key="normal" backgroundImage="tablecell_lineicon_n">
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                             </button>
@@ -513,7 +519,7 @@
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="asN-4r-hE7">
                                                 <rect key="frame" x="12" y="0.0" width="56" height="56"/>
-                                                <state key="normal" backgroundImage="tablecell_lineicon_f.png">
+                                                <state key="normal" backgroundImage="tablecell_lineicon_f">
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                             </button>
@@ -531,7 +537,7 @@
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bme-Fu-cW6">
                                                 <rect key="frame" x="12" y="0.0" width="56" height="56"/>
-                                                <state key="normal" backgroundImage="tablecell_lineicon_z.png">
+                                                <state key="normal" backgroundImage="tablecell_lineicon_z">
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                             </button>
@@ -549,7 +555,7 @@
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pGd-4E-DCR">
                                                 <rect key="frame" x="12" y="0.0" width="56" height="56"/>
-                                                <state key="normal" backgroundImage="tablecell_lineicon_g.png">
+                                                <state key="normal" backgroundImage="tablecell_lineicon_g">
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <connections>
@@ -597,7 +603,7 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Bxh-P2-iNU" id="kKm-rQ-tX5">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" tag="301" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="tablecell_lineicon_g.png" translatesAutoresizingMaskIntoConstraints="NO" id="2UR-K9-ss5">
+                                                <imageView userInteractionEnabled="NO" tag="301" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="tablecell_lineicon_g" translatesAutoresizingMaskIntoConstraints="NO" id="2UR-K9-ss5">
                                                     <rect key="frame" x="15" y="6" width="44" height="44"/>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" tag="303" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XuK-sM-pgv">
@@ -1304,7 +1310,7 @@
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3BA-EE-aTP">
                                 <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="00000665_map_13.png" translatesAutoresizingMaskIntoConstraints="NO" id="q6z-My-yso">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="00000665_map_13" translatesAutoresizingMaskIntoConstraints="NO" id="q6z-My-yso">
                                         <rect key="frame" x="0.0" y="0.0" width="650" height="450"/>
                                     </imageView>
                                 </subviews>
@@ -1401,7 +1407,7 @@
                                     <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Voh-z8-HoO">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="00000665_hanzomon_L_1.png" translatesAutoresizingMaskIntoConstraints="NO" id="hpf-Pr-hGH">
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="00000665_hanzomon_L_1" translatesAutoresizingMaskIntoConstraints="NO" id="hpf-Pr-hGH">
                                                 <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                                             </imageView>
                                         </subviews>
@@ -1464,7 +1470,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="tablecell_lineicon_g.png" translatesAutoresizingMaskIntoConstraints="NO" id="i9o-tK-uqg">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="tablecell_lineicon_g" translatesAutoresizingMaskIntoConstraints="NO" id="i9o-tK-uqg">
                                 <rect key="frame" x="89" y="79" width="44" height="44"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="银座" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wDu-8T-OXt">
@@ -1554,7 +1560,7 @@
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fHF-wY-U7N">
                                 <rect key="frame" x="0.0" y="150" width="320" height="240"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="00000665_hanzomon_L_1.png" translatesAutoresizingMaskIntoConstraints="NO" id="SFx-iE-joI">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="00000665_hanzomon_L_1" translatesAutoresizingMaskIntoConstraints="NO" id="SFx-iE-joI">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="240"/>
                                     </imageView>
                                 </subviews>
@@ -2623,18 +2629,18 @@
         </scene>
     </scenes>
     <resources>
-        <image name="00000665_hanzomon_L_1.png" width="768" height="468"/>
-        <image name="00000665_map_13.png" width="1280" height="780"/>
+        <image name="00000665_hanzomon_L_1" width="768" height="468"/>
+        <image name="00000665_map_13" width="1280" height="780"/>
         <image name="MetroCH.png" width="3543" height="2598"/>
-        <image name="tablecell_lineicon_c.png" width="44" height="44"/>
-        <image name="tablecell_lineicon_f.png" width="44" height="44"/>
-        <image name="tablecell_lineicon_g.png" width="44" height="44"/>
-        <image name="tablecell_lineicon_h.png" width="44" height="44"/>
-        <image name="tablecell_lineicon_m.png" width="44" height="44"/>
-        <image name="tablecell_lineicon_n.png" width="44" height="44"/>
-        <image name="tablecell_lineicon_t.png" width="44" height="44"/>
-        <image name="tablecell_lineicon_y.png" width="44" height="44"/>
-        <image name="tablecell_lineicon_z.png" width="44" height="44"/>
+        <image name="tablecell_lineicon_c" width="44" height="44"/>
+        <image name="tablecell_lineicon_f" width="44" height="44"/>
+        <image name="tablecell_lineicon_g" width="44" height="44"/>
+        <image name="tablecell_lineicon_h" width="44" height="44"/>
+        <image name="tablecell_lineicon_m" width="44" height="44"/>
+        <image name="tablecell_lineicon_n" width="44" height="44"/>
+        <image name="tablecell_lineicon_t" width="44" height="44"/>
+        <image name="tablecell_lineicon_y" width="44" height="44"/>
+        <image name="tablecell_lineicon_z" width="44" height="44"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="2gs-C5-1jY"/>

@@ -55,7 +55,7 @@ class StationLine: UIViewController, UITableViewDataSource, UITableViewDelegate 
     func odbStation(){
         var table = MstT02StationTable()
         
-        var rows: NSArray = table.selectAll()
+        var rows: NSArray = table.excuteQuery("select * from MSTT02_STATION where 1 = 1 and STAT_ID = STAT_GROUP_ID")
         
         for key in rows {
             
@@ -149,13 +149,17 @@ class StationLine: UIViewController, UITableViewDataSource, UITableViewDelegate 
             
             let map = LineArr[indexPath.row] as MstT01LineTable
             lineList.line_id = map.item(MSTT01_LINE_ID) as String
+            lineList.line_name = map.item(MSTT01_LINE_NAME) as String
             
             self.navigationController?.pushViewController(lineList, animated: true)
         } else {
             var detail: StationDetail = self.storyboard?.instantiateViewControllerWithIdentifier("StationDetail") as StationDetail
             
-            detail.cellName = "银座"
-            detail.cellStation = "G09"
+            var map: MstT02StationTable = stationArr[indexPath.row] as MstT02StationTable
+            
+            detail.cellName = map.item(MSTT02_STAT_NAME) as String
+//            detail.cellStation = "G09"
+            detail.stat_id = map.item(MSTT02_STAT_ID) as String
             detail.cellClose = "涩谷,浅草"
             detail.cellJapanTime = "05:18/24:22,05:17/24:28"
             detail.cellChinaTime = "06:18/01:22,06:17/01:28"

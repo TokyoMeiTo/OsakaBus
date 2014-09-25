@@ -1,9 +1,9 @@
 //
-//  DetailVC.swift
-//  TableViewTest
+//  StationDetail.swift
+//  TokyoMetro
 //
-//  Created by David Owens on 6/24/14.
-//  Copyright (c) 2014 rhinoIO. All rights reserved.
+//  Created by caowj on 14-9-17.
+//  Copyright (c) 2014年 Okasan-Huada. All rights reserved.
 //
 
 import UIKit
@@ -33,6 +33,10 @@ class StationDetail: UIViewController, UIAlertViewDelegate {
     var arrTime = [String]()
     var size: CGSize!
     
+    // 查询该条线的线路id
+    var stat_id = ""
+    
+    var statSeqArr: NSArray = NSArray.array()
     
     required init(coder aDecoder: NSCoder) {
         
@@ -50,7 +54,8 @@ class StationDetail: UIViewController, UIAlertViewDelegate {
         //Assign String var to NavBar title
         self.title = cellName
         
-        //        CGSize size = [[UIScreen mainScreen] bounds].size;
+        odbStation()
+        
         size = UIScreen.mainScreen().bounds.size
         
         
@@ -61,7 +66,23 @@ class StationDetail: UIViewController, UIAlertViewDelegate {
         
         scrollView.contentSize = CGSizeMake(320, 600)
         
+    }
+    
+    func odbStation(){
+        var table = MstT02StationTable()
+        // 存储丸之内线m段车站
+        var mStationArr: NSMutableArray = NSMutableArray.array()
         
+        table.statId = stat_id
+        var rows: NSArray = table.selectAll()
+        
+        for key in rows {
+            
+            key as MstT02StationTable
+            
+            var statGroupId = key.item(MSTT02_STAT_GROUP_ID) as String
+            statSeqArr = table.excuteQuery("select STAT_SEQ from MSTT02_STATION where 1 = 1 and STAT_GROUP_ID = \(statGroupId)")
+        }
     }
     
     
@@ -86,22 +107,7 @@ class StationDetail: UIViewController, UIAlertViewDelegate {
     
     func addLineView() {
         
-        var arrStation = cellStation.componentsSeparatedByString(",")
-        
-        for (var i = 0; i < arrStation.count; i++) {
-            
-//            var line1: UILabel = UILabel()
-//            line1.frame = CGRectMake(CGFloat(20 + i * 35), 55, 30, 30)
-//            line1.text = arrStation[i]
-//            line1.font = UIFont.boldSystemFontOfSize(20)
-//            line1.textAlignment = NSTextAlignment.Center
-//            line1.backgroundColor = lineColor(arrStation[i])
-//            
-//            if (arrStation[i] == "3" || arrStation[i] == "2" || arrStation[i] == "10" || arrStation[i] == "9" || arrStation[i] == "13") {
-//                line1.textColor = UIColor.blackColor()
-//            } else {
-//                line1.textColor = UIColor.whiteColor()
-//            }
+        for (var i = 0; i < statSeqArr.count; i++) {
             
             var lineImage: UIImageView = UIImageView()
             lineImage.frame = CGRectMake(CGFloat(20 + i * 35), 85, 30, 30)

@@ -28,7 +28,7 @@ class SearchStationList: UIViewController, UITableViewDelegate, UITableViewDataS
     func odbStation(){
         var table = MstT02StationTable()
         
-        var rows: NSArray = table.selectAll()
+        var rows: NSArray = table.excuteQuery("select * from MSTT02_STATION where 1 = 1 and STAT_ID = STAT_GROUP_ID")
         
         for key in rows {
             
@@ -43,7 +43,7 @@ class SearchStationList: UIViewController, UITableViewDelegate, UITableViewDataS
         var table = MstT02StationTable()
         
         table.statName = name
-        var rows: NSArray = table.selectLike()
+        var rows: NSArray = table.excuteQuery("select * from MSTT02_STATION where 1 = 1 and STAT_NAME like '%\(name)%'  and STAT_ID = STAT_GROUP_ID")
         
         stationArr.removeAllObjects()
         for key in rows {
