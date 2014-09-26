@@ -77,7 +77,8 @@ class SearchStationList: UIViewController, UITableViewDelegate, UITableViewDataS
         return cell
     }
     
-    func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 43
     }
     
@@ -96,25 +97,25 @@ class SearchStationList: UIViewController, UITableViewDelegate, UITableViewDataS
     }
     
     
-    func searchBarCancelButtonClicked(searchBar: UISearchBar!) {
+    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
         println("关闭")
         searchBar.resignFirstResponder()
 //        self.navigationController.popViewControllerAnimated(true)
     }
     
-    func searchBarSearchButtonClicked(searchBar: UISearchBar!) {
+    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
         searchStation(searchBar.text)
         table.reloadData()
         println("点击了search按钮")
     }
     
-    func searchBarShouldBeginEditing(searchBar: UISearchBar!) -> Bool {
+    func searchBarShouldBeginEditing(searchBar: UISearchBar) -> Bool {
         println("开始输入")
         return true
     }
     
-    func searchBarShouldEndEditing(searchBar: UISearchBar!) -> Bool {
+    func searchBarShouldEndEditing(searchBar: UISearchBar) -> Bool {
         println("输入结束")
         return true
     }
