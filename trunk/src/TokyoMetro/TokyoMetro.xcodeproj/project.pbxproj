@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		3B0AF90719D3B5E400A7DF1E /* work.db in Resources */ = {isa = PBXBuildFile; fileRef = 3B0AF90619D3B5E400A7DF1E /* work.db */; };
 		3B0AF91719D3BDB000A7DF1E /* String+Convert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0AF91619D3BDB000A7DF1E /* String+Convert.swift */; };
-		3B0AF91919D3BEE800A7DF1E /* String+Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0AF91819D3BEE800A7DF1E /* String+Item.swift */; };
 		3B0AF91C19D3E19600A7DF1E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3B0AF91019D3BC8900A7DF1E /* Localizable.strings */; };
 		3B241FF519B5A5CF00DAE392 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B241FF419B5A5CF00DAE392 /* AppDelegate.swift */; };
 		3B241FF719B5A5CF00DAE392 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B241FF619B5A5CF00DAE392 /* ViewController.swift */; };
@@ -55,6 +54,14 @@
 		3B24211219B5B5BC00DAE392 /* ODBDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B24210919B5B5BC00DAE392 /* ODBDataBase.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		3B24211319B5B5BC00DAE392 /* ODBDataTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B24210B19B5B5BC00DAE392 /* ODBDataTable.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		3B6F98F819B6EF30001C0DC1 /* OAPAsyncJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B6F98F719B6EF30001C0DC1 /* OAPAsyncJSONParser.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		A15CA4A319D57BDD00716A00 /* CmnT04ImageTable.m in Sources */ = {isa = PBXBuildFile; fileRef = A15CA49419D57BDD00716A00 /* CmnT04ImageTable.m */; };
+		A15CA4A419D57BDD00716A00 /* LinT01TrainScheduleTable.m in Sources */ = {isa = PBXBuildFile; fileRef = A15CA49619D57BDD00716A00 /* LinT01TrainScheduleTable.m */; };
+		A15CA4A519D57BDD00716A00 /* LinT03TrainMovingTable.m in Sources */ = {isa = PBXBuildFile; fileRef = A15CA49819D57BDD00716A00 /* LinT03TrainMovingTable.m */; };
+		A15CA4A619D57BDD00716A00 /* LinT05RouteDetailTable.m in Sources */ = {isa = PBXBuildFile; fileRef = A15CA49A19D57BDD00716A00 /* LinT05RouteDetailTable.m */; };
+		A15CA4A819D57BDD00716A00 /* StaT01StationExitTable.m in Sources */ = {isa = PBXBuildFile; fileRef = A15CA49E19D57BDD00716A00 /* StaT01StationExitTable.m */; };
+		A15CA4A919D57BDD00716A00 /* StaT04FacilityTable.m in Sources */ = {isa = PBXBuildFile; fileRef = A15CA4A019D57BDD00716A00 /* StaT04FacilityTable.m */; };
+		A15CA4AA19D57BDD00716A00 /* UsrT03FavoriteTable.m in Sources */ = {isa = PBXBuildFile; fileRef = A15CA4A219D57BDD00716A00 /* UsrT03FavoriteTable.m */; };
+		A15CA4B419D57BF400716A00 /* String+Encrypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15CA4AF19D57BF400716A00 /* String+Encrypto.swift */; };
 		A1A44B9719D52B5B007963F4 /* Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1A44B9619D52B5B007963F4 /* Setting.swift */; };
 		A1ECD47919D2D41F00D5A0E2 /* Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1ECD43119D2D41F00D5A0E2 /* Main.swift */; };
 		A1ECD47C19D2D41F00D5A0E2 /* CmnT03StationGridTable.m in Sources */ = {isa = PBXBuildFile; fileRef = A1ECD43919D2D41F00D5A0E2 /* CmnT03StationGridTable.m */; };
@@ -116,7 +123,6 @@
 		3B0AF90F19D3BC4E00A7DF1E /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Main.strings"; sourceTree = "<group>"; };
 		3B0AF91119D3BC8900A7DF1E /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "TokyoMetro/zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		3B0AF91619D3BDB000A7DF1E /* String+Convert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Convert.swift"; sourceTree = "<group>"; };
-		3B0AF91819D3BEE800A7DF1E /* String+Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Item.swift"; sourceTree = "<group>"; };
 		3B0AF91D19D3E9DE00A7DF1E /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "TokyoMetro/zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		3B241FEF19B5A5CF00DAE392 /* TokyoMetro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TokyoMetro.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B241FF319B5A5CF00DAE392 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -220,6 +226,21 @@
 		3B64660519B5B7A900DB8DA1 /* OAP.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OAP.h; sourceTree = "<group>"; };
 		3B6F98F719B6EF30001C0DC1 /* OAPAsyncJSONParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAPAsyncJSONParser.m; sourceTree = "<group>"; };
 		3B6F98F919B6EF50001C0DC1 /* OAPAsyncJSONParser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OAPAsyncJSONParser.h; sourceTree = "<group>"; };
+		A15CA49319D57BDD00716A00 /* CmnT04ImageTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CmnT04ImageTable.h; sourceTree = "<group>"; };
+		A15CA49419D57BDD00716A00 /* CmnT04ImageTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CmnT04ImageTable.m; sourceTree = "<group>"; };
+		A15CA49519D57BDD00716A00 /* LinT01TrainScheduleTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LinT01TrainScheduleTable.h; sourceTree = "<group>"; };
+		A15CA49619D57BDD00716A00 /* LinT01TrainScheduleTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LinT01TrainScheduleTable.m; sourceTree = "<group>"; };
+		A15CA49719D57BDD00716A00 /* LinT03TrainMovingTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LinT03TrainMovingTable.h; sourceTree = "<group>"; };
+		A15CA49819D57BDD00716A00 /* LinT03TrainMovingTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LinT03TrainMovingTable.m; sourceTree = "<group>"; };
+		A15CA49919D57BDD00716A00 /* LinT05RouteDetailTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LinT05RouteDetailTable.h; sourceTree = "<group>"; };
+		A15CA49A19D57BDD00716A00 /* LinT05RouteDetailTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LinT05RouteDetailTable.m; sourceTree = "<group>"; };
+		A15CA49D19D57BDD00716A00 /* StaT01StationExitTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StaT01StationExitTable.h; sourceTree = "<group>"; };
+		A15CA49E19D57BDD00716A00 /* StaT01StationExitTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StaT01StationExitTable.m; sourceTree = "<group>"; };
+		A15CA49F19D57BDD00716A00 /* StaT04FacilityTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StaT04FacilityTable.h; sourceTree = "<group>"; };
+		A15CA4A019D57BDD00716A00 /* StaT04FacilityTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StaT04FacilityTable.m; sourceTree = "<group>"; };
+		A15CA4A119D57BDD00716A00 /* UsrT03FavoriteTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UsrT03FavoriteTable.h; sourceTree = "<group>"; };
+		A15CA4A219D57BDD00716A00 /* UsrT03FavoriteTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UsrT03FavoriteTable.m; sourceTree = "<group>"; };
+		A15CA4AF19D57BF400716A00 /* String+Encrypto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Encrypto.swift"; sourceTree = "<group>"; };
 		A1A44B9619D52B5B007963F4 /* Setting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Setting.swift; sourceTree = "<group>"; };
 		A1ECD43119D2D41F00D5A0E2 /* Main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Main.swift; sourceTree = "<group>"; };
 		A1ECD43819D2D41F00D5A0E2 /* CmnT03StationGridTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CmnT03StationGridTable.h; sourceTree = "<group>"; };
@@ -301,8 +322,8 @@
 		3B0AF91519D3BDA100A7DF1E /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				A15CA4AF19D57BF400716A00 /* String+Encrypto.swift */,
 				3B0AF91619D3BDB000A7DF1E /* String+Convert.swift */,
-				3B0AF91819D3BEE800A7DF1E /* String+Item.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -650,6 +671,20 @@
 				A1ECD44719D2D41F00D5A0E2 /* MstT01LineTable.m */,
 				A1ECD44819D2D41F00D5A0E2 /* MstT02StationTable.h */,
 				A1ECD44919D2D41F00D5A0E2 /* MstT02StationTable.m */,
+				A15CA49319D57BDD00716A00 /* CmnT04ImageTable.h */,
+				A15CA49419D57BDD00716A00 /* CmnT04ImageTable.m */,
+				A15CA49519D57BDD00716A00 /* LinT01TrainScheduleTable.h */,
+				A15CA49619D57BDD00716A00 /* LinT01TrainScheduleTable.m */,
+				A15CA49719D57BDD00716A00 /* LinT03TrainMovingTable.h */,
+				A15CA49819D57BDD00716A00 /* LinT03TrainMovingTable.m */,
+				A15CA49919D57BDD00716A00 /* LinT05RouteDetailTable.h */,
+				A15CA49A19D57BDD00716A00 /* LinT05RouteDetailTable.m */,
+				A15CA49D19D57BDD00716A00 /* StaT01StationExitTable.h */,
+				A15CA49E19D57BDD00716A00 /* StaT01StationExitTable.m */,
+				A15CA49F19D57BDD00716A00 /* StaT04FacilityTable.h */,
+				A15CA4A019D57BDD00716A00 /* StaT04FacilityTable.m */,
+				A15CA4A119D57BDD00716A00 /* UsrT03FavoriteTable.h */,
+				A15CA4A219D57BDD00716A00 /* UsrT03FavoriteTable.m */,
 				A1ECD44A19D2D41F00D5A0E2 /* MstT03LineStationTable.h */,
 				A1ECD44B19D2D41F00D5A0E2 /* MstT03LineStationTable.m */,
 				A1ECD44C19D2D41F00D5A0E2 /* UsrT01ArrivalAlarmTable.h */,
@@ -903,6 +938,7 @@
 				3B2420A619B5ABFD00DAE392 /* ASINetworkQueue.m in Sources */,
 				A1ECD48B19D2D41F00D5A0E2 /* LandMarkDetailController.swift in Sources */,
 				A1ECD49C19D2D41F00D5A0E2 /* TimeTable.swift in Sources */,
+				A15CA4A919D57BDD00716A00 /* StaT04FacilityTable.m in Sources */,
 				A1ECD49A19D2D41F00D5A0E2 /* StationDetail.swift in Sources */,
 				3B24211319B5B5BC00DAE392 /* ODBDataTable.m in Sources */,
 				A1ECD49219D2D41F00D5A0E2 /* TipsDetail.swift in Sources */,
@@ -913,17 +949,19 @@
 				A1ECD48619D2D41F00D5A0E2 /* UsrT01ArrivalAlarmTable.m in Sources */,
 				A1EE754419D445490064BC90 /* RouteSearchResult.swift in Sources */,
 				3B2420A919B5ABFD00DAE392 /* AsyncUdpSocket.m in Sources */,
+				A15CA4A819D57BDD00716A00 /* StaT01StationExitTable.m in Sources */,
 				A1ECD4A219D2D41F00D5A0E2 /* RemindListController.swift in Sources */,
 				A1EE754319D445490064BC90 /* RouteSearch.swift in Sources */,
 				3B24210D19B5B5BC00DAE392 /* FMDatabase.m in Sources */,
+				A15CA4A319D57BDD00716A00 /* CmnT04ImageTable.m in Sources */,
 				A1ECD48D19D2D41F00D5A0E2 /* LandMarkMapController.swift in Sources */,
 				A1ECD4A119D2D41F00D5A0E2 /* RemindDetailController.swift in Sources */,
 				3B2420DC19B5AD1500DAE392 /* NSString+CString.m in Sources */,
 				A1ECD49F19D2D41F00D5A0E2 /* StationListController.swift in Sources */,
 				A1ECD49B19D2D41F00D5A0E2 /* StationImg.swift in Sources */,
+				A15CA4B419D57BF400716A00 /* String+Encrypto.swift in Sources */,
 				3B2420A819B5ABFD00DAE392 /* AsyncSocket.m in Sources */,
 				A1ECD49419D2D41F00D5A0E2 /* StationLine.swift in Sources */,
-				3B0AF91919D3BEE800A7DF1E /* String+Item.swift in Sources */,
 				3B2420A219B5ABFD00DAE392 /* ASIDownloadCache.m in Sources */,
 				A1ECD49019D2D41F00D5A0E2 /* HelpContentList.swift in Sources */,
 				3B2420DF19B5AD1500DAE392 /* NSString+Encrypto.m in Sources */,
@@ -939,6 +977,7 @@
 				3B24211019B5B5BC00DAE392 /* FMDatabaseQueue.m in Sources */,
 				A1ECD48F19D2D41F00D5A0E2 /* HelpContent.swift in Sources */,
 				3B0AF91719D3BDB000A7DF1E /* String+Convert.swift in Sources */,
+				A15CA4AA19D57BDD00716A00 /* UsrT03FavoriteTable.m in Sources */,
 				3B2420E319B5AD1500DAE392 /* OWINSocketRequest.m in Sources */,
 				A1ECD47F19D2D41F00D5A0E2 /* InfT04StatKnowledgeTable.m in Sources */,
 				A1ECD49919D2D41F00D5A0E2 /* FacilityList.swift in Sources */,
@@ -947,6 +986,8 @@
 				3B2420E119B5AD1500DAE392 /* OWINAsyncXMLParser.m in Sources */,
 				A1ECD48A19D2D41F00D5A0E2 /* ShopDetial.swift in Sources */,
 				3B24210E19B5B5BC00DAE392 /* FMDatabaseAdditions.m in Sources */,
+				A15CA4A519D57BDD00716A00 /* LinT03TrainMovingTable.m in Sources */,
+				A15CA4A419D57BDD00716A00 /* LinT01TrainScheduleTable.m in Sources */,
 				3B2420DD19B5AD1500DAE392 /* NSString+Datetime.m in Sources */,
 				A1ECD48519D2D41F00D5A0E2 /* MstT03LineStationTable.m in Sources */,
 				3B2420E019B5AD1500DAE392 /* ONTSModel.m in Sources */,
@@ -964,6 +1005,7 @@
 				A1ECD4A019D2D41F00D5A0E2 /* AddSubway.swift in Sources */,
 				3B24210F19B5B5BC00DAE392 /* FMDatabasePool.m in Sources */,
 				3B2420A319B5ABFD00DAE392 /* ASIFormDataRequest.m in Sources */,
+				A15CA4A619D57BDD00716A00 /* LinT05RouteDetailTable.m in Sources */,
 				A1ECD48019D2D41F00D5A0E2 /* InfT05LineKnowledgeTable.m in Sources */,
 				3B24211219B5B5BC00DAE392 /* ODBDataBase.m in Sources */,
 				A1ECD49319D2D41F00D5A0E2 /* TipsList.swift in Sources */,
