@@ -22,12 +22,12 @@
 @synthesize statDesp;
 @synthesize lineId;
 @synthesize statSeq;
-@synthesize statNameExit1;
-@synthesize statNameExit2;
-@synthesize statNameExit3;
-@synthesize statNameExit4;
-@synthesize statNameExit5;
-@synthesize statNameExit6;
+@synthesize statNameExt1;
+@synthesize statNameExt2;
+@synthesize statNameExt3;
+@synthesize statNameExt4;
+@synthesize statNameExt5;
+@synthesize statNameExt6;
 @synthesize statNameMetroId;
 @synthesize statNameMetroIdFull;
 
@@ -46,12 +46,12 @@
                         MSTT02_STAT_METRO_ID_FULL,
                         MSTT02_STAT_NAME_KANA,
                         MSTT02_STAT_NAME_ROME,
-                        MSTT02_STAT_NAME_EXIT1,
-                        MSTT02_STAT_NAME_EXIT2,
-                        MSTT02_STAT_NAME_EXIT3,
-                        MSTT02_STAT_NAME_EXIT4,
-                        MSTT02_STAT_NAME_EXIT5,
-                        MSTT02_STAT_NAME_EXIT6,
+                        MSTT02_STAT_NAME_EXT1,
+                        MSTT02_STAT_NAME_EXT2,
+                        MSTT02_STAT_NAME_EXT3,
+                        MSTT02_STAT_NAME_EXT4,
+                        MSTT02_STAT_NAME_EXT5,
+                        MSTT02_STAT_NAME_EXT6,
                         MSTT02_STAT_LON,
                         MSTT02_STAT_LAT,
                         MSTT02_STAT_PREF,
@@ -93,18 +93,18 @@
         self.statNameMetroId = value;
     }else if([item isEqual:MSTT02_STAT_METRO_ID_FULL]){
         self.statNameMetroIdFull = value;
-    }else if([item isEqual:MSTT02_STAT_NAME_EXIT1]){
-        self.statNameExit1 = value;
-    }else if([item isEqual:MSTT02_STAT_NAME_EXIT2]){
-        self.statNameExit2 = value;
-    }else if([item isEqual:MSTT02_STAT_NAME_EXIT3]){
-        self.statNameExit3 = value;
-    }else if([item isEqual:MSTT02_STAT_NAME_EXIT4]){
-        self.statNameExit4 = value;
-    }else if([item isEqual:MSTT02_STAT_NAME_EXIT5]){
-        self.statNameExit5 = value;
-    }else if([item isEqual:MSTT02_STAT_NAME_EXIT6]){
-        self.statNameExit6 = value;
+    }else if([item isEqual:MSTT02_STAT_NAME_EXT1]){
+        self.statNameExt1 = value;
+    }else if([item isEqual:MSTT02_STAT_NAME_EXT2]){
+        self.statNameExt2 = value;
+    }else if([item isEqual:MSTT02_STAT_NAME_EXT3]){
+        self.statNameExt3 = value;
+    }else if([item isEqual:MSTT02_STAT_NAME_EXT4]){
+        self.statNameExt4 = value;
+    }else if([item isEqual:MSTT02_STAT_NAME_EXT5]){
+        self.statNameExt5 = value;
+    }else if([item isEqual:MSTT02_STAT_NAME_EXT6]){
+        self.statNameExt6 = value;
     }else if([item isEqual:MSTT02_STAT_NAME]){
         self.statName = value;
     }else if([item isEqual:MSTT02_STAT_NAME_KANA]){
@@ -154,18 +154,18 @@
         return self.statNameMetroId;
     }else if([item isEqual:MSTT02_STAT_METRO_ID_FULL]){
         return self.statNameMetroIdFull;
-    }else if([item isEqual:MSTT02_STAT_NAME_EXIT1]){
-        return self.statNameExit1;
-    }else if([item isEqual:MSTT02_STAT_NAME_EXIT2]){
-        return self.statNameExit2;
-    }else if([item isEqual:MSTT02_STAT_NAME_EXIT3]){
-        return self.statNameExit3;
-    }else if([item isEqual:MSTT02_STAT_NAME_EXIT4]){
-        return self.statNameExit4;
-    }else if([item isEqual:MSTT02_STAT_NAME_EXIT5]){
-        return self.statNameExit5;
-    }else if([item isEqual:MSTT02_STAT_NAME_EXIT6]){
-        return self.statNameExit6;
+    }else if([item isEqual:MSTT02_STAT_NAME_EXT1]){
+        return self.statNameExt1;
+    }else if([item isEqual:MSTT02_STAT_NAME_EXT2]){
+        return self.statNameExt2;
+    }else if([item isEqual:MSTT02_STAT_NAME_EXT3]){
+        return self.statNameExt3;
+    }else if([item isEqual:MSTT02_STAT_NAME_EXT4]){
+        return self.statNameExt4;
+    }else if([item isEqual:MSTT02_STAT_NAME_EXT5]){
+        return self.statNameExt5;
+    }else if([item isEqual:MSTT02_STAT_NAME_EXT6]){
+        return self.statNameExt6;
     }else if([item isEqual:MSTT02_STAT_DESP]){
         return self.statDesp;
     }else if ([item isEqual:MSTT02_STAT_SEQ]){

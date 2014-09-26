@@ -20,12 +20,12 @@
 #define MSTT02_STAT_NAME             @"STAT_NAME"
 #define MSTT02_STAT_NAME_KANA        @"STAT_NAME_KANA"
 #define MSTT02_STAT_NAME_ROME        @"STAT_NAME_ROME"
-#define MSTT02_STAT_NAME_EXIT1       @"STAT_NAME_EXTI1"
-#define MSTT02_STAT_NAME_EXIT2       @"STAT_NAME_EXTI2"
-#define MSTT02_STAT_NAME_EXIT3       @"STAT_NAME_EXTI3"
-#define MSTT02_STAT_NAME_EXIT4       @"STAT_NAME_EXTI4"
-#define MSTT02_STAT_NAME_EXIT5       @"STAT_NAME_EXTI5"
-#define MSTT02_STAT_NAME_EXIT6       @"STAT_NAME_EXTI6"
+#define MSTT02_STAT_NAME_EXT1        @"STAT_NAME_EXT1"
+#define MSTT02_STAT_NAME_EXT2        @"STAT_NAME_EXT2"
+#define MSTT02_STAT_NAME_EXT3        @"STAT_NAME_EXT3"
+#define MSTT02_STAT_NAME_EXT4        @"STAT_NAME_EXT4"
+#define MSTT02_STAT_NAME_EXT5        @"STAT_NAME_EXT5"
+#define MSTT02_STAT_NAME_EXT6        @"STAT_NAME_EXT6"
 #define MSTT02_STAT_LON              @"STAT_LON"
 #define MSTT02_STAT_LAT              @"STAT_LAT"
 #define MSTT02_STAT_PREF             @"STAT_PREF"
@@ -41,12 +41,12 @@
 @property(copy, nonatomic) NSString* statSeq;
 @property(copy, nonatomic) NSString* statNameMetroId;
 @property(copy, nonatomic) NSString* statNameMetroIdFull;
-@property(copy, nonatomic) NSString* statNameExit1;
-@property(copy, nonatomic) NSString* statNameExit2;
-@property(copy, nonatomic) NSString* statNameExit3;
-@property(copy, nonatomic) NSString* statNameExit4;
-@property(copy, nonatomic) NSString* statNameExit5;
-@property(copy, nonatomic) NSString* statNameExit6;
+@property(copy, nonatomic) NSString* statNameExt1;
+@property(copy, nonatomic) NSString* statNameExt2;
+@property(copy, nonatomic) NSString* statNameExt3;
+@property(copy, nonatomic) NSString* statNameExt4;
+@property(copy, nonatomic) NSString* statNameExt5;
+@property(copy, nonatomic) NSString* statNameExt6;
 @property(copy, nonatomic) NSString* statName;
 @property(copy, nonatomic) NSString* statNameKana;
 @property(copy, nonatomic) NSString* statNameRome;
