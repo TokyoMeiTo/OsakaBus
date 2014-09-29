@@ -22,6 +22,8 @@ class StationDetail: UIViewController, UIAlertViewDelegate {
     
     //Receiving variable assigned to MainVC's var "items"
     var cellName:String = ""
+    var cellJPName:String = ""
+    var cellJPNameKana:String = ""
     var cellDesc:String = ""
     var cellClose = ""
     var cellJapanTime = ""
@@ -32,6 +34,8 @@ class StationDetail: UIViewController, UIAlertViewDelegate {
     var arrClose = [String]()
     var arrTime = [String]()
     var size: CGSize!
+    
+    var statMetroId = ""
     
     // 查询该条线的线路id
     var stat_id = ""
@@ -50,7 +54,7 @@ class StationDetail: UIViewController, UIAlertViewDelegate {
         //Assign your UILabel text to your String
         cellNameLabel.text = cellName
 
-        cellJPNmaeLabel.text = "銀座(ぎんざ)"
+        cellJPNmaeLabel.text = cellJPName
         //Assign String var to NavBar title
         self.title = cellName
         
@@ -101,6 +105,15 @@ class StationDetail: UIViewController, UIAlertViewDelegate {
         sureBtn.show()
         
         
+    }
+    
+    @IBAction func pushStationMap() {
+    
+        var stationMap: StationImg = self.storyboard?.instantiateViewControllerWithIdentifier("StationImg") as StationImg
+        
+        stationMap.stationMapUrl = "http://www.tokyometro.jp/station/\(statMetroId.lowercaseString)/yardmap/images/yardmap.gif"
+        
+        self.navigationController?.pushViewController(stationMap, animated: true)
     }
     
     

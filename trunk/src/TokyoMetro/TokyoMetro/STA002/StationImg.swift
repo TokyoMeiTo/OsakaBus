@@ -12,11 +12,18 @@ class StationImg: UIViewController, UIScrollViewDelegate {
     
     
     @IBOutlet var scroll: UIScrollView!
+    @IBOutlet var imageView: UIImageView!
+    
+    var progress: UIActivityIndicatorView!
     
     var size: CGSize!
     
+    var stationMapUrl: String = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.title = "站内结构图"
         
         size = UIScreen.mainScreen().bounds.size
         
@@ -27,6 +34,26 @@ class StationImg: UIViewController, UIScrollViewDelegate {
         
         scroll.zoomScale = 2.0
         
+        progress = UIActivityIndicatorView()
+        progress.frame = CGRectMake(140, 264, 40, 40)
+        
+        progress.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+        progress.hidesWhenStopped = true
+        
+        self.view.addSubview(progress)
+        
+        progress.startAnimating()
+
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+
+        imageView.image = addMap()
+        
+        scroll.addSubview(imageView)
+        
+        progress.stopAnimating()
     }
     
     func viewForZoomingInScrollView(scrollView: UIScrollView!) -> UIView! {
@@ -38,6 +65,21 @@ class StationImg: UIViewController, UIScrollViewDelegate {
         }
         
         return nil
+    }
+    
+    
+    func addMap() -> UIImage{
+    
+        var url = NSURL.URLWithString(stationMapUrl)
+        
+        var data = NSData.dataWithContentsOfURL(url, options: nil, error: nil)
+        if (data != nil) {
+            var image = UIImage(data: data)
+            return image
+        } else {
+            return UIImage(named: "00000665_map_13")
+        }
+
     }
     
     override func didReceiveMemoryWarning() {

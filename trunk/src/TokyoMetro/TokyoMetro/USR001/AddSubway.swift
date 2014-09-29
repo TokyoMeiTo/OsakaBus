@@ -184,56 +184,6 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
-//        func tableView(tableView: UITableView!, canMoveRowAtIndexPath indexPath: NSIndexPath!) -> Bool {
-//            return true
-//        }
-//    
-//        func tableView(tableView: UITableView!, moveRowAtIndexPath sourceIndexPath: NSIndexPath!, toIndexPath destinationIndexPath: NSIndexPath!) {
-//    
-//            table.moveRowAtIndexPath(sourceIndexPath, toIndexPath: destinationIndexPath)
-//    
-//            
-//        }
-    
-    func lineColor(lineNum: String) -> UIColor {
-        
-        var color = UIColor.whiteColor()
-        switch (lineNum) {
-            
-        case "1":
-            color = UIColor.redColor()
-        case "2":
-            color = UIColor(red: 0, green: 153/255.0, blue: 0, alpha: 1)
-        case "3":
-            color = UIColor.yellowColor()
-        case "4":
-            color = UIColor(red: 102/255.0, green: 0, blue: 102/255.0, alpha: 1)
-        case "5":
-            color = UIColor(red: 204/255.0, green: 0, blue: 204/255.0, alpha: 1)
-        case "6":
-            color = UIColor(red: 1, green: 50/255.0, blue: 101/255.0, alpha: 1)
-        case "7":
-            color = UIColor.orangeColor()
-        case "8":
-            color = UIColor.blueColor()
-        case "9":
-            color = UIColor(red: 149/255.0, green: 211/255.0, blue: 219/255.0, alpha: 1)
-        case "10":
-            color = UIColor(red: 201/255.0, green: 167/255.0, blue: 213/255.0, alpha: 1)
-        case "11":
-            color = UIColor(red: 128/255.0, green: 0, blue: 0, alpha: 1)
-        case "12":
-            color = UIColor(red: 12/255.0, green: 120/255.0, blue: 94/255.0, alpha: 1)
-        case "13":
-            color = UIColor(red: 231/255.0, green: 150/255.0, blue: 193/255.0, alpha: 1)
-            
-        default:
-            color = UIColor.redColor()
-            
-        }
-        
-        return color
-    }
     
     func lineImage(lineNum: String) -> UIImage {
         

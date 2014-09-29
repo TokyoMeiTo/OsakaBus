@@ -28,7 +28,7 @@ class SearchStationList: UIViewController, UITableViewDelegate, UITableViewDataS
     func odbStation(){
         var table = MstT02StationTable()
         
-        var rows: NSArray = table.excuteQuery("select *,count(distinct STAT_NAME) from MSTT02_STATION where 1 = 1 group by STAT_NAME")
+        var rows: NSArray = table.excuteQuery("select *,count(distinct STAT_NAME_EXT1) from MSTT02_STATION where 1 = 1 group by STAT_NAME_EXT1")
         
         for key in rows {
             
@@ -43,7 +43,7 @@ class SearchStationList: UIViewController, UITableViewDelegate, UITableViewDataS
         var table = MstT02StationTable()
         
         table.statName = name
-        var rows: NSArray = table.excuteQuery("select *,count(distinct STAT_NAME) from MSTT02_STATION where 1 = 1 and STAT_NAME like '%\(name)%' group by STAT_NAME")
+        var rows: NSArray = table.excuteQuery("select *,count(distinct STAT_NAME_EXT1) from MSTT02_STATION where 1 = 1 and STAT_NAME_EXT1 like '%\(name)%' group by STAT_NAME_EXT1")
         
         stationArr.removeAllObjects()
         for key in rows {
@@ -59,7 +59,7 @@ class SearchStationList: UIViewController, UITableViewDelegate, UITableViewDataS
         var map: MstT02StationTable = stationArr[indexPath.row] as MstT02StationTable
         
         var textName = cell.viewWithTag(201) as UILabel
-        textName.text = map.item(MSTT02_STAT_NAME) as? String
+        textName.text = map.item(MSTT02_STAT_NAME_EXT1) as? String
         
         var view = cell.viewWithTag(202) as UIView!
         

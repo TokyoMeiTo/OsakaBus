@@ -16,6 +16,7 @@ class TipsContentList: UIViewController,UITableViewDelegate,UITableViewDataSourc
         super.viewDidLoad()
         
         addData()
+//        odbTips()
     }
     
     
@@ -23,6 +24,16 @@ class TipsContentList: UIViewController,UITableViewDelegate,UITableViewDataSourc
         super.didReceiveMemoryWarning()
     }
     
+    
+    func odbTips() {
+        var table = InfT02TipsTable()
+        
+        var rows = table.selectAll()
+        
+        for key in rows{
+            tipsArr.addObject(key)
+        }
+    }
     
     func addData() {
         
@@ -43,9 +54,11 @@ class TipsContentList: UIViewController,UITableViewDelegate,UITableViewDataSourc
         
         let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("TipsContentCell", forIndexPath: indexPath) as UITableViewCell
         
+//        var map = tipsArr.
         
-        cell.textLabel?.text = tipsArr[indexPath.row] as? String
-        cell.textLabel?.numberOfLines = 2
+        var textTitle = cell.viewWithTag(201) as UILabel
+        textTitle.text = tipsArr[indexPath.row] as? String
+        textTitle.numberOfLines = 2
         
         return cell
     }

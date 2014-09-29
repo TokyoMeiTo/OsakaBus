@@ -20,7 +20,7 @@ class TipsList: UIViewController, UITableViewDelegate, UITableViewDataSource {
         super.viewDidLoad()
         
         self.title = "贴士类型一览"
-        
+        table.hidden = true
         addData()
     }
     
