@@ -23,3 +23,4 @@
 #import "UsrT02TrainAlarmTable.h"
 #import "LinT04RouteTable.h"
 #import "LinT06FareTable.h"
+#import "UITouchableView.h"

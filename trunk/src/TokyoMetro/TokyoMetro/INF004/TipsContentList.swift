@@ -15,8 +15,8 @@ class TipsContentList: UIViewController,UITableViewDelegate,UITableViewDataSourc
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        addData()
-//        odbTips()
+//        addData()
+        odbTips()
     }
     
     
@@ -54,10 +54,10 @@ class TipsContentList: UIViewController,UITableViewDelegate,UITableViewDataSourc
         
         let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("TipsContentCell", forIndexPath: indexPath) as UITableViewCell
         
-//        var map = tipsArr.
+        var map = tipsArr[indexPath.row] as InfT02TipsTable
         
         var textTitle = cell.viewWithTag(201) as UILabel
-        textTitle.text = tipsArr[indexPath.row] as? String
+        textTitle.text = map.item(INFT02_TIPS_TITLE) as? String
         textTitle.numberOfLines = 2
         
         return cell
