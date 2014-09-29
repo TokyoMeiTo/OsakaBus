@@ -8,7 +8,11 @@
 
 import Foundation
 class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource {
-    var items : NSArray!
+    
+   //  var items : NSArray!
+    var allOfStationItems : NSMutableArray = NSMutableArray.array()
+    var allOfStationItemsJP : NSMutableArray = NSMutableArray.array()
+    var allOflineImageItems : NSMutableArray = NSMutableArray.array()
     var localItems : NSMutableArray = NSMutableArray()
     
     @IBOutlet weak var btnExchange: UIButton!
@@ -28,7 +32,8 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         self.stationEnd.placeholder = strEnd
         stationStart.becomeFirstResponder()
         
-        self.items = ["银座", "大手町", "东京", "日本桥", "门前仲町" ]
+        loadStation()
+        
        
         btnExchange.addTarget(self, action: "exchangeAction", forControlEvents: UIControlEvents.TouchUpInside)
 
@@ -47,21 +52,35 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
-        return self.items.count
+        return self.allOfStationItems.count
     }
-
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
     {
         let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("SECell", forIndexPath: indexPath) as UITableViewCell
-        cell.textLabel?.text = self.items!.objectAtIndex(indexPath.row) as? String
+        
+        var celllblSatationName : UILabel = cell.viewWithTag(101) as UILabel!
+        var celllblSatationNameJP : UILabel = cell.viewWithTag(102) as UILabel!
+        
+        celllblSatationName.text  = self.allOfStationItems.objectAtIndex(indexPath.row) as? String
+        celllblSatationNameJP.text  = self.allOfStationItemsJP.objectAtIndex(indexPath.row) as? String
+        
+        var lineImageItemsRow = self.allOflineImageItems.objectAtIndex(indexPath.row) as NSArray
+        for (var i = 0; i < lineImageItemsRow.count; i++) {
+            var map = lineImageItemsRow[i] as MstT02StationTable
+            var lineIcon: UIImageView = UIImageView()
+            lineIcon.frame = CGRectMake(CGFloat(160 + i * 25), 5, 30, 30)
+            lineIcon.image = lineImageNormal(map.item(MSTT02_LINE_ID) as String)
+            cell.addSubview(lineIcon)
+        }
+
         return cell
     }
     
-    
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let cell = tableView.cellForRowAtIndexPath(indexPath) as UITableViewCell!
-        var stationName : String? =  cell.textLabel?.text
+        var celllblStaionName : UILabel = cell.viewWithTag(101) as UILabel
+        var stationName : String? =  celllblStaionName.text
         
       if focusNumber == "1" {
         
@@ -80,12 +99,11 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             }
             
         }
-        
         hideKeyBoard()
-        
-        
+
     }
     
+    // 起点和终点交换
     func exchangeAction(){
         
         var tempName:NSString = self.stationStart.text
@@ -95,6 +113,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         hideKeyBoard()
         
     }
+    
     
     func searchWayAction(){
         
@@ -108,14 +127,19 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             routeResult.routeEnd = self.stationEnd.text
             self.navigationController?.pushViewController(routeResult, animated:true)
         }
+        
+        tbView.reloadData()
     }
     
     func foucsChangeTo1 () {
         self.focusNumber = "1"
+        loadStation()
     }
     
     func foucsChangeTo2 () {
         self.focusNumber = "2"
+
+        loadStation()
     }
     
     
@@ -123,6 +147,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         super.didReceiveMemoryWarning()
     }
     
+    // 弹出错误提示框
     func errAlertView(errTitle:String, errMgs:String, errBtnTitle:String) {
         var eAv:UIAlertView = UIAlertView()
         eAv.title = errTitle
@@ -131,46 +156,78 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         eAv.show()
     }
     
+    // 失去焦点，隐藏键盘
     func hideKeyBoard() {
         stationEnd.resignFirstResponder()
         stationStart.resignFirstResponder()
     }
     
-    func odbSample(){
-        var table = MstT01LineTable()
-        var rows:NSArray = table.excuteQuery("select LINE_ID from MSTT01_LINE where 1=1")
-        for key in rows {
-            key as MstT01LineTable
-            var id:AnyObject = key.item(MSTT01_LINE_ID)
+    
+    // 获取所有站的站名和图标
+    func loadStation() {
+        
+        allOfStationItems.removeAllObjects()
+        var mst02table = MstT02StationTable()
+        if self.focusNumber == "1" {
+            mst02table.statName = stationStart.text
+        } else {
+            mst02table.statName = stationEnd.text
         }
+        
+        var mst02Rows:NSArray = mst02table.selectLike()
+        
+        
+        for key in mst02Rows {
+            key as MstT02StationTable
+            var stationNameJP:AnyObject = key.item(MSTT02_STAT_NAME)
+            var stationName:AnyObject = key.item(MSTT02_STAT_NAME_EXT1)
+            var statGroupId = key.item(MSTT02_STAT_GROUP_ID) as String
+            
+            var statSeqArr = mst02table.excuteQuery("select LINE_ID from MSTT02_STATION where 1 = 1 and STAT_GROUP_ID = \(statGroupId)")
+            
+            self.allOflineImageItems.addObject(statSeqArr)
+            self.allOfStationItemsJP.addObject(stationNameJP)
+            self.allOfStationItems.addObject(stationName)
+         }
+        
+        tbView.reloadData()
+        
+
+
     }
     
-//    // 放置本地数据
-//    func setCache() {
-//        
-//        var accoutDefault : NSUserDefaults = NSUserDefaults()
-//        var historyStationdate: NSMutableArray = NSMutableArray()
-//        if accoutDefault.objectForKey("historyStationdata") != nil {
-//            historyStationdate = accoutDefault.objectForKey("historyStationdata") as NSMutableArray
-//        }
-//        historyStationdate.addObject(stationStart.text)
-//        historyStationdate.addObject(stationEnd.text)
-//        accoutDefault.setObject(historyStationdate, forKey: "historyStationdata")
-//    }
-//    
-//    // 读取本地数据
-//    func readCache() {
-//        var accoutDefaultRead : NSUserDefaults = NSUserDefaults()
-//        if accoutDefaultRead.objectForKey("historyStationdata") != nil {
-//            var readdate : NSMutableArray = accoutDefaultRead.objectForKey("historyStationdata") as NSMutableArray
-//            self.localItems = readdate
-//        }
-//    }
-//    
-//    //  清空本地数据
-//    func clearCache() {
-//        var accoutDefaultClear : NSUserDefaults = NSUserDefaults()
-//        accoutDefaultClear.setObject("", forKey: "historyStationdata")
-//    }
+    // 根据数据库中的路线id获取图片
+    func lineImageNormal(lineNum: String) -> UIImage {
+        
+        var image = UIImage(named: "tablecell_lineicon_g.png")
+        switch (lineNum) {
+            
+        case "28001":
+            image = UIImage(named: "tablecell_lineicon_g.png")
+        case "28002":
+            image = UIImage(named: "tablecell_lineicon_m.png")
+        case "28003":
+            image = UIImage(named: "tablecell_lineicon_h.png")
+        case "28004":
+            image = UIImage(named: "tablecell_lineicon_t.png")
+        case "28005":
+            image = UIImage(named: "tablecell_lineicon_c.png")
+        case "28006":
+            image = UIImage(named: "tablecell_lineicon_y.png")
+        case "28008":
+            image = UIImage(named: "tablecell_lineicon_z.png")
+        case "28009":
+            image = UIImage(named: "tablecell_lineicon_n.png")
+        case "28010":
+            image = UIImage(named: "tablecell_lineicon_f.png")
+            
+        default:
+            image = UIImage(named: "tablecell_lineicon_g.png")
+            
+        }
+        
+        return image
+    }
+
     
 }

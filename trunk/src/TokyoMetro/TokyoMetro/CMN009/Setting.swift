@@ -11,77 +11,97 @@ class Setting : UIViewController, UITableViewDelegate, UITableViewDataSource, OA
     
     var arrList: NSMutableArray = NSMutableArray.array()
     
-    var itemsHead:Array<String> = ["选择语言：","检查版本：","关于我们："]
-    
-    var items1:Array<String> = ["中文简体","中文繁体", "日本語", "English"]
-   
-    var items2:Array<String> = ["当前版本"]
-    
-    var items3:Array<String> = ["版权信息"]
-    
     @IBOutlet weak var tbList: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        addData()   
+        arrList = ["版本相关", "服务条款" , "评价App", "分享给好友"]
+        self.title = "服务条款详情"
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-    
-    
-    func addData() {
-        self.arrList.addObject([itemsHead[0], items1])
-        self.arrList.addObject([itemsHead[1], items2])
-        self.arrList.addObject([itemsHead[2], items3])
-        
-        tbList.registerClass(UITableViewCell.self, forCellReuseIdentifier: "settingCell")
-    }
+
     
     func numberOfSectionsInTableView(tableView: UITableView!) -> Int {
-        return arrList.count
+        return 1
     }
-    
-    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return arrList[section][0] as? String
-    }
+
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return arrList[section][1].count
+        return arrList.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCellWithIdentifier("settingCell", forIndexPath: indexPath) as UITableViewCell
-        cell.textLabel!.text = arrList[indexPath.section][1][indexPath.row] as? String
+ 
+        
+        var celllblItemsName : UILabel = cell.viewWithTag(102) as UILabel!
+        var celllblAppVersion = cell.viewWithTag(103) as UILabel
+        celllblAppVersion.hidden = true
+        celllblItemsName.text = self.arrList.objectAtIndex(indexPath.row) as? String
+        if indexPath.row == 0 {
+            celllblAppVersion.hidden = false
+            celllblAppVersion.text = "1.0.1"
+        }
+        
+        if indexPath.row == 1 {
+        }
         return cell
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+       // if indexPath.row ==
         return 50
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
 
-        if indexPath.section == 0 {
-            for(var i=0; i < arrList[indexPath.section][1].count;i++){
-                var indexPath = NSIndexPath(forRow: i, inSection: indexPath.section)
-                var cellOther = tableView.cellForRowAtIndexPath(indexPath)
-                if(cellOther != nil){
-                    cellOther!.accessoryType = UITableViewCellAccessoryType.None
-                }
+//        if indexPath.section == 0 {
+//            for(var i=0; i < arrList[indexPath.section][1].count;i++){
+//                var indexPath = NSIndexPath(forRow: i, inSection: indexPath.section)
+//                var cellOther = tableView.cellForRowAtIndexPath(indexPath)
+//                if(cellOther != nil){
+//                    cellOther!.accessoryType = UITableViewCellAccessoryType.None
+//                }
+//            }
+//            var cell = tableView.cellForRowAtIndexPath(indexPath)
+//            cell!.accessoryType = UITableViewCellAccessoryType.Checkmark
+//            return
+//
+//        } else if indexPath.section == 1 {
+//            
+//            println(" check version")
+//        
+//        } else if indexPath.section == 2 {
+//            showAlertView("关于我们", Mgs: "上海冈三华大计算机系统有限公司", BtnTitle: "确认")
+//        }
+//        
+//        if indexPath.section == 0 {
+//           
+//            
+//        } else if indexPath.section == 1 {
+//            
+//           showAlertView("检查版本", Mgs: "已经是最新版本", BtnTitle: "确认")
+//            
+//        } else if indexPath.section == 2 {
+//            
+            if indexPath.row == 0 {
+                var uigoon : UIActivityIndicatorView = UIActivityIndicatorView()
+                uigoon.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+                uigoon.frame = CGRectMake(60, 231, 200, 70)
             }
-            var cell = tableView.cellForRowAtIndexPath(indexPath)
-            cell!.accessoryType = UITableViewCellAccessoryType.Checkmark
-            return
-
-        } else if indexPath.section == 1 {
             
-            println(" check version")
-        
-        } else if indexPath.section == 2 {
-            showAlertView("关于我们", Mgs: "上海冈三华大计算机系统有限公司", BtnTitle: "确认")
-        }
+            if indexPath.row == 1 {
+                var appServerse : AppServerse = self.storyboard?.instantiateViewControllerWithIdentifier("appServerse") as AppServerse
+                self.navigationController?.pushViewController(appServerse, animated:true)
+            }
+            
+            if indexPath.row == 2 {
+                showAlertView("关于我们", Mgs: "上海冈三华大计算机系统有限公司", BtnTitle: "确认")
+            }
+
      }
     
     // 检查版本
