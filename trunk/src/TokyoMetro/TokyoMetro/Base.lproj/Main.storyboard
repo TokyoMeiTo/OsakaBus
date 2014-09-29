@@ -389,7 +389,14 @@
                     </navigationItem>
                     <connections>
                         <outlet property="bodyView" destination="bIT-le-fTq" id="fSp-bf-OXj"/>
+                        <outlet property="lineImage" destination="Swa-2B-moe" id="cvS-rd-i2a"/>
                         <outlet property="menuView" destination="phn-R5-chP" id="ld1-jl-T9y"/>
+                        <outlet property="popStation" destination="7AK-WU-YxW" id="7Iu-ls-Z8a"/>
+                        <outlet property="popbtnEnd" destination="gBT-ru-sZR" id="cYo-mB-gOL"/>
+                        <outlet property="popbtnMore" destination="3vb-ML-qyQ" id="zNu-YO-Osp"/>
+                        <outlet property="popbtnStart" destination="qto-YX-Oog" id="YZJ-Yn-etU"/>
+                        <outlet property="poplblSationNameJP" destination="G4P-Zy-fOQ" id="RNo-ji-knZ"/>
+                        <outlet property="poplblStationName" destination="0XY-lW-f23" id="P4t-CP-2GD"/>
                         <outlet property="scroll" destination="doT-K8-ZWO" id="Jm2-G5-fYJ"/>
                     </connections>
                 </viewController>
@@ -2381,47 +2388,6 @@
             </objects>
             <point key="canvasLocation" x="-532" y="1564"/>
         </scene>
-        <!--地标明细-->
-        <scene sceneID="8ja-xA-gOH">
-            <objects>
-                <viewController storyboardIdentifier="landmarkdetail" title="地标明细" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ura-vv-qi2" customClass="LandMarkDetailController" customModule="TokyoMetro" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="PFv-vB-mAe"/>
-                        <viewControllerLayoutGuide type="bottom" id="VMq-R6-TIr"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="aWC-vp-2ZL">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="wordWrap" numberOfLines="30" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lOV-ci-myc">
-                                <rect key="frame" x="16" y="69" width="288" height="440"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tul-9E-GZW">
-                                <rect key="frame" x="0.0" y="525" width="320" height="35"/>
-                                <state key="normal" title="地图表示">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="地标明细" id="EfJ-bU-gCk">
-                        <barButtonItem key="backBarButtonItem" title="Back" id="3GM-EM-0Z0"/>
-                    </navigationItem>
-                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
-                    <connections>
-                        <outlet property="btnMap" destination="tul-9E-GZW" id="Hpp-On-XQH"/>
-                        <outlet property="lblLandMarkInfo" destination="lOV-ci-myc" id="aa9-RH-dOQ"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ent-kN-AKc" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-887" y="1564"/>
-        </scene>
         <!--地标地图-->
         <scene sceneID="1Sz-9H-krm">
             <objects>
@@ -2929,6 +2895,52 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ca4-D7-cHd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="638" y="3122"/>
+        </scene>
+        <!--地标明细-->
+        <scene sceneID="1Db-zZ-z1W">
+            <objects>
+                <viewController storyboardIdentifier="landmarkdetail" title="地标明细" useStoryboardIdentifierAsRestorationIdentifier="YES" id="mLX-ab-hqu" customClass="LandMarkDetailController" customModule="TokyoMetro" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="we4-6G-PYn"/>
+                        <viewControllerLayoutGuide type="bottom" id="5c6-hO-tkp"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="LQE-2l-d72">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rB0-kF-Wzq">
+                                <rect key="frame" x="160" y="518" width="160" height="35"/>
+                                <state key="normal" title="地图表示">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="9EZ-wJ-alI">
+                                <rect key="frame" x="0.0" y="63" width="320" height="454"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <inset key="separatorInset" minX="15" minY="0.0" maxX="15" maxY="0.0"/>
+                            </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tx2-ix-3ac">
+                                <rect key="frame" x="0.0" y="521" width="160" height="30"/>
+                                <state key="normal" title="收        藏">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="地标明细" id="WAz-Gb-eW9">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="xCY-eb-wdg"/>
+                    </navigationItem>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <connections>
+                        <outlet property="btnMap" destination="rB0-kF-Wzq" id="tEM-UE-FJN"/>
+                        <outlet property="tbList" destination="9EZ-wJ-alI" id="5b6-mD-ISb"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hjb-RC-HnL" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-887" y="1558"/>
         </scene>
     </scenes>
     <resources>
