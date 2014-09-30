@@ -16,7 +16,7 @@ class Setting : UIViewController, UITableViewDelegate, UITableViewDataSource, OA
     override func viewDidLoad() {
         super.viewDidLoad()
         arrList = ["版本相关", "服务条款" , "评价App", "分享给好友"]
-        self.title = "服务条款详情"
+        
     }
     
     override func didReceiveMemoryWarning() {
