@@ -14,7 +14,7 @@
 #define USRT03_FAVO_TIME        @"FAVO_TIME"
 #define USRT03_LINE_ID          @"LINE_ID"
 #define USRT03_STAT_ID          @"STAT_ID"
-#define USRT03_STAT_EXIT_ID     @"STAT_ID_EXIT_ID"
+#define USRT03_STAT_EXIT_ID     @"STAT_EXIT_ID"
 #define USRT03_LMAK_ID          @"LMAK_ID"
 #define USRT03_RUTE_ID          @"RUTE_ID"
 #define USRT03_EXI1             @"EXT1"

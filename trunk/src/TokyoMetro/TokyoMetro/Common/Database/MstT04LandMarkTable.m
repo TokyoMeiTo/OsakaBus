@@ -156,9 +156,9 @@
     }else if ([item isEqual:MSTT04_LANDMARK_LMAK_TICL_PRIC]){
         self.lmakTictPric = value;
     }else if ([item isEqual:MSTT04_LANDMARK_LMAK_ADDR]){
-        self.lmakTictPric = value;
+        self.lmakAddr = value;
     }else if ([item isEqual:MSTT04_LANDMARK_LMAK_DESP]){
-        self.lmakTictPric = value;
+        self.lmakDesp = value;
     }else if ([item isEqual:MSTT04_LANDMARK_OLIMPIC_FLAG]){
         self.olimpicFlag = value;
     }else if ([item isEqual:MSTT04_LANDMARK_EXIT_FLAG1]){
@@ -228,9 +228,9 @@
     }else if ([item isEqual:MSTT04_LANDMARK_LMAK_TICL_PRIC]){
         return self.lmakTictPric;
     }else if ([item isEqual:MSTT04_LANDMARK_LMAK_ADDR]){
-        return self.lmakTictPric;
+        return self.lmakAddr;
     }else if ([item isEqual:MSTT04_LANDMARK_LMAK_DESP]){
-        return self.lmakTictPric;
+        return self.lmakDesp;
     }else if ([item isEqual:MSTT04_LANDMARK_OLIMPIC_FLAG]){
         return self.olimpicFlag;
     }else if ([item isEqual:MSTT04_LANDMARK_EXIT_FLAG1]){
