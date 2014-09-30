@@ -16,7 +16,7 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
     /* TableView条目 */
     var items: NSMutableArray = NSMutableArray.array()
     /* landMarksType */
-    var landMarksType:Array<String> = ["购物中心","景点","体育馆","酒店"]
+    var landMarksType:Array<String> = ["购物中心","景点","美食"]
     /* landMarksRange */
     var landMarksRange:Array<String> = ["东京","千代田区","附近5000米以内","附近3000米以内","附近1000米以内","附近500米以内","附近100米以内"]
     var landMarkType:Int = 0

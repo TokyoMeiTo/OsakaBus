@@ -62,6 +62,8 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
     
     /* 到站提醒当前条目 */
     var alarm:UsrT01ArrivalAlarmTable?
+    /* 末班车提醒条目 */
+    var trainAlarms:Array<UsrT02TrainAlarmTable>?
     /* TableView条目 */
     var items: NSMutableArray = NSMutableArray.array()
     /* 线路 */
@@ -106,7 +108,6 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
     func intitValue(){
         //sgmMain.selectedSegmentIndex = NUM_0
         sgmMain.addTarget(self, action: "segmentChanged:", forControlEvents: UIControlEvents.ValueChanged)
-        loadItems()
         lblArriveInfo.textColor = UIColor.lightGrayColor()
         lblArriveInfo.font = UIFont(name:"Helvetica-Bold", size:13)
     }
@@ -137,11 +138,12 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
         btnStart.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
         btnEdit.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
         var alarms:Array<UsrT01ArrivalAlarmTable>? = selectArrivalAlarmTable()
-        if(alarms?.count > 1){
+        if(alarms!.count > 1){
             alarm = alarms![alarms!.count - NUM_1]
-            if(alarm!.item(USRT01_ARRIVAL_ALARM_CANCEL_FLAG) != nil && alarm!.item(USRT01_ARRIVAL_ALARM_CANCEL_FLAG).integerValue == 1){
+            if(alarm!.item(USRT01_ARRIVAL_ALARM_CANCEL_FLAG) == nil || alarm!.item(USRT01_ARRIVAL_ALARM_CANCEL_FLAG).integerValue == 1){
                 // 当前没有到站提醒
                 noAlarm()
+                alarm = nil
             }else{
                 lblArriveStation.text = "\(alarm!.item(USRT01_ARRIVAL_ALARM_STAT_TO_NAME_LOCL))"
                 lblArriveInfo.text = "\(alarm!.item(USRT01_ARRIVAL_ALARM_LINE_TO_NAME_LOCL))"
@@ -172,7 +174,11 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
         let addButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "buttonAction:")
         self.navigationItem.rightBarButtonItem = addButton
         tbList.hidden = false
-        //reminds = selectTrainAlarmTable()
+        // 查询末班车信息
+        trainAlarms = selectTrainAlarmTable()
+        
+        loadItems()
+        
         tbList.delegate = self
         tbList.dataSource = self
         tbList.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell")
@@ -184,6 +190,34 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
      * @param sender
      */
     func buttonAction(sender: UIButton){
+        if((sender.tag as Int) == 102){
+            var section:Int = -1
+            var row:Int = -1
+            for subview in sender.subviews{
+                if((subview.tag as Int) == 103){
+                    var strSection:NSString = (subview as UILabel).text!
+                    section = strSection.integerValue
+                }else if((subview.tag as Int) == 104){
+                    var strRow:NSString = (subview as UILabel).text!
+                    row = strRow.integerValue
+                }
+            }
+            if(row == 0){
+                if(trainAlarms![section].item(USRT02_TRAIN_ALARM_FIRST_FLAG).integerValue == 0){
+                    trainAlarms![section].firstFlag = "1"
+                }else{
+                    trainAlarms![section].firstFlag = "0"
+                }
+                trainAlarms![section].update()
+            }else if(row == 1){
+                if(trainAlarms![section].item(USRT02_TRAIN_ALARM_LAST_FLAG).integerValue == 0){
+                    trainAlarms![section].lastFlag = "1"
+                }else{
+                    trainAlarms![section].lastFlag = "0"
+                }
+                trainAlarms![section].update()
+            }
+        }
         switch sender{
         case btnCancel:
             RemindDetailController.showMessage(MSG_0001, msg:MSG_0002,buttons:[MSG_0003, MSG_0004], delegate: self)
@@ -212,7 +246,12 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
             var remindDetailController = self.storyboard!.instantiateViewControllerWithIdentifier("reminddetail") as RemindDetailController
             remindDetailController.title = ARRIVE_STATION_TITLE
             remindDetailController.segIndex = NUM_0
-            remindDetailController.tableUsrT01 = alarm!
+            if(alarm == nil){
+                remindDetailController.tableUsrT01 = nil
+            }else{
+                remindDetailController.tableUsrT01 = alarm!
+            }
+            
             self.navigationController!.pushViewController(remindDetailController, animated:true)
         case self.navigationItem.rightBarButtonItem!:
             var remindDetailController = self.storyboard!.instantiateViewControllerWithIdentifier("reminddetail") as RemindDetailController
@@ -302,10 +341,12 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
      */
     func loadItems(){
         items = NSMutableArray.array()
-        items.addObject([lines[NUM_0],directions1])
-        items.addObject([lines[NUM_1],directions2])
-        items.addObject([lines[NUM_2],directions3])
-        items.addObject([lines[NUM_3],directions4])
+        for(var i=0;i < trainAlarms!.count;i++){
+            var train:UsrT02TrainAlarmTable = trainAlarms![i]
+            var directions = ["\(train.item(USRT02_TRAIN_ALARM_FIRST_TIME))","\(train.item(USRT02_TRAIN_ALARM_LAST_TIME))"]
+            var trainFlag:Array<String> = [ "早班车：", "末班车："]
+            items.addObject(["\(train.item(USRT02_TRAIN_ALARM_LINE_ID))".line() + ":" + "\(train.item(USRT02_TRAIN_ALARM_STAT_ID))".station(), directions, trainFlag])
+        }
     }
 
     
@@ -364,6 +405,7 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
         var remindDetailController = self.storyboard!.instantiateViewControllerWithIdentifier("reminddetail") as RemindDetailController
         remindDetailController.title = LAST_METRO_TITLE
         remindDetailController.segIndex = NUM_1
+        remindDetailController.tableUsrT02 = trainAlarms![didSelectRowAtIndexPath.section]
         self.navigationController!.pushViewController(remindDetailController, animated:true)
     }
     
@@ -377,13 +419,51 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
-        cell.textLabel!.text = items[indexPath.section][1][indexPath.row] as? String
+        for subview in cell.subviews{
+            if((subview.tag as Int) == 101 || (subview.tag as Int) == 102){
+                subview.removeFromSuperview()
+            }
+        }
+        cell.textLabel!.text = items[indexPath.section][2][indexPath.row] as? String
         cell.textLabel!.textColor = UIColor.blackColor()
         cell.textLabel!.font = UIFont(name:"Helvetica-Bold", size:13)
-        var lblLastMetroTime = UILabel(frame: CGRect(x:15,y:0,width:290,height:43))
-        lblLastMetroTime.text = "23:15:00"
-        lblLastMetroTime.textAlignment = NSTextAlignment.Right
+        var lblLastMetroTime = UILabel(frame: CGRect(x:65,y:0,width:230,height:43))
+        lblLastMetroTime.tag = 101
+        lblLastMetroTime.text = items[indexPath.section][1][indexPath.row] as? String
+        lblLastMetroTime.textAlignment = NSTextAlignment.Left
         cell.addSubview(lblLastMetroTime)
+        
+        var switchAralm = UISwitch(frame: CGRect(x:250,y:5,width:60,height:30))
+        switchAralm.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.ValueChanged)
+        switchAralm.tag = 102
+        var lblSection = UILabel()
+        lblSection.hidden = true
+        lblSection.tag = 103
+        lblSection.text = "\(indexPath.section)"
+        var lblRow = UILabel()
+        lblRow.tag = 104
+        lblRow.hidden = true
+        lblRow.text = "\(indexPath.row)"
+        switchAralm.addSubview(lblSection)
+        switchAralm.addSubview(lblRow)
+        
+        if(indexPath.row == 0){
+            var strFirst:NSString = "\(trainAlarms![indexPath.section].item(USRT02_TRAIN_ALARM_FIRST_FLAG))"
+            if(strFirst.integerValue == 0){
+                switchAralm.on = false
+            }else{
+                switchAralm.on = true
+            }
+        }else if(indexPath.row == 1){
+            var strLast:NSString = "\(trainAlarms![indexPath.section].item(USRT02_TRAIN_ALARM_LAST_FLAG))"
+            if(strLast.integerValue == 0){
+                switchAralm.on = false
+            }else{
+                switchAralm.on = true
+            }
+        }
+        
+        cell.addSubview(switchAralm)
         return cell
     }
     
@@ -418,6 +498,7 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
             alarm!.cancelFlag = "1"
             alarm!.cancelTime = RemindDetailController.convertDate2LocalTime(NSDate.date())
             alarm!.update()
+            alarm = nil
         default:
             println("nothing")
         }

@@ -245,7 +245,7 @@ class StationListController: UIViewController, GPSDelegate{
     func locationUpdateComplete(location: CLLocation){
         locationTest = CLLocation(latitude: fromLat, longitude: fromLon)
         // 获取最近的3个站点
-        stations = StationListController.nearest3Station(locationTest!)
+        stations = StationListController.selectStationTable(locationTest!)
         // 显示最近站点列表
         initList(stations!)
         ActivityIndicatorController.disMiss(gaiLoading)
@@ -254,44 +254,62 @@ class StationListController: UIViewController, GPSDelegate{
     /**
      * 到DB中查找最近的站点
      */
-    class func nearest3Station(fromLocation: CLLocation) -> Array<MstT02StationTable>{
-        
+    class func selectStationTable(fromLocation: CLLocation) -> Array<MstT02StationTable>{
         var stations:Array<MstT02StationTable> = Array<MstT02StationTable>()
-        var tableMstT02 = MstT02StationTable()
-        var rows:NSArray = tableMstT02.selectAll()
-        var distances:Array<CDouble> = [0,0,0]
-        var stationIndex:Array<Int> = [0,1,2]
-        var distancesTmp:Array<CDouble> = [0,0,0]
-        var distancesTest:Array<CDouble> = Array<CDouble>()
-        // 排序出最近的3个站点
-        for(var i=0;i<rows.count;i++){
-            var key = rows[i] as MstT02StationTable
-            var statLat:AnyObject? = key.item(MSTT02_STAT_LAT)
-            var statLon:AnyObject? = key.item(MSTT02_STAT_LON)
-            var statLocation = CLLocation(latitude: statLat as CDouble, longitude: statLon as CDouble)
-            distancesTest.append(calcDistance(fromLocation, statLocation: statLocation))
-            if(i<3){
-                distances[i] = calcDistance(fromLocation, statLocation: statLocation)
-                distancesTmp[i] = distances[i]
-            }else{
-                distancesTmp.append(calcDistance(fromLocation, statLocation: statLocation))
-                sort(&distancesTmp)
-                for(var j=0;j<distances.count;j++){
-                    if(distancesTmp[3] == distances[j]){
-                        distances[j] = calcDistance(fromLocation, statLocation: statLocation)
-                        stationIndex[j] = i
-                        break
-                    }
-                }
-                distancesTmp.removeAtIndex(3)
-            }
-        }
-        // 检证是否最近
-        //        println(distances)
-        //        sort(&distancesTest)
-        //        println("-------")
-        //        println(distancesTest)
-        return [rows[stationIndex[0]] as MstT02StationTable, rows[stationIndex[1]] as MstT02StationTable, rows[stationIndex[2]] as MstT02StationTable]
+        
+        var dao = Sta003Dao()
+        var coordinateOnMars: CLLocationCoordinate2D = fromLocation.coordinate
+        var lon:CDouble = coordinateOnMars.longitude
+        var lat:CDouble = coordinateOnMars.latitude
+        
+        stations = dao.queryMiniDistance(lon,lat: lat) as Array<MstT02StationTable>
+        return stations
+//        var stations:Array<MstT02StationTable> = Array<MstT02StationTable>()
+//        var tableMstT02 = MstT02StationTable()
+//        var rows:NSArray = tableMstT02.selectAll()
+//        var distances:Array<CDouble> = [0,0,0,0,0,0,0]
+//        var stationIndex:Array<Int> = [0,1,2,3,4,5,6]
+//        var distancesTmp:Array<CDouble> = [0,0,0,0,0,0,0]
+//        var distancesTest:Array<CDouble> = Array<CDouble>()
+//        // 排序出最近的3个站点
+//        for(var i=0;i<rows.count;i++){
+//            var key = rows[i] as MstT02StationTable
+//            var statLat:AnyObject? = key.item(MSTT02_STAT_LAT)
+//            var statLon:AnyObject? = key.item(MSTT02_STAT_LON)
+//            var statLocation = CLLocation(latitude: statLat as CDouble, longitude: statLon as CDouble)
+//            distancesTest.append(calcDistance(fromLocation, statLocation: statLocation))
+//            if(i<7){
+//                distances[i] = calcDistance(fromLocation, statLocation: statLocation)
+//                distancesTmp[i] = distances[i]
+//            }else{
+//                distancesTmp.append(calcDistance(fromLocation, statLocation: statLocation))
+//                sort(&distancesTmp)
+//                for(var j=0;j<distances.count;j++){
+//                    if(distancesTmp[7] == distances[j]){
+//                        distances[j] = calcDistance(fromLocation, statLocation: statLocation)
+//                        stationIndex[j] = i
+//                        break
+//                    }
+//                }
+//                distancesTmp.removeAtIndex(7)
+//            }
+//        }
+//        // 检证是否最近
+//        //        println(distances)
+//        //        sort(&distancesTest)
+//        //        println("-------")
+//        //        println(distancesTest)
+//        return [rows[stationIndex[0]] as MstT02StationTable, rows[stationIndex[1]] as MstT02StationTable, rows[stationIndex[2]] as MstT02StationTable, rows[stationIndex[3]] as MstT02StationTable, rows[stationIndex[4]] as MstT02StationTable, rows[stationIndex[5]] as MstT02StationTable, rows[stationIndex[6]] as MstT02StationTable]
+    }
+    
+    /**
+     * 从DB查询线路信息
+     */
+    func selectLineTable(lineID: String) -> MstT01LineTable{
+        var tableMstT01 = MstT01LineTable()
+        tableMstT01.lineId = lineID
+        var line:MstT01LineTable = tableMstT01.select() as MstT01LineTable
+        return line
     }
     
     /**
@@ -349,10 +367,23 @@ class ListController: UITableViewController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
+        for subview in cell.subviews {
+            if(subview.isKindOfClass(UIImageView) || subview.isKindOfClass(UILabel)){
+                subview.removeFromSuperview()
+            }
+        }
         var tableMstT02 = items![indexPath.row] as MstT02StationTable
         var statNm:String = ""
-        statNm = tableMstT02.item(MSTT02_STAT_NAME) as String
-        cell.textLabel?.text = statNm
+        var line:MstT01LineTable = sender!.selectLineTable("\(tableMstT02.item(MSTT02_LINE_ID))") as MstT01LineTable
+        statNm = "\(line.item(MSTT01_LINE_NAME)): \(tableMstT02.item(MSTT02_STAT_NAME))"
+        var lblStation = UILabel(frame: CGRect(x:65,y:0,width:tableView.frame.width - 15,height:43))
+        lblStation.text = statNm
+        lblStation.textAlignment = NSTextAlignment.Left
+        cell.addSubview(lblStation)
+        
+        var imageViewLine = UIImageView(frame: CGRectMake(15, 5, 30, 30))
+        imageViewLine.image = lineImage("\(tableMstT02.item(MSTT02_LINE_ID))")
+        cell.addSubview(imageViewLine)
         return cell
     }
     
@@ -370,7 +401,37 @@ class ListController: UITableViewController {
         }
     }
     
-    
+    func lineImage(lineNum: String) -> UIImage {
+        
+        var image = UIImage(named: "tablecell_lineicon_mini_c.png")
+        switch (lineNum) {
+            
+        case "28005":
+            image = UIImage(named: "tablecell_lineicon_mini_c.png")
+        case "28010":
+            image = UIImage(named: "tablecell_lineicon_mini_f.png")
+        case "28001":
+            image = UIImage(named: "tablecell_lineicon_mini_g.png")
+        case "28003":
+            image = UIImage(named: "tablecell_lineicon_mini_h.png")
+        case "28002":
+            image = UIImage(named: "tablecell_lineicon_mini_m.png")
+        case "28009":
+            image = UIImage(named: "tablecell_lineicon_mini_n.png")
+        case "28004":
+            image = UIImage(named: "tablecell_lineicon_mini_t.png")
+        case "28006":
+            image = UIImage(named: "tablecell_lineicon_mini_y.png")
+        case "28008":
+            image = UIImage(named: "tablecell_lineicon_mini_z.png")
+            
+        default:
+            image = UIImage(named: "tablecell_lineicon_mini_c.png")
+        }
+        
+        return image
+    }
+
 
 }
 
@@ -426,11 +487,6 @@ class MapController: UIViewController, MKMapViewDelegate, UIActionSheetDelegate{
         if(MKmap == nil){
             return
         }
-        // 进度条显示
-        if(gaiLoading != nil){
-            gaiLoading!.hidden = false
-            gaiLoading!.startAnimating()
-        }
         var fromMKPlace: MKPlacemark = MKPlacemark(coordinate: locations[0].coordinate, addressDictionary:  nil)
         var toMKPlace: MKPlacemark = MKPlacemark(coordinate: locations[1].coordinate, addressDictionary:  nil)
         var fromItem: MKMapItem = MKMapItem(placemark: fromMKPlace)
@@ -460,11 +516,6 @@ class MapController: UIViewController, MKMapViewDelegate, UIActionSheetDelegate{
                     var route: MKRoute = response.routes[i] as MKRoute
                     self.MKmap?.addOverlay(route.polyline)
                 }
-            }
-            // 进度条隐藏
-            if(self.gaiLoading != nil){
-                self.gaiLoading!.stopAnimating()
-                self.gaiLoading!.hidden = true
             }
         }
     }
@@ -565,7 +616,7 @@ class ActivityIndicatorController{
     
     class func show(gaiLoading: UIActivityIndicatorView) ->
         Bool{
-            gaiLoading.hidden = false
+            gaiLoading.hidden = true
             gaiLoading.startAnimating()
             return false
     }
@@ -577,3 +628,15 @@ class ActivityIndicatorController{
             return false
     }
 }
+
+//class IsConnectionAvailable{
+//    class func isConnectionAvailable() -> Bool{
+//        var reach = Reachability("www.yahoo.co.jp")
+//        switch reach.currentReachabilityStatus{
+//        case NotReachable:
+//            return false
+//        default:
+//            return true
+//        }
+//    }
+//}

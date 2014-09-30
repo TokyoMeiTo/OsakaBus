@@ -19,7 +19,6 @@ class LandMarkMapController: UIViewController, MKMapViewDelegate, UIActionSheetD
     let fromLat = 35.672737//31.23312372 // 天地科技广场1号楼
     /* 起点緯度 */
     let fromLon = 139.768898//121.38368547 // 天地科技广场1号楼
-
     
     /* 当前位置信息 */
     var location:CLLocation?
