@@ -15,7 +15,7 @@ extension String{
     }
     
     func plainDate() -> String{
-        return (self as NSString).plainDAte();
+        return (self as NSString).plainDate();
     }
     
     func yyyyMMddHHmmss() -> String{

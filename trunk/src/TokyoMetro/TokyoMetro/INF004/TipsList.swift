@@ -19,24 +19,15 @@ class TipsList: UIViewController, UITableViewDelegate, UITableViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.title = "贴士类型一览"
+        self.title = "贴士类型"
         table.hidden = true
-        addData()
+//        addData()
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
-    
-    func addData() {
-    
-        tipsArr.addObject("关于车票信息")
-        tipsArr.addObject("关于运行路线图")
-        tipsArr.addObject("关于服务")
-        tipsArr.addObject("关于运行状况")
-        
-    }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tipsArr.count

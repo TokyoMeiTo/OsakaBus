@@ -19,13 +19,17 @@ class StationLine: UIViewController, UITableViewDataSource, UITableViewDelegate 
     var stationArr: NSMutableArray = NSMutableArray.arrayWithCapacity(26)
     // 存储地铁信息数组
     var LineArr: NSMutableArray  = NSMutableArray.array()
+    // 换乘线路
+    var changeLineArr: NSMutableArray = NSMutableArray.array()
+    // 首末站
+    var destArr: NSMutableArray = NSMutableArray.array()
     
     var sectionTitle = ["B","C","D","E","F","G","H","J","L","M","N","P","Q","R","S","T","W","X","Y","Z"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        table.hidden = true
+        lineView.hidden = true
         odbStation()
         odbLine()
         
@@ -57,112 +61,123 @@ class StationLine: UIViewController, UITableViewDataSource, UITableViewDelegate 
     
     func odbStation(){
         var table = MstT02StationTable()
-        var array: NSMutableArray = NSMutableArray.array()
+        var rows: NSArray = table.excuteQuery("select *,count(distinct STAT_NAME_EXT1) from MSTT02_STATION where 1 = 1 and STAT_ID like '280%' group by STAT_NAME_EXT1")
         
-        var rows: NSArray = table.excuteQuery("select *,count(distinct STAT_NAME_EXT1) from MSTT02_STATION where 1 = 1 group by STAT_NAME_EXT1")
+        var allRows: NSArray = table.excuteQuery("select * from MSTT02_STATION where 1 = 1 and STAT_ID like '280%'")
         
         for key in rows {
             
-            array.addObject(key)
-                    
-        }
-        
-        var arrB = [MstT02StationTable]()
-        var arrC = [MstT02StationTable]()
-        var arrD = [MstT02StationTable]()
-        var arrE = [MstT02StationTable]()
-        var arrF = [MstT02StationTable]()
-        var arrG = [MstT02StationTable]()
-        var arrH = [MstT02StationTable]()
-        var arrJ = [MstT02StationTable]()
-        var arrL = [MstT02StationTable]()
-        var arrM = [MstT02StationTable]()
-        var arrN = [MstT02StationTable]()
-        var arrP = [MstT02StationTable]()
-        var arrQ = [MstT02StationTable]()
-        var arrR = [MstT02StationTable]()
-        var arrS = [MstT02StationTable]()
-        var arrT = [MstT02StationTable]()
-        var arrW = [MstT02StationTable]()
-        var arrX = [MstT02StationTable]()
-        var arrY = [MstT02StationTable]()
-        var arrZ = [MstT02StationTable]()
-        
-        for (var i = 0; i < array.count; i++) {
-            var map = array[i] as MstT02StationTable
-            var nameExt:NSString = map.item(MSTT02_STAT_NAME_EXT3) as NSString
+            stationArr.addObject(key)
             
-            switch (nameExt.substringToIndex(1)) {
-            case "B":
-                arrB.append(map)
+            var statGroupId = key.item(MSTT02_STAT_GROUP_ID) as String
+            var lineArr = [String]()
+            for (var i = 0; i < allRows.count; i++) {
+                var map: MstT02StationTable = allRows[i] as MstT02StationTable
                 
-            case "C":
-                arrC.append(map)
-            case "D":
-                arrD.append(map)
-            case "E":
-                arrE.append(map)
-            case "F":
-                arrF.append(map)
-            case "G":
-                arrG.append(map)
-            case "H":
-                arrH.append(map)
-            case "J":
-                arrJ.append(map)
-            case "L":
-                arrL.append(map)
-            case "M":
-                arrM.append(map)
-            case "N":
-                arrN.append(map)
-            case "P":
-                arrP.append(map)
-            case "Q":
-                arrQ.append(map)
-            case "R":
-                arrR.append(map)
-            case "S":
-                arrS.append(map)
-            case "T":
-                arrT.append(map)
-            case "W":
-                arrW.append(map)
-            case "X":
-                arrX.append(map)
-            case "Y":
-                arrY.append(map)
-            case "Z":
-                arrZ.append(map)
-            default:
-//                stationArr.addObject(array[i])
-            
-                var arr = [MstT02StationTable]()
-                arr.append(map)
+                if ((map.item(MSTT02_STAT_GROUP_ID) as String) == statGroupId) {
+                    lineArr.append(map.item(MSTT02_LINE_ID) as String)
+                }
             }
             
+            changeLineArr.addObject(lineArr)
         }
         
-        stationArr.addObject(arrB)
-        stationArr.addObject(arrC)
-        stationArr.addObject(arrD)
-        stationArr.addObject(arrE)
-        stationArr.addObject(arrF)
-        stationArr.addObject(arrG)
-        stationArr.addObject(arrH)
-        stationArr.addObject(arrJ)
-        stationArr.addObject(arrL)
-        stationArr.addObject(arrM)
-        stationArr.addObject(arrN)
-        stationArr.addObject(arrP)
-        stationArr.addObject(arrQ)
-        stationArr.addObject(arrR)
-        stationArr.addObject(arrS)
-        stationArr.addObject(arrT)
-        stationArr.addObject(arrW)
-        stationArr.addObject(arrX)
-        stationArr.addObject(arrY)
-        stationArr.addObject(arrZ)
+//        var arrB = [MstT02StationTable]()
+//        var arrC = [MstT02StationTable]()
+//        var arrD = [MstT02StationTable]()
+//        var arrE = [MstT02StationTable]()
+//        var arrF = [MstT02StationTable]()
+//        var arrG = [MstT02StationTable]()
+//        var arrH = [MstT02StationTable]()
+//        var arrJ = [MstT02StationTable]()
+//        var arrL = [MstT02StationTable]()
+//        var arrM = [MstT02StationTable]()
+//        var arrN = [MstT02StationTable]()
+//        var arrP = [MstT02StationTable]()
+//        var arrQ = [MstT02StationTable]()
+//        var arrR = [MstT02StationTable]()
+//        var arrS = [MstT02StationTable]()
+//        var arrT = [MstT02StationTable]()
+//        var arrW = [MstT02StationTable]()
+//        var arrX = [MstT02StationTable]()
+//        var arrY = [MstT02StationTable]()
+//        var arrZ = [MstT02StationTable]()
+//        
+//        for (var i = 0; i < array.count; i++) {
+//            var map = array[i] as MstT02StationTable
+//            var nameExt:NSString = map.item(MSTT02_STAT_NAME_EXT3) as NSString
+//            
+//            switch (nameExt.substringToIndex(1)) {
+//            case "B":
+//                arrB.append(map)
+//                
+//            case "C":
+//                arrC.append(map)
+//            case "D":
+//                arrD.append(map)
+//            case "E":
+//                arrE.append(map)
+//            case "F":
+//                arrF.append(map)
+//            case "G":
+//                arrG.append(map)
+//            case "H":
+//                arrH.append(map)
+//            case "J":
+//                arrJ.append(map)
+//            case "L":
+//                arrL.append(map)
+//            case "M":
+//                arrM.append(map)
+//            case "N":
+//                arrN.append(map)
+//            case "P":
+//                arrP.append(map)
+//            case "Q":
+//                arrQ.append(map)
+//            case "R":
+//                arrR.append(map)
+//            case "S":
+//                arrS.append(map)
+//            case "T":
+//                arrT.append(map)
+//            case "W":
+//                arrW.append(map)
+//            case "X":
+//                arrX.append(map)
+//            case "Y":
+//                arrY.append(map)
+//            case "Z":
+//                arrZ.append(map)
+//            default:
+////                stationArr.addObject(array[i])
+//            
+//                var arr = [MstT02StationTable]()
+//                arr.append(map)
+//            }
+//            
+//        }
+//        
+//        stationArr.addObject(arrB)
+//        stationArr.addObject(arrC)
+//        stationArr.addObject(arrD)
+//        stationArr.addObject(arrE)
+//        stationArr.addObject(arrF)
+//        stationArr.addObject(arrG)
+//        stationArr.addObject(arrH)
+//        stationArr.addObject(arrJ)
+//        stationArr.addObject(arrL)
+//        stationArr.addObject(arrM)
+//        stationArr.addObject(arrN)
+//        stationArr.addObject(arrP)
+//        stationArr.addObject(arrQ)
+//        stationArr.addObject(arrR)
+//        stationArr.addObject(arrS)
+//        stationArr.addObject(arrT)
+//        stationArr.addObject(arrW)
+//        stationArr.addObject(arrX)
+//        stationArr.addObject(arrY)
+//        stationArr.addObject(arrZ)
         
     }
     
@@ -173,37 +188,52 @@ class StationLine: UIViewController, UITableViewDataSource, UITableViewDelegate 
         var rows: NSArray = table.selectLike()
         
         for key in rows {
-            
             LineArr.addObject(key)
             
+//            key as MstT01LineTable
+//            var lineId = key.item(MSTT01_LINE_ID) as String
+//            
+//            var mstt02 = MstT02StationTable()
+//            
+//            if (lineId == "28002") {
+//                destArr.addObject(["\(map1.item(MSTT02_STAT_NAME_EXT1)) - \(map1.item(MSTT02_STAT_NAME_EXT2))"])
+//            } else {
+//                mstt02.lineId = lineId
+//                var array = mstt02.selectWithOrder(MSTT02_STAT_SEQ, desc: false)
+//                var map1: MstT02StationTable = array[0] as MstT02StationTable
+//                var map2: MstT02StationTable = array[array.count - 1] as MstT02StationTable
+//                var statName1 = (map1.item(MSTT02_STAT_ID) as String).station()
+//                var statName2 = (map2.item(MSTT02_STAT_ID) as String).station()
+//                destArr.addObject(["\(map1.item(MSTT02_STAT_ID)) - \(map1.item(MSTT02_STAT_NAME_EXT2))"])
+//            }
         }
         
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        if (segment.selectedSegmentIndex == 0) {
-            return 1
-        } else {
-            return stationArr.count
-        }
-    }
+//    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+//        if (segment.selectedSegmentIndex == 0) {
+//            return 1
+//        } else {
+//            return stationArr.count
+//        }
+//    }
     
-    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {        
-        if (segment.selectedSegmentIndex == 0) {
-            return ""
-        } else {
-            return sectionTitle[section]
-        }
-    }
+//    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {        
+//        if (segment.selectedSegmentIndex == 0) {
+//            return ""
+//        } else {
+//            return sectionTitle[section]
+//        }
+//    }
     
-    func sectionIndexTitlesForTableView(tableView: UITableView) -> [AnyObject]! {
-        
-        if (segment.selectedSegmentIndex == 0) {
-            return nil
-        } else {
-            return sectionTitle
-        }
-    }
+//    func sectionIndexTitlesForTableView(tableView: UITableView) -> [AnyObject]! {
+//        
+//        if (segment.selectedSegmentIndex == 0) {
+//            return nil
+//        } else {
+//            return sectionTitle
+//        }
+//    }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if (segment.selectedSegmentIndex == 0) {
@@ -217,7 +247,7 @@ class StationLine: UIViewController, UITableViewDataSource, UITableViewDelegate 
         if (segment.selectedSegmentIndex == 0) {
             return LineArr.count
         } else {
-            return stationArr[section].count
+            return stationArr.count
         }
     }
     
@@ -232,8 +262,18 @@ class StationLine: UIViewController, UITableViewDataSource, UITableViewDelegate 
             var lineName = cell.viewWithTag(302) as UILabel
             lineName.text = (lineMap.item(MSTT01_LINE_ID) as String).line()
             
-            var lineJPName = cell.viewWithTag(303) as UILabel
-            lineJPName.text = lineMap.item(MSTT01_LINE_NAME) as? String
+//            var lineJPName = cell.viewWithTag(303) as UILabel
+//            lineJPName.text = lineMap.item(MSTT01_LINE_NAME) as? String
+            
+            var lineDest = cell.viewWithTag(304) as UILabel
+            if ((lineMap.item(MSTT01_LINE_ID) as String) == "28002") {
+                lineDest.numberOfLines = 2
+                lineDest.text = "2800228".station() + " - " + "2800201".station() + "\n" + "2800223".station() + " - " + "2800201".station()
+            } else {
+                lineDest.numberOfLines = 1
+                lineDest.text = destStatName(lineMap.item(MSTT01_LINE_ID) as String)
+            }
+            
             
             var imgLine = cell.viewWithTag(301) as UIImageView
             imgLine.image = lineImageNormal(lineMap.item(MSTT01_LINE_ID) as String)
@@ -243,27 +283,36 @@ class StationLine: UIViewController, UITableViewDataSource, UITableViewDelegate 
         
             let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("StationListCell", forIndexPath: indexPath) as UITableViewCell
             
-            var map: MstT02StationTable = stationArr[indexPath.section][indexPath.row] as MstT02StationTable
+            var map: MstT02StationTable = stationArr[indexPath.row] as MstT02StationTable
             
             var textName = cell.viewWithTag(201) as UILabel
             textName.text = map.item(MSTT02_STAT_NAME_EXT1) as? String
-            
+                        
             var view = cell.viewWithTag(202) as UIView!
             
-            var arrStation = ["M", "C", "Z"]
-            
-            for (var i = 0; i < arrStation.count; i++) {
-                var line: UIImageView = UIImageView()
-                line.frame = CGRectMake(CGFloat(110 - (i+1)*18 - i * 5), 12.5, 18, 18)
-                line.image = lineImage(arrStation[i])
-                
-                
-                view.addSubview(line)
+            if (view != nil) {
+                view.removeFromSuperview()
             }
+            
+            var lineView = UIView()
+            lineView.frame = CGRectMake(225, 0, 70, 45)
+            lineView.tag = 202
+            
+            var arrStation: [String] = changeLineArr[indexPath.row] as [String]
+            if (arrStation != ["self"]) {
+                for (var i = 0; i < arrStation.count; i++) {
+                    var line: UIImageView = UIImageView()
+                    line.frame = CGRectMake(CGFloat(66 - (i+1)*18 - i * 4), 13, 18, 18)
+                    line.image = lineImage(arrStation[i])
+                    
+                    lineView.addSubview(line)
+                }
+            }
+            
+            cell.addSubview(lineView)
             
             return cell
         }
-        
     }
     
     
@@ -274,15 +323,15 @@ class StationLine: UIViewController, UITableViewDataSource, UITableViewDelegate 
             
             let map = LineArr[indexPath.row] as MstT01LineTable
             lineList.line_id = map.item(MSTT01_LINE_ID) as String
-            lineList.line_name = map.item(MSTT01_LINE_NAME) as String
+            lineList.line_name = (map.item(MSTT01_LINE_ID) as String).line()
             
             self.navigationController?.pushViewController(lineList, animated: true)
         } else {
             var detail: StationDetail = self.storyboard?.instantiateViewControllerWithIdentifier("StationDetail") as StationDetail
             
-            var map: MstT02StationTable = stationArr[indexPath.section][indexPath.row] as MstT02StationTable
+            var map: MstT02StationTable = stationArr[indexPath.row] as MstT02StationTable
             
-            detail.cellName = map.item(MSTT02_STAT_NAME_EXT1) as String
+//            detail.cellName = map.item(MSTT02_STAT_NAME_EXT1) as String
             detail.cellJPName = map.item(MSTT02_STAT_NAME) as String
 //            detail.cellJPNameKana = map.item(MSTT02_STAT_NAME_KANA) as String
             detail.stat_id = map.item(MSTT02_STAT_ID) as String
@@ -303,32 +352,31 @@ class StationLine: UIViewController, UITableViewDataSource, UITableViewDelegate 
         var image = UIImage(named: "tablecell_lineicon_mini_c.png")
         switch (lineNum) {
             
-        case "C":
+        case "28005":
             image = UIImage(named: "tablecell_lineicon_mini_c.png")
-        case "F":
+        case "28010":
             image = UIImage(named: "tablecell_lineicon_mini_f.png")
-        case "G":
+        case "28001":
             image = UIImage(named: "tablecell_lineicon_mini_g.png")
-        case "H":
+        case "28003":
             image = UIImage(named: "tablecell_lineicon_mini_h.png")
-        case "M":
+        case "28002":
             image = UIImage(named: "tablecell_lineicon_mini_m.png")
-        case "N":
+        case "28009":
             image = UIImage(named: "tablecell_lineicon_mini_n.png")
-        case "T":
+        case "28004":
             image = UIImage(named: "tablecell_lineicon_mini_t.png")
-        case "Y":
+        case "28006":
             image = UIImage(named: "tablecell_lineicon_mini_y.png")
-        case "Z":
+        case "28008":
             image = UIImage(named: "tablecell_lineicon_mini_z.png")
-            
         default:
             image = UIImage(named: "tablecell_lineicon_mini_c.png")
-            
         }
         
         return image
     }
+    
     
     func lineImageNormal(lineNum: String) -> UIImage {
         
@@ -353,13 +401,39 @@ class StationLine: UIViewController, UITableViewDataSource, UITableViewDelegate 
             image = UIImage(named: "tablecell_lineicon_n.png")
         case "28010":
             image = UIImage(named: "tablecell_lineicon_f.png")
-            
         default:
             image = UIImage(named: "tablecell_lineicon_g.png")
-            
         }
         
         return image
     }
     
+    
+    func destStatName(lineId: String) -> String {
+    
+        var destStat:String = ""
+        switch (lineId) {
+        case "28001":
+            destStat = "2800119".station() + " - " + "2800101".station()
+        case "28003":
+            destStat = "2800321".station() + " - " + "2800301".station()
+        case "28004":
+            destStat = "2800423".station() + " - " + "2800401".station()
+        case "28005":
+            destStat = "2800520".station() + " - " + "2800501".station()
+        case "28006":
+            destStat = "2800601".station() + " - " + "2800624".station()
+        case "28008":
+            destStat = "2800801".station() + " - " + "2800814".station()
+        case "28009":
+            destStat = "2800919".station() + " - " + "2800901".station()
+        case "28010":
+            destStat = "2801001".station() + " - " + "2801016".station()
+            
+        default:
+            destStat = ""
+        }
+        
+        return destStat
+    }
 }

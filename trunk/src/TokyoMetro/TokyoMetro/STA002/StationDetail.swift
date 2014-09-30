@@ -21,7 +21,7 @@ class StationDetail: UIViewController, UIAlertViewDelegate {
     @IBOutlet weak var chaSegment: UISegmentedControl!
     
     //Receiving variable assigned to MainVC's var "items"
-    var cellName:String = ""
+//    var cellName:String = ""
     var cellJPName:String = ""
     var cellJPNameKana:String = ""
     var cellDesc:String = ""
@@ -39,7 +39,7 @@ class StationDetail: UIViewController, UIAlertViewDelegate {
     
     // 查询该条线的线路id
     var stat_id = ""
-    
+
     var statSeqArr: NSArray = NSArray.array()
     
     required init(coder aDecoder: NSCoder) {
@@ -52,11 +52,11 @@ class StationDetail: UIViewController, UIAlertViewDelegate {
         super.viewDidLoad()
         
         //Assign your UILabel text to your String
-        cellNameLabel.text = cellName
+        cellNameLabel.text = stat_id.station()
 
         cellJPNmaeLabel.text = cellJPName
         //Assign String var to NavBar title
-        self.title = cellName
+        self.title = stat_id.station()
         
         odbStation()
         
@@ -89,12 +89,50 @@ class StationDetail: UIViewController, UIAlertViewDelegate {
         }
     }
     
+    func collectStation () {
+    
+        var table = UsrT03FavoriteTable()
+        
+        table.favoType = "01"
+        table.statId = stat_id
+        var rows = table.selectAll()
+        if (rows.count > 0) {
+            
+        } else {
+            table.reset()
+            table.favoType = "01"
+            table.favoTime = NSDate().description.dateWithFormat("yyyy-MM-dd HH:mm:ss +0000", target: "yyyyMMddHHmmss")
+            table.lineId = ""
+            table.statId = stat_id
+            table.statExitId = ""
+            table.lmakId = ""
+            table.ruteId = ""
+            table.ext1 = ""
+            table.ext2 = ""
+            table.ext3 = ""
+            table.ext4 = ""
+            table.ext5 = ""
+            if (table.insert()) {
+                println("插入成功")
+            } else {
+                println("插入失败")
+            }
+        }
+    }
+    
+    @IBAction func showStationExit() {
+    
+        var stationExit: ExitInfo = self.storyboard?.instantiateViewControllerWithIdentifier("stationExit") as ExitInfo
+        
+        stationExit.statId = stat_id
+        
+        self.navigationController?.pushViewController(stationExit, animated: true)
+    }
+    
     
     @IBAction func addSubway() {
     
-        var date: String = NSDate.date().description.yyyyMMddHHmmss()
-        
-        println(date)
+        collectStation()
     }
     
     
@@ -259,9 +297,11 @@ class StationDetail: UIViewController, UIAlertViewDelegate {
     
     func showTime() {
     
-        var detail: TimeTable = self.storyboard?.instantiateViewControllerWithIdentifier("TimeTable") as TimeTable
+        var timeDetail: TimeTable = self.storyboard?.instantiateViewControllerWithIdentifier("TimeTable") as TimeTable
         
-        self.navigationController?.pushViewController(detail, animated: true)
+        timeDetail.statId = stat_id
+        
+        self.navigationController?.pushViewController(timeDetail, animated: true)
     }
     
     func showFacility() {
@@ -270,48 +310,7 @@ class StationDetail: UIViewController, UIAlertViewDelegate {
         
         self.navigationController?.pushViewController(facilityList, animated: true)
     }
-    
-    
-    func lineColor(lineNum: String) -> UIColor {
-        
-        var color = UIColor.whiteColor()
-        switch (lineNum) {
-            
-        case "1":
-            color = UIColor.redColor()
-        case "2":
-            color = UIColor(red: 0, green: 153/255.0, blue: 0, alpha: 1)
-        case "3":
-            color = UIColor.yellowColor()
-        case "4":
-            color = UIColor(red: 102/255.0, green: 0, blue: 102/255.0, alpha: 1)
-        case "5":
-            color = UIColor(red: 204/255.0, green: 0, blue: 204/255.0, alpha: 1)
-        case "6":
-            color = UIColor(red: 1, green: 50/255.0, blue: 101/255.0, alpha: 1)
-        case "7":
-            color = UIColor.orangeColor()
-        case "8":
-            color = UIColor.blueColor()
-        case "9":
-            color = UIColor(red: 149/255.0, green: 211/255.0, blue: 219/255.0, alpha: 1)
-        case "10":
-            color = UIColor(red: 201/255.0, green: 167/255.0, blue: 213/255.0, alpha: 1)
-        case "11":
-            color = UIColor(red: 128/255.0, green: 0, blue: 0, alpha: 1)
-        case "12":
-            color = UIColor(red: 12/255.0, green: 120/255.0, blue: 94/255.0, alpha: 1)
-        case "13":
-            color = UIColor(red: 231/255.0, green: 150/255.0, blue: 193/255.0, alpha: 1)
-            
-        default:
-            color = UIColor.redColor()
-            
-        }
-        
-        return color
-    }
-    
+
     
     func stationIcon(statSeq: String) -> UIImage {
         var image = UIImage(named: "station_icon_c-01.png")

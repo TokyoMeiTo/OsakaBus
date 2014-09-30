@@ -43,7 +43,7 @@
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="doT-K8-ZWO">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="533"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="MetroCH.png" translatesAutoresizingMaskIntoConstraints="NO" id="Swa-2B-moe" customClass="UITouchableView">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="MetroCH-1" translatesAutoresizingMaskIntoConstraints="NO" id="Swa-2B-moe" customClass="UITouchableView">
                                         <rect key="frame" x="-726" y="-383" width="1772" height="1299"/>
                                     </imageView>
                                 </subviews>
@@ -94,7 +94,7 @@
                                         <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                                     </view>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="phn-R5-chP">
                                 <rect key="frame" x="0.0" y="503" width="320" height="65"/>
@@ -785,7 +785,7 @@
                                 <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="StationListCell" id="Vcf-tO-Hi1">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="StationListCell" id="Vcf-tO-Hi1">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Vcf-tO-Hi1" id="Mru-1c-tGi">
@@ -813,20 +813,14 @@
                                                 <imageView userInteractionEnabled="NO" tag="301" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="tablecell_lineicon_g" translatesAutoresizingMaskIntoConstraints="NO" id="2UR-K9-ss5">
                                                     <rect key="frame" x="15" y="6" width="44" height="44"/>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" tag="303" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XuK-sM-pgv">
-                                                    <rect key="frame" x="60" y="29" width="93" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="涉谷 - 浅草" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T6F-1U-h6k">
-                                                    <rect key="frame" x="160" y="0.0" width="124" height="55"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="304" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="涉谷 - 浅草" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="11" translatesAutoresizingMaskIntoConstraints="NO" id="T6F-1U-h6k">
+                                                    <rect key="frame" x="150" y="0.0" width="138" height="55"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" tag="302" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="都营半藏门线" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="11" translatesAutoresizingMaskIntoConstraints="NO" id="a1D-fo-hCP">
-                                                    <rect key="frame" x="60" y="0.0" width="93" height="28"/>
+                                                    <rect key="frame" x="60" y="0.0" width="93" height="55"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
@@ -1010,7 +1004,7 @@
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <segue destination="yqL-MI-DfO" kind="push" id="ro5-Kk-Vrt"/>
+                                            <action selector="showStationExit" destination="HX9-zw-x8p" eventType="touchUpInside" id="V0F-nf-mqL"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -1084,7 +1078,11 @@
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="GCi-3H-VFI">
-                        <barButtonItem key="rightBarButtonItem" systemItem="bookmarks" id="dzz-2X-4Vd"/>
+                        <barButtonItem key="rightBarButtonItem" image="collect-01" id="dzz-2X-4Vd">
+                            <connections>
+                                <action selector="addSubway" destination="HX9-zw-x8p" id="OyD-p8-dav"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
@@ -1296,7 +1294,7 @@
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" tag="202" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8Oa-oU-eE0">
+                                                <imageView userInteractionEnabled="NO" tag="202" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="station_icon_c-01" translatesAutoresizingMaskIntoConstraints="NO" id="8Oa-oU-eE0">
                                                     <rect key="frame" x="250" y="10" width="35" height="35"/>
                                                 </imageView>
                                             </subviews>
@@ -1314,6 +1312,9 @@
                     <navigationItem key="navigationItem" id="1ZB-mg-mYh"/>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <connections>
+                        <outlet property="table" destination="u0z-Wm-5O3" id="8yW-Tg-KAv"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GCC-0W-Jva" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1354,9 +1355,17 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <navigationItem key="navigationItem" id="JeL-Ye-7qX">
+                        <barButtonItem key="rightBarButtonItem" image="collect-01" id="LJ0-7K-7fH">
+                            <connections>
+                                <action selector="collectTips" destination="kZi-gM-QPK" id="y4q-H0-hz2"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
+                        <outlet property="qContent" destination="DN0-hn-0Ju" id="aya-p1-73h"/>
                         <outlet property="qTitle" destination="gd7-WV-eu6" id="tO5-z8-woR"/>
                     </connections>
                 </viewController>
@@ -1385,6 +1394,12 @@
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="BVN-xJ-sWD" id="7BP-T6-aOf">
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view tag="201" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DGq-jS-bjy">
+                                                    <rect key="frame" x="15" y="0.0" width="290" height="44"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                </view>
+                                            </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </prototypes>
@@ -1402,7 +1417,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NKg-ty-Ch7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1727" y="889"/>
+            <point key="canvasLocation" x="1727" y="887"/>
         </scene>
         <!--Help Content-->
         <scene sceneID="sW6-g9-JUH">
@@ -1615,7 +1630,7 @@
         <!--Exit Info-->
         <scene sceneID="C2M-Pa-oy4">
             <objects>
-                <viewController id="yqL-MI-DfO" customClass="ExitInfo" customModule="TokyoMetro" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="stationExit" id="yqL-MI-DfO" customClass="ExitInfo" customModule="TokyoMetro" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="UD4-Qm-vrH"/>
                         <viewControllerLayoutGuide type="bottom" id="Onp-7k-Kjb"/>
@@ -1649,6 +1664,13 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="StationExit" id="F8a-XS-RtI">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="F8a-XS-RtI" id="2ry-S3-Ym8">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                 </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="yqL-MI-DfO" id="fNu-JH-4NM"/>
@@ -1672,9 +1694,12 @@
                             </connections>
                         </segmentedControl>
                     </navigationItem>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
                         <outlet property="exitTable" destination="gKh-VN-ypX" id="jDv-dA-UwY"/>
                         <outlet property="mapView" destination="uOF-gg-Zxa" id="2H4-Nj-bUc"/>
+                        <outlet property="segment" destination="epq-wz-iPK" id="oS0-xK-f4S"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZcY-hK-tUS" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1696,9 +1721,9 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="tablecell_lineicon_g" translatesAutoresizingMaskIntoConstraints="NO" id="i9o-tK-uqg">
                                 <rect key="frame" x="89" y="79" width="44" height="44"/>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="银座" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wDu-8T-OXt">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="银座" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="11" translatesAutoresizingMaskIntoConstraints="NO" id="wDu-8T-OXt">
                                 <rect key="frame" x="144" y="79" width="156" height="44"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -1708,6 +1733,9 @@
                                     <segment title="涉谷方向"/>
                                     <segment title="浅草方向"/>
                                 </segments>
+                                <connections>
+                                    <action selector="segmentChnaged" destination="JS5-VB-BnW" eventType="valueChanged" id="vzK-FZ-SVE"/>
+                                </connections>
                             </segmentedControl>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="wqD-VK-yAI">
                                 <rect key="frame" x="0.0" y="180" width="320" height="388"/>
@@ -1738,6 +1766,9 @@
                                     <segment title="工作日"/>
                                     <segment title="周末"/>
                                 </segments>
+                                <connections>
+                                    <action selector="weekendSegmentChnaged" destination="JS5-VB-BnW" eventType="valueChanged" id="xd0-yl-kuQ"/>
+                                </connections>
                             </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1747,6 +1778,8 @@
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
                         <outlet property="segment" destination="gzb-kM-ikJ" id="jAa-6v-SOo"/>
+                        <outlet property="statIcon" destination="i9o-tK-uqg" id="3jw-zm-3i5"/>
+                        <outlet property="statName" destination="wDu-8T-OXt" id="7zd-AF-M33"/>
                         <outlet property="table" destination="wqD-VK-yAI" id="p4g-mB-iPA"/>
                         <outlet property="weekendSegment" destination="Vaa-E3-6Mj" id="zK7-F3-0n0"/>
                     </connections>
@@ -2945,7 +2978,7 @@
     </scenes>
     <resources>
         <image name="00000665_hanzomon_L_1" width="768" height="468"/>
-        <image name="MetroCH.png" width="100" height="100"/>
+        <image name="MetroCH-1" width="3544" height="2598"/>
         <image name="collect-01" width="23" height="22"/>
         <image name="menu-01" width="46" height="44"/>
         <image name="menu-02" width="46" height="44"/>
@@ -2960,6 +2993,7 @@
         <image name="menu-23" width="33" height="33"/>
         <image name="menu-24" width="33" height="33"/>
         <image name="ride" width="23" height="22"/>
+        <image name="station_icon_c-01" width="34" height="34"/>
         <image name="tablecell_lineicon_c" width="44" height="44"/>
         <image name="tablecell_lineicon_f" width="44" height="44"/>
         <image name="tablecell_lineicon_g" width="44" height="44"/>

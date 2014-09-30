@@ -10,15 +10,25 @@ import UIKit
 
 class TipsContentList: UIViewController,UITableViewDelegate,UITableViewDataSource {
 
+    @IBOutlet weak var table: UITableView!
+    
     var tipsArr: NSMutableArray = NSMutableArray.array()
+    
+    var tipsType = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        addData()
-        odbTips()
+        self.title = "贴士标题"
+        
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        odbTips()
+        table.reloadData()
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -27,24 +37,18 @@ class TipsContentList: UIViewController,UITableViewDelegate,UITableViewDataSourc
     
     func odbTips() {
         var table = InfT02TipsTable()
-        
+        if (tipsType == "1") {
+            table.tipsType = "旅游相关"
+        } else {
+            table.tipsType = "东京地铁"
+        }
         var rows = table.selectAll()
-        
+        tipsArr.removeAllObjects()
         for key in rows{
             tipsArr.addObject(key)
         }
     }
     
-    func addData() {
-        
-        tipsArr.addObject("请问想要换票、退票或者车票丢失时该怎么办？")
-        tipsArr.addObject("有没有儿童票？")
-        tipsArr.addObject("什么是PASMO卡？")
-        tipsArr.addObject("能否介绍一下月票如何购买？")
-        tipsArr.addObject("票价是如何计算的？")
-        tipsArr.addObject("有哪些推荐的观光车票？")
-        
-    }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tipsArr.count
@@ -60,6 +64,19 @@ class TipsContentList: UIViewController,UITableViewDelegate,UITableViewDataSourc
         textTitle.text = map.item(INFT02_TIPS_TITLE) as? String
         textTitle.numberOfLines = 2
         
+        if ((map.item(INFT02_READ_FLAG) as? String) == "1") {
+            textTitle.textColor = UIColor.lightGrayColor()
+        } else {
+            textTitle.textColor = UIColor.blackColor()
+        }
+        
+        var imageView: UIImageView = cell.viewWithTag(202) as UIImageView
+        if ((map.item(INFT02_FAVO_FLAG) as? String) == "1") {
+            imageView.hidden = false
+        } else {
+            imageView.hidden = true
+        }
+        
         return cell
     }
     
@@ -73,10 +90,12 @@ class TipsContentList: UIViewController,UITableViewDelegate,UITableViewDataSourc
         
         var tipsDetail: TipsDetail = self.storyboard?.instantiateViewControllerWithIdentifier("TipsDetail") as TipsDetail
         
-        tipsDetail.cellTitle = tipsArr[indexPath.row] as String
+        var map = tipsArr[indexPath.row] as InfT02TipsTable
+        
+        tipsDetail.cellTitle = map.item(INFT02_TIPS_TITLE)as String
+        tipsDetail.tips_id = map.item(INFT02_TIPS_ID) as String
         
         self.navigationController?.pushViewController(tipsDetail, animated: true)
     }
 
-    
 }

@@ -28,6 +28,14 @@ class FacilityList: UIViewController,UITableViewDelegate,UITableViewDataSource {
     }
     
     
+    func odbFacility() {
+    
+        var table = StaT04FacilityTable()
+        
+        
+    }
+    
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return facilityArr.count
     }

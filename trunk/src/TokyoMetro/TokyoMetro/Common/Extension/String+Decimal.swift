@@ -42,36 +42,36 @@ extension String {
         return (self as NSString).currency(code);
     }
     
-    func decimal(deci:Int) -> String {
-        return (self as NSString).decimal(deci);
+    func decimal(deci:Int32) -> String {
+        return (self as NSString).decimal(deci)
     }
     
-    func decimalWithSign(deci:Int) -> String {
-        return (self as NSString).decimalWithSign(deci);
+    func decimalWithSign(deci:UInt) -> String {
+        return (self as NSString).decimalWithSign(deci)
     }
     
     func decimalWithSign() -> String {
-        return (self as NSString).decimalWithSign;
+        return (self as NSString).decimalWithSign();
     }
     
-    func colorForSign() -> String {
+    func colorForSign() -> UIColor {
         return (self as NSString).colorForSign();
     }
     
-    func colorForCompare(value:String) -> String{
-        return (self as NSString).colorForCompare(vlaue);
+    func colorForCompare(value:String) -> UIColor{
+        return (self as NSString).colorForCompare(value);
     }
     
-    func colorForCompareDouble(value:String) -> Strting{
-        return (self as NSString).colorForCompareDouble(value);
+    func colorForCompareDouble(value:Double) -> UIColor{
+        return (self as NSString).colorForCompareDouble(value)
     }
     
     func numberic() -> String {
         return (self as NSString).numberic();
     }
     
-    func numberOfDecimal()-> String {
-        return (self as NSString).numberOfDecimal();
+    func numberOfDecimal()-> Int {
+        return (self as NSString).numberOfDecimal()
     }
     
     func doubleValueIsEqualTo(value:String) -> Bool {
@@ -82,7 +82,7 @@ extension String {
         return (self as NSString).unitCheck(unit);
     }
     
-    func unitPart(unit:String) -> Bool {
-        return (self as NSString).unitPart(unit);
+    func unitPart(unit:String) -> Double {
+        return (self as NSString).unitPart(unit)
     }
 }

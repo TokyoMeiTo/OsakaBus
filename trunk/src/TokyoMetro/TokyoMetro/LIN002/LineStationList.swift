@@ -43,6 +43,8 @@ class LineStationList: UIViewController, UITableViewDelegate, UITableViewDataSou
         
         table.lineId = line_id
         var rows: NSArray = table.selectWithOrder(MSTT02_STAT_SEQ, desc: false)
+        
+        var allRows: NSArray = table.excuteQuery("select * from MSTT02_STATION where 1 = 1 and STAT_ID like '280%'")
 
         for key in rows {
             
@@ -55,26 +57,23 @@ class LineStationList: UIViewController, UITableViewDelegate, UITableViewDataSou
                 stationArr.addObject(key)
                 
                 var statGroupId = key.item(MSTT02_STAT_GROUP_ID) as String
-                var changeLine = table.excuteQuery("select LINE_ID from MSTT02_STATION where 1 = 1 and STAT_GROUP_ID = \(statGroupId)")
-                
-                if (changeLine.count > 1) {
-                    var lineArr = [String]()
-                    for line in changeLine {
-                        line as MstT02StationTable
-                        var lineId = line.item(MSTT02_LINE_ID) as String
-                        if (lineId != line_id) {
-                            lineArr.append(lineId)
-                        }
+                var statId = key.item(MSTT02_STAT_ID) as String
+                var lineArr = [String]()
+                for (var i = 0; i < allRows.count; i++) {
+                    var map: MstT02StationTable = allRows[i] as MstT02StationTable
+                    
+                    if ((map.item(MSTT02_STAT_GROUP_ID) as String) == statGroupId && (map.item(MSTT02_STAT_ID) as String) != statId) {
+                        lineArr.append(map.item(MSTT02_LINE_ID) as String)
                     }
-                    changeLineArr.addObject(lineArr)
-                } else {
-                    changeLineArr.addObject(["self"])
                 }
+                
+                if (lineArr.count < 1) {
+                    changeLineArr.addObject(["self"])
+                } else {
+                    changeLineArr.addObject(lineArr)
+                }
+                
             }
-            
-            
-            println("\(key.item(MSTT02_STAT_NAME))  \(key.item(MSTT02_STAT_SEQ))")
-            
         }
         
         // 把m段车站加到丸之内线最前
@@ -157,9 +156,8 @@ class LineStationList: UIViewController, UITableViewDelegate, UITableViewDataSou
         var detail: StationDetail = self.storyboard?.instantiateViewControllerWithIdentifier("StationDetail") as StationDetail
         
         var map: MstT02StationTable = stationArr[indexPath.row] as MstT02StationTable
-        detail.cellName = (map.item(MSTT02_STAT_ID) as String).station()
+//        detail.cellName = (map.item(MSTT02_STAT_ID) as String).station()
         detail.cellJPName = map.item(MSTT02_STAT_NAME) as String
-//        detail.cellStation = map.item(MSTT02_STAT_SEQ) as String
         detail.stat_id = map.item(MSTT02_STAT_ID) as String
         detail.statMetroId = map.item(MSTT02_STAT_METRO_ID) as String
         detail.cellClose = "涩谷,浅草"

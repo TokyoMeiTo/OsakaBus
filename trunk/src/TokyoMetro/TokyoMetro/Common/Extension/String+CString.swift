@@ -21,8 +21,8 @@ extension String {
         return (self as NSString).insertAt(str, post: post);
     }
     
-    func indexOf(str:String) -> String{
-        return (self as NSString).indexOf(str);
+    func indexOf(str:String) -> UInt{
+        return (self as NSString).indexOf(str)
     }
     
     func append(str:String) ->String{
@@ -33,8 +33,8 @@ extension String {
         return (self as NSString).concate(str);
     }
     
-    func split(split:String) -> String{
-        return (self as NSString).split(split);
+    func split(split:String) -> AnyObject{
+        return (self as NSString).split(split)
     }
     
     func trim() -> String{
@@ -49,8 +49,8 @@ extension String {
         return (self as NSString).trimLeft();
     }
     
-    func trimLeft(trim:String){
-        return (self as NSString).trimLeft(trim);
+    func trimLeft(trim:String) -> String{
+        return (self as NSString).trimLeft()
     }
     
     func trimRight() -> String{
@@ -66,11 +66,11 @@ extension String {
     }
     
     func right(num:UInt) -> String{
-        return (self as NSStirng).right(num);
+        return (self as NSString).right(num)
     }
     
     func left(left:UInt,right:UInt) -> String{
-        return (self as NSStirng).left(left,right:right);
+        return (self as NSString).left(left,right:right);
     }
     
     func right(right:UInt,left:UInt) -> String {
