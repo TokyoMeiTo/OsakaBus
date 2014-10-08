@@ -39,6 +39,8 @@ class StationDetail: UIViewController, UIAlertViewDelegate {
     
     // 查询该条线的线路id
     var stat_id = ""
+    // 收藏该条线路的group_id
+    var group_id = ""
 
     var statSeqArr: NSArray = NSArray.array()
     
@@ -84,8 +86,8 @@ class StationDetail: UIViewController, UIAlertViewDelegate {
             
             key as MstT02StationTable
             
-            var statGroupId = key.item(MSTT02_STAT_GROUP_ID) as String
-            statSeqArr = table.excuteQuery("select STAT_SEQ from MSTT02_STATION where 1 = 1 and STAT_GROUP_ID = \(statGroupId)")
+            group_id = key.item(MSTT02_STAT_GROUP_ID) as String
+            statSeqArr = table.excuteQuery("select STAT_SEQ from MSTT02_STATION where 1 = 1 and STAT_GROUP_ID = \(group_id)")
         }
     }
     
@@ -94,7 +96,7 @@ class StationDetail: UIViewController, UIAlertViewDelegate {
         var table = UsrT03FavoriteTable()
         
         table.favoType = "01"
-        table.statId = stat_id
+        table.statId = group_id
         var rows = table.selectAll()
         if (rows.count > 0) {
             

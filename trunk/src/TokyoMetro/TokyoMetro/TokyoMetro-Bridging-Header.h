@@ -28,3 +28,4 @@
 #import "StaT01StationExitTable.h"
 #import "StaT04FacilityTable.h"
 #import "LinT01TrainScheduleTable.h"
+#import "LinT05RouteDetailTable.h"

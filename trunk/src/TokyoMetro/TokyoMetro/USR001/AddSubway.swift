@@ -19,6 +19,8 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var historyArr = [String]()
     
     var stationArr: NSMutableArray = NSMutableArray.array()
+    // 换乘线路
+    var changeLineArr: NSMutableArray = NSMutableArray.array()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,14 +40,30 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     
     func odbStation(){
-        var table = MstT02StationTable()
+        var table = UsrT03FavoriteTable()
+        var stationTable = MstT02StationTable()
         
+        table.favoType = "01"
         var rows: NSArray = table.selectAll()
+        
+        var allRows: NSArray = stationTable.excuteQuery("select * from MSTT02_STATION where 1 = 1 and STAT_ID like '280%'")
         
         for key in rows {
             
+            key as UsrT03FavoriteTable
             stationArr.addObject(key)
             
+            var statGroupId = key.item(USRT03_STAT_ID) as String
+            var lineArr = [String]()
+            for (var i = 0; i < allRows.count; i++) {
+                var map: MstT02StationTable = allRows[i] as MstT02StationTable
+                if ((map.item(MSTT02_STAT_GROUP_ID) as String) == statGroupId || (map.item(MSTT02_STAT_ID) as String) == statGroupId) {
+                    
+                    lineArr.append(map.item(MSTT02_LINE_ID) as String)
+                }
+            }
+            
+            changeLineArr.addObject(lineArr)
         }
         
     }
@@ -77,26 +95,34 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
         if (segment.selectedSegmentIndex == 1) {
             let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("CollectCell", forIndexPath: indexPath) as UITableViewCell
             
-            var map: MstT02StationTable = stationArr[indexPath.row] as MstT02StationTable
+            var map: UsrT03FavoriteTable = stationArr[indexPath.row] as UsrT03FavoriteTable
             
             var textName = cell.viewWithTag(201) as UILabel
-            textName.text = map.item(MSTT02_STAT_NAME) as? String
+            textName.text = (map.item(USRT03_STAT_ID) as? String)?.station()
+            
             
             var view = cell.viewWithTag(202) as UIView!
             
-//            var string: String = taskMgr.tasks[indexPath.row].description
-//            var arrStation = string.componentsSeparatedByString(",")
-                        
-            var arrStation = ["M", "C", "Z"]
-            
-            for (var i = 0; i < arrStation.count; i++) {
-                var line: UIImageView = UIImageView()
-                line.frame = CGRectMake(CGFloat(110 - (i+1)*18 - i * 5), 14, 18, 18)
-                line.image = lineImage(arrStation[i])
-                
-                
-                view.addSubview(line)
+            if (view != nil) {
+                view.removeFromSuperview()
             }
+            
+            var lineView = UIView()
+            lineView.frame = CGRectMake(195, 0, 110, 45)
+            lineView.tag = 202
+            
+            var arrStation: [String] = changeLineArr[indexPath.row] as [String]
+
+            for (var i = 0; i < arrStation.count; i++) {
+                 var line: UIImageView = UIImageView()
+                 line.frame = CGRectMake(CGFloat(110 - (i+1)*18 - i * 4), 14, 18, 18)
+                 line.image = lineImage(arrStation[i])
+                    
+                 lineView.addSubview(line)
+            }
+
+            
+            cell.addSubview(lineView)
             
             return cell
         } else if (segment.selectedSegmentIndex == 0) {
@@ -190,23 +216,23 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
         var image = UIImage(named: "tablecell_lineicon_mini_c.png")
         switch (lineNum) {
             
-        case "C":
+        case "28005":
             image = UIImage(named: "tablecell_lineicon_mini_c.png")
-        case "F":
+        case "28010":
             image = UIImage(named: "tablecell_lineicon_mini_f.png")
-        case "G":
+        case "28001":
             image = UIImage(named: "tablecell_lineicon_mini_g.png")
-        case "H":
+        case "28003":
             image = UIImage(named: "tablecell_lineicon_mini_h.png")
-        case "M":
+        case "28002":
             image = UIImage(named: "tablecell_lineicon_mini_m.png")
-        case "N":
+        case "28009":
             image = UIImage(named: "tablecell_lineicon_mini_n.png")
-        case "T":
+        case "28004":
             image = UIImage(named: "tablecell_lineicon_mini_t.png")
-        case "Y":
+        case "28006":
             image = UIImage(named: "tablecell_lineicon_mini_y.png")
-        case "Z":
+        case "28008":
             image = UIImage(named: "tablecell_lineicon_mini_z.png")
             
         default:
