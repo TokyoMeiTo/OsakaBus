@@ -69,6 +69,11 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     
+    func removeSubway() {
+    
+    }
+    
+    
     @IBAction func segmentChangedLinster(sender: UISegmentedControl) {
     
         table.reloadData()

@@ -70,6 +70,9 @@
 		A17CE0CE19D9017200A27092 /* String+Datetime.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17CE0CA19D9017200A27092 /* String+Datetime.swift */; };
 		A17CE0CF19D9017200A27092 /* String+Decimal.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17CE0CB19D9017200A27092 /* String+Decimal.swift */; };
 		A1831B2119DA54C5002639DB /* MstT04LandMarkTable.m in Sources */ = {isa = PBXBuildFile; fileRef = A1831B2019DA54C5002639DB /* MstT04LandMarkTable.m */; };
+		A18474FD19E4E19200D2DD7B /* INF002Dao.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18474FC19E4E19200D2DD7B /* INF002Dao.swift */; };
+		A18474FF19E4E1D100D2DD7B /* Sta003Dao.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18474FE19E4E1D100D2DD7B /* Sta003Dao.swift */; };
+		A184750219E4FB2400D2DD7B /* MstV01StationGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = A184750119E4FB2400D2DD7B /* MstV01StationGroup.m */; };
 		A1A02C3019D7F317001C7D73 /* String+Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1A02C2F19D7F317001C7D73 /* String+Item.swift */; };
 		A1A02C3119D80B6B001C7D73 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B241FF819B5A5CF00DAE392 /* Main.storyboard */; };
 		A1A44B9719D52B5B007963F4 /* Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1A44B9619D52B5B007963F4 /* Setting.swift */; };
@@ -260,6 +263,10 @@
 		A17CE0CB19D9017200A27092 /* String+Decimal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Decimal.swift"; sourceTree = "<group>"; };
 		A1831B1F19DA54C5002639DB /* MstT04LandMarkTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MstT04LandMarkTable.h; sourceTree = "<group>"; };
 		A1831B2019DA54C5002639DB /* MstT04LandMarkTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MstT04LandMarkTable.m; sourceTree = "<group>"; };
+		A18474FC19E4E19200D2DD7B /* INF002Dao.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = INF002Dao.swift; sourceTree = "<group>"; };
+		A18474FE19E4E1D100D2DD7B /* Sta003Dao.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sta003Dao.swift; sourceTree = "<group>"; };
+		A184750019E4FB2400D2DD7B /* MstV01StationGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MstV01StationGroup.h; sourceTree = "<group>"; };
+		A184750119E4FB2400D2DD7B /* MstV01StationGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MstV01StationGroup.m; sourceTree = "<group>"; };
 		A1A02C2F19D7F317001C7D73 /* String+Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Item.swift"; sourceTree = "<group>"; };
 		A1A44B9619D52B5B007963F4 /* Setting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Setting.swift; sourceTree = "<group>"; };
 		A1ECD43119D2D41F00D5A0E2 /* Main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Main.swift; sourceTree = "<group>"; };
@@ -691,6 +698,8 @@
 		A1ECD43719D2D41F00D5A0E2 /* Database */ = {
 			isa = PBXGroup;
 			children = (
+				A184750019E4FB2400D2DD7B /* MstV01StationGroup.h */,
+				A184750119E4FB2400D2DD7B /* MstV01StationGroup.m */,
 				A1ECD43819D2D41F00D5A0E2 /* CmnT03StationGridTable.h */,
 				A1ECD43919D2D41F00D5A0E2 /* CmnT03StationGridTable.m */,
 				A1ECD43A19D2D41F00D5A0E2 /* InfT02TipsTable.h */,
@@ -762,6 +771,7 @@
 		A1ECD45619D2D41F00D5A0E2 /* INF002 */ = {
 			isa = PBXGroup;
 			children = (
+				A18474FC19E4E19200D2DD7B /* INF002Dao.swift */,
 				A1ECD45719D2D41F00D5A0E2 /* LandMarkDetailController.swift */,
 				A1ECD45819D2D41F00D5A0E2 /* LandMarkListController.swift */,
 				A1ECD45919D2D41F00D5A0E2 /* LandMarkMapController.swift */,
@@ -836,6 +846,7 @@
 		A1ECD47019D2D41F00D5A0E2 /* STA003 */ = {
 			isa = PBXGroup;
 			children = (
+				A18474FE19E4E1D100D2DD7B /* Sta003Dao.swift */,
 				A1ECD47119D2D41F00D5A0E2 /* GPSDelegate.swift */,
 				A1ECD47219D2D41F00D5A0E2 /* GPSHelper.swift */,
 				A1ECD47319D2D41F00D5A0E2 /* StationListController.swift */,
@@ -965,6 +976,7 @@
 				3B2420DB19B5AD1500DAE392 /* NSString+Convert.m in Sources */,
 				3B2420AC19B5ABFD00DAE392 /* ONWRequest.m in Sources */,
 				3B24209519B5ABFD00DAE392 /* OAPAsyncCsvParser.m in Sources */,
+				A184750219E4FB2400D2DD7B /* MstV01StationGroup.m in Sources */,
 				A1ECD48C19D2D41F00D5A0E2 /* LandMarkListController.swift in Sources */,
 				A17CE0C519D8FC3700A27092 /* UITouchableView.m in Sources */,
 				A1ECD49D19D2D41F00D5A0E2 /* GPSDelegate.swift in Sources */,
@@ -989,6 +1001,7 @@
 				A1ECD48819D2D41F00D5A0E2 /* EasyFun.swift in Sources */,
 				3B241FF719B5A5CF00DAE392 /* ViewController.swift in Sources */,
 				A1ECD47D19D2D41F00D5A0E2 /* InfT02TipsTable.m in Sources */,
+				A18474FF19E4E1D100D2DD7B /* Sta003Dao.swift in Sources */,
 				A1ECD47919D2D41F00D5A0E2 /* Main.swift in Sources */,
 				A1ECD48619D2D41F00D5A0E2 /* UsrT01ArrivalAlarmTable.m in Sources */,
 				A1EE754419D445490064BC90 /* RouteSearchResult.swift in Sources */,
@@ -1026,6 +1039,7 @@
 				A15CA4AA19D57BDD00716A00 /* UsrT03FavoriteTable.m in Sources */,
 				3B2420E319B5AD1500DAE392 /* OWINSocketRequest.m in Sources */,
 				A17CE0C419D8FC3700A27092 /* UITouchableImageView.m in Sources */,
+				A18474FD19E4E19200D2DD7B /* INF002Dao.swift in Sources */,
 				A1831B2119DA54C5002639DB /* MstT04LandMarkTable.m in Sources */,
 				A1ECD47F19D2D41F00D5A0E2 /* InfT04StatKnowledgeTable.m in Sources */,
 				A1ECD49919D2D41F00D5A0E2 /* FacilityList.swift in Sources */,

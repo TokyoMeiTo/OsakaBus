@@ -43,6 +43,10 @@
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="doT-K8-ZWO">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="533"/>
                                 <subviews>
+                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="liD-dl-yUU">
+                                        <rect key="frame" x="80" y="254" width="160" height="25"/>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    </view>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="MetroCH-1" translatesAutoresizingMaskIntoConstraints="NO" id="Swa-2B-moe" customClass="UITouchableView">
                                         <rect key="frame" x="-726" y="-383" width="1772" height="1299"/>
                                     </imageView>
@@ -73,6 +77,10 @@
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                     </button>
+                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fkr-oP-3TV">
+                                        <rect key="frame" x="19" y="61" width="160" height="25"/>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    </view>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JTU-Fl-vVx">
                                         <rect key="frame" x="121" y="87" width="60" height="30"/>
                                         <state key="normal" title="设为终点">
@@ -87,10 +95,6 @@
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                     </button>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="liD-dl-yUU">
-                                        <rect key="frame" x="19" y="61" width="160" height="25"/>
-                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
@@ -378,7 +382,11 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="主界面" id="BeE-Zr-pbu">
-                        <barButtonItem key="leftBarButtonItem" image="ride" id="soL-BA-wIq"/>
+                        <barButtonItem key="leftBarButtonItem" image="ride" id="soL-BA-wIq">
+                            <connections>
+                                <action selector="popToRouteSearchResult" destination="0Uf-t0-ZZH" id="R4a-kP-6OQ"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" image="collect-01" style="plain" id="yZT-IB-rg2">
                             <connections>
                                 <segue destination="BI7-LI-qmB" kind="show" id="gtT-EB-KW3"/>
@@ -387,7 +395,9 @@
                     </navigationItem>
                     <connections>
                         <outlet property="bodyView" destination="bIT-le-fTq" id="fSp-bf-OXj"/>
+                        <outlet property="btnToSearchRoute" destination="soL-BA-wIq" id="dNY-Za-WBY"/>
                         <outlet property="lineImage" destination="Swa-2B-moe" id="cvS-rd-i2a"/>
+                        <outlet property="lineImagePop" destination="liD-dl-yUU" id="OIG-57-CVx"/>
                         <outlet property="menuView" destination="phn-R5-chP" id="ld1-jl-T9y"/>
                         <outlet property="popStation" destination="pQt-dt-6aB" id="gC3-9P-OxS"/>
                         <outlet property="popbtnEnd" destination="JTU-Fl-vVx" id="P0Q-Tg-tU1"/>
@@ -395,6 +405,7 @@
                         <outlet property="popbtnStart" destination="HU4-MJ-kXP" id="T5O-0M-Vup"/>
                         <outlet property="poplblSationNameJP" destination="Ref-cR-NDD" id="hK3-19-w5j"/>
                         <outlet property="poplblStationName" destination="VjM-O1-fDY" id="xMR-DE-Dxg"/>
+                        <outlet property="popviewSetImage" destination="fkr-oP-3TV" id="frM-Aa-IyL"/>
                         <outlet property="scroll" destination="doT-K8-ZWO" id="Jm2-G5-fYJ"/>
                     </connections>
                 </viewController>

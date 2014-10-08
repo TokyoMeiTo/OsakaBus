@@ -14,6 +14,7 @@
 #import "MstT01LineTable.h"
 #import "MstT02StationTable.h"
 #import "MstT03LineStationTable.h"
+#import "MstT04LandMarkTable.h"
 #import "CmnT03StationGridTable.h"
 #import "InfT02TipsTable.h"
 #import "InfT03RescureTable.h"
