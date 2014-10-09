@@ -15,7 +15,7 @@ class LandMarkListController: UIViewController, UITableViewDelegate, NSObjectPro
     /* 最近站点列表UITableView */
     @IBOutlet weak var tbList: UITableView!
     
-    /* 起点軽度   */
+    /* 起点軽度 */
     let fromLat = 35.672737//31.23312372 // 天地科技广场1号楼
     /* 起点緯度 */
     let fromLon = 139.768898//121.38368547 // 天地科技广场1号楼
@@ -24,11 +24,13 @@ class LandMarkListController: UIViewController, UITableViewDelegate, NSObjectPro
     let GPShelper:GPSHelper = GPSHelper()
     /* 地标一览 */
     var landMarks:Array<MstT04LandMarkTable>?
+    /* 地标类型 */
+    var landMarkType:Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        landMarks = selectLandMarkTable("景点")
+        landMarks = selectLandMarkTable(landMarkType)
         
         tbList.delegate = self
         tbList.dataSource = self
@@ -79,9 +81,21 @@ class LandMarkListController: UIViewController, UITableViewDelegate, NSObjectPro
     /**
      * 从DB查询地标信息
      */
-    func selectLandMarkTable(type:String) -> Array<MstT04LandMarkTable>{
+    func selectLandMarkTable(type:Int) -> Array<MstT04LandMarkTable>{
         var daoINF002 = INF002Dao()
-        landMarks = daoINF002.queryLandMarks(type) as? Array<MstT04LandMarkTable>
+        var landMarkTypeStr:String = ""
+        switch type{
+        case 0:
+            landMarkTypeStr = "景点"
+        case 1:
+            landMarkTypeStr = "美食"
+        case 2:
+            landMarkTypeStr = "购物"
+        default:
+            println("nothing")
+        }
+        
+        landMarks = daoINF002.queryLandMarks(landMarkTypeStr) as? Array<MstT04LandMarkTable>
         return landMarks!
     }
     
@@ -114,9 +128,7 @@ class LandMarkListController: UIViewController, UITableViewDelegate, NSObjectPro
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
         for subview in cell.subviews{
-            if(subview.isKindOfClass(UILabel)){
-                subview.removeFromSuperview()
-            }
+            subview.removeFromSuperview()
         }
         // cell显示内容
         var imgLandMark = UIImage(named: "\(landMarks![indexPath.row].item(MSTT04_LANDMARK_IMAG_ID1))")
@@ -128,17 +140,27 @@ class LandMarkListController: UIViewController, UITableViewDelegate, NSObjectPro
         imageViewLandMark.image = imgLandMark
         cell.addSubview(imageViewLandMark)
         
-        var lblLandMark = UILabel(frame: CGRect(x:5,y:150,width:tableView.frame.width - 10,height:25))
-        lblLandMark.alpha = 0.5
-        lblLandMark.backgroundColor = UIColor.grayColor()
-        lblLandMark.font = UIFont.boldSystemFontOfSize(13)
+        var lblTemp = UILabel(frame: CGRect(x:5,y:145,width:tableView.frame.width - 10,height:30))
+        lblTemp.alpha = 0.5
+        lblTemp.backgroundColor = UIColor.lightGrayColor()
+        cell.addSubview(lblTemp)
+        
+        var lblLandMark = UILabel(frame: CGRect(x:5,y:145,width:tableView.frame.width - 10,height:30))
+        lblLandMark.backgroundColor = UIColor.clearColor()
+        lblLandMark.font = UIFont.boldSystemFontOfSize(14)
         lblLandMark.textColor = UIColor.whiteColor()
         lblLandMark.text = "\(landMarks![indexPath.row].item(MSTT04_LANDMARK_LMAK_NAME_EXT1))"
         lblLandMark.textAlignment = NSTextAlignment.Left
         cell.addSubview(lblLandMark)
         
-//        cell.textLabel?.text = "\(landMarks![indexPath.row].item(MSTT04_LANDMARK_LMAK_NAME_EXT1))"
+        var btnFav:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
+        btnFav.frame = CGRect(x:tableView.frame.width - 35,y:145,width:30,height:30)
+        var imgFav = UIImage(named: "INF00202.png")
+        btnFav.setBackgroundImage(imgFav, forState: UIControlState.Normal)
+        btnFav.tag = 101
         
+//        btnFav.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
+        cell.addSubview(btnFav)
         return cell
     }
     

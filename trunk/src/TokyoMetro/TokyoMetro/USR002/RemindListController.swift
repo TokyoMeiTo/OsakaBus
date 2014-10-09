@@ -106,10 +106,10 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
      *
      */
     func intitValue(){
-        //sgmMain.selectedSegmentIndex = NUM_0
         sgmMain.addTarget(self, action: "segmentChanged:", forControlEvents: UIControlEvents.ValueChanged)
-        lblArriveInfo.textColor = UIColor.lightGrayColor()
-        lblArriveInfo.font = UIFont(name:"Helvetica-Bold", size:13)
+        self.view.backgroundColor = UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
+        lblArriveInfo.textColor = UIColor.redColor()
+        lblArriveInfo.font = UIFont(name:"Helvetica-Bold", size:14)
     }
     
     /**
@@ -138,7 +138,7 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
         btnStart.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
         btnEdit.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
         var alarms:Array<UsrT01ArrivalAlarmTable>? = selectArrivalAlarmTable()
-        if(alarms!.count > 1){
+        if(alarms!.count > 0){
             alarm = alarms![alarms!.count - NUM_1]
             if(alarm!.item(USRT01_ARRIVAL_ALARM_CANCEL_FLAG) == nil || alarm!.item(USRT01_ARRIVAL_ALARM_CANCEL_FLAG).integerValue == 1){
                 // 当前没有到站提醒
@@ -147,6 +147,7 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
             }else{
                 lblArriveStation.text = "\(alarm!.item(USRT01_ARRIVAL_ALARM_STAT_TO_NAME_LOCL))"
                 lblArriveInfo.text = "\(alarm!.item(USRT01_ARRIVAL_ALARM_LINE_TO_NAME_LOCL))"
+                updateTime(alarm!.item(USRT01_ARRIVAL_ALARM_COST_TIME).integerValue)
                 // 开启线程计时
                 var timerThread = TimerThread.shareInstance()
                 timerThread.sender = self
@@ -491,8 +492,7 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
             self.lblHour.text = "00"
             self.lblMin.text = "00"
             self.lblSec.text = "00"
-            btnCancel.enabled = false
-            btnStart.enabled = false
+            noAlarm()
             btnEdit.enabled = true
             pushNotification(nil,min: NUM_NEGATIVE_1)
             alarm!.cancelFlag = "1"

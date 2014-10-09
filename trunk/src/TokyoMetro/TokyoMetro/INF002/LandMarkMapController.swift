@@ -22,7 +22,9 @@ class LandMarkMapController: UIViewController, MKMapViewDelegate, UIActionSheetD
     
     /* 当前位置信息 */
     var location:CLLocation?
-    
+    /* 地标 */
+    var landMark:MstT04LandMarkTable?
+    var landMarkType:String = "景点"
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -50,7 +52,7 @@ class LandMarkMapController: UIViewController, MKMapViewDelegate, UIActionSheetD
         // MKMapView定位到当前位置
         var coordinateOnEarth = CLLocationCoordinate2D(latitude:fromLat, longitude:fromLon)
         var annotation = MKPointAnnotation()
-        annotation.title = "日本武道馆"
+        annotation.title = "\(landMark!.item(MSTT04_LANDMARK_LMAK_NAME_EXT1))"
         annotation.coordinate = coordinateOnEarth
         
         mkMap.setCenterCoordinate(coordinateOnEarth, animated:false)
@@ -60,4 +62,35 @@ class LandMarkMapController: UIViewController, MKMapViewDelegate, UIActionSheetD
         var region : MKCoordinateRegion = MKCoordinateRegionMake(coordinateOnEarth, span)
         mkMap.setRegion(region, animated:true)
     }
+    
+    func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) ->
+        MKAnnotationView!{
+            if (annotation is MKUserLocation){
+                //return nil so map view draws "blue dot" for standard user location
+                return nil
+            }
+            var pinView:MKPinAnnotationView?
+            
+            pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "\(landMark!.item(MSTT04_LANDMARK_LMAK_NAME_EXT1))")
+            // 4'3'5
+            var img = UIImage(named: "INF00204.png")
+            landMarkType = "\(landMark!.item(MSTT04_LANDMARK_LMAK_TYPE))" as String
+            switch landMarkType{
+            case "景点":
+                img = UIImage(named: "INF00204.png")
+            case "美食":
+                img = UIImage(named: "INF00203.png")
+            case "购物":
+                img = UIImage(named: "INF00205.png")
+            default:
+                println("nothing")
+            }
+            pinView!.pinColor = .Red
+            pinView!.image = img
+            pinView!.canShowCallout = true
+            pinView!.frame = CGRectMake((CGRectMake(0, 0, 185, 162).size.width-16)/2, 56, 30, 35)
+            
+            return pinView!
+    }
+
 }

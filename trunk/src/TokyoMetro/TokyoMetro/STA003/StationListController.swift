@@ -375,8 +375,15 @@ class ListController: UITableViewController {
         var tableMstT02 = items![indexPath.row] as MstT02StationTable
         var statNm:String = ""
         var line:MstT01LineTable = sender!.selectLineTable("\(tableMstT02.item(MSTT02_LINE_ID))") as MstT01LineTable
-        statNm = "\(line.item(MSTT01_LINE_NAME)): \(tableMstT02.item(MSTT02_STAT_NAME))"
-        var lblStation = UILabel(frame: CGRect(x:65,y:0,width:tableView.frame.width - 15,height:43))
+        statNm = "\(tableMstT02.item(MSTT02_STAT_NAME))"
+        
+        var lblLine = UILabel(frame: CGRect(x:65,y:0,width:tableView.frame.width - 80,height:43))
+        lblLine.text = "\(line.item(MSTT01_LINE_NAME)):"
+        lblLine.textAlignment = NSTextAlignment.Left
+        cell.addSubview(lblLine)
+        
+        var lblStation = UILabel(frame: CGRect(x:160,y:0,width:tableView.frame.width - 80,height:43))
+        lblStation.textColor = UIColor.lightGrayColor()
         lblStation.text = statNm
         lblStation.textAlignment = NSTextAlignment.Left
         cell.addSubview(lblStation)
@@ -384,6 +391,7 @@ class ListController: UITableViewController {
         var imageViewLine = UIImageView(frame: CGRectMake(15, 5, 30, 30))
         imageViewLine.image = lineImage("\(tableMstT02.item(MSTT02_LINE_ID))")
         cell.addSubview(imageViewLine)
+        cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
         return cell
     }
     
@@ -557,15 +565,17 @@ class MapController: UIViewController, MKMapViewDelegate, UIActionSheetDelegate{
             if(annotation.title == LOCATION_STRING){
                 pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "当前位置")
                 pinView!.pinColor = .Red
-                //pinView!.image = UIImage(named: "anjuke_icon_itis_position")
+                var img = UIImage(named: "STA00302.png")
+                pinView!.image = img
                 pinView!.canShowCallout = true
-                pinView!.frame = CGRectMake((CGRectMake(0, 0, 185, 162).size.width-16)/2, 56, 16, 33)
+                pinView!.frame = CGRectMake((CGRectMake(0, 0, 185, 162).size.width-16)/2, 56, 30, 35)
             }else{
                 pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "")
                 pinView!.pinColor = .Purple
-                //pinView!.image = UIImage(named: "anjuke_icon_itis_position")
+                var img = UIImage(named: "STA00301.png")
+                pinView!.image = img
                 pinView!.canShowCallout = true
-                pinView!.frame = CGRectMake((CGRectMake(0, 0, 185, 162).size.width-16)/2, 56, 16, 33)
+                pinView!.frame = CGRectMake((CGRectMake(0, 0, 185, 162).size.width-16)/2, 56, 30, 35)
                 var rightButton: UIButton! = UIButton.buttonWithType(UIButtonType.DetailDisclosure) as UIButton
                 rightButton.titleForState(UIControlState.Normal)
                 rightButton.addTarget(self, action: "rightButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
@@ -628,15 +638,3 @@ class ActivityIndicatorController{
             return false
     }
 }
-
-//class IsConnectionAvailable{
-//    class func isConnectionAvailable() -> Bool{
-//        var reach = Reachability("www.yahoo.co.jp")
-//        switch reach.currentReachabilityStatus{
-//        case NotReachable:
-//            return false
-//        default:
-//            return true
-//        }
-//    }
-//}
