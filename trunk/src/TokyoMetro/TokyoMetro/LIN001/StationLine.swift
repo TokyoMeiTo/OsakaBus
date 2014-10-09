@@ -237,9 +237,9 @@ class StationLine: UIViewController, UITableViewDataSource, UITableViewDelegate 
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if (segment.selectedSegmentIndex == 0) {
-            return 55
+            return 85
         } else {
-            return 43
+            return 55
         }
     }
     
@@ -255,30 +255,53 @@ class StationLine: UIViewController, UITableViewDataSource, UITableViewDelegate 
         
         if (segment.selectedSegmentIndex == 0) {
         
-            let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("LineListCell", forIndexPath: indexPath) as UITableViewCell
-            
             var lineMap: MstT01LineTable = LineArr[indexPath.row] as MstT01LineTable
             
-            var lineName = cell.viewWithTag(302) as UILabel
-            lineName.text = (lineMap.item(MSTT01_LINE_ID) as String).line()
-            
-//            var lineJPName = cell.viewWithTag(303) as UILabel
-//            lineJPName.text = lineMap.item(MSTT01_LINE_NAME) as? String
-            
-            var lineDest = cell.viewWithTag(304) as UILabel
             if ((lineMap.item(MSTT01_LINE_ID) as String) == "28002") {
-                lineDest.numberOfLines = 2
-                lineDest.text = "2800228".station() + " - " + "2800201".station() + "\n" + "2800223".station() + " - " + "2800201".station()
+                
+                let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("MLineCell", forIndexPath: indexPath) as UITableViewCell
+                
+                var lineName = cell.viewWithTag(402) as UILabel
+                lineName.text = (lineMap.item(MSTT01_LINE_ID) as String).line()
+                
+                var lineJPName = cell.viewWithTag(403) as UILabel
+                lineJPName.text = (lineMap.item(MSTT01_LINE_NAME) as String) + "（"+(lineMap.item(MSTT01_LINE_NAME_KANA) as String) + "）"
+                
+                var lineDest1 = cell.viewWithTag(404) as UILabel
+                lineDest1.text = "2800228".station() + " - " + "2800201".station()
+                
+                var lineKana1 = cell.viewWithTag(405) as UILabel
+                lineKana1.text = "荻窪" + " - " + "池袋"
+                
+                var lineDest2 = cell.viewWithTag(406) as UILabel
+                lineDest2.text = "2800223".station() + " - " + "2800201".station()
+                
+                var lineKana2 = cell.viewWithTag(407) as UILabel
+                lineKana2.text = "方南町" + " - " + "池袋"
+                
+                return cell
+
             } else {
-                lineDest.numberOfLines = 1
+                let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("LineListCell", forIndexPath: indexPath) as UITableViewCell
+ 
+                var imgLine = cell.viewWithTag(301) as UIImageView
+                imgLine.image = lineImageNormal(lineMap.item(MSTT01_LINE_ID) as String)
+                
+                var lineName = cell.viewWithTag(302) as UILabel
+                lineName.text = (lineMap.item(MSTT01_LINE_ID) as String).line()
+            
+                var lineJPName = cell.viewWithTag(305) as UILabel
+                lineJPName.text = (lineMap.item(MSTT01_LINE_NAME) as String) + "（"+(lineMap.item(MSTT01_LINE_NAME_KANA) as String) + "）"
+            
+                var lineDest = cell.viewWithTag(304) as UILabel
                 lineDest.text = destStatName(lineMap.item(MSTT01_LINE_ID) as String)
+                
+                var lineKana = cell.viewWithTag(306) as UILabel
+                lineKana.text = destStatJPName(lineMap.item(MSTT01_LINE_ID) as String)
+                
+                return cell
             }
-            
-            
-            var imgLine = cell.viewWithTag(301) as UIImageView
-            imgLine.image = lineImageNormal(lineMap.item(MSTT01_LINE_ID) as String)
-            
-            return cell
+
         } else {
         
             let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("StationListCell", forIndexPath: indexPath) as UITableViewCell
@@ -286,7 +309,10 @@ class StationLine: UIViewController, UITableViewDataSource, UITableViewDelegate 
             var map: MstT02StationTable = stationArr[indexPath.row] as MstT02StationTable
             
             var textName = cell.viewWithTag(201) as UILabel
-            textName.text = map.item(MSTT02_STAT_NAME_EXT1) as? String
+            textName.text = (map.item(MSTT02_STAT_ID) as? String)?.station()
+            
+            var textJPName = cell.viewWithTag(203) as UILabel
+            textJPName.text = map.item(MSTT02_STAT_NAME) as? String
                         
             var view = cell.viewWithTag(202) as UIView!
             
@@ -295,7 +321,7 @@ class StationLine: UIViewController, UITableViewDataSource, UITableViewDelegate 
             }
             
             var lineView = UIView()
-            lineView.frame = CGRectMake(225, 0, 70, 45)
+            lineView.frame = CGRectMake(225, 5, 70, 45)
             lineView.tag = 202
             
             var arrStation: [String] = changeLineArr[indexPath.row] as [String]
@@ -331,17 +357,10 @@ class StationLine: UIViewController, UITableViewDataSource, UITableViewDelegate 
             
             var map: MstT02StationTable = stationArr[indexPath.row] as MstT02StationTable
             
-//            detail.cellName = map.item(MSTT02_STAT_NAME_EXT1) as String
             detail.cellJPName = map.item(MSTT02_STAT_NAME) as String
-//            detail.cellJPNameKana = map.item(MSTT02_STAT_NAME_KANA) as String
             detail.stat_id = map.item(MSTT02_STAT_ID) as String
             detail.statMetroId = map.item(MSTT02_STAT_METRO_ID) as String
-            detail.cellClose = "涩谷,浅草"
-            detail.cellJapanTime = "05:18/24:22,05:17/24:28"
-            detail.cellChinaTime = "06:18/01:22,06:17/01:28"
-            detail.cellChinaWETime = "06:18/01:13,06:17/01:22"
-            detail.cellJapanWETime = "05:18/24:13,05:17/24:22"
-            
+
             self.navigationController?.pushViewController(detail, animated: true)
         }
     }
@@ -436,4 +455,33 @@ class StationLine: UIViewController, UITableViewDataSource, UITableViewDelegate 
         
         return destStat
     }
+    
+    func destStatJPName(lineId: String) -> String {
+        
+        var destStat:String = ""
+        switch (lineId) {
+        case "28001":
+            destStat = "渋谷" + " - " + "浅草"
+        case "28003":
+            destStat = "中目黒" + " - " + "北千住"
+        case "28004":
+            destStat = "西船橋" + " - " + "中野"
+        case "28005":
+            destStat = "代々木上原" + " - " + "北綾瀬"
+        case "28006":
+            destStat = "和光市" + " - " + "新木場"
+        case "28008":
+            destStat = "渋谷" + " - " + "押上〈スカイツリー前〉"
+        case "28009":
+            destStat = "目黒" + " - " + "赤羽岩淵"
+        case "28010":
+            destStat = "和光市" + " - " + "渋谷"
+            
+        default:
+            destStat = ""
+        }
+        
+        return destStat
+    }
+
 }

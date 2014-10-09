@@ -15,6 +15,8 @@ class SearchStationList: UIViewController, UITableViewDelegate, UITableViewDataS
     var stationArr: NSMutableArray = NSMutableArray.array()
     // 换乘线路
     var changeLineArr: NSMutableArray = NSMutableArray.array()
+    // 区分前一画面参数
+    var classType = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -100,14 +102,14 @@ class SearchStationList: UIViewController, UITableViewDelegate, UITableViewDataS
         }
         
         var lineView = UIView()
-        lineView.frame = CGRectMake(225, 0, 70, 45)
+        lineView.frame = CGRectMake(225, 0, 80, 45)
         lineView.tag = 202
         
         var arrStation: [String] = changeLineArr[indexPath.row] as [String]
         if (arrStation != ["self"]) {
             for (var i = 0; i < arrStation.count; i++) {
                 var line: UIImageView = UIImageView()
-                line.frame = CGRectMake(CGFloat(66 - (i+1)*18 - i * 4), 13, 18, 18)
+                line.frame = CGRectMake(CGFloat(80 - (i+1)*18 - i * 4), 13, 18, 18)
                 line.image = lineImage(arrStation[i])
                 
                 lineView.addSubview(line)
@@ -137,9 +139,30 @@ class SearchStationList: UIViewController, UITableViewDelegate, UITableViewDataS
         return "\(stationArr.count)条检索结果"
     }
     
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if (classType == "routeSearch") {
+            var routeSearch: RouteSearch = self.navigationController!.viewControllers[self.navigationController!.viewControllers.count - 2] as RouteSearch
+            
+            self.navigationController?.popToViewController(routeSearch, animated: true)
+        } else if (classType == "remindDetailController") {
+            var remindDetailController: RemindDetailController = self.navigationController!.viewControllers[self.navigationController!.viewControllers.count - 2] as RemindDetailController
+            
+            self.navigationController?.popToViewController(remindDetailController, animated: true)
+        } else {
+            var detail: StationDetail = self.storyboard?.instantiateViewControllerWithIdentifier("StationDetail") as StationDetail
+            
+            var map: MstT02StationTable = stationArr[indexPath.row] as MstT02StationTable
+            detail.cellJPName = map.item(MSTT02_STAT_NAME) as String
+            detail.stat_id = map.item(MSTT02_STAT_ID) as String
+            detail.statMetroId = map.item(MSTT02_STAT_METRO_ID) as String
+            
+            
+            self.navigationController?.pushViewController(detail, animated: true)
+        }
+    }
+    
     
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
-        println("关闭")
 //        searchBar.resignFirstResponder()
         self.navigationController?.popViewControllerAnimated(true)
     }
@@ -148,7 +171,6 @@ class SearchStationList: UIViewController, UITableViewDelegate, UITableViewDataS
         searchBar.resignFirstResponder()
         searchStation(searchBar.text)
         table.reloadData()
-        println("点击了search按钮")
     }
     
     func searchBarShouldBeginEditing(searchBar: UISearchBar) -> Bool {

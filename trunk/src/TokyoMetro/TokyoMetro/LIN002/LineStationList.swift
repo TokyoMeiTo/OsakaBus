@@ -156,15 +156,10 @@ class LineStationList: UIViewController, UITableViewDelegate, UITableViewDataSou
         var detail: StationDetail = self.storyboard?.instantiateViewControllerWithIdentifier("StationDetail") as StationDetail
         
         var map: MstT02StationTable = stationArr[indexPath.row] as MstT02StationTable
-//        detail.cellName = (map.item(MSTT02_STAT_ID) as String).station()
         detail.cellJPName = map.item(MSTT02_STAT_NAME) as String
         detail.stat_id = map.item(MSTT02_STAT_ID) as String
         detail.statMetroId = map.item(MSTT02_STAT_METRO_ID) as String
-        detail.cellClose = "涩谷,浅草"
-        detail.cellJapanTime = "05:18/24:22,05:17/24:28"
-        detail.cellChinaTime = "06:18/01:22,06:17/01:28"
-        detail.cellChinaWETime = "06:18/01:13,06:17/01:22"
-        detail.cellJapanWETime = "05:18/24:13,05:17/24:22"
+
         
         self.navigationController?.pushViewController(detail, animated: true)
     }

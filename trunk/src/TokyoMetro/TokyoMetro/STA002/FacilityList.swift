@@ -14,6 +14,8 @@ class FacilityList: UIViewController,UITableViewDelegate,UITableViewDataSource {
 
     var facilityArr: NSMutableArray = NSMutableArray.array()
     
+    var statId = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -32,6 +34,8 @@ class FacilityList: UIViewController,UITableViewDelegate,UITableViewDataSource {
     
         var table = StaT04FacilityTable()
         
+        table.statId = statId
+        var rows = table.selectAll()
         
     }
     

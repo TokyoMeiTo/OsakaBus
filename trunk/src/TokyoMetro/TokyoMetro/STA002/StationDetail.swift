@@ -8,7 +8,7 @@
 
 import UIKit
 
-class StationDetail: UIViewController, UIAlertViewDelegate {
+class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate, UITableViewDataSource {
     
     //Our label for displaying var "items/cellName"
     @IBOutlet weak var cellNameLabel: UILabel!
@@ -18,31 +18,38 @@ class StationDetail: UIViewController, UIAlertViewDelegate {
     @IBOutlet weak var btn2: UIButton!
     @IBOutlet weak var btn3: UIButton!
     @IBOutlet weak var weSegment: UISegmentedControl!
-    @IBOutlet weak var chaSegment: UISegmentedControl!
     
-    //Receiving variable assigned to MainVC's var "items"
-//    var cellName:String = ""
     var cellJPName:String = ""
     var cellJPNameKana:String = ""
     var cellDesc:String = ""
+    // 列车线路id，用逗号隔开
+    var cellLine = ""
+    // 终点站，用逗号隔开
     var cellClose = ""
+    // 日本平日首末班车时间，用逗号隔开
     var cellJapanTime = ""
+    // 日本周末首末班车时间，用逗号隔开
     var cellJapanWETime = ""
-    var cellChinaTime = ""
-    var cellChinaWETime = ""
+    // 日本节假日首末班车时间，用逗号隔开
+    var cellJapanHolidayTime = ""
+    // 日本周末首末班车时间，用逗号隔开
     var cellStation = ""
+    // 终点站数组
     var arrClose = [String]()
+    // 日本首末班车时间数组
     var arrTime = [String]()
+    // 屏幕尺寸
     var size: CGSize!
-    
+    // 站内结构图url中的statMetroId区分用
     var statMetroId = ""
-    
     // 查询该条线的线路id
     var stat_id = ""
     // 收藏该条线路的group_id
     var group_id = ""
-
+    // 站点statId、statSeq、lineId数组
     var statSeqArr: NSArray = NSArray.array()
+    // 其他链接
+    var selectList = ["车站结构图", "车站位置图", "站内商业设施", "车站设施"]
     
     required init(coder aDecoder: NSCoder) {
         
@@ -53,25 +60,25 @@ class StationDetail: UIViewController, UIAlertViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //Assign your UILabel text to your String
+        //车站本地化名
         cellNameLabel.text = stat_id.station()
-
+        //车站日文名
         cellJPNmaeLabel.text = cellJPName
-        //Assign String var to NavBar title
+        //标题
         self.title = stat_id.station()
-        
+        //查询车站信息
         odbStation()
-        
+        //查询时刻表信息
+        odbTrainSchedule()
+        // 获取屏幕尺寸
         size = UIScreen.mainScreen().bounds.size
-        
-        
+        // 代码添加车站icon
         addLineView()
-        
+        // 添加首末班车时间
         addLineTime()
-        
-        
-        scrollView.contentSize = CGSizeMake(320, 600)
-        
+        // 添加站点相关信息的链接
+        addStationSelect()
+
     }
     
     func odbStation(){
@@ -87,9 +94,122 @@ class StationDetail: UIViewController, UIAlertViewDelegate {
             key as MstT02StationTable
             
             group_id = key.item(MSTT02_STAT_GROUP_ID) as String
-            statSeqArr = table.excuteQuery("select STAT_SEQ from MSTT02_STATION where 1 = 1 and STAT_GROUP_ID = \(group_id)")
+            statSeqArr = table.excuteQuery("select STAT_SEQ,STAT_ID,LINE_ID from MSTT02_STATION where 1 = 1 and STAT_GROUP_ID = \(group_id)")
         }
     }
+    
+    func odbTrainSchedule() {
+        var table = LinT01TrainScheduleTrainTable()
+        // 获取平日时的所有列车各个方向的首末班车时间
+        for (var j = 0; j < statSeqArr.count; j++) {
+            var startTime = ""
+            var endTime = ""
+            var statId = (statSeqArr[j] as MstT02StationTable).item(MSTT02_STAT_ID) as String
+            table.statId = statId
+            table.scheType = "1"
+            table.firstTrainFlag = "1"
+            var rows = table.selectAll()
+            if (rows.count > 0) {
+                for (var i = 0; i < rows.count; i++) {
+                    var key: LinT01TrainScheduleTrainTable = rows[i] as LinT01TrainScheduleTrainTable
+                    cellLine = addString(cellLine, addValue:(key.item(LINT01_TRAIN_SCHEDULE_LINE_ID) as String))
+                    cellClose = addString(cellClose, addValue:(key.item(LINT01_TRAIN_SCHEDULE_DIRT_STAT_ID) as String).station())
+                    startTime = (key.item(LINT01_TRAIN_SCHEDULE_DEPA_TIME) as String).dateWithFormat("HHmm", target: "HH:mm")
+                }
+            }
+            
+            table.reset()
+            table.statId = statId
+            table.scheType = "1"
+            table.firstTrainFlag = "9"
+            var endRows = table.selectAll()
+            if (endRows.count > 0) {
+                for (var i = 0; i < endRows.count; i++) {
+                    var key: LinT01TrainScheduleTrainTable = endRows[i] as LinT01TrainScheduleTrainTable
+                    endTime = (key.item(LINT01_TRAIN_SCHEDULE_DEPA_TIME) as String).dateWithFormat("HHmm", target: "HH:mm")
+                }
+            }
+            
+            cellJapanTime = addString(cellJapanTime, addValue: "\(startTime)/\(endTime)")
+
+        }
+        
+        // 获取周末时的所有列车各个方向的首末班车时间
+        for (var j = 0; j < statSeqArr.count; j++) {
+            var startTime = ""
+            var endTime = ""
+            var statId = (statSeqArr[j] as MstT02StationTable).item(MSTT02_STAT_ID) as String
+            table.statId = statId
+            table.scheType = "2"
+            table.firstTrainFlag = "1"
+            var rows = table.selectAll()
+            if (rows.count > 0) {
+                for (var i = 0; i < rows.count; i++) {
+                    var key: LinT01TrainScheduleTrainTable = rows[i] as LinT01TrainScheduleTrainTable
+                    startTime = (key.item(LINT01_TRAIN_SCHEDULE_DEPA_TIME) as String).dateWithFormat("HHmm", target: "HH:mm")
+                }
+            }
+            
+            table.reset()
+            table.statId = statId
+            table.scheType = "2"
+            table.firstTrainFlag = "9"
+            var endRows = table.selectAll()
+            if (endRows.count > 0) {
+                for (var i = 0; i < endRows.count; i++) {
+                    var key: LinT01TrainScheduleTrainTable = endRows[i] as LinT01TrainScheduleTrainTable
+                    endTime = (key.item(LINT01_TRAIN_SCHEDULE_DEPA_TIME) as String).dateWithFormat("HHmm", target: "HH:mm")
+                }
+            }
+            
+            cellJapanWETime = addString(cellJapanWETime, addValue: "\(startTime)/\(endTime)")
+            
+        }
+        
+        // 获取节假日时的所有列车各个方向的首末班车时间
+        for (var j = 0; j < statSeqArr.count; j++) {
+            var startTime = ""
+            var endTime = ""
+            var statId = (statSeqArr[j] as MstT02StationTable).item(MSTT02_STAT_ID) as String
+            table.statId = statId
+            table.scheType = "3"
+            table.firstTrainFlag = "1"
+            var rows = table.selectAll()
+            if (rows.count > 0) {
+                for (var i = 0; i < rows.count; i++) {
+                    var key: LinT01TrainScheduleTrainTable = rows[i] as LinT01TrainScheduleTrainTable
+                    startTime = (key.item(LINT01_TRAIN_SCHEDULE_DEPA_TIME) as String).dateWithFormat("HHmm", target: "HH:mm")
+                }
+            }
+            
+            table.reset()
+            table.statId = statId
+            table.scheType = "3"
+            table.firstTrainFlag = "9"
+            var endRows = table.selectAll()
+            if (endRows.count > 0) {
+                for (var i = 0; i < endRows.count; i++) {
+                    var key: LinT01TrainScheduleTrainTable = endRows[i] as LinT01TrainScheduleTrainTable
+                    endTime = (key.item(LINT01_TRAIN_SCHEDULE_DEPA_TIME) as String).dateWithFormat("HHmm", target: "HH:mm")
+                }
+            }
+            
+            cellJapanHolidayTime = addString(cellJapanHolidayTime, addValue: "\(startTime)/\(endTime)")
+        }
+    }
+    
+    func addString(value: String, addValue:String) -> String{
+        
+        if (addValue.isEmpty) {
+            return value
+        }
+        if (value.isEmpty) {
+            return addValue
+        } else {
+            return value + "," + addValue
+        }
+    }
+    
     
     func collectStation () {
     
@@ -99,7 +219,9 @@ class StationDetail: UIViewController, UIAlertViewDelegate {
         table.statId = group_id
         var rows = table.selectAll()
         if (rows.count > 0) {
+            var sureBtn: UIAlertView = UIAlertView(title: "", message: "该站已收藏！", delegate: self, cancelButtonTitle: "确定")
             
+            sureBtn.show()
         } else {
             table.reset()
             table.favoType = "01"
@@ -180,55 +302,22 @@ class StationDetail: UIViewController, UIAlertViewDelegate {
         
     }
 
-    
-    
-    @IBAction func chinaSegmentChanged(sender: UISegmentedControl) {
-    
-        if (sender.selectedSegmentIndex == 0) {
-        
-            if (weSegment.selectedSegmentIndex == 0) {
-                arrTime = cellChinaTime.componentsSeparatedByString(",")
-            } else {
-                arrTime = cellChinaWETime.componentsSeparatedByString(",")
-            }
-            
-            for (var i = 0; i < arrTime.count; i++) {
-                (self.scrollView.viewWithTag(300 + i) as UILabel).text = arrTime[i]
-            }
-        } else {
-        
-            if (weSegment.selectedSegmentIndex == 0) {
-                arrTime = cellJapanTime.componentsSeparatedByString(",")
-            } else {
-                arrTime = cellJapanWETime.componentsSeparatedByString(",")
-            }
-            
-            for (var i = 0; i < arrTime.count; i++) {
-                (self.scrollView.viewWithTag(300 + i) as UILabel).text = arrTime[i]
-            }
-        }
-    }
-    
     @IBAction func weekendSegmentChanged(sender: UISegmentedControl) {
         
         if (sender.selectedSegmentIndex == 0) {
-            
-            if (chaSegment.selectedSegmentIndex == 0) {
-                arrTime = cellChinaTime.componentsSeparatedByString(",")
-            } else {
-                arrTime = cellJapanTime.componentsSeparatedByString(",")
+            arrTime = cellJapanTime.componentsSeparatedByString(",")
+
+            for (var i = 0; i < arrTime.count; i++) {
+                (self.scrollView.viewWithTag(300 + i) as UILabel).text = arrTime[i]
             }
+        } else if (sender.selectedSegmentIndex == 1) {
+            arrTime = cellJapanWETime.componentsSeparatedByString(",")
             
             for (var i = 0; i < arrTime.count; i++) {
                 (self.scrollView.viewWithTag(300 + i) as UILabel).text = arrTime[i]
             }
         } else {
-            
-            if (chaSegment.selectedSegmentIndex == 0) {
-                arrTime = cellChinaWETime.componentsSeparatedByString(",")
-            } else {
-                arrTime = cellJapanWETime.componentsSeparatedByString(",")
-            }
+            arrTime = cellJapanHolidayTime.componentsSeparatedByString(",")
             
             for (var i = 0; i < arrTime.count; i++) {
                 (self.scrollView.viewWithTag(300 + i) as UILabel).text = arrTime[i]
@@ -243,7 +332,12 @@ class StationDetail: UIViewController, UIAlertViewDelegate {
         }
         
         arrClose = cellClose.componentsSeparatedByString(",")
-        arrTime = cellChinaTime.componentsSeparatedByString(",")
+        arrTime = cellJapanTime.componentsSeparatedByString(",")
+        var arrLine = cellLine.componentsSeparatedByString(",")
+        
+        if (arrClose.count != arrTime.count) {
+            return
+        }
         
         for (var i = 0; i < arrClose.count; i++) {
             
@@ -252,7 +346,7 @@ class StationDetail: UIViewController, UIAlertViewDelegate {
             
             var icon: UIImageView = UIImageView()
             icon.frame = CGRectMake(0, 8.5, 18, 18)
-            icon.image = UIImage(named: "tablecell_lineicon_mini_g.png")
+            icon.image = lineImage(arrLine[i])
             time1.addSubview(icon)
             
             var open1: UILabel = UILabel()
@@ -270,38 +364,64 @@ class StationDetail: UIViewController, UIAlertViewDelegate {
             time1.addSubview(open2)
             
             self.scrollView.addSubview(time1)
-            
         }
         
-        var btnTime: UIButton = UIButton()
-        btnTime.frame = CGRectMake(20, CGFloat(220 + arrClose.count * 35 + 15), 280, 35)
-        btnTime.backgroundColor = UIColor.whiteColor()
-        btnTime.setTitle("地铁时刻表", forState: UIControlState.Normal)
-        btnTime.setTitleColor(UIColor.blueColor(), forState: UIControlState.Normal)
-        btnTime.setTitleColor(UIColor.lightGrayColor(), forState: UIControlState.Highlighted)
-        btnTime.layer.borderWidth = 1
-        btnTime.layer.cornerRadius = 4
         
-        btnTime.addTarget(self, action: "showTime", forControlEvents: UIControlEvents.TouchUpInside)
-        
-        self.scrollView.addSubview(btnTime)
-        
-        var btnFacility: UIButton = UIButton()
-        btnFacility.frame = CGRectMake(20, btnTime.frame.origin.y + 50, 280, 35)
-        btnFacility.setTitle("站内设施", forState: UIControlState.Normal)
-        btnFacility.setTitleColor(UIColor.blueColor(), forState: UIControlState.Normal)
-        
-        btnFacility.addTarget(self, action: "showFacility", forControlEvents: UIControlEvents.TouchUpInside)
-        
-        self.scrollView.addSubview(btnFacility)
-  
     }
     
-    func showTime() {
+    func addStationSelect() {
+
+        var table = UITableView()
+        table.frame = CGRectMake(5, CGFloat(220 + arrClose.count * 35 + 15), 295, 172)
+        table.delegate = self
+        table.dataSource = self
+        table.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0)
+
+        self.scrollView.addSubview(table)
+        
+        scrollView.contentSize = CGSizeMake(320, table.frame.origin.y + 190)
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell: UITableViewCell = UITableViewCell()
+        cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+        cell.selectionStyle = UITableViewCellSelectionStyle.None
+        
+        cell.textLabel?.text = selectList[indexPath.row]
+        
+        return cell
+    }
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 43
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 4
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        switch (indexPath.row) {
+        case 0:
+            pushStationMap()
+        case 1:
+            showExitMap()
+        case 2:
+            pushStationMap()
+        case 3:
+            showFacility()
+        default:
+            pushStationMap()
+        }
+    }
+    
+    @IBAction func showTime() {
     
         var timeDetail: TimeTable = self.storyboard?.instantiateViewControllerWithIdentifier("TimeTable") as TimeTable
         
         timeDetail.statId = stat_id
+        timeDetail.lineArr = statSeqArr
+        timeDetail.endStationArr = arrClose
         
         self.navigationController?.pushViewController(timeDetail, animated: true)
     }
@@ -312,7 +432,43 @@ class StationDetail: UIViewController, UIAlertViewDelegate {
         
         self.navigationController?.pushViewController(facilityList, animated: true)
     }
+    
+    func showExitMap() {
+        var exitMap: ExitMap = self.storyboard?.instantiateViewControllerWithIdentifier("ExitMap") as ExitMap
+        
+        self.navigationController?.pushViewController(exitMap, animated: true)
+    }
 
+    
+    func lineImage(lineNum: String) -> UIImage {
+        
+        var image = UIImage(named: "tablecell_lineicon_mini_c.png")
+        switch (lineNum) {
+            
+        case "28005":
+            image = UIImage(named: "tablecell_lineicon_mini_c.png")
+        case "28010":
+            image = UIImage(named: "tablecell_lineicon_mini_f.png")
+        case "28001":
+            image = UIImage(named: "tablecell_lineicon_mini_g.png")
+        case "28003":
+            image = UIImage(named: "tablecell_lineicon_mini_h.png")
+        case "28002":
+            image = UIImage(named: "tablecell_lineicon_mini_m.png")
+        case "28009":
+            image = UIImage(named: "tablecell_lineicon_mini_n.png")
+        case "28004":
+            image = UIImage(named: "tablecell_lineicon_mini_t.png")
+        case "28006":
+            image = UIImage(named: "tablecell_lineicon_mini_y.png")
+        case "28008":
+            image = UIImage(named: "tablecell_lineicon_mini_z.png")
+        default:
+            image = UIImage(named: "tablecell_lineicon_mini_c.png")
+        }
+        
+        return image
+    }
     
     func stationIcon(statSeq: String) -> UIImage {
         var image = UIImage(named: "station_icon_c-01.png")

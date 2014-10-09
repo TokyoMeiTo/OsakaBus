@@ -14,23 +14,21 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet var segment: UISegmentedControl!
     
     
-    var lineArr = [[String]()]
-    
     var historyArr = [String]()
     
     var stationArr: NSMutableArray = NSMutableArray.array()
     // 换乘线路
     var changeLineArr: NSMutableArray = NSMutableArray.array()
+    // 收藏的路径
+    var ruteArr: NSMutableArray = NSMutableArray.array()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        lineArr = [["上海火车站","真北路"], ["上海马戏城","宜山路"],["耀华路","江苏路"]]
         historyArr = ["上野", "浅草桥", "大手町"]
 
+        odbRoute()
         odbStation()
-//        self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
     
     override func didReceiveMemoryWarning() {
@@ -69,8 +67,42 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     
-    func removeSubway() {
+    func odbRoute() {
+        var table = UsrT03FavoriteTable()
+        var routeTable = LinT04RouteTable()
+        
+        table.favoType = "04"
+        var rows: NSArray = table.selectAll()
+        
+        for key in rows {
+            
+            key as UsrT03FavoriteTable
+            
+            var ruteId = key.item(USRT03_RUTE_ID) as String
+            routeTable.ruteId = ruteId
+            var ruteRows = routeTable.selectAll()
+            if (ruteRows.count > 0) {
+                ruteArr.addObject(ruteRows[0])
+            }
+        }
+
+    }
     
+    
+    func removeSubway(index: Int) -> Bool {
+        var table = UsrT03FavoriteTable()
+        var map: UsrT03FavoriteTable = stationArr[index] as UsrT03FavoriteTable
+        table.rowid = map.rowid
+        
+        return table.delete()
+    }
+    
+    func removeRute(index: Int) -> Bool {
+        var table = UsrT03FavoriteTable()
+        var map: UsrT03FavoriteTable = ruteArr[index] as UsrT03FavoriteTable
+        table.rowid = map.rowid
+        
+        return table.delete()
     }
     
     
@@ -85,7 +117,7 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         if (segment.selectedSegmentIndex == 0) {
             
-            return lineArr.count
+            return ruteArr.count
         } else if (segment.selectedSegmentIndex == 1) {
             return stationArr.count
         } else {
@@ -134,12 +166,14 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
             let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("LineCell", forIndexPath: indexPath) as UITableViewCell
             
+            var key = ruteArr[indexPath.row] as LinT04RouteTable
+            
             var openStation =  cell.viewWithTag(301) as UILabel
             var closeStation =  cell.viewWithTag(302) as UILabel
             
-            openStation.text = "起点：" + lineArr[indexPath.row][0]
+            openStation.text = "起点：" + (key.item(LINT04_ROUTE_START_STAT_ID) as String)
             
-            closeStation.text = "终点：" + lineArr[indexPath.row][1]
+            closeStation.text = "终点：" + (key.item(LINT04_ROUTE_TERM_STAT_ID) as String)
             
             return cell
         } else {
@@ -152,17 +186,14 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
             
             return cell
         }
-
-
     }
     
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         
         if (segment.selectedSegmentIndex == 1) {
-            return 43
+            return 45
         } else if (segment.selectedSegmentIndex == 0) {
-        
             return 50
         } else {
             return 43
@@ -176,11 +207,7 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
    func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath!) -> UITableViewCellEditingStyle {
-//       if (table.editing) {
-            return UITableViewCellEditingStyle.Delete
-//        } else {
-//            return UITableViewCellEditingStyle.None
-//        }
+         return UITableViewCellEditingStyle.Delete
     }
     
         func tableView(tableView:UITableView!, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath:NSIndexPath!){
@@ -188,12 +215,16 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
             if(editingStyle == UITableViewCellEditingStyle.Delete){
                 
                 if (segment.selectedSegmentIndex == 1) {
-                    stationArr.removeObjectAtIndex(indexPath.row)
-                    table.reloadData()
-                } else if (segment.selectedSegmentIndex == 0) {
                     
-                    lineArr.removeAtIndex(indexPath.row)
-                    table.reloadData()
+                    if (removeSubway(indexPath.row)) {
+                        stationArr.removeObjectAtIndex(indexPath.row)
+                        table.reloadData()
+                    }
+                } else if (segment.selectedSegmentIndex == 0) {
+                    if (removeRute(indexPath.row)) {
+                        ruteArr.removeObjectAtIndex(indexPath.row)
+                        table.reloadData()
+                    }
                 } else {
                 
                     historyArr.removeAtIndex(indexPath.row)
