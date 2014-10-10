@@ -15,6 +15,7 @@ class TimeTable: UIViewController,UITableViewDelegate,UITableViewDataSource {
     @IBOutlet weak var segment: UISegmentedControl!
     @IBOutlet weak var weekendSegment: UISegmentedControl!
     @IBOutlet weak var statName: UILabel!
+    @IBOutlet weak var statNameKana: UILabel!
     @IBOutlet weak var statIcon: UIImageView!
     @IBOutlet weak var lineView: UIView!
     @IBOutlet weak var lineMenuView: UIView!
@@ -22,6 +23,8 @@ class TimeTable: UIViewController,UITableViewDelegate,UITableViewDataSource {
     
     var statId: String = ""
     var lineId: String = ""
+    // 日文名与假名
+    var nameKana: String?
     
     var selectedIndex = 0
     // tableview的数据源
@@ -30,10 +33,14 @@ class TimeTable: UIViewController,UITableViewDelegate,UITableViewDataSource {
     var destTimeArr1: NSMutableArray = NSMutableArray.array()
     // 方向站segment选择第二个时的数据源
     var destTimeArr2: NSMutableArray = NSMutableArray.array()
+    // 方向站segment选择第三个时的数据源
+    var destTimeArr3: NSMutableArray = NSMutableArray.array()
     
     var lineArr: NSArray = NSArray.array()
     
-    var endStationArr: [String] = [String]()
+//    var endStationArr: [String] = [String]()
+    
+    var dirtStationArr: [String] = [String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,11 +53,14 @@ class TimeTable: UIViewController,UITableViewDelegate,UITableViewDataSource {
         lineMenuView.addGestureRecognizer(tapGesture)
         
         statName.text = statId.station()
+        statNameKana.text = nameKana
+        
         if (lineArr.count > 0) {
             lineId = (lineArr[0] as MstT02StationTable).item(MSTT02_LINE_ID) as String
+            statId = (lineArr[0] as MstT02StationTable).item(MSTT02_STAT_ID) as String
             statIcon.image = lineImageNormal(lineId)
         }
-        
+        odbDirtStatId()
 
         setSegment()
         
@@ -87,6 +97,17 @@ class TimeTable: UIViewController,UITableViewDelegate,UITableViewDataSource {
         lineMenuView.hidden = true
     }
     
+    func odbDirtStatId() {
+        var table = LinT01TrainScheduleTrainTable()
+        var rows = table.excuteQuery("select * from LINT01_TRAIN_SCHEDULE where 1 = 1 and STAT_ID = '\(statId)' and FIRST_TRAIN_FLAG = '1' and SCHE_TYPE = '1'")
+        
+        dirtStationArr = [String]()
+        for key in rows {
+            key as LinT01TrainScheduleTrainTable
+            dirtStationArr.append(key.item(LINT01_TRAIN_SCHEDULE_DIRT_STAT_ID) as String)
+        }
+    }
+    
     func addLine() {
         
         for (var i = 0; i < lineArr.count; i++) {
@@ -118,36 +139,51 @@ class TimeTable: UIViewController,UITableViewDelegate,UITableViewDataSource {
         selectedIndex = sender.view!.tag - 300
         var key = lineArr[selectedIndex] as MstT02StationTable
         lineId = key.item(MSTT02_LINE_ID) as String
+        statId = key.item(MSTT02_STAT_ID) as String
+        // 替换图标
+        statIcon.image = lineImageNormal(lineId)
+        odbDirtStatId()
         setSegment()
         destTimeArr1.removeAllObjects()
         destTimeArr2.removeAllObjects()
         allTimeArr.removeAllObjects()
         odbTime()
+        
+        allTimeArr = destTimeArr1
         table.reloadData()
         
         lineMenuView.hidden = true
     }
     
     func setSegment() {
-        segment.setTitle(getEndStation(0 + 2 * selectedIndex), forSegmentAtIndex: 0)
-        segment.setTitle(getEndStation(1 + 2 * selectedIndex), forSegmentAtIndex: 1)
-    }
-    
-    func getEndStation(index: Int) -> String{
-        var string = ""
-        if (endStationArr.count == 0){
-            return string
+        if (dirtStationArr.count > 0) {
+            segment.removeAllSegments()
+            for (var i = 0; i < dirtStationArr.count; i++) {
+                segment.insertSegmentWithTitle(dirtStationArr[i].station(), atIndex: i, animated: false)
+//                segment.setTitle(dirtStationArr[i].station(), forSegmentAtIndex: i)
+            }
+            
+            segment.selectedSegmentIndex = 0
+
         }
         
-        if (index < endStationArr.count) {
-            string = endStationArr[index]
-        } else {
-            string = endStationArr[endStationArr.count - 1]
-        }
-        
-        return string
     }
     
+//    func getEndStation(index: Int) -> String{
+//        var string = ""
+//        if (endStationArr.count == 0){
+//            return string
+//        }
+//        
+//        if (index < endStationArr.count) {
+//            string = endStationArr[index]
+//        } else {
+//            string = endStationArr[endStationArr.count - 1]
+//        }
+//        
+//        return string
+//    }
+//    
     
     func odbTime() {
         
@@ -161,21 +197,21 @@ class TimeTable: UIViewController,UITableViewDelegate,UITableViewDataSource {
         var table = LinT01TrainScheduleTrainTable()
         table.reset()
         table.statId = statId
-        table.dirtStatId = getDirtStatId(lineId, type: index)
+        table.dirtStatId = dirtStationArr[index]
         table.scheType = "1"
         var timeTypeArr1 = table.selectAll()
         
         
         table.reset()
         table.statId = statId
-        table.dirtStatId = getDirtStatId(lineId, type: index)
+        table.dirtStatId = dirtStationArr[index]
         table.scheType = "2"
         var timeTypeArr2 = table.selectAll()
         
         
         table.reset()
         table.statId = statId
-        table.dirtStatId = getDirtStatId(lineId, type: index)
+        table.dirtStatId = dirtStationArr[index]
         table.scheType = "3"
         var timeTypeArr3 = table.selectAll()
         
@@ -183,10 +219,14 @@ class TimeTable: UIViewController,UITableViewDelegate,UITableViewDataSource {
             destTimeArr1.addObject(initTimeArr(timeTypeArr1))
             destTimeArr1.addObject(initTimeArr(timeTypeArr2))
             destTimeArr1.addObject(initTimeArr(timeTypeArr3))
-        } else {
+        } else if (index == 1) {
             destTimeArr2.addObject(initTimeArr(timeTypeArr1))
             destTimeArr2.addObject(initTimeArr(timeTypeArr2))
             destTimeArr2.addObject(initTimeArr(timeTypeArr3))
+        } else {
+            destTimeArr3.addObject(initTimeArr(timeTypeArr1))
+            destTimeArr3.addObject(initTimeArr(timeTypeArr2))
+            destTimeArr3.addObject(initTimeArr(timeTypeArr3))
         }
         
         
@@ -325,11 +365,21 @@ class TimeTable: UIViewController,UITableViewDelegate,UITableViewDataSource {
             view.frame = CGRectMake(0, 0, 320, cell.frame.height)
             view.tag = 401
             
+            var time = "\(5+indexPath.row)"
+            if (time == "24") {
+                time = "00"
+            }
             var timeText: UILabel = UILabel()
             timeText.frame = CGRectMake(0, 0, 45, cell.frame.height)
-            timeText.text = "\(5+indexPath.row)"
+            timeText.text = time
             timeText.textAlignment = NSTextAlignment.Center
-            timeText.backgroundColor = UIColor.lightGrayColor()
+            if (indexPath.row % 2 == 0) {
+                cell.backgroundColor = UIColor(red: 254/255, green: 251/255, blue: 251/255, alpha: 1)
+                timeText.backgroundColor = UIColor(red: 253/255, green: 205/255, blue: 212/255, alpha: 1)
+            } else {
+                timeText.backgroundColor = UIColor(red: 243/255, green: 242/255, blue: 242/255, alpha: 1)
+            }
+            
             
             view.addSubview(timeText)
             
@@ -623,150 +673,59 @@ class TimeTable: UIViewController,UITableViewDelegate,UITableViewDataSource {
         return image
     }
 
-    
-    func getDirtStatId(lineId: String, type: Int) -> String{
-        var dirtStatId = ""
-        switch (lineId) {
-        case "28001":
-            if (type == 0) {
-                dirtStatId = "2800119"
-            } else {
-                dirtStatId = "2800101"
-            }
-        case "28003":
-            if (type == 0) {
-                dirtStatId = "2800321"
-            } else {
-                dirtStatId = "2800301"
-            }
-        case "28004":
-            if (type == 0) {
-                dirtStatId = "2800423"
-            } else {
-                dirtStatId = "2800401"
-            }
-        case "28005":
-            if (type == 0) {
-                dirtStatId = "2800520"
-            } else {
-                dirtStatId = "2800501"
-            }
-        case "28006":
-            if (type == 0) {
-                dirtStatId = "2800624"
-            } else {
-                dirtStatId = "2800601"
-            }
-        case "28008":
-            if (type == 0) {
-                dirtStatId = "2800814"
-            } else {
-                dirtStatId = "2800801"
-            }
-        case "28009":
-            if (type == 0) {
-                dirtStatId = "2800919"
-            } else {
-                dirtStatId = "2800901"
-            }
-        case "28010":
-            if (type == 0) {
-                dirtStatId = "2801016"
-            } else {
-                dirtStatId = "2801001"
-            }
-        case "28002":
-            if (type == 0) {
-                dirtStatId = "2800228"
-            } else if (type == 1)  {
-                dirtStatId = "2800201"
-            } else {
-                
-            }
-        default:
-            dirtStatId = "2800119"
-        }
-        
-        return dirtStatId
-    }
-    
-    func getAllDirtStatId(lineId: String, statId: String) -> [String]{
-        var dirtStatIdArr = [String]()
-        switch (lineId) {
-        case "28001":
-            if (statId == "2800119") {
-                dirtStatIdArr = ["2800101"]
-            } else if (statId == "2800101") {
-                dirtStatIdArr = ["2800119"]
-            } else {
-                dirtStatIdArr = ["2800101","2800119"]
-            }
-        case "28003":
-            if (statId == "2800321") {
-                dirtStatIdArr = ["2800301"]
-            } else if (statId == "2800301") {
-                dirtStatIdArr = ["2800321"]
-            } else {
-                dirtStatIdArr = ["2800301","2800321"]
-            }
-        case "28004":
-            if (statId == "2800423") {
-                dirtStatIdArr = ["2800401"]
-            } else if (statId == "2800401") {
-                dirtStatIdArr = ["2800423"]
-            } else {
-                dirtStatIdArr = ["2800401","2800423"]
-            }
-        case "28005":
-            if (statId == "2800520") {
-                dirtStatIdArr = ["2800501"]
-            } else if (statId == "2800501") {
-                dirtStatIdArr = ["2800520"]
-            } else {
-                dirtStatIdArr = ["2800501","2800520"]
-            }
-        case "28006":
-            if (statId == "2800624") {
-                dirtStatIdArr = ["2800601"]
-            } else if (statId == "2800601") {
-                dirtStatIdArr = ["2800624"]
-            } else {
-                dirtStatIdArr = ["2800601","2800624"]
-            }
-        case "28008":
-            if (statId == "2800814") {
-                dirtStatIdArr = ["2800801"]
-            } else if (statId == "2800801") {
-                dirtStatIdArr = ["2800814"]
-            } else {
-                dirtStatIdArr = ["2800801","2800814"]
-            }
-        case "28009":
-            if (statId == "2800919") {
-                dirtStatIdArr = ["2800901"]
-            } else if (statId == "2800901") {
-                dirtStatIdArr = ["2800919"]
-            } else {
-                dirtStatIdArr = ["2800901","2800919"]
-            }
-        case "28010":
-            if (statId == "2801016") {
-                dirtStatIdArr = ["2801001"]
-            } else if (statId == "2801001") {
-                dirtStatIdArr = ["2801016"]
-            } else {
-                dirtStatIdArr = ["2801001","2801016"]
-            }
-        case "28002":
-            if (statId == "2800228") {
-                dirtStatIdArr = ["2800201"]
-            } else if (statId == "2800201") {
-                dirtStatIdArr = ["2800228"]
-            } else if (statId == "2800201") {
-                dirtStatIdArr = ["2800228"]
-            } else {
-                dirtStatIdArr = ["2801001","2801016"]
-            }
+//    
+//    func getDirtStatId(lineId: String, type: Int) -> String{
+//        var dirtStatId = ""
+//        switch (lineId) {
+//        case "28001":
+//            if (type == 0) {
+//                dirtStatId = "2800119"
+//            } else {
+//                dirtStatId = "2800101"
+//            }
+//        case "28003":
+//            if (type == 0) {
+//                dirtStatId = "2800321"
+//            } else {
+//                dirtStatId = "2800301"
+//            }
+//        case "28004":
+//            if (type == 0) {
+//                dirtStatId = "2800423"
+//            } else {
+//                dirtStatId = "2800401"
+//            }
+//        case "28005":
+//            if (type == 0) {
+//                dirtStatId = "2800520"
+//            } else {
+//                dirtStatId = "2800501"
+//            }
+//        case "28006":
+//            if (type == 0) {
+//                dirtStatId = "2800624"
+//            } else {
+//                dirtStatId = "2800601"
+//            }
+//        case "28008":
+//            if (type == 0) {
+//                dirtStatId = "2800814"
+//            } else {
+//                dirtStatId = "2800801"
+//            }
+//        case "28009":
+//            if (type == 0) {
+//                dirtStatId = "2800919"
+//            } else {
+//                dirtStatId = "2800901"
+//            }
+//        case "28010":
+//            if (type == 0) {
+//                dirtStatId = "2801016"
+//            } else {
+//                dirtStatId = "2801001"
+//            }
+//        case "28002":
 //            if (type == 0) {
 //                dirtStatId = "2800228"
 //            } else if (type == 1)  {
@@ -774,12 +733,14 @@ class TimeTable: UIViewController,UITableViewDelegate,UITableViewDataSource {
 //            } else {
 //                
 //            }
-        default:
-            dirtStatIdArr = ["2800201"]
-        }
-        
-        return dirtStatIdArr
-    }
+//        default:
+//            dirtStatId = "2800119"
+//        }
+//        
+//        return dirtStatId
+//    }
+//    
+//  
 
     
 }

@@ -49,7 +49,7 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
     // 站点statId、statSeq、lineId数组
     var statSeqArr: NSArray = NSArray.array()
     // 其他链接
-    var selectList = ["车站结构图", "车站位置图", "站内商业设施", "车站设施"]
+    var selectList = ["车站时刻表", "车站结构图", "车站位置图", "站内商业设施", "车站设施"]
     
     required init(coder aDecoder: NSCoder) {
         
@@ -78,7 +78,15 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
         addLineTime()
         // 添加站点相关信息的链接
         addStationSelect()
+        
+        odbSchedule()
 
+    }
+    
+    func odbSchedule() {
+        var table = LinT01TrainScheduleTrainTable()
+        
+        var rows = table.excuteQuery("select * from LINT01_TRAIN_SCHEDULE where 1 = 1 and STAT_ID = '2800116' and (FIRST_TRAIN_FLAG = '1' or FIRST_TRAIN_FLAG = '9')")
     }
     
     func odbStation(){
@@ -372,43 +380,58 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
     func addStationSelect() {
 
         var table = UITableView()
-        table.frame = CGRectMake(5, CGFloat(220 + arrClose.count * 35 + 15), 295, 172)
+        table.frame = CGRectMake(0, CGFloat(220 + arrClose.count * 35 + 15), 320, CGFloat(46 * selectList.count))
         table.delegate = self
         table.dataSource = self
         table.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0)
 
         self.scrollView.addSubview(table)
         
-        scrollView.contentSize = CGSizeMake(320, table.frame.origin.y + 190)
+        scrollView.contentSize = CGSizeMake(320, table.frame.origin.y + CGFloat(46 * selectList.count + 30))
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell: UITableViewCell = UITableViewCell()
+        cell.backgroundColor = UIColor(red: 245/255, green: 246/255, blue: 248/255, alpha: 1)
         cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
         cell.selectionStyle = UITableViewCellSelectionStyle.None
         
-        cell.textLabel?.text = selectList[indexPath.row]
+        var image = UIImageView()
+        var imageName = "station-link-" + (indexPath.row + 1).description
+        image.frame = CGRectMake(15, 8, 30, 30)
+        image.image = UIImage(named: imageName)
+        
+        cell.addSubview(image)
+        
+        var content = UILabel()
+        content.frame = CGRectMake(55, 0, 200, 46)
+        content.text = selectList[indexPath.row]
+        content.font = UIFont.systemFontOfSize(20)
+        
+        cell.addSubview(content)
         
         return cell
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 43
+        return 46
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4
+        return selectList.count
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         switch (indexPath.row) {
         case 0:
-            pushStationMap()
+            showTime()
         case 1:
-            showExitMap()
-        case 2:
             pushStationMap()
+        case 2:
+            showExitMap()
         case 3:
+            pushStationMap()
+        case 4:
             showFacility()
         default:
             pushStationMap()
@@ -421,7 +444,7 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
         
         timeDetail.statId = stat_id
         timeDetail.lineArr = statSeqArr
-        timeDetail.endStationArr = arrClose
+        timeDetail.nameKana = cellJPNmaeLabel.text
         
         self.navigationController?.pushViewController(timeDetail, animated: true)
     }
@@ -429,6 +452,8 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
     func showFacility() {
     
         var facilityList: FacilityList = self.storyboard?.instantiateViewControllerWithIdentifier("FacilityList") as FacilityList
+        
+        facilityList.statId = group_id
         
         self.navigationController?.pushViewController(facilityList, animated: true)
     }

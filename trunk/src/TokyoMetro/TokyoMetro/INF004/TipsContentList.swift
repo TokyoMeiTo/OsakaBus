@@ -50,6 +50,18 @@ class TipsContentList: UIViewController,UITableViewDelegate,UITableViewDataSourc
     }
     
     
+//    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+//        var view = UIView()
+//        view.frame = CGRectMake(0, 0, 320, 30)
+//        view.backgroundColor = UIColor(red: 103, green: 188, blue: 228, alpha: 1)
+//        var title = UILabel()
+//        title.frame = CGRectMake(15, 0, 250, 30)
+//        
+//        view.addSubview(title)
+//        
+//        return view
+//    }
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tipsArr.count
     }

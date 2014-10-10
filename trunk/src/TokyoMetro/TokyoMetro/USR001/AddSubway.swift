@@ -135,8 +135,9 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
             var map: UsrT03FavoriteTable = stationArr[indexPath.row] as UsrT03FavoriteTable
             
             var textName = cell.viewWithTag(201) as UILabel
-            textName.text = (map.item(USRT03_STAT_ID) as? String)?.station()
+            textName.text = (map.item(USRT03_STAT_ID) as String).station()
             
+//            var textJPName = cell.viewWithTag(203) as UILabel
             
             var view = cell.viewWithTag(202) as UIView!
             
@@ -145,7 +146,7 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
             }
             
             var lineView = UIView()
-            lineView.frame = CGRectMake(195, 0, 110, 45)
+            lineView.frame = CGRectMake(195, 5, 110, 45)
             lineView.tag = 202
             
             var arrStation: [String] = changeLineArr[indexPath.row] as [String]
@@ -192,9 +193,9 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         
         if (segment.selectedSegmentIndex == 1) {
-            return 45
+            return 55
         } else if (segment.selectedSegmentIndex == 0) {
-            return 50
+            return 55
         } else {
             return 43
         }
