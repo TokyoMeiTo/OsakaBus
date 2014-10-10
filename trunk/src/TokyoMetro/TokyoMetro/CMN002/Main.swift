@@ -10,31 +10,32 @@ import UIKit
 
 class Main: UIViewController,UIScrollViewDelegate {
 //    
-    @IBOutlet weak var menuView: UIView!
-    @IBOutlet weak var bodyView: UIView!
-
-
+    @IBOutlet weak var mMenuView: UIView!
+    @IBOutlet weak var mBodyView: UIView!
+    @IBOutlet weak var mBtnToSearchRoute: UIBarButtonItem!
+    @IBOutlet weak var mScrollView: UIScrollView!
+    @IBOutlet weak var mImgLineGraph: UIImageView!
+    @IBOutlet weak var mStationInfoLayerView: UIView!
+    @IBOutlet weak var mMainWrapper:UIView!
+    
+    @IBOutlet weak var mPopupStationView: UIView!
+    
+    @IBOutlet weak var mPopupStationNameJP: UILabel!
+    @IBOutlet weak var mPopupStationName: UILabel!
+    @IBOutlet weak var mPopupBtnStart: UIButton!
+    @IBOutlet weak var mPopupBtnEnd: UIButton!
+    @IBOutlet weak var mPopupBtnMore: UIButton!
+    @IBOutlet weak var mPopupViewSetImage: UIView!
+    
+    @IBOutlet weak var mBtnImgAdd: UIButton!
+    @IBOutlet weak var mBtnImgDec: UIButton!
+    
     // 判断是否要显示底部menu
-    var isMenuShow = false
+    var mIsMenuShow = false
     // 屏幕尺寸
-    var size: CGSize!
+    var mScreenSize: CGSize!
     // 设为起点的车站id
-    var setCuttentStationID : String = ""
-
-    
-    @IBOutlet weak var btnToSearchRoute: UIBarButtonItem!
-    @IBOutlet weak var scroll: UIScrollView!
-    @IBOutlet weak var lineImage: UITouchableView!
-    
-    @IBOutlet weak var popStation: UIView!
-    @IBOutlet weak var poplblSationNameJP: UILabel!
-    @IBOutlet weak var poplblStationName: UILabel!
-    @IBOutlet weak var popbtnStart: UIButton!
-    @IBOutlet weak var popbtnEnd: UIButton!
-    @IBOutlet weak var popbtnMore: UIButton!
-    @IBOutlet weak var popviewSetImage: UIView!
-    
-    @IBOutlet weak var lineImagePop: UIView!
+    var mCuttentStationID : String = ""
     
     
     // 记录点击点的坐标
@@ -44,73 +45,93 @@ class Main: UIViewController,UIScrollViewDelegate {
     // 记录设置的终点车站id
     var setStationEndId : String = ""
     
+    // 显示弹框的车站的车站名 JP
+    var mst02StationNameJP : String = ""
+    // 显示弹框的车站的车站id
+    var selectStationID : String = ""
+    // 显示弹框的车站的metroId
+    var selectStationMetroID : String = ""
+    
     var stationGrideFromX:CGFloat = 0.0
     var stationGrideFromY:CGFloat = 0.0
     var stationGrideToX:CGFloat = 0.0
     var stationGrideToY:CGFloat = 0.0
     
-    var tagStartUIShade  = 1
-    var tagEndUIShade  = 1
-    var tagUIShade  = 1
     
-    var uiStartShade : UIView = UIView()
-    var uiEndShade : UIView = UIView()
-    var uiShade : UIView = UIView()
+    // 设置为起点的背景色
+    var tagStartmViewShade  = 1
+    // 设置为终点的背景色
+    var tagEndmViewShade  = 1
+    // 选中车站的背景色
+    var tagmViewShade  = 1
+    
+    let IMAGEDOUBLEACTION: Selector = "doubleTapAction:"
+    let IMAGESINGLEACTION: Selector = "singleTapAction:"
+    let POPUPVIEWBTNACTION: Selector = "setStation:"
+    let CONTROLLIMG: Selector = "ControllImage:"
+    
+    var mViewStartShade : UIView = UIView()
+    var mViewEndShade : UIView = UIView()
+    var mViewShade : UIView = UIView()
+    
+    var cmn002Model:CMN002Model = CMN002Model();
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        size = UIScreen.mainScreen().bounds.size
+        // ScreenSize
+        self.mScreenSize = UIScreen.mainScreen().bounds.size
 
-        
-        scroll.minimumZoomScale = 0.5
-        scroll.maximumZoomScale = 10
-        scroll.zoomScale = 1.5
+        // ScrollView
+        self.mScrollView.minimumZoomScale = self.mScrollView.frame.size.height / self.mMainWrapper.frame.size.height
+        self.mScrollView.maximumZoomScale = self.mMainWrapper.frame.size.width / self.mScrollView.frame.size.width
+        self.mScrollView.zoomScale = 1.0
+        self.mScrollView.contentSize = self.mMainWrapper.frame.size
 
-        self.lineImagePop.alpha = 0.0
-        lineImage.addSubview(lineImagePop)
-        popviewSetImage.alpha = 1.0
+        self.mStationInfoLayerView.hidden = false
+
+        self.mPopupStationView.hidden = true
+        self.mPopupStationView.backgroundColor = UIColor(patternImage: mImgLineGraphNormal("MainPop"))
         
-        self.popStation.hidden = true
-        self.popStation.layer.borderWidth = 1
-        self.popStation.layer.cornerRadius = 4
-        self.popStation.alpha = 0.8
         
-        popbtnStart.addTarget(self, action: "setStation:", forControlEvents: UIControlEvents.TouchUpInside)
-        popbtnEnd.addTarget(self, action: "setStation:", forControlEvents: UIControlEvents.TouchUpInside)
-        popbtnMore.addTarget(self, action: "setStation:", forControlEvents: UIControlEvents.TouchUpInside)
+        self.mPopupStationView.layer.borderWidth = 1
+        self.mPopupStationView.layer.cornerRadius = 4
+        // self.mPopupViewSetImage.alpha = 0.5
+        
+        //
+        mPopupBtnStart.addTarget(self, action: POPUPVIEWBTNACTION, forControlEvents: UIControlEvents.TouchUpInside)
+        mPopupBtnEnd.addTarget(self, action: POPUPVIEWBTNACTION, forControlEvents: UIControlEvents.TouchUpInside)
+        mPopupBtnMore.addTarget(self, action: POPUPVIEWBTNACTION, forControlEvents: UIControlEvents.TouchUpInside)
+        
+        mBtnImgAdd.addTarget(self, action: CONTROLLIMG, forControlEvents: UIControlEvents.TouchUpInside)
+        mBtnImgDec.addTarget(self, action: CONTROLLIMG, forControlEvents: UIControlEvents.TouchUpInside)
         
         // 设置双击放大事件
         var myTapGesture :UITapGestureRecognizer = UITapGestureRecognizer()
-        myTapGesture.addTarget(self, action: "doubleTapAction:")
-        self.lineImage.userInteractionEnabled = true
+        myTapGesture.addTarget(self, action: IMAGEDOUBLEACTION)
+        self.mMainWrapper.userInteractionEnabled = true
         myTapGesture.numberOfTapsRequired = 2
         myTapGesture.numberOfTouchesRequired = 1
-        lineImage.addGestureRecognizer(myTapGesture)
+        mMainWrapper.addGestureRecognizer(myTapGesture)
         
         // 设置单击读取改点信息事件
         var mySingleTapGesture :UITapGestureRecognizer = UITapGestureRecognizer()
-        mySingleTapGesture.addTarget(self, action: "singleTapAction")
-        self.lineImage.userInteractionEnabled = true
+        mySingleTapGesture.addTarget(self, action: IMAGESINGLEACTION)
+        self.mMainWrapper.userInteractionEnabled = true
         mySingleTapGesture.numberOfTapsRequired = 1
         mySingleTapGesture.numberOfTouchesRequired = 1
-        lineImage.addGestureRecognizer(mySingleTapGesture)
-        
-     
+        mMainWrapper.addGestureRecognizer(mySingleTapGesture)
         
     }
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
-        isMenuShow = false
-        
-        menuView.frame = CGRectMake(0, size.height - 65, size.width, 65)
-        bodyView.hidden = true
-        bodyView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.4)
+        mIsMenuShow = false
+        mMenuView.frame = CGRectMake(0, mScreenSize.height - 65, mScreenSize.width, 65)
+        mBodyView.hidden = true
+        mBodyView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.4)
     }
-    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -118,47 +139,83 @@ class Main: UIViewController,UIScrollViewDelegate {
     }
     
     func viewForZoomingInScrollView(scrollView: UIScrollView!) -> UIView! {
-        return lineImage
+        return mMainWrapper
     }
+    
     // 双击之后真个scrollView放大
     func doubleTapAction(myTapGesture :UITapGestureRecognizer) {
-        var offsetX:CGFloat = (scroll.bounds.size.width >
-            scroll.contentSize.width) ? (scroll.bounds.size.width - scroll.contentSize.width)/2 : 0.0
-        var offsetY:CGFloat = (scroll.bounds.size.height >
-            scroll.contentSize.height) ? (scroll.bounds.size.height - scroll.contentSize.height)/2 : 0.0
-        self.lineImage.center = CGPointMake(scroll.contentSize.width * 0.5 + offsetX , scroll.contentSize.height * 0.5 + offsetY)
+        var offsetX:CGFloat = (mScrollView.bounds.size.width >
+            mScrollView.contentSize.width) ? (mScrollView.bounds.size.width - mScrollView.contentSize.width)/2 : 0.0
+        var offsetY:CGFloat = (mScrollView.bounds.size.height >
+            mScrollView.contentSize.height) ? (mScrollView.bounds.size.height - mScrollView.contentSize.height)/2 : 0.0
+        
+        self.mMainWrapper.center = CGPointMake(mScrollView.contentSize.width * 0.5 + offsetX , mScrollView.contentSize.height * 0.5 + offsetY)
 
         UIView.animateWithDuration(0.3, animations: { () -> Void in
-            self.scroll.zoomScale = (self.scroll.zoomScale + 1)
+            self.mScrollView.zoomScale = (self.mScrollView.zoomScale + 1)
         })
+    }
+    
+    // 控制图片放大和缩小
+    func ControllImage(sender:UIButton) {
+        var offsetX:CGFloat = (mScrollView.bounds.size.width >
+            mScrollView.contentSize.width) ? (mScrollView.bounds.size.width - mScrollView.contentSize.width)/2 : 0.0
+        var offsetY:CGFloat = (mScrollView.bounds.size.height >
+            mScrollView.contentSize.height) ? (mScrollView.bounds.size.height - mScrollView.contentSize.height)/2 : 0.0
+        
+        self.mMainWrapper.center = CGPointMake(mScrollView.contentSize.width * 0.5 + offsetX , mScrollView.contentSize.height * 0.5 + offsetY)
+        
+        
+        switch (sender) {
+            
+        case self.mBtnImgAdd:
+            if (self.mScrollView.zoomScale < 4) {
+                UIView.animateWithDuration(0.3, animations: { () -> Void in
+                    self.mScrollView.zoomScale = (self.mScrollView.zoomScale + 1)
+                })
+            }
+            
+        case self.mBtnImgDec:
+            
+            if (self.mScrollView.zoomScale > 0.5) {
+                UIView.animateWithDuration(0.3, animations: { () -> Void in
+                    self.mScrollView.zoomScale = (self.mScrollView.zoomScale - 1)
+                })
+            }
+        default:
+                self.mScrollView.zoomScale = self.mScrollView.zoomScale
+
+        }
     }
     
     /** 
      *   展示和收起底部menu菜单
      */
     @IBAction func showMenu() {
-        if (isMenuShow) {
-            isMenuShow = false
+        if (mIsMenuShow) {
+            mIsMenuShow = false
             UIView.animateWithDuration(0.5, animations: { () -> Void in
-                self.menuView.frame = CGRectMake(0, self.size.height - 65, self.size.width, 65)
+                self.mMenuView.frame = CGRectMake(0, self.mScreenSize.height - 65, self.mScreenSize.width, 65)
             })
             // 隐藏遮罩
-            bodyView.hidden = true
+            mBodyView.hidden = true
         } else {
-            isMenuShow = true
+            mIsMenuShow = true
             UIView.animateWithDuration(0.5, animations: { () -> Void in
-                self.menuView.frame = CGRectMake(0, self.size.height - 240, self.size.width, 240)
+                self.mMenuView.frame = CGRectMake(0, self.mScreenSize.height - 240, self.mScreenSize.width, 240)
             })
             // 显示遮罩
-            bodyView.hidden = false
+            mBodyView.hidden = false
         }
     }
     // 根据点击的像素点从db中获取车站id
-    func singleTapAction() {
+    func singleTapAction(sender:UITapGestureRecognizer) {
 
+        var touchedPoint:CGPoint = sender.locationInView(self.mMainWrapper)
+        
         // 获取点击点的像素坐标
-        var touchX :CGFloat = self.lineImage.touchedPoint.x
-        var touchY :CGFloat = self.lineImage.touchedPoint.y
+        var touchX :CGFloat = touchedPoint.x
+        var touchY :CGFloat = touchedPoint.y
 
         locatPoint.x = touchX
         locatPoint.y = touchY
@@ -166,120 +223,56 @@ class Main: UIViewController,UIScrollViewDelegate {
         println("触碰点坐标")
         println("\(locatPoint.x)   \(locatPoint.y)")
         
+        var stationData:CMN002StationData! = cmn002Model.findTouchedStation(touchX, touchY: touchY)
+        //画面显示
         
-        // 根据获取点击点的像素坐标  进行数据库搜索，判断坐标是否是车站坐标
-        
-        var sqlStr = "select * from CMNT03_STATION_GRID where PONT_X_FROM < " + (touchX * 2).description + " and PONT_X_TO > " + (touchX * 2).description + " and PONT_Y_FROM < " + (touchY * 2).description + " and PONT_Y_TO > " + (touchY * 2).description + "" as String
-        var cmnt03table = CmnT03StationGridTable()
-        var cmnt03row = cmnt03table.excuteQuery(sqlStr)
-        
-        if cmnt03row != nil {
-            for value in cmnt03row{
-                value as CmnT03StationGridTable
-                var stationId:AnyObject = value.item(CMNT03_STAT_ID)
-                println("车站信息")
-                println("\(stationId)")
-                
-                stationGrideFromX = value.item(CMNT03_PONT_X_FROM) as CGFloat / 2
-                println("车站信息")
-                println("\(stationGrideFromX)")
-                stationGrideFromY = value.item(CMNT03_PONT_Y_FROM) as CGFloat / 2
-                println("车站信息")
-                println("\(stationGrideFromY)")
-                stationGrideToX = value.item(CMNT03_PONT_X_TO) as CGFloat / 2
-                println("车站信息")
-                println("\(stationGrideToX)")
-                stationGrideToY = value.item(CMNT03_PONT_Y_TO) as CGFloat / 2
-                println("车站信息")
-                println("\(stationGrideToY)")
-
-                
-                // 获取当前站点id
-                self.setCuttentStationID = stationId.description
-                if stationId.description != nil {
-                    
-                    // 车站名
-                    var mst02StationName : String = ""
-                    // GroupID
-                    var mst02GroupId : String = ""
-                    // 车站名 JP
-                     var mst02StationNameJP : String = ""
-                    
-                    var mst02 = MstT02StationTable()
-                    
-                    // 根据搜索到的车站id，去数据库搜索车站名
-                    mst02.statId = stationId.description
-                    var mst02Row = mst02.selectAll()
-                    
-                    for mst02Value in mst02Row {
-                        mst02Value as MstT02StationTable
-                        var mst02ResultStationName:AnyObject = mst02Value.item(MSTT02_STAT_NAME)
-                        println("车站名        string")
-                        println(mst02.statId.station())
-                        println("\(mst02ResultStationName)")
-                        
-                        var mst02ResultGroupId:AnyObject = mst02Value.item(MSTT02_STAT_GROUP_ID)
-                        println("groupID")
-                        println("\(mst02ResultGroupId)")
-                        
-                        var mst02ResultJapName:AnyObject = mst02Value.item(MSTT02_STAT_NAME_EXT1)
-                        println("mst02ResultJapName")
-                        println("\(mst02ResultJapName)")
-                        mst02StationNameJP = mst02ResultJapName.description
-                        mst02StationName = mst02ResultStationName.description
-                        mst02GroupId = mst02ResultGroupId.description
-                    }    
-                    
-                    var mst02RowGroupId : NSArray = mst02.excuteQuery("select LINE_ID from MSTT02_STATION where 1 = 1 and STAT_GROUP_ID = \(mst02GroupId)")
-                    
-                    var lineGroup : NSMutableArray = NSMutableArray.array()
-                    for mst02GroupIdValue in mst02RowGroupId {
-                        mst02GroupIdValue  as MstT02StationTable
-                        var mst02ResultLineId:AnyObject = mst02GroupIdValue.item(MSTT02_LINE_ID)
-                        lineGroup.addObject(mst02ResultLineId)
-                    }
-                    println("lineCount")
-                    println("\(lineGroup.count)")
-
-                    var view = popviewSetImage.viewWithTag(202) as UIView!
-                    
-                    if (view != nil) {
-                        view.removeFromSuperview()
-                    }
-                    var lineView = UIView()
-                    lineView.frame = CGRectMake(0, 0, 160, 25)
-                    lineView.tag = 202
-                    for (var i = 0; i < lineGroup.count; i++) {
-                        var lineGrouplineImg: UIImageView = UIImageView()
-                        lineGrouplineImg.frame = CGRectMake(CGFloat(130 - i * 20), 0, 25, 25)
-                        lineGrouplineImg.image = lineImageNormal(lineGroup[i] as String)
-                        lineView.addSubview(lineGrouplineImg)
-                    }
-                    popviewSetImage.addSubview(lineView)
-                    
-                    
-         
-                    // 将scroll大小固定，设置弹出气泡信息
-                    self.scroll.zoomScale = 1
-                    var offertoPoint : CGPoint = CGPoint()
-                    offertoPoint.x = touchX - 160
-                    offertoPoint.y = -64 + touchY - 266.5
-                    self.scroll.setContentOffset(offertoPoint, animated: true)
-                    
-                    self.poplblStationName.text = mst02StationName
-                    self.poplblSationNameJP.text = mst02StationNameJP
-                    self.popStation.hidden = false
-                    self.popStation.frame = CGRectMake(locatPoint.x - 100, locatPoint.y - 200, 200, 160)
-                    
-                    self.lineImage.addSubview(self.popStation)
-                    addUITag()
-                }
+        if (stationData != nil) {
+            self.mPopupStationName.text = stationData.statNameExt1 as String
+            self.mPopupStationNameJP.text = stationData.statName as String
+            
+            self.mCuttentStationID = stationData.statId as String
+            self.stationGrideFromX = stationData.statFromX / 2
+            self.stationGrideFromY = stationData.statFromY / 2
+            self.stationGrideToX = stationData.statToX / 2
+            self.stationGrideToY = stationData.statToY / 2
+            
+            var mFindeStationLines:NSMutableArray = cmn002Model.findStationLines(stationData)
+            
+            var view = mPopupViewSetImage.viewWithTag(202) as UIView!
+            if (view != nil) {
+                view.removeFromSuperview()
             }
+            var mPopupLineView = UIView()
+            mPopupLineView.frame = CGRectMake(0, 0, 160, 25)
+            mPopupLineView.tag = 202
+            
+            for (var i = 0; i < mFindeStationLines.count; i++) {
+                var mlinesLineImg: UIImageView = UIImageView()
+                mlinesLineImg.frame = CGRectMake(CGFloat(130 - i * 20), 0, 25, 25)
+                mlinesLineImg.image = mImgLineGraphNormal(mFindeStationLines[i] as String)
+                mPopupLineView.addSubview(mlinesLineImg)
+            }
+            mPopupViewSetImage.addSubview(mPopupLineView)
+            
+            
+            // 将scroll大小固定，设置弹出气泡信息
+            self.mScrollView.zoomScale = 1
+            var offertoPoint : CGPoint = CGPoint()
+            offertoPoint.x = touchX - (mScreenSize.width / 2)
+            offertoPoint.y = -64 + touchY - (mScreenSize.height / 2)
+            self.mScrollView.setContentOffset(offertoPoint, animated: true)
+            self.mPopupStationView.frame = CGRectMake(locatPoint.x - 100, locatPoint.y - 200, 200, 160)
+
+
+            
+            self.mPopupStationView.hidden = false
+            
+            addUITag()
         }
     }
     
     // 根据数据库中的路线id获取图片
-    func lineImageNormal(lineNum: String) -> UIImage {
+    func mImgLineGraphNormal(lineNum: String) -> UIImage {
         
         var image = UIImage(named: "tablecell_lineicon_g.png")
         switch (lineNum) {
@@ -302,6 +295,10 @@ class Main: UIViewController,UIScrollViewDelegate {
             image = UIImage(named: "tablecell_lineicon_n.png")
         case "28010":
             image = UIImage(named: "tablecell_lineicon_f.png")
+        case "MainPop":
+            image = UIImage(named: "MainPop.png")
+        case "MainMenu":
+            image = UIImage(named: "MainMenu.png")
             
         default:
             image = UIImage(named: "tablecell_lineicon_g.png")
@@ -314,37 +311,33 @@ class Main: UIViewController,UIScrollViewDelegate {
     // 点击弹框中的设置起点和终点， 记录当前的数据， 完成后跳转页面
     func setStation(sender:UIButton) {
         switch sender {
-        case popbtnStart:
-            self.setStationStartId = self.setCuttentStationID
-            println("setStartStationID      2222222222222222")
-            println("\(setStationStartId)")
+        case mPopupBtnStart:
+            self.setStationStartId = self.mCuttentStationID
             
-            
+            self.mPopupStationView.hidden = true
             addUStartITag()
             
             // 判断终点是否设置，设置了的话，就直接跳查找结果页面
             if (setStationEndId != "") {
-//                popToRouteSearchResult(setStationStartId, statEndID : setStationEndId)
-                    popToRouteSearchResult()
+                popToRouteSearchResult()
             }
 
             
-        case popbtnEnd:
-            self.setStationEndId = self.setCuttentStationID
-            
-            println("setStationEndId        ================")
-            println("\(setStationEndId)")
+        case mPopupBtnEnd:
+            self.setStationEndId = self.mCuttentStationID
+            self.mPopupStationView.hidden = true
             addUEndITag()
+            
             // 判断起点是否设置，设置了的话，就直接跳查找结果页面
             if (setStationStartId != "") {
-//                popToRouteSearchResult(setStationStartId, statEndID : setStationEndId)
                 popToRouteSearchResult()
             }
-        case popbtnMore:
+        case mPopupBtnMore:
             // 跳转到此站详细页面
-            popStation.hidden = true
+            mPopupStationView.hidden = true
+
         default:
-            popStation.hidden = false
+            mPopupStationView.hidden = false
         }
     }
     
@@ -356,71 +349,73 @@ class Main: UIViewController,UIScrollViewDelegate {
 
         routeSearch.startStationText = self.setStationStartId
         routeSearch.endStationText = self.setStationEndId
+        
+        self.setStationStartId = ""
+        self.setStationEndId = ""
         self.navigationController?.pushViewController(routeSearch, animated:true)
     }
     
     // 根据选中的车站的左上角坐标 ，在选中的地方添加半透明遮罩
     func addUStartITag() {
 
-        if self.tagStartUIShade == 2 {
-            uiShade.removeFromSuperview()
+        if self.tagStartmViewShade == 2 {
+            mViewShade.removeFromSuperview()
         }
-        uiStartShade.layer.borderColor = UIColor(red: 255, green: 255, blue: 0, alpha: 0.5).CGColor
-        uiStartShade.layer.borderWidth = 1
-        uiStartShade.layer.cornerRadius = 4
-        uiStartShade.backgroundColor =  UIColor(red: 0, green: 255, blue: 0, alpha: 0.5)
-        uiStartShade.alpha = 0.5
+        mViewStartShade.layer.borderColor = UIColor(red: 255, green: 255, blue: 0, alpha: 0.5).CGColor
+        mViewStartShade.layer.borderWidth = 1
+        mViewStartShade.layer.cornerRadius = 4
+        mViewStartShade.backgroundColor =  UIColor(red: 0, green: 255, blue: 0, alpha: 0.5)
+        mViewStartShade.alpha = 0.5
         
-        uiStartShade.frame = CGRectMake(stationGrideFromX - 5, stationGrideFromY - 5, stationGrideToX -  stationGrideFromX + 10, stationGrideToY -  stationGrideFromY + 10)
-        self.lineImage.addSubview(uiStartShade)
-        self.tagStartUIShade = 2
+        mViewStartShade.frame = CGRectMake(stationGrideFromX - 5, stationGrideFromY - 5, stationGrideToX -  stationGrideFromX + 10, stationGrideToY -  stationGrideFromY + 10)
+        self.mImgLineGraph.addSubview(mViewStartShade)
+        self.tagStartmViewShade = 2
         
     }
     
     // 根据选中的车站的左上角坐标 ，在选中的地方添加半透明遮罩
     func addUEndITag() {
-        
-        
-        if self.tagEndUIShade == 2 {
-            uiShade.removeFromSuperview()
+
+        if self.tagEndmViewShade == 2 {
+            mViewShade.removeFromSuperview()
         }
-        uiEndShade.layer.borderColor = UIColor(red: 0, green: 51, blue: 255, alpha: 0.5).CGColor
-        uiEndShade.layer.borderWidth = 1
-        uiEndShade.layer.cornerRadius = 4
-        uiEndShade.backgroundColor =  UIColor(red: 0, green: 204, blue: 155, alpha: 0.5)
-        uiEndShade.alpha = 0.5
+        mViewEndShade.layer.borderColor = UIColor(red: 0, green: 51, blue: 255, alpha: 0.5).CGColor
+        mViewEndShade.layer.borderWidth = 1
+        mViewEndShade.layer.cornerRadius = 4
+        mViewEndShade.backgroundColor =  UIColor(red: 0, green: 204, blue: 155, alpha: 0.5)
+        mViewEndShade.alpha = 0.5
         
-        uiEndShade.frame = CGRectMake(stationGrideFromX + 5, stationGrideFromY + 5, stationGrideToX -  stationGrideFromX - 10, stationGrideToY -  stationGrideFromY - 10)
+        mViewEndShade.frame = CGRectMake(stationGrideFromX - 5, stationGrideFromY - 5, stationGrideToX -  stationGrideFromX + 10, stationGrideToY -  stationGrideFromY + 10)
         
-        self.lineImage.addSubview(uiEndShade)
         
-        self.tagEndUIShade = 2
+        
+        self.mImgLineGraph.addSubview(mViewEndShade)
+        
+        self.tagEndmViewShade = 2
         
     }
     
     
     // 根据选中的车站的左上角坐标 ，在选中的地方添加半透明遮罩
     func addUITag() {
-        
-        
-        if self.tagUIShade == 2 {
-            uiShade.removeFromSuperview()
+
+        if self.tagmViewShade == 2 {
+            mViewShade.removeFromSuperview()
         }
-        uiShade.layer.borderColor = UIColor(red: 255, green: 255, blue: 0, alpha: 0.5).CGColor
-        uiShade.layer.borderWidth = 1
-        uiShade.layer.cornerRadius = 4
-        uiShade.backgroundColor =  UIColor(red: 255, green: 155, blue: 0, alpha: 0.5)
-        uiShade.alpha = 0.5
+        mViewShade.layer.borderColor = UIColor(red: 255, green: 255, blue: 0, alpha: 0.5).CGColor
+        mViewShade.layer.borderWidth = 1
+        mViewShade.layer.cornerRadius = 4
+        mViewShade.backgroundColor =  UIColor(red: 255, green: 155, blue: 0, alpha: 0.5)
+        mViewShade.alpha = 0.5
         
-        uiShade.frame = CGRectMake(stationGrideFromX + 5, stationGrideFromY + 5, stationGrideToX -  stationGrideFromX - 10, stationGrideToY -  stationGrideFromY - 10)
+        mViewShade.frame = CGRectMake(stationGrideFromX - 5, stationGrideFromY - 5, stationGrideToX -  stationGrideFromX + 10, stationGrideToY -  stationGrideFromY + 10)
         
-        self.lineImage.addSubview(uiShade)
+        self.mImgLineGraph.addSubview(mViewShade)
+        self.tagmViewShade = 2
         
-        self.tagUIShade = 2
+        println("触碰点坐标")
+        println("\(stationGrideFromX - 5)   \(stationGrideFromY - 5)")
         
     }
-
-    
-    
     
 }

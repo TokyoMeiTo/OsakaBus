@@ -43,6 +43,10 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
     var usrStationIds : NSMutableArray = NSMutableArray.array()
     // 用来记录从数据库路线表中的路线结果
     var routeDetial : NSMutableArray = NSMutableArray.array()
+    // 用来记录从数据库搜索的某一个站点的线路id
+    var onStationlineGroup : NSMutableArray = NSMutableArray.array()
+    // 用来记录从数据库搜索的每一个站点的线路id
+    var allStationlineGroup : NSMutableArray = NSMutableArray.array()
     // 记录焦点位置 1为起点文本  2为终点文本
     var focusNumber : String = "1"
     // 记录起点站点名
@@ -62,12 +66,16 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
     var fare06table = LinT06FareTable()
     var routeDetial05table = LinT05RouteDetailTable()
     
-    
     // 区分查询前页面和查询后结果页面。 1 为查询前页面。 2为查询后结果页面
     var pageTag : String = "1"
     
-    // 区分路线方向。 1 为从小到大， 2为从大到小
-    var routeDirectionTag : String = "1"
+    
+    let FOUCSCHANGETO1 : Selector = "foucsChangeTo1"
+    let FOUCSCHANGETO2 : Selector  = "foucsChangeTo2"
+    let EXCHANGEACTION : Selector  = "exchangeAction"
+    let SEARCHWAYACTION : Selector  = "searchWayAction"
+    let ADDUSERFAVORITE : Selector  = "addUserfavorite:"
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -82,15 +90,12 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         stationStart.becomeFirstResponder()
         loadStation()
 
-       
-        btnExchange.addTarget(self, action: "exchangeAction", forControlEvents: UIControlEvents.TouchUpInside)
-
-        stationStart.addTarget(self, action: "foucsChangeTo1", forControlEvents: UIControlEvents.AllEditingEvents)
-        stationEnd.addTarget(self, action: "foucsChangeTo2", forControlEvents: UIControlEvents.AllEditingEvents)
-        
-        btnSearchRoute.addTarget(self, action: "searchWayAction", forControlEvents: UIControlEvents.TouchUpInside)
-        btnCollect1.addTarget(self, action: "addUserfavorite:", forControlEvents: UIControlEvents.TouchUpInside)
-        btnCollect2.addTarget(self, action: "addUserfavorite:", forControlEvents: UIControlEvents.TouchUpInside)
+        btnExchange.addTarget(self, action: EXCHANGEACTION, forControlEvents: UIControlEvents.TouchUpInside)
+        stationStart.addTarget(self, action: FOUCSCHANGETO1, forControlEvents: UIControlEvents.AllEditingEvents)
+        stationEnd.addTarget(self, action: FOUCSCHANGETO2, forControlEvents: UIControlEvents.AllEditingEvents)
+        btnSearchRoute.addTarget(self, action: SEARCHWAYACTION, forControlEvents: UIControlEvents.TouchUpInside)
+        btnCollect1.addTarget(self, action: ADDUSERFAVORITE, forControlEvents: UIControlEvents.TouchUpInside)
+        btnCollect2.addTarget(self, action: ADDUSERFAVORITE, forControlEvents: UIControlEvents.TouchUpInside)
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -131,7 +136,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             for (var i = 0; i < lineImageItemsRow.count; i++) {
                 var map = lineImageItemsRow[i] as MstT02StationTable
                 var lineIcon: UIImageView = UIImageView()
-                lineIcon.frame = CGRectMake(CGFloat(160 + i * 25), 5, 30, 30)
+                lineIcon.frame = CGRectMake(CGFloat(290 - i * 25), 5, 30, 30)
                 lineIcon.image = lineImageNormal(map.item(MSTT02_LINE_ID) as String)
                 cell.addSubview(lineIcon)
             }
@@ -144,6 +149,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             var resultCelllblStationLineName : UILabel = cell.viewWithTag(1005) as UILabel
             var resultCelllblStationWaitTime : UILabel = cell.viewWithTag(1004) as UILabel
             var resultCelllblStationMoveTime : UILabel = cell.viewWithTag(1006) as UILabel
+            
             if indexPath.row == 0 {
                 resultCellIvStaionIcon.hidden = true
                 resultCelllblStationDirection.hidden = true
@@ -151,21 +157,37 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
                 resultCelllblStationLineName.hidden = true
                 resultCelllblStationWaitTime.hidden = true
                 resultCelllblStationMoveTime.hidden = true
-                var resultCelllblStationTip1 : UILabel = UILabel()
-                resultCelllblStationTip1.frame = CGRectMake(20,10,200,20)
-                resultCelllblStationTip1.font = UIFont.systemFontOfSize(15)
-                resultCelllblStationTip1.text = "换乘" + (routeDetial.count - 2).description + "次"
-                var resultCelllblStationTip2 : UILabel = UILabel()
-                resultCelllblStationTip1.font = UIFont.systemFontOfSize(15)
-                resultCelllblStationTip2.frame = CGRectMake(20,35,200,20)
-                resultCelllblStationTip2.text = "票价" + getFare()
-                
-                cell.addSubview(resultCelllblStationTip1)
-                cell.addSubview(resultCelllblStationTip2)
-            } else {
 
-                 //resultCellIvStaionIcon.image = lineImageNormal(getStationIconByStationName(resultCelllblStationName.text!))
                 
+                var cellInfo:UIView = UIView()
+                cellInfo.frame = CGRectMake(5,5,310,60)
+                // cellInfo.backgroundColor = UIColor(patternImage: mImgLineGraphNormal("MainPop"))
+                var lable1: UILabel! = cell.viewWithTag(2001) as? UILabel
+                if (lable1 != nil) {
+                    lable1.removeFromSuperview()
+                }
+                
+                var resultCelllblStationTip1 : UILabel = UILabel()
+                resultCelllblStationTip1.frame = CGRectMake(15,5,200,20)
+                resultCelllblStationTip1.font = UIFont.systemFontOfSize(17)
+                resultCelllblStationTip1.tag = 2001
+                resultCelllblStationTip1.text = "换乘" + (routeDetial.count - 2).description + "次"
+                
+                var lable2: UILabel! = cell.viewWithTag(2002) as? UILabel
+                if (lable2 != nil) {
+                    lable2.removeFromSuperview()
+                }
+
+                var resultCelllblStationTip2 : UILabel = UILabel()
+                resultCelllblStationTip2.font = UIFont.systemFontOfSize(14)
+                resultCelllblStationTip2.frame = CGRectMake(15,30,200,20)
+                resultCelllblStationTip2.tag = 2002
+                resultCelllblStationTip2.text = "票价" + getFare()
+
+                cellInfo.addSubview(resultCelllblStationTip1)
+                cellInfo.addSubview(resultCelllblStationTip2)
+                cell.addSubview(cellInfo)
+            } else {
                 if (indexPath.row == routeDetial.count){
                     
                     resultCellIvStaionIcon.hidden = true
@@ -178,47 +200,27 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
                     
                 } else {
                     
-                    if (self.routeDirectionTag == "1") {
                         var routStartDic = self.routeDetial.objectAtIndex(indexPath.row - 1) as NSDictionary
                         
                         var strresultExchStatId = routStartDic["resultExchStatId"] as? NSString
                         resultCelllblStationName.text = (strresultExchStatId as String).station()
                         
-                        var strresultExchlineId = routStartDic["resultExchlineId"] as? NSString
-                        resultCelllblStationLineName.text = (strresultExchlineId as String).line()
-                        
                         var strresultExchDestId = routStartDic["resultExchDestId"] as? NSString
                         resultCelllblStationDirection.text = (strresultExchDestId as String).station() + "方向"
                         
+                        var strresultExchlineId = routStartDic["resultExchlineId"] as? NSString
+                        resultCelllblStationLineName.text = (strresultExchlineId as String).line()
+      
                         var strresultExchWaitTime = routStartDic["resultExchWaitTime"] as? NSString
                         resultCelllblStationWaitTime.text = "等待" + (strresultExchWaitTime as String) + "分钟"
                         
                         var strresultExchMoveTime = routStartDic["resultExchMoveTime"] as? NSString
                         resultCelllblStationMoveTime.text = "移动" + (strresultExchMoveTime as String) + "分钟"
-                    } else {
-                        var routStartDic = self.routeDetial.objectAtIndex(self.routeDetial.count - indexPath.row - 1) as NSDictionary
-                        
-                        var strresultExchStatId = routStartDic["resultExchStatId"] as? NSString
-                        resultCelllblStationName.text = (strresultExchStatId as String).station()
-                        
-                        var strresultExchlineId = routStartDic["resultExchlineId"] as? NSString
-                        resultCelllblStationLineName.text = (strresultExchlineId as String).line()
-                        
-                        var strresultExchDestId = routStartDic["resultExchDestId"] as? NSString
-                        resultCelllblStationDirection.text = (strresultExchDestId as String).station() + "方向"
-                        
-                        var strresultExchWaitTime = routStartDic["resultExchWaitTime"] as? NSString
-                        resultCelllblStationWaitTime.text = "等待" + (strresultExchWaitTime as String) + "分钟"
-                        
-                        var strresultExchMoveTime = routStartDic["resultExchMoveTime"] as? NSString
-                        resultCelllblStationMoveTime.text = "移动" + (strresultExchMoveTime as String) + "分钟"
-                    }
+                   
                 }
             }
             return cell
         }
-
-       
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
@@ -251,6 +253,32 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
 
     }
     
+//    // 根据数据库中的路线id获取图片
+//    func mImgLineGraphNormal(lineNum: String) -> UIImage {
+//        
+//        var image = UIImage(named: "tablecell_lineicon_g.png")
+//        switch (lineNum) {
+//            
+//        case "28001":
+//            image = UIImage(named: "tablecell_lineicon_g.png")
+//
+//        case "MainPop":
+//            image = UIImage(named: "MainPop.png")
+//        case "MainUIbarLeft":
+//            image = UIImage(named: "MainUIbarLeft.png")
+//        case "MainUIbarRight":
+//            image = UIImage(named: "MainUIbarRight.png")
+//        case "MainMenu":
+//            image = UIImage(named: "MainMenu.png")
+//            
+//        default:
+//            image = UIImage(named: "tablecell_lineicon_g.png")
+//            
+//        }
+//        
+//        return image
+//    }
+    
     // 起点和终点交换
     func exchangeAction(){
         
@@ -270,6 +298,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             
             self.lblTip.text = "   路线搜索中..."
             searchRouteAction()
+            hideKeyBoard()
          }
     }
     
@@ -291,14 +320,12 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
     
     func foucsChangeTo1 () {
         self.focusNumber = "1"
-//        loadStation()
-//        tbView.reloadData()
+        tbView.reloadData()
     }
     
     func foucsChangeTo2 () {
         self.focusNumber = "2"
-//        loadStation()
-//        tbView.reloadData()
+        tbView.reloadData()
     }
     
     override func didReceiveMemoryWarning() {
@@ -322,37 +349,9 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
 
     // 获取所有站的站名和图标
     func loadStation() {
-//        self.pageTag = "1"
-//        
-//        allOfStationItems.removeAllObjects()
-//        allOfStationItemsJP.removeAllObjects()
-//        allOflineImageItems.removeAllObjects()
-//
-//     
-//        if self.focusNumber == "1" {
-//            mst02table.statName = stationStart.text
-//        } else {
-//            mst02table.statName = stationEnd.text
-//        }
-//        var mst02Rows:NSArray = mst02table.selectLike()
-//        
-//        
-//        for key in mst02Rows {
-//            key as MstT02StationTable
-//            var stationNameJP:AnyObject = key.item(MSTT02_STAT_NAME)
-//            var stationName:AnyObject = key.item(MSTT02_STAT_NAME_EXT1)
-//            var statGroupId = key.item(MSTT02_STAT_GROUP_ID) as String
-//            
-//            var statSeqArr = mst02table.excuteQuery("select LINE_ID from MSTT02_STATION where 1 = 1 and STAT_GROUP_ID = \(statGroupId)")
-//            
-//            self.allOflineImageItems.addObject(statSeqArr)
-//            self.allOfStationItemsJP.addObject(stationNameJP)
-//            self.allOfStationItems.addObject(stationName)
-//         }
-//        tbView.reloadData()
-        
-        
+
         self.pageTag = "1"
+        allStationlineGroup.removeAllObjects()
         allOfStationItems.removeAllObjects()
         allOfStationItemsJP.removeAllObjects()
         allOflineImageItems.removeAllObjects()
@@ -370,8 +369,6 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         // 现将收藏表中所有id取出来在mst02中查询相关站的信息
         for usrStationid in usrStationIds {
             mst02table.statId = usrStationid as String
-            println("0000002342342342342342342342342342342342")
-            println(usrStationid.description)
             var mst02StationID:NSArray = mst02table.selectAll()
             for key in mst02StationID {
                 key as MstT02StationTable
@@ -383,11 +380,11 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
                 self.allOflineImageItems.addObject(statSeqArr)
                 self.allOfStationItemsJP.addObject(stationNameJP)
                 self.allOfStationItems.addObject(stationName)
+
             }
             tbView.reloadData()
         }
-        
-        self.lblTip.text = "  所有收藏站点"
+        self.lblTip.text = " 所有收藏站点"
     }
     
     // 根据数据库中的路线id获取图片
@@ -417,38 +414,15 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             
         default:
             image = UIImage(named: "tablecell_lineicon_g.png")
-            
         }
-        
         return image
-    }
-
-    // 根据groupid 判断是否属于换乘站，换乘返回可以换乘图标，不是换乘返回车站的图标
-    func decideSationIconByGroupId(stationGroupId:String) -> String {
-        
-        var mst02table = MstT02StationTable()
-        
-        var mst02RowGroupIdStart : NSArray = mst02table.excuteQuery("select LINE_ID from MSTT02_STATION where 1 = 1 and STAT_GROUP_ID = \(stationGroupId)")
-        
-        var lineGroup : NSMutableArray = NSMutableArray.array()
-        for mst02GroupIdValue in mst02RowGroupIdStart {
-            mst02GroupIdValue  as MstT02StationTable
-            var mst02ResultLineId:AnyObject = mst02GroupIdValue.item(MSTT02_LINE_ID)
-            lineGroup.addObject(mst02ResultLineId)
-        }
-        if lineGroup.count == 1 {
-            return lineGroup[0] as String
-        } else {
-            return "1"
-        }
     }
 
     // 根据车站名字搜索车站ID
     func serarchStationIdByStationName(StationNames:String) -> String {
         var resultid = ""
         var mst02table = MstT02StationTable()
-        mst02table.statNameExt1 = StationNames
-        var mst02rowID = mst02table.selectAll()
+        var mst02rowID = mst02table.excuteQuery("select STAT_ID from MSTT02_STATION where STAT_NAME_EXT1 = '" + StationNames + "' and STAT_ID like '280%' ")
         for mst02Row in mst02rowID {
             mst02Row as MstT02StationTable
             var searchstationId = mst02Row.item(MSTT02_STAT_ID) as String
@@ -459,41 +433,6 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         return resultid
     }
     
-//    // 根据车站名获取车站的Icon
-//    func getStationIconByStationName(StationName:String) -> String {
-//        
-//        var resultGroupid = " "
-//        var mst02table = MstT02StationTable()
-//        mst02table.statName = StationName
-//        var mst02rowID = mst02table.selectAll()
-//        for mst02Row in mst02rowID {
-//            mst02Row as MstT02StationTable
-//            var searchstationEndGroupId = mst02Row.item(MSTT02_STAT_GROUP_ID) as String
-//            resultGroupid = searchstationEndGroupId
-//        }
-//        
-//        var mst02RowLine : NSArray = mst02table.excuteQuery("select LINE_ID from MSTT02_STATION where 1 = 1 and STAT_GROUP_ID = \(resultGroupid)")
-//        
-//        var mst02RowLineItems2 : NSMutableArray = NSMutableArray.array()
-//        
-//        for (var i = 0; i < mst02RowLineItems2.count; i++) {
-//            var map = mst02RowLineItems2[i] as MstT02StationTable
-//            mst02RowLineItems2.addObject(map.item(MSTT02_LINE_ID) as String)
-//            println("============         mst02RowLineItems2")
-//            println("\(mst02RowLineItems2.count)")
-//            println("\(map.item(MSTT02_LINE_ID) as String)")
-//        }
-//        
-//        println("============         mst02RowLineItems2.count")
-//        println("\(mst02RowLineItems2.count)")
-//        println("\(mst02RowLineItems2.description)")
-//        if mst02RowLineItems2.count == 1 {
-//            return mst02RowLineItems2[0] as String
-//        } else {
-//            return "28008"
-//        }
-//
-//    }
 
     // 添加收藏
     func addUserfavorite(sender: UIButton) {
@@ -520,15 +459,33 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         var user03table = UsrT03FavoriteTable()
         println("121122222232222222222222")
         println(serarchStationIdByStationName(insetStationName))
+        
         user03table.statId = serarchStationIdByStationName(insetStationName)
         user03table.favoType = "01"
-        user03table.favoTime = NSDate.date().description.yyyyMMddHHmmss()
         
-        var user03insert = user03table.insert()
-        if !user03insert {
-            errAlertView("数据操作", errMgs:"收藏失败", errBtnTitle:"确定")
+        
+        var user03insertBefore = user03table.selectAll()
+        println("099999999999999999999999999999     user03insertBefore.description")
+        println(user03insertBefore.description)
+        
+        var checkInsert : NSMutableArray = NSMutableArray.array()
+        for user03checkInsertValue in user03insertBefore {
+            user03checkInsertValue  as UsrT03FavoriteTable
+            var mst02ResultLineId:AnyObject = user03checkInsertValue.item(USRT03_STAT_ID)
+            checkInsert.addObject(mst02ResultLineId)
+        }
+
+        if checkInsert.count > 0 {
+            errAlertView("数据操作", errMgs:"收藏失败,站点已收藏", errBtnTitle:"确定")
         } else {
-            errAlertView("数据操作", errMgs:"收藏成功", errBtnTitle:"确定")
+            user03table.favoTime = NSDate.date().description.yyyyMMddHHmmss()
+            
+            var user03insert = user03table.insert()
+            if !user03insert {
+                errAlertView("数据操作", errMgs:"收藏失败", errBtnTitle:"确定")
+            } else {
+                errAlertView("数据操作", errMgs:"收藏成功", errBtnTitle:"确定")
+            }
         }
     }
     
@@ -537,22 +494,11 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         
         var  nsStaionID1 : NSString = startStaionId as NSString
         var  nsStaionID2 : NSString = endStationId as NSString
-        
-        if (nsStaionID1.intValue < nsStaionID2.intValue) {
-            self.routeDirectionTag = "1"
-        } else {
-            self.routeDirectionTag = "2"
-            var tempStationID = nsStaionID2
-            nsStaionID2 = nsStaionID1
-            nsStaionID1 = tempStationID
-        }
         var routeId : NSString = ""
-        
         routeId = (nsStaionID1.substringFromIndex(3) + nsStaionID2.substringFromIndex(3))
         routeID = routeId as String
         println("1234567899000000000111111111   routeID")
         println("\(routeID)")
-  
         return routeID
     }
     // 根据路线ID查询费用
@@ -574,6 +520,9 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
     
     // 根据路线ID查询换乘路径
     func getRouteline() {
+        
+        self.routeDetial.removeAllObjects()
+//        tbView.reloadData()
         println("1234567899000000000111111111   routeDeital05Row  routeID")
         println(self.routeID)
 
