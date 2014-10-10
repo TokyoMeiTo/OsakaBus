@@ -85,45 +85,45 @@
 }
 
 -(void)item:(NSString *)item value:(id)value{
-    if([item isEqual:MSTV01_STAT_ID]){
+    if([item isEqualToString:MSTV01_STAT_ID]){
         self.statId = value;
-    }else if([item isEqual:MSTV01_STAT_GROUP_ID]){
+    }else if([item isEqualToString:MSTV01_STAT_GROUP_ID]){
         self.statGroupId = value;
-    }else if([item isEqual:MSTV01_STAT_METRO_ID]){
+    }else if([item isEqualToString:MSTV01_STAT_METRO_ID]){
         self.statNameMetroId = value;
-    }else if([item isEqual:MSTV01_STAT_METRO_ID_FULL]){
+    }else if([item isEqualToString:MSTV01_STAT_METRO_ID_FULL]){
         self.statNameMetroIdFull = value;
-    }else if([item isEqual:MSTV01_STAT_NAME_EXT1]){
+    }else if([item isEqualToString:MSTV01_STAT_NAME_EXT1]){
         self.statNameExt1 = value;
-    }else if([item isEqual:MSTV01_STAT_NAME_EXT2]){
+    }else if([item isEqualToString:MSTV01_STAT_NAME_EXT2]){
         self.statNameExt2 = value;
-    }else if([item isEqual:MSTV01_STAT_NAME_EXT3]){
+    }else if([item isEqualToString:MSTV01_STAT_NAME_EXT3]){
         self.statNameExt3 = value;
-    }else if([item isEqual:MSTV01_STAT_NAME_EXT4]){
+    }else if([item isEqualToString:MSTV01_STAT_NAME_EXT4]){
         self.statNameExt4 = value;
-    }else if([item isEqual:MSTV01_STAT_NAME_EXT5]){
+    }else if([item isEqualToString:MSTV01_STAT_NAME_EXT5]){
         self.statNameExt5 = value;
-    }else if([item isEqual:MSTV01_STAT_NAME_EXT6]){
+    }else if([item isEqualToString:MSTV01_STAT_NAME_EXT6]){
         self.statNameExt6 = value;
-    }else if([item isEqual:MSTV01_STAT_NAME]){
+    }else if([item isEqualToString:MSTV01_STAT_NAME]){
         self.statName = value;
-    }else if([item isEqual:MSTV01_STAT_NAME_KANA]){
+    }else if([item isEqualToString:MSTV01_STAT_NAME_KANA]){
         self.statNameKana = value;
-    }else if([item isEqual:MSTV01_STAT_NAME_ROME]){
+    }else if([item isEqualToString:MSTV01_STAT_NAME_ROME]){
         self.statNameRome = value;
-    }else if([item isEqual:MSTV01_STAT_LON]){
+    }else if([item isEqualToString:MSTV01_STAT_LON]){
         self.statLon = value;
-    }else if([item isEqual:MSTV01_STAT_LAT]){
+    }else if([item isEqualToString:MSTV01_STAT_LAT]){
         self.statLat = value;
-    }else if([item isEqual:MSTV01_STAT_PREF]){
+    }else if([item isEqualToString:MSTV01_STAT_PREF]){
         self.statPref = value;
-    }else if([item isEqual:MSTV01_STAT_ADDR]){
+    }else if([item isEqualToString:MSTV01_STAT_ADDR]){
         self.statAddr = value;
-    }else if([item isEqual:MSTV01_STAT_DESP]){
+    }else if([item isEqualToString:MSTV01_STAT_DESP]){
         self.statDesp = value;
-    }else if([item isEqual:MSTV01_LINE_ID]){
+    }else if([item isEqualToString:MSTV01_LINE_ID]){
         self.lineId = value;
-    }else if([item isEqual:MSTV01_STAT_SEQ]){
+    }else if([item isEqualToString:MSTV01_STAT_SEQ]){
         self.statSeq = value;
     }else{
         [super item:item value:value];
@@ -132,45 +132,45 @@
 
 
 -(id)item:(NSString *)item{
-    if([item isEqual:MSTV01_STAT_ID]){
+    if([item isEqualToString:MSTV01_STAT_ID]){
         return self.statId;
-    }else if([item isEqual:MSTV01_STAT_GROUP_ID]){
+    }else if([item isEqualToString:MSTV01_STAT_GROUP_ID]){
         return self.statGroupId;
-    }else if([item isEqual:MSTV01_STAT_NAME]){
+    }else if([item isEqualToString:MSTV01_STAT_NAME]){
         return self.statName;
-    }else if([item isEqual:MSTV01_STAT_NAME_KANA]){
+    }else if([item isEqualToString:MSTV01_STAT_NAME_KANA]){
         return self.statNameKana;
-    }else if([item isEqual:MSTV01_STAT_NAME_ROME]){
+    }else if([item isEqualToString:MSTV01_STAT_NAME_ROME]){
         return self.statNameRome;
-    }else if([item isEqual:MSTV01_STAT_LON]){
+    }else if([item isEqualToString:MSTV01_STAT_LON]){
         return self.statLon;
-    }else if([item isEqual:MSTV01_STAT_LAT]){
+    }else if([item isEqualToString:MSTV01_STAT_LAT]){
         return self.statLat;
-    }else if([item isEqual:MSTV01_STAT_PREF]){
+    }else if([item isEqualToString:MSTV01_STAT_PREF]){
         return self.statPref;
-    }else if([item isEqual:MSTV01_STAT_ADDR]){
+    }else if([item isEqualToString:MSTV01_STAT_ADDR]){
         return self.statAddr;
-    }else if([item isEqual:MSTV01_STAT_METRO_ID]){
+    }else if([item isEqualToString:MSTV01_STAT_METRO_ID]){
         return self.statNameMetroId;
-    }else if([item isEqual:MSTV01_STAT_METRO_ID_FULL]){
+    }else if([item isEqualToString:MSTV01_STAT_METRO_ID_FULL]){
         return self.statNameMetroIdFull;
-    }else if([item isEqual:MSTV01_STAT_NAME_EXT1]){
+    }else if([item isEqualToString:MSTV01_STAT_NAME_EXT1]){
         return self.statNameExt1;
-    }else if([item isEqual:MSTV01_STAT_NAME_EXT2]){
+    }else if([item isEqualToString:MSTV01_STAT_NAME_EXT2]){
         return self.statNameExt2;
-    }else if([item isEqual:MSTV01_STAT_NAME_EXT3]){
+    }else if([item isEqualToString:MSTV01_STAT_NAME_EXT3]){
         return self.statNameExt3;
-    }else if([item isEqual:MSTV01_STAT_NAME_EXT4]){
+    }else if([item isEqualToString:MSTV01_STAT_NAME_EXT4]){
         return self.statNameExt4;
-    }else if([item isEqual:MSTV01_STAT_NAME_EXT5]){
+    }else if([item isEqualToString:MSTV01_STAT_NAME_EXT5]){
         return self.statNameExt5;
-    }else if([item isEqual:MSTV01_STAT_NAME_EXT6]){
+    }else if([item isEqualToString:MSTV01_STAT_NAME_EXT6]){
         return self.statNameExt6;
-    }else if([item isEqual:MSTV01_STAT_DESP]){
+    }else if([item isEqualToString:MSTV01_STAT_DESP]){
         return self.statDesp;
-    }else if ([item isEqual:MSTV01_STAT_SEQ]){
+    }else if ([item isEqualToString:MSTV01_STAT_SEQ]){
         return self.statSeq;
-    }else if ([item isEqual:MSTV01_LINE_ID]){
+    }else if ([item isEqualToString:MSTV01_LINE_ID]){
         return self.lineId;
     }else{
         return [super item:item];

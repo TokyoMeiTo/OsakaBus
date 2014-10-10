@@ -39,15 +39,15 @@
 }
 
 -(void)item:(NSString *)item value:(id)value{
-    if ([item isEqual:LINT03_TRAIN_MOVING_LINE_ID]) {
+    if ([item isEqualToString:LINT03_TRAIN_MOVING_LINE_ID]) {
         self.lineId = value;
-    }else if ([item isEqual:LINT03_TRAIN_MOVING_TIME_MOVING]){
+    }else if ([item isEqualToString:LINT03_TRAIN_MOVING_TIME_MOVING]){
         self.timeMoving = value;
-    }else if ([item isEqual:LINT03_TRAIN_MOVING_TIME_VALID]){
+    }else if ([item isEqualToString:LINT03_TRAIN_MOVING_TIME_VALID]){
         self.timeValid = value;
-    }else if ([item isEqual:LINT03_TRAIN_MOVING_MOVING_INFO]){
+    }else if ([item isEqualToString:LINT03_TRAIN_MOVING_MOVING_INFO]){
         self.movingInfo = value;
-    }else if ([item isEqual:LINT03_TRAIN_MOVING_UPDATE_TIME]){
+    }else if ([item isEqualToString:LINT03_TRAIN_MOVING_UPDATE_TIME]){
         self.updateTime = value;
     }else{
         [super item:item value:value];
@@ -55,15 +55,15 @@
 }
 
 -(id)item:(NSString *)item{
-    if ([item isEqual:LINT03_TRAIN_MOVING_LINE_ID]) {
+    if ([item isEqualToString:LINT03_TRAIN_MOVING_LINE_ID]) {
         return self.lineId;
-    }else if ([item isEqual:LINT03_TRAIN_MOVING_TIME_MOVING]){
+    }else if ([item isEqualToString:LINT03_TRAIN_MOVING_TIME_MOVING]){
         return self.timeMoving;
-    }else if ([item isEqual:LINT03_TRAIN_MOVING_TIME_VALID]){
+    }else if ([item isEqualToString:LINT03_TRAIN_MOVING_TIME_VALID]){
         return self.timeValid;
-    }else if ([item isEqual:LINT03_TRAIN_MOVING_MOVING_INFO]){
+    }else if ([item isEqualToString:LINT03_TRAIN_MOVING_MOVING_INFO]){
         return self.movingInfo;
-    }else if ([item isEqual:LINT03_TRAIN_MOVING_UPDATE_TIME]){
+    }else if ([item isEqualToString:LINT03_TRAIN_MOVING_UPDATE_TIME]){
         return self.updateTime;
     }else{
        return  [super item:item];

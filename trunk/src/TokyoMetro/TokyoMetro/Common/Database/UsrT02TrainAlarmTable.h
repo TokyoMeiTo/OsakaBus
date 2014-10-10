@@ -18,6 +18,7 @@
 #define USRT02_TRAIN_ALARM_STAT_NAME_LOCL       @"STAT_NAME_LOCL"
 #define USRT02_TRAIN_ALARM_FIRST_TIME           @"FIRST_TIME"
 #define USRT02_TRAIN_ALARM_LAST_TIME            @"LAST_TIME"
+#define USRT02_TRAIN_ALARM_TRAI_DIRT            @"TRAI_DIRT"
 #define USRT02_TRAIN_ALARM_FIRST_FLAG           @"FIRST_FLAG"
 #define USRT02_TRAIN_ALARM_LAST_FLAG            @"LAST_FLAG"
 #define USRT02_TRAIN_ALARM_BEEP_FLAG            @"BEEP_FLAG"
@@ -36,6 +37,7 @@
 @property(copy,nonatomic)NSString* statNameLocl;
 @property(copy,nonatomic)NSString* firstTime;
 @property(copy,nonatomic)NSString* lastTime;
+@property(copy,nonatomic)NSString* traiDirt;
 @property(copy,nonatomic)NSString* firstFlag;
 @property(copy,nonatomic)NSString* lastFlag;
 @property(copy,nonatomic)NSString* beepFlag;

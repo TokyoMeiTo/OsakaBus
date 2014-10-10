@@ -11,7 +11,6 @@
 
 #define STAT04_FACILITY         @"STAT04_FACILITY"
 #define STAT04_FACI_ID          @"FACI_ID"
-#define STAT04_LINE_ID          @"LINE_ID"
 #define STAT04_STAT_ID          @"STAT_ID"
 #define STAT04_FACI_TYPE        @"FACI_TYPE"
 #define STAT04_FACI_NAME        @"FACI_NAME"
@@ -21,13 +20,14 @@
 #define STAT04_WHEL_CAIR_ACES   @"WHEL_CAIR_ACES"
 #define STAT04_BABY_CAIR        @"BABY_CAIR"
 #define STAT04_BABY_CHGN_TABL   @"BABY_CHGN_TABL"
-#define STAT04_TOIL_OSTM        @"TOIL_OSTM"
+#define STAT04_TOIL_FOR_OSTM    @"TOIL_FOR_OSTM"
+#define STAT04_REMARK           @"REMARK"
+#define STAT04_WHEL_CAIR        @"WHEL_CAIR"
 
 @interface StaT04FacilityTable : ODBDataTable{
     
 }
 @property(copy,nonatomic) NSString* faciId;
-@property(copy,nonatomic) NSString* lineId;
 @property(copy,nonatomic) NSString* statId;
 @property(copy,nonatomic) NSString* faciType;
 @property(copy,nonatomic) NSString* faciName;
@@ -37,6 +37,9 @@
 @property(copy,nonatomic) NSString* whelCairAces;
 @property(copy,nonatomic) NSString* babyCair;
 @property(copy,nonatomic) NSString* babyChgnTabl;
-@property(copy,nonatomic) NSString* toilOstm;
+@property(copy,nonatomic) NSString* toilForOstm;
+@property(copy,nonatomic) NSString* remark;
+@property(copy,nonatomic) NSString* whelCair;
+
 
 @end

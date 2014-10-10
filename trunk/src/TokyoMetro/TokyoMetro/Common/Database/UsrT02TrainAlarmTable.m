@@ -16,6 +16,7 @@
 @synthesize statNameLocl;
 @synthesize firstTime;
 @synthesize lastTime;
+@synthesize traiDirt;
 @synthesize firstFlag;
 @synthesize lastFlag;
 @synthesize beepFlag;
@@ -35,6 +36,7 @@
                                                 USRT02_TRAIN_ALARM_STAT_NAME_LOCL,
                                                 USRT02_TRAIN_ALARM_FIRST_TIME,
                                                 USRT02_TRAIN_ALARM_LAST_TIME,
+                                                USRT02_TRAIN_ALARM_TRAI_DIRT,
                                                 USRT02_TRAIN_ALARM_FIRST_FLAG,
                                                 USRT02_TRAIN_ALARM_LAST_FLAG,
                                                 USRT02_TRAIN_ALARM_BEEP_FLAG,
@@ -42,6 +44,7 @@
                                                 USRT02_TRAIN_ALARM_ALARM_TIME,
                                                 USRT02_TRAIN_ALARM_SAVE_TIEM,nil];
         self.dataTypes = [NSArray arrayWithObjects:ODB_DATATYPE_TEXT,
+                                                    ODB_DATATYPE_TEXT,
                                                     ODB_DATATYPE_TEXT,
                                                     ODB_DATATYPE_TEXT,
                                                     ODB_DATATYPE_TEXT,
@@ -74,6 +77,8 @@
         self.firstTime = value;
     }else if([item isEqualToString:USRT02_TRAIN_ALARM_LAST_TIME]){
         self.lastTime = value;
+    }else if ([item isEqualToString:USRT02_TRAIN_ALARM_TRAI_DIRT]){
+        self.traiDirt = value;
     }else if([item isEqualToString:USRT02_TRAIN_ALARM_FIRST_FLAG]){
         self.firstFlag = value;
     }else if([item isEqualToString:USRT02_TRAIN_ALARM_LAST_FLAG]){
@@ -106,6 +111,8 @@
         return self.firstTime;
     }else if([item isEqualToString:USRT02_TRAIN_ALARM_LAST_TIME]){
         return self.lastTime;
+    }else if([item isEqualToString:USRT02_TRAIN_ALARM_TRAI_DIRT]){
+        return self.traiDirt;
     }else if([item isEqualToString:USRT02_TRAIN_ALARM_FIRST_FLAG]){
         return self.firstFlag;
     }else if([item isEqualToString:USRT02_TRAIN_ALARM_LAST_FLAG]){

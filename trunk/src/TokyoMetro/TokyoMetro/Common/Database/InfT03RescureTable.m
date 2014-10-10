@@ -52,23 +52,23 @@
 }
 
 -(void)item:(NSString *)item value:(id)value{
-    if ([item isEqual:INFT03_RESCURE_RESC_ID]) {
+    if ([item isEqualToString:INFT03_RESCURE_RESC_ID]) {
         self.rescId = value;
-    }else if([item isEqual:INFT03_RESCURE_RESC_LOCA]){
+    }else if([item isEqualToString:INFT03_RESCURE_RESC_LOCA]){
         self.rescLoca = value;
-    }else if([item isEqual:INFT03_RESCURE_RESC_TYPE]){
+    }else if([item isEqualToString:INFT03_RESCURE_RESC_TYPE]){
         self.rescType = value;
-    }else if([item isEqual:INFT03_RESCURE_RESC_CONTENT_CN]){
+    }else if([item isEqualToString:INFT03_RESCURE_RESC_CONTENT_CN]){
         self.rescContentCn = value;
-    }else if([item isEqual:INFT03_RESCURE_RESC_CONTENT_JP]){
+    }else if([item isEqualToString:INFT03_RESCURE_RESC_CONTENT_JP]){
         self.rescContentJp = value;
-    }else if([item isEqual:INFT03_RESCURE_READ_FLAG]){
+    }else if([item isEqualToString:INFT03_RESCURE_READ_FLAG]){
         self.readFlag = value;
-    }else if([item isEqual:INFT03_RESCURE_READ_TIME]){
+    }else if([item isEqualToString:INFT03_RESCURE_READ_TIME]){
         self.readTime = value;
-    }else if([item isEqual:INFT03_RESCURE_FAVO_FLAG]){
+    }else if([item isEqualToString:INFT03_RESCURE_FAVO_FLAG]){
         self.favoFlag = value;
-    }else if([item isEqual:INFT03_RESCURE_FAVO_TIME]){
+    }else if([item isEqualToString:INFT03_RESCURE_FAVO_TIME]){
         self.favoTime = value;
     }else {
         [super item:item value:value];
@@ -76,23 +76,23 @@
 }
 
 -(id)item:(NSString *)item{
-    if ([item isEqual:INFT03_RESCURE_RESC_ID]) {
+    if ([item isEqualToString:INFT03_RESCURE_RESC_ID]) {
         return self.rescId;
-    }else if([item isEqual:INFT03_RESCURE_RESC_LOCA]){
+    }else if([item isEqualToString:INFT03_RESCURE_RESC_LOCA]){
         return self.rescLoca;
-    }else if([item isEqual:INFT03_RESCURE_RESC_TYPE]){
+    }else if([item isEqualToString:INFT03_RESCURE_RESC_TYPE]){
         return self.rescType;
-    }else if([item isEqual:INFT03_RESCURE_RESC_CONTENT_CN]){
+    }else if([item isEqualToString:INFT03_RESCURE_RESC_CONTENT_CN]){
         return self.rescContentCn;
-    }else if([item isEqual:INFT03_RESCURE_RESC_CONTENT_JP]){
+    }else if([item isEqualToString:INFT03_RESCURE_RESC_CONTENT_JP]){
         return self.rescContentJp;
-    }else if([item isEqual:INFT03_RESCURE_READ_FLAG]){
+    }else if([item isEqualToString:INFT03_RESCURE_READ_FLAG]){
         return self.readFlag;
-    }else if([item isEqual:INFT03_RESCURE_READ_TIME]){
+    }else if([item isEqualToString:INFT03_RESCURE_READ_TIME]){
         return self.readTime;
-    }else if([item isEqual:INFT03_RESCURE_FAVO_FLAG]){
+    }else if([item isEqualToString:INFT03_RESCURE_FAVO_FLAG]){
         return self.favoFlag;
-    }else if([item isEqual:INFT03_RESCURE_FAVO_TIME]){
+    }else if([item isEqualToString:INFT03_RESCURE_FAVO_TIME]){
         return self.favoTime;
     }else {
         return [super item:item ];

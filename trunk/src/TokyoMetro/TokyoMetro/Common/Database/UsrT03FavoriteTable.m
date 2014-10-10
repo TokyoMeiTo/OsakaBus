@@ -63,29 +63,29 @@
 }
 
 -(void)item:(NSString *)item value:(id)value{
-    if ([item isEqual:USRT03_FAVO_TYPE]) {
+    if ([item isEqualToString:USRT03_FAVO_TYPE]) {
         self.favoType = value;
-    }else if ([item isEqual:USRT03_FAVO_TIME]){
+    }else if ([item isEqualToString:USRT03_FAVO_TIME]){
         self.favoTime = value;
-    }else if ([item isEqual:USRT03_LINE_ID]){
+    }else if ([item isEqualToString:USRT03_LINE_ID]){
         self.lineId = value;
-    }else if ([item isEqual:USRT03_STAT_ID]){
+    }else if ([item isEqualToString:USRT03_STAT_ID]){
         self.statId = value;
-    }else if ([item isEqual:USRT03_STAT_EXIT_ID]){
+    }else if ([item isEqualToString:USRT03_STAT_EXIT_ID]){
         self.statExitId = value;
-    }else if ([item isEqual:USRT03_LMAK_ID]){
+    }else if ([item isEqualToString:USRT03_LMAK_ID]){
         self.lmakId = value;
-    }else if ([item isEqual:USRT03_RUTE_ID]){
+    }else if ([item isEqualToString:USRT03_RUTE_ID]){
         self.ruteId = value;
-    }else if ([item isEqual:USRT03_EXI1]){
+    }else if ([item isEqualToString:USRT03_EXI1]){
         self.ext1 = value;
-    }else if ([item isEqual:USRT03_EXI2]){
+    }else if ([item isEqualToString:USRT03_EXI2]){
         self.ext2 = value;
-    }else if ([item isEqual:USRT03_EXI3]){
+    }else if ([item isEqualToString:USRT03_EXI3]){
         self.ext3 = value;
-    }else if ([item isEqual:USRT03_EXI4]){
+    }else if ([item isEqualToString:USRT03_EXI4]){
         self.ext4 = value;
-    }else if ([item isEqual:USRT03_EXI5]){
+    }else if ([item isEqualToString:USRT03_EXI5]){
         self.ext5 = value;
     }else{
         [super item:item value:value];
@@ -93,29 +93,29 @@
 }
 
 -(id)item:(NSString *)item{
-    if ([item isEqual:USRT03_FAVO_TYPE]) {
+    if ([item isEqualToString:USRT03_FAVO_TYPE]) {
         return self.favoType;
-    }else if ([item isEqual:USRT03_FAVO_TIME]){
+    }else if ([item isEqualToString:USRT03_FAVO_TIME]){
         return self.favoTime;
-    }else if ([item isEqual:USRT03_LINE_ID]){
+    }else if ([item isEqualToString:USRT03_LINE_ID]){
         return self.lineId;
-    }else if ([item isEqual:USRT03_STAT_ID]){
+    }else if ([item isEqualToString:USRT03_STAT_ID]){
         return self.statId;
-    }else if ([item isEqual:USRT03_STAT_EXIT_ID]){
+    }else if ([item isEqualToString:USRT03_STAT_EXIT_ID]){
         return self.statExitId;
-    }else if ([item isEqual:USRT03_LMAK_ID]){
+    }else if ([item isEqualToString:USRT03_LMAK_ID]){
         return self.lmakId;
-    }else if ([item isEqual:USRT03_RUTE_ID]){
+    }else if ([item isEqualToString:USRT03_RUTE_ID]){
         return self.ruteId;
-    }else if ([item isEqual:USRT03_EXI1]){
+    }else if ([item isEqualToString:USRT03_EXI1]){
         return self.ext1;
-    }else if ([item isEqual:USRT03_EXI2]){
+    }else if ([item isEqualToString:USRT03_EXI2]){
         return self.ext2;
-    }else if ([item isEqual:USRT03_EXI3]){
+    }else if ([item isEqualToString:USRT03_EXI3]){
         return self.ext3;
-    }else if ([item isEqual:USRT03_EXI4]){
+    }else if ([item isEqualToString:USRT03_EXI4]){
         return self.ext4;
-    }else if ([item isEqual:USRT03_EXI5]){
+    }else if ([item isEqualToString:USRT03_EXI5]){
         return self.ext5;
     }else{
         return [super item:item];

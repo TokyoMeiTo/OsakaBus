@@ -34,11 +34,11 @@
 }
 
 -(void)item:(NSString *)item value:(id)value{
-    if ([item isEqual:CMNT04_IMAG_ID]) {
+    if ([item isEqualToString:CMNT04_IMAG_ID]) {
         self.imagId = value;
-    }else if ([item isEqual:CMNT04_IMAG_PATH]){
+    }else if ([item isEqualToString:CMNT04_IMAG_PATH]){
         self.imagPath = value;
-    }else if ([item isEqual:CMNT04_IMAG_URL]){
+    }else if ([item isEqualToString:CMNT04_IMAG_URL]){
         self.imagUrl = value;
     }else{
         [super item:item value:value];
@@ -46,11 +46,11 @@
 }
 
 -(id)item:(NSString *)item{
-    if ([item isEqual:CMNT04_IMAG_ID]) {
+    if ([item isEqualToString:CMNT04_IMAG_ID]) {
         return self.imagId;
-    }else if ([item isEqual:CMNT04_IMAG_PATH]){
+    }else if ([item isEqualToString:CMNT04_IMAG_PATH]){
         return self.imagPath;
-    }else if ([item isEqual:CMNT04_IMAG_URL]){
+    }else if ([item isEqualToString:CMNT04_IMAG_URL]){
         return self.imagUrl;
     }else{
         return [super item:item];

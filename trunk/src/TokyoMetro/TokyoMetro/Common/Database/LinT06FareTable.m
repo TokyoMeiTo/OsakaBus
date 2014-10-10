@@ -47,15 +47,15 @@
 
 
 -(void)item:(NSString *)item value:(id)value{
-    if ([item isEqual:LINT06_FARE_RUTE_ID]) {
+    if ([item isEqualToString:LINT06_FARE_RUTE_ID]) {
         self.ruteId = value;
-    }else if([item isEqual:LINT06_FARE_FARE_ADULT]){
+    }else if([item isEqualToString:LINT06_FARE_FARE_ADULT]){
         self.fareAdult = value;
-    }else if([item isEqual:LINT06_FARE_FARE_CHILD]){
+    }else if([item isEqualToString:LINT06_FARE_FARE_CHILD]){
         self.fareChild = value;
-    }else if([item isEqual:LINT06_FARE_FARE_ID_ADULT]){
+    }else if([item isEqualToString:LINT06_FARE_FARE_ID_ADULT]){
         self.fareIdAdult = value;
-    }else if([item isEqual:LINT06_FARE_FARE_ID_CHILD]){
+    }else if([item isEqualToString:LINT06_FARE_FARE_ID_CHILD]){
         self.fareIdChild = value;
     }else{
         [super item:item value:value];
@@ -63,15 +63,15 @@
 }
 
 -(id)item:(NSString *)item{
-    if ([item isEqual:LINT06_FARE_RUTE_ID]) {
+    if ([item isEqualToString:LINT06_FARE_RUTE_ID]) {
         return self.ruteId;
-    }else if([item isEqual:LINT06_FARE_FARE_ADULT]){
+    }else if([item isEqualToString:LINT06_FARE_FARE_ADULT]){
         return self.fareAdult;
-    }else if([item isEqual:LINT06_FARE_FARE_CHILD]){
+    }else if([item isEqualToString:LINT06_FARE_FARE_CHILD]){
         return self.fareChild;
-    }else if([item isEqual:LINT06_FARE_FARE_ID_ADULT]){
+    }else if([item isEqualToString:LINT06_FARE_FARE_ID_ADULT]){
         return self.fareIdAdult;
-    }else if([item isEqual:LINT06_FARE_FARE_ID_CHILD]){
+    }else if([item isEqualToString:LINT06_FARE_FARE_ID_CHILD]){
         return self.fareIdChild;
     }else{
         return  [super item:item];

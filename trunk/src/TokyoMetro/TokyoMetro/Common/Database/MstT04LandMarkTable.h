@@ -39,6 +39,8 @@
 #define MSTT04_LANDMARK_IMAG_ID3            @"IMAG_ID3"
 #define MSTT04_LANDMARK_IMAG_ID4            @"IMAG_ID4"
 #define MSTT04_LANDMARK_IMAG_ID5            @"IMAG_ID5"
+#define MSTT04_LANDMARK_LMAK_LON            @"LMAK_LON"
+#define MSTT04_LANDMARK_LMAK_LAT            @"LMAK_LAT"
 #define MSTT04_LANDMARK_READ_FLAG           @"READ_FLAG"
 #define MSTT04_LANDMARK_READ_TIME           @"READ_TIME"
 #define MSTT04_LANDMARK_FAVO_FLAG           @"FAVO_FLAG"
@@ -77,6 +79,8 @@
 @property(copy,nonatomic) NSString* imagId3;
 @property(copy,nonatomic) NSString* imagId4;
 @property(copy,nonatomic) NSString* imagId5;
+@property(copy,nonatomic) NSString* lmakLon;
+@property(copy,nonatomic) NSString* lmakLat;
 @property(copy,nonatomic) NSString* readFlag;
 @property(copy,nonatomic) NSString* readTime;
 @property(copy,nonatomic) NSString* favoFlag;

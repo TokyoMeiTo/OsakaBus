@@ -72,37 +72,37 @@
 }
 
 -(void)item:(NSString *)item value:(id)value{
-    if([item isEqual:MSTT01_LINE_ID]){
+    if([item isEqualToString:MSTT01_LINE_ID]){
         self.lineId = value;
-    }else if([item isEqual:MSTT01_LINE_NAME]){
+    }else if([item isEqualToString:MSTT01_LINE_NAME]){
         self.lineName = value;
-    }else if([item isEqual:MSTT01_LINE_METRO_ID]){
+    }else if([item isEqualToString:MSTT01_LINE_METRO_ID]){
         self.lineMetroId = value;
-    }else if([item isEqual:MSTT01_LINE_METRO_ID_FULL]){
+    }else if([item isEqualToString:MSTT01_LINE_METRO_ID_FULL]){
         self.lineMetroIdFull = value;
-    }else if([item isEqual:MSTT01_LINE_NAME_KANA]){
+    }else if([item isEqualToString:MSTT01_LINE_NAME_KANA]){
         self.lineNameKana = value;
-    }else if([item isEqual:MSTT01_LINE_NAME_ROME]){
+    }else if([item isEqualToString:MSTT01_LINE_NAME_ROME]){
         self.lineNameRome = value;
-    }else if([item isEqual:MSTT01_LINE_NAME_EXT1]){
+    }else if([item isEqualToString:MSTT01_LINE_NAME_EXT1]){
         self.lineNameExt1 = value;
-    }else if([item isEqual:MSTT01_LINE_NAME_EXT2]){
+    }else if([item isEqualToString:MSTT01_LINE_NAME_EXT2]){
         self.lineNameExt1 = value;
-    }else if([item isEqual:MSTT01_LINE_NAME_EXT3]){
+    }else if([item isEqualToString:MSTT01_LINE_NAME_EXT3]){
         self.lineNameExt1 = value;
-    }else if([item isEqual:MSTT01_LINE_NAME_EXT4]){
+    }else if([item isEqualToString:MSTT01_LINE_NAME_EXT4]){
         self.lineNameExt1 = value;
-    }else if([item isEqual:MSTT01_LINE_NAME_EXT5]){
+    }else if([item isEqualToString:MSTT01_LINE_NAME_EXT5]){
         self.lineNameExt1 = value;
-    }else if([item isEqual:MSTT01_LINE_NAME_EXT6]){
+    }else if([item isEqualToString:MSTT01_LINE_NAME_EXT6]){
         self.lineNameExt1 = value;
-    }else if([item isEqual:MSTT01_LINE_LON]){
+    }else if([item isEqualToString:MSTT01_LINE_LON]){
         self.lineLon = value;
-    }else if([item isEqual:MSTT01_LINE_LAT]){
+    }else if([item isEqualToString:MSTT01_LINE_LAT]){
         self.lineLat = value;
-    }else if([item isEqual:MSTT01_LINE_PREF]){
+    }else if([item isEqualToString:MSTT01_LINE_PREF]){
         self.linePref = value;
-    }else if([item isEqual:MSTT01_LINE_COMP]){
+    }else if([item isEqualToString:MSTT01_LINE_COMP]){
         self.lineComp = value;
     }else{
         [super item:item value:value];
@@ -110,37 +110,37 @@
 }
 
 -(id)item:(NSString *)item{
-    if([item isEqual:MSTT01_LINE_ID]){
+    if([item isEqualToString:MSTT01_LINE_ID]){
         return self.lineId;
-    }else if([item isEqual:MSTT01_LINE_NAME]){
+    }else if([item isEqualToString:MSTT01_LINE_NAME]){
         return self.lineName;
-    }else if([item isEqual:MSTT01_LINE_METRO_ID]){
+    }else if([item isEqualToString:MSTT01_LINE_METRO_ID]){
         return self.lineMetroId;
-    }else if([item isEqual:MSTT01_LINE_METRO_ID_FULL]){
+    }else if([item isEqualToString:MSTT01_LINE_METRO_ID_FULL]){
         return self.lineMetroIdFull;
-    }else if([item isEqual:MSTT01_LINE_NAME_KANA]){
+    }else if([item isEqualToString:MSTT01_LINE_NAME_KANA]){
         return self.lineNameKana;
-    }else if([item isEqual:MSTT01_LINE_NAME_ROME]){
+    }else if([item isEqualToString:MSTT01_LINE_NAME_ROME]){
         return self.lineNameRome;
-    }else if([item isEqual:MSTT01_LINE_NAME_EXT1]){
+    }else if([item isEqualToString:MSTT01_LINE_NAME_EXT1]){
         return self.lineNameExt1;
-    }else if([item isEqual:MSTT01_LINE_NAME_EXT2]){
+    }else if([item isEqualToString:MSTT01_LINE_NAME_EXT2]){
         return self.lineNameExt2;
-    }else if([item isEqual:MSTT01_LINE_NAME_EXT3]){
+    }else if([item isEqualToString:MSTT01_LINE_NAME_EXT3]){
         return self.lineNameExt3;
-    }else if([item isEqual:MSTT01_LINE_NAME_EXT4]){
+    }else if([item isEqualToString:MSTT01_LINE_NAME_EXT4]){
         return self.lineNameExt4;
-    }else if([item isEqual:MSTT01_LINE_NAME_EXT5]){
+    }else if([item isEqualToString:MSTT01_LINE_NAME_EXT5]){
         return self.lineNameExt5;
-    }else if([item isEqual:MSTT01_LINE_NAME_EXT6]){
+    }else if([item isEqualToString:MSTT01_LINE_NAME_EXT6]){
         return self.lineNameExt6;
-    }else if([item isEqual:MSTT01_LINE_LON]){
+    }else if([item isEqualToString:MSTT01_LINE_LON]){
         return self.lineLon;
-    }else if([item isEqual:MSTT01_LINE_LAT]){
+    }else if([item isEqualToString:MSTT01_LINE_LAT]){
         return self.lineLat;
-    }else if([item isEqual:MSTT01_LINE_PREF]){
+    }else if([item isEqualToString:MSTT01_LINE_PREF]){
         return self.linePref;
-    }else if([item isEqual:MSTT01_LINE_COMP]){
+    }else if([item isEqualToString:MSTT01_LINE_COMP]){
         return self.lineComp;
     }else{
         return [super item:item];

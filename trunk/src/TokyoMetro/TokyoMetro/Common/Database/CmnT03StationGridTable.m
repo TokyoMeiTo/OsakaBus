@@ -40,15 +40,15 @@
 
 
 -(void)item:(NSString *)item value:(id)value{
-    if ([item isEqual:CMNT03_STAT_ID]) {
+    if ([item isEqualToString:CMNT03_STAT_ID]) {
         self.statId = value;
-    }else if([item isEqual:CMNT03_PONT_X_FROM]){
+    }else if([item isEqualToString:CMNT03_PONT_X_FROM]){
         self.pontXFrom = value;
-    }else if([item isEqual:CMNT03_PONT_Y_FROM]){
+    }else if([item isEqualToString:CMNT03_PONT_Y_FROM]){
         self.pontYFrom = value;
-    }else if([item isEqual:CMNT03_PONT_X_TO]){
+    }else if([item isEqualToString:CMNT03_PONT_X_TO]){
         self.pontXTo = value;
-    }else if([item isEqual:CMNT03_PONT_Y_TO]){
+    }else if([item isEqualToString:CMNT03_PONT_Y_TO]){
         self.pontYTo = value;
     }else {
         [super item:item value:value];
@@ -58,15 +58,15 @@
 
 -(id)item:(NSString *)item{
 
-    if ([item isEqual:CMNT03_STAT_ID]) {
+    if ([item isEqualToString:CMNT03_STAT_ID]) {
         return self.statId;
-    }else if([item isEqual:CMNT03_PONT_X_FROM]){
+    }else if([item isEqualToString:CMNT03_PONT_X_FROM]){
         return self.pontXFrom;
-    }else if([item isEqual:CMNT03_PONT_Y_FROM]){
+    }else if([item isEqualToString:CMNT03_PONT_Y_FROM]){
         return self.pontYFrom;
-    }else if([item isEqual:CMNT03_PONT_X_TO]){
+    }else if([item isEqualToString:CMNT03_PONT_X_TO]){
         return self.pontXTo;
-    }else if([item isEqual:CMNT03_PONT_Y_TO]){
+    }else if([item isEqualToString:CMNT03_PONT_Y_TO]){
         return self.pontYTo;
     }else {
        return [super item:item ];

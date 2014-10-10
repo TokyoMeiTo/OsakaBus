@@ -33,11 +33,11 @@
 }
 
 -(void)item:(NSString *)item value:(id)value{
-    if([item isEqual:MSTT03_STAT_ID]){
+    if([item isEqualToString:MSTT03_STAT_ID]){
         self.statId = value;
-    }else if([item isEqual:MSTT03_LINE_ID]){
+    }else if([item isEqualToString:MSTT03_LINE_ID]){
         self.lineId = value;
-    }else if([item isEqual:MSTT03_STAT_SEQ]){
+    }else if([item isEqualToString:MSTT03_STAT_SEQ]){
         self.statSeq = value;
     }else{
         [super item:item value:value];
@@ -45,11 +45,11 @@
 }
 
 -(id)item:(NSString *)item{
-    if([item isEqual:MSTT03_STAT_ID]){
+    if([item isEqualToString:MSTT03_STAT_ID]){
         return self.statId;
-    }else if([item isEqual:MSTT03_LINE_ID]){
+    }else if([item isEqualToString:MSTT03_LINE_ID]){
         return self.lineId;
-    }else if([item isEqual:MSTT03_STAT_SEQ]){
+    }else if([item isEqualToString:MSTT03_STAT_SEQ]){
         return self.statSeq;
     }else{
         return [super item:item];

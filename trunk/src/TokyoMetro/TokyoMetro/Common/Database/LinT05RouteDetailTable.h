@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "ODB.h"
 
-#define LINT05_ROUTE_DETAIL                     @"LINT06_ROUTE_DETAIL"
+#define LINT05_ROUTE_DETAIL                     @"LINT05_ROUTE_DETAIL"
 #define LINT05_ROUTE_DETAIL_RUTE_ID             @"RUTE_ID"
 #define LINT05_ROUTE_DETAIL_RUTE_ID_GROUP_ID    @"RUTE_ID_GROUP_ID"
 #define LINT05_ROUTE_DETAIL_EXCH_STAT_ID        @"EXCH_STAT_ID"

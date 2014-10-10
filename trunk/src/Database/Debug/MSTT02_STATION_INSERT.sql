@@ -26,7 +26,7 @@ INSERT INTO MSTT02_STATION
 ,('2800202','2800202','28002','M24','ShinOtsuka','TokyoMetro.Marunouchi.ShinOtsuka','新大塚',NULL,NULL,'新大冢',NULL,'XinDaZhong','xdz',NULL,NULL,'139.729915','35.725793','13',NULL,NULL)
 ,('2800203','2800203','28002','M23','Myogadani','TokyoMetro.Marunouchi.Myogadani','茗荷谷',NULL,NULL,'茗荷谷',NULL,'MingHeGu','mhg',NULL,NULL,'139.736734','35.717305','13',NULL,NULL)
 ,('2800204','2800204','28002','M22','Korakuen','TokyoMetro.Marunouchi.Korakuen','後楽園',NULL,NULL,'后乐园',NULL,'HouLeYuan','hly',NULL,NULL,'139.7512','35.707337','13',NULL,NULL)
-,('2800205','2800205','28002','M21','HongoSanchomekorakuen','TokyoMetro.Marunouchi.HongoSanchome','本郷三丁目',NULL,NULL,'本乡三丁目',NULL,'BenXiangSanDingMu','bxsdm',NULL,NULL,'139.759914','35.706671','13',NULL,NULL)
+,('2800205','2800205','28002','M21','HongoSanchome','TokyoMetro.Marunouchi.HongoSanchome','本郷三丁目',NULL,NULL,'本乡三丁目',NULL,'BenXiangSanDingMu','bxsdm',NULL,NULL,'139.759914','35.706671','13',NULL,NULL)
 ,('2800206','2800206','28002','M20','Ochanomizu','TokyoMetro.Marunouchi.Ochanomizu','御茶ノ水',NULL,NULL,'御茶之水',NULL,'YuChaZhiShui','yczs',NULL,NULL,'139.763786','35.699855','13',NULL,NULL)
 ,('2800207','2800207','28002','M19','Awajicho','TokyoMetro.Marunouchi.Awajicho','淡路町',NULL,NULL,'淡路町',NULL,'DanLuTing','dlt',NULL,NULL,'139.767575','35.695434','13',NULL,NULL)
 ,('2800208','2800208','28002','M18','Otemachi','TokyoMetro.Marunouchi.Otemachi','大手町',NULL,NULL,'大手町',NULL,'DaShouTing','dst',NULL,NULL,'139.766086','35.684801','13',NULL,NULL)
@@ -291,5 +291,4 @@ INSERT INTO MSTT02_STATION
 ,('9930417','9930417','99304','S17',NULL,NULL,'船堀',NULL,NULL,'船堀',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)
 ,('9930418','9930418','99304','S18',NULL,NULL,'一之江',NULL,NULL,'一之江',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)
 ,('9930419','9930419','99304','S19',NULL,NULL,'瑞江',NULL,NULL,'瑞江',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)
-
 ;

@@ -49,23 +49,23 @@
 }
 
 -(void)item:(NSString *)item value:(id)value{
-    if ([item isEqual:LINT05_ROUTE_DETAIL_RUTE_ID]) {
+    if ([item isEqualToString:LINT05_ROUTE_DETAIL_RUTE_ID]) {
         self.ruteId = value;
-    }else if ([item isEqual:LINT05_ROUTE_DETAIL_RUTE_ID_GROUP_ID]){
+    }else if ([item isEqualToString:LINT05_ROUTE_DETAIL_RUTE_ID_GROUP_ID]){
         self.ruteIdGroupId = value;
-    }else if ([item isEqual:LINT05_ROUTE_DETAIL_EXCH_STAT_ID]){
+    }else if ([item isEqualToString:LINT05_ROUTE_DETAIL_EXCH_STAT_ID]){
         self.exchStatId = value;
-    }else if ([item isEqual:LINT05_ROUTE_DETAIL_EXCH_LINE_ID]){
+    }else if ([item isEqualToString:LINT05_ROUTE_DETAIL_EXCH_LINE_ID]){
         self.exchLineId = value;
-    }else if ([item isEqual:LINT05_ROUTE_DETAIL_EXCH_DEST_ID]){
+    }else if ([item isEqualToString:LINT05_ROUTE_DETAIL_EXCH_DEST_ID]){
         self.exchDestId = value;
-    }else if ([item isEqual:LINT05_ROUTE_DETAIL_EXCH_TYPE]){
+    }else if ([item isEqualToString:LINT05_ROUTE_DETAIL_EXCH_TYPE]){
         self.exchType = value;
-    }else if ([item isEqual:LINT05_ROUTE_DETAIL_EXCH_SEQ]){
+    }else if ([item isEqualToString:LINT05_ROUTE_DETAIL_EXCH_SEQ]){
         self.exchSeq = value;
-    }else if ([item isEqual:LINT05_ROUTE_DETAIL_MOVE_TIME]){
+    }else if ([item isEqualToString:LINT05_ROUTE_DETAIL_MOVE_TIME]){
         self.moveTime = value;
-    }else if ([item isEqual:LINT05_ROUTE_DETAIL_WAIT_TIME]){
+    }else if ([item isEqualToString:LINT05_ROUTE_DETAIL_WAIT_TIME]){
         self.waitTime = value;
     }else{
         [super item:item value:value];
@@ -73,23 +73,23 @@
 }
 
 -(id)item:(NSString *)item{
-    if ([item isEqual:LINT05_ROUTE_DETAIL_RUTE_ID]) {
+    if ([item isEqualToString:LINT05_ROUTE_DETAIL_RUTE_ID]) {
         return self.ruteId;
-    }else if ([item isEqual:LINT05_ROUTE_DETAIL_RUTE_ID_GROUP_ID]){
+    }else if ([item isEqualToString:LINT05_ROUTE_DETAIL_RUTE_ID_GROUP_ID]){
         return self.ruteIdGroupId;
-    }else if ([item isEqual:LINT05_ROUTE_DETAIL_EXCH_STAT_ID]){
+    }else if ([item isEqualToString:LINT05_ROUTE_DETAIL_EXCH_STAT_ID]){
         return self.exchStatId;
-    }else if ([item isEqual:LINT05_ROUTE_DETAIL_EXCH_LINE_ID]){
+    }else if ([item isEqualToString:LINT05_ROUTE_DETAIL_EXCH_LINE_ID]){
         return self.exchLineId;
-    }else if ([item isEqual:LINT05_ROUTE_DETAIL_EXCH_DEST_ID]){
+    }else if ([item isEqualToString:LINT05_ROUTE_DETAIL_EXCH_DEST_ID]){
         return self.exchDestId;
-    }else if ([item isEqual:LINT05_ROUTE_DETAIL_EXCH_TYPE]){
+    }else if ([item isEqualToString:LINT05_ROUTE_DETAIL_EXCH_TYPE]){
         return self.exchType;
-    }else if ([item isEqual:LINT05_ROUTE_DETAIL_EXCH_SEQ]){
+    }else if ([item isEqualToString:LINT05_ROUTE_DETAIL_EXCH_SEQ]){
         return self.exchSeq;
-    }else if ([item isEqual:LINT05_ROUTE_DETAIL_MOVE_TIME]){
+    }else if ([item isEqualToString:LINT05_ROUTE_DETAIL_MOVE_TIME]){
         return self.moveTime;
-    }else if ([item isEqual:LINT05_ROUTE_DETAIL_WAIT_TIME]){
+    }else if ([item isEqualToString:LINT05_ROUTE_DETAIL_WAIT_TIME]){
         return self.waitTime;
     }else{
         return [super item:item];

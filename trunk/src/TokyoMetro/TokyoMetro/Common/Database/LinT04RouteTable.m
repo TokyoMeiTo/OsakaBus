@@ -34,20 +34,20 @@
                                                 ODB_DATATYPE_TEXT,nil];
         self.primaryKeys = [NSArray arrayWithObjects:LINT04_ROUTE_RUTE_ID ,nil];
     }
-    return  self;
+    return self;
 }
 
 
 -(void)item:(NSString *)item value:(id)value{
-    if ([item isEqual:LINT04_ROUTE_RUTE_ID]) {
+    if ([item isEqualToString:LINT04_ROUTE_RUTE_ID]) {
         self.ruteId = value;
-    }else if([item isEqual:LINT04_ROUTE_START_STAT_ID]){
+    }else if([item isEqualToString:LINT04_ROUTE_START_STAT_ID]){
         self.startStatId = value;
-    }else if([item isEqual:LINT04_ROUTE_START_STAT_NAME]){
+    }else if([item isEqualToString:LINT04_ROUTE_START_STAT_NAME]){
         self.startStatName = value;
-    }else if([item isEqual:LINT04_ROUTE_TERM_STAT_ID]){
+    }else if([item isEqualToString:LINT04_ROUTE_TERM_STAT_ID]){
         self.termStatId = value;
-    }else if([item isEqual:LINT04_ROUTE_TERM_STAT_NAME]){
+    }else if([item isEqualToString:LINT04_ROUTE_TERM_STAT_NAME]){
         self.termStatName = value;
     }else{
         [super item:item value:value];
@@ -55,15 +55,15 @@
 }
 
 -(id)item:(NSString *)item{
-    if ([item isEqual:LINT04_ROUTE_RUTE_ID]) {
+    if ([item isEqualToString:LINT04_ROUTE_RUTE_ID]) {
         return self.ruteId;
-    }else if([item isEqual:LINT04_ROUTE_START_STAT_ID]){
+    }else if([item isEqualToString:LINT04_ROUTE_START_STAT_ID]){
         return self.startStatId;
-    }else if([item isEqual:LINT04_ROUTE_START_STAT_NAME]){
+    }else if([item isEqualToString:LINT04_ROUTE_START_STAT_NAME]){
         return self.startStatName;
-    }else if([item isEqual:LINT04_ROUTE_TERM_STAT_ID]){
+    }else if([item isEqualToString:LINT04_ROUTE_TERM_STAT_ID]){
         return self.termStatId;
-    }else if([item isEqual:LINT04_ROUTE_TERM_STAT_NAME]){
+    }else if([item isEqualToString:LINT04_ROUTE_TERM_STAT_NAME]){
         return self.startStatName;
     }else{
        return  [super item:item];
