@@ -252,7 +252,7 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
             }else{
                 remindDetailController.tableUsrT01 = alarm!
             }
-            
+//            var remindDetailController = self.storyboard!.instantiateViewControllerWithIdentifier("localcache") as LocalCacheController
             self.navigationController!.pushViewController(remindDetailController, animated:true)
         case self.navigationItem.rightBarButtonItem!:
             var remindDetailController = self.storyboard!.instantiateViewControllerWithIdentifier("reminddetail") as RemindDetailController
@@ -344,12 +344,20 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
         items = NSMutableArray.array()
         for(var i=0;i < trainAlarms!.count;i++){
             var train:UsrT02TrainAlarmTable = trainAlarms![i]
-            var directions = ["\(train.item(USRT02_TRAIN_ALARM_FIRST_TIME))","\(train.item(USRT02_TRAIN_ALARM_LAST_TIME))"]
+            var directions = [convertTrainTime("\(train.item(USRT02_TRAIN_ALARM_FIRST_TIME))"),convertTrainTime("\(train.item(USRT02_TRAIN_ALARM_LAST_TIME))")]
             var trainFlag:Array<String> = [ "早班车：", "末班车："]
             items.addObject(["\(train.item(USRT02_TRAIN_ALARM_LINE_ID))".line() + ":" + "\(train.item(USRT02_TRAIN_ALARM_STAT_ID))".station(), directions, trainFlag])
         }
     }
 
+    func convertTrainTime(time:String) -> String{
+        var tempStr = "0123"
+        
+        var indexHourTo = tempStr.rangeOfString("1")
+        var indexMinFrom = tempStr.rangeOfString("2")
+        
+        return time.substringToIndex(indexHourTo!.endIndex) + ":" + time.substringFromIndex(indexMinFrom!.startIndex)
+    }
     
     /**
      * 从DB查询到站信息
@@ -452,6 +460,7 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
             var strFirst:NSString = "\(trainAlarms![indexPath.section].item(USRT02_TRAIN_ALARM_FIRST_FLAG))"
             if(strFirst.integerValue == 0){
                 switchAralm.on = false
+                cell.backgroundColor = UIColor(red: 215/255, green: 255/255, blue: 255/255, alpha: 1.0)
             }else{
                 switchAralm.on = true
             }
@@ -459,6 +468,7 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
             var strLast:NSString = "\(trainAlarms![indexPath.section].item(USRT02_TRAIN_ALARM_LAST_FLAG))"
             if(strLast.integerValue == 0){
                 switchAralm.on = false
+                cell.backgroundColor = UIColor(red: 224/255, green: 255/255, blue: 255/255, alpha: 1.0)
             }else{
                 switchAralm.on = true
             }

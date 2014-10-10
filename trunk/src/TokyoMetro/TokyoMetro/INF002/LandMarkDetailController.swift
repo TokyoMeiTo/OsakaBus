@@ -60,11 +60,35 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, NSObjectP
      */
     func buttonAction(sender: UIButton){
         switch sender.tag{
+        case 101:
+            var tableUsrT03:INF002FavDao = INF002FavDao()
+            var lmkFav:UsrT03FavoriteTable? = tableUsrT03.queryFav("\(landMark!.item(MSTT04_LANDMARK_LMAK_ID))")
+            if(lmkFav!.rowid != nil && lmkFav!.rowid != ""){
+                RemindDetailController.showMessage("通知", msg:"此地标已经在收藏中", buttons:["OK"], delegate: nil)
+            }else{
+                var lmkFavAdd:UsrT03FavoriteTable = UsrT03FavoriteTable()
+                lmkFavAdd.lmakId = "\(landMark!.item(MSTT04_LANDMARK_LMAK_ID))"
+                lmkFavAdd.favoType = "3"
+                lmkFavAdd.favoTime = RemindDetailController.convertDate2LocalTime(NSDate.date())
+                lmkFavAdd.lineId = "\(landMark!.item(MSTT04_LANDMARK_LINE_ID))"
+                lmkFavAdd.statId = "\(landMark!.item(MSTT04_LANDMARK_STAT_ID))"
+                lmkFavAdd.statExitId = "0"
+                lmkFavAdd.ruteId = "0"
+                if(lmkFavAdd.insert()){
+//                    RemindDetailController.showMessage("通知", msg:"收藏成功", buttons:["OK"], delegate: nil)
+                }
+            }
+            
         case 102:
             var landMarkMapController = self.storyboard!.instantiateViewControllerWithIdentifier("landmarkmap") as LandMarkMapController
             landMarkMapController.landMark = landMark!
             self.navigationController!.pushViewController(landMarkMapController, animated:true)
         case self.navigationItem.leftBarButtonItem!.tag:
+            var controllers:AnyObject? = self.navigationController!.viewControllers
+            if(controllers!.count > 1){
+                var lastController:LandMarkListController = controllers![controllers!.count - 2] as LandMarkListController
+                lastController.viewDidLoad()
+            }
             self.navigationController!.popViewControllerAnimated(true)
         default:
             println("nothing")
@@ -143,11 +167,6 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, NSObjectP
             return calLblHeight(nsStr, font: infoFont, constrainedToSize: lblSize).height + 10
         case 6:
             return 43
-        case 7:
-            if(landMark!.item(MSTT04_LANDMARK_STAT_ID) == nil || "\(landMark!.item(MSTT04_LANDMARK_STAT_ID))" == ""){
-                return 0
-            }
-            return 43
         default:
            return 43
         }
@@ -201,8 +220,8 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, NSObjectP
             
             // 地标地址
             if(landMark!.item(MSTT04_LANDMARK_LMAK_ADDR) != nil && "\(landMark!.item(MSTT04_LANDMARK_LMAK_ADDR))" != ""){
-                var lblADDR = UILabel(frame: CGRect(x:130,y:135,width:200,height:50))
-                lblADDR.numberOfLines = 1
+                var lblADDR = UILabel(frame: CGRect(x:130,y:135,width:190,height:50))
+                lblADDR.numberOfLines = 0
                 lblADDR.backgroundColor = UIColor.clearColor()
                 lblADDR.textColor = UIColor.whiteColor()
                 lblADDR.text = "\(landMark!.item(MSTT04_LANDMARK_LMAK_ADDR))"
@@ -213,7 +232,14 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, NSObjectP
             
             var btnFav:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
             btnFav.frame = CGRect(x:15,y:135,width:50,height:50)
+            
+            var tableUsrT03:INF002FavDao = INF002FavDao()
+            var lmkFav:UsrT03FavoriteTable? = tableUsrT03.queryFav("\(landMark!.item(MSTT04_LANDMARK_LMAK_ID))")
+            
             var imgFav = UIImage(named: "INF00202.png")
+            if(lmkFav!.rowid != nil && lmkFav!.rowid != ""){
+                imgFav = UIImage(named: "INF00206.png")
+            }
             btnFav.setBackgroundImage(imgFav, forState: UIControlState.Normal)
             btnFav.tag = 101
             
@@ -242,7 +268,7 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, NSObjectP
                 lblLocalNM.text = ""
             }
             
-            lblLocalNM.font = UIFont.systemFontOfSize(18)
+            lblLocalNM.font = UIFont.systemFontOfSize(20)
             lblLocalNM.textAlignment = NSTextAlignment.Left
             cell.addSubview(lblLocalNM)
         // 地标名（日文汉字）
@@ -254,7 +280,7 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, NSObjectP
                 lblJpNM.text = ""
             }
             lblJpNM.textColor = UIColor.lightGrayColor()
-            lblJpNM.font = UIFont.systemFontOfSize(8)
+            lblJpNM.font = UIFont.systemFontOfSize(10)
             lblJpNM.textAlignment = NSTextAlignment.Left
             cell.addSubview(lblJpNM)
             
@@ -288,10 +314,17 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, NSObjectP
         // 地标票价
         case 4:
             if(landMark!.item(MSTT04_LANDMARK_LMAK_TICL_PRIC) != nil && "\(landMark!.item(MSTT04_LANDMARK_LMAK_TICL_PRIC))" != ""){
+                var lblInfoTitle = UILabel(frame: CGRect(x:15,y:10,width:tableView.frame.width - 30,height:30))
+                lblInfoTitle.textColor = UIColor.lightGrayColor()
+                lblInfoTitle.text = "票价"
+                lblInfoTitle.font = UIFont.systemFontOfSize(20)
+                lblInfoTitle.textAlignment = NSTextAlignment.Left
+                cell.addSubview(lblInfoTitle)
+                
                 var lblPRIC = UILabel(frame: CGRect(x:15,y:0,width:tableView.frame.width - 30,height:40))
                 lblPRIC.numberOfLines = 0
                 lblPRIC.lineBreakMode = NSLineBreakMode.ByCharWrapping
-                lblPRIC.text = "票价：\(landMark!.item(MSTT04_LANDMARK_LMAK_TICL_PRIC))"
+                lblPRIC.text = "\(landMark!.item(MSTT04_LANDMARK_LMAK_TICL_PRIC))"
                 lblPRIC.font = UIFont.systemFontOfSize(14)
                 lblPRIC.textAlignment = NSTextAlignment.Left
                 
@@ -303,10 +336,17 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, NSObjectP
         // 地标营业时间
         case 5:
             if(landMark!.item(MSTT04_LANDMARK_LMAK_AVAL_TIME) != nil && "\(landMark!.item(MSTT04_LANDMARK_LMAK_AVAL_TIME))" != ""){
+                var lblInfoTitle = UILabel(frame: CGRect(x:15,y:10,width:tableView.frame.width - 30,height:30))
+                lblInfoTitle.textColor = UIColor.lightGrayColor()
+                lblInfoTitle.text = "开放时间"
+                lblInfoTitle.font = UIFont.systemFontOfSize(20)
+                lblInfoTitle.textAlignment = NSTextAlignment.Left
+                cell.addSubview(lblInfoTitle)
+                
                 var lblTime = UILabel(frame: CGRect(x:15,y:0,width:tableView.frame.width - 30,height:40))
                 lblTime.numberOfLines = 0
                 lblTime.lineBreakMode = NSLineBreakMode.ByCharWrapping
-                lblTime.text = "开放时间：\(landMark!.item(MSTT04_LANDMARK_LMAK_AVAL_TIME))"
+                lblTime.text = "\(landMark!.item(MSTT04_LANDMARK_LMAK_AVAL_TIME))"
                 lblTime.font = UIFont.systemFontOfSize(14)
                 lblTime.textAlignment = NSTextAlignment.Left
                 
@@ -317,32 +357,17 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, NSObjectP
             }
         // 地标附近线路
         case 6:
-            var lblLine = UILabel(frame: CGRect(x:15,y:0,width:tableView.frame.width - 30,height:40))
-            lblLine.numberOfLines = 0
-            lblLine.lineBreakMode = NSLineBreakMode.ByCharWrapping
-            lblLine.text = "附近线路："
-            lblLine.font = UIFont.systemFontOfSize(14)
-            lblLine.textAlignment = NSTextAlignment.Left
-            cell.addSubview(lblLine)
+            var lblInfoTitle = UILabel(frame: CGRect(x:15,y:10,width:tableView.frame.width - 30,height:30))
+            lblInfoTitle.textColor = UIColor.lightGrayColor()
+            lblInfoTitle.text = "附近站点"
+            lblInfoTitle.font = UIFont.systemFontOfSize(20)
+            lblInfoTitle.textAlignment = NSTextAlignment.Left
+            cell.addSubview(lblInfoTitle)
             
             var btnLine:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-            btnLine.frame = CGRect(x:70,y:5,width:130,height:30)
-            btnLine.setTitle("\(landMark!.item(MSTT04_LANDMARK_LINE_ID))".line(), forState: UIControlState.Normal)
+            btnLine.frame = CGRect(x:15,y:45,width:130,height:30)
+            btnLine.setTitle("\(landMark!.item(MSTT04_LANDMARK_LINE_ID))".line() + "\(landMark!.item(MSTT04_LANDMARK_STAT_ID))".station(), forState: UIControlState.Normal)
             cell.addSubview(btnLine)
-        // 地标附近站点
-        case 7:
-            var lblStation = UILabel(frame: CGRect(x:15,y:0,width:tableView.frame.width - 30,height:40))
-            lblStation.numberOfLines = 0
-            lblStation.lineBreakMode = NSLineBreakMode.ByCharWrapping
-            lblStation.text = "附近站点："
-            lblStation.font = UIFont.systemFontOfSize(14)
-            lblStation.textAlignment = NSTextAlignment.Left
-            cell.addSubview(lblStation)
-            
-            var btnStation:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-            btnStation.frame = CGRect(x:70,y:5,width:130,height:30)
-            btnStation.setTitle("\(landMark!.item(MSTT04_LANDMARK_STAT_ID))".station(), forState: UIControlState.Normal)
-            cell.addSubview(btnStation)
         default:
             println("nothing")
         }

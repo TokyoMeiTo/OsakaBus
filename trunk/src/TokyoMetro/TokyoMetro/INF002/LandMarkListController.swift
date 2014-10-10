@@ -122,7 +122,7 @@ class LandMarkListController: UIViewController, UITableViewDelegate, NSObjectPro
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 175
+        return 170
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -136,26 +136,34 @@ class LandMarkListController: UIViewController, UITableViewDelegate, NSObjectPro
             imgLandMark = UIImage(named: "\(landMarks![indexPath.row].item(MSTT04_LANDMARK_IMAG_ID2))")
         }
         
-        var imageViewLandMark = UIImageView(frame: CGRectMake(5, 5, tableView.frame.width - 10, 170))
+        var imageViewLandMark = UIImageView(frame: CGRectMake(0, 0, tableView.frame.width, 170))
         imageViewLandMark.image = imgLandMark
         cell.addSubview(imageViewLandMark)
         
-        var lblTemp = UILabel(frame: CGRect(x:5,y:145,width:tableView.frame.width - 10,height:30))
-        lblTemp.alpha = 0.5
-        lblTemp.backgroundColor = UIColor.lightGrayColor()
+        var lblTemp = UILabel(frame: CGRect(x:0,y:135,width:tableView.frame.width,height:40))
+        lblTemp.alpha = 0.4
+        lblTemp.backgroundColor = UIColor.blackColor()
         cell.addSubview(lblTemp)
         
-        var lblLandMark = UILabel(frame: CGRect(x:5,y:145,width:tableView.frame.width - 10,height:30))
+        var lblLandMark = UILabel(frame: CGRect(x:15,y:135,width:tableView.frame.width,height:40))
         lblLandMark.backgroundColor = UIColor.clearColor()
-        lblLandMark.font = UIFont.boldSystemFontOfSize(14)
+        lblLandMark.font = UIFont.boldSystemFontOfSize(16)
         lblLandMark.textColor = UIColor.whiteColor()
         lblLandMark.text = "\(landMarks![indexPath.row].item(MSTT04_LANDMARK_LMAK_NAME_EXT1))"
         lblLandMark.textAlignment = NSTextAlignment.Left
         cell.addSubview(lblLandMark)
         
         var btnFav:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-        btnFav.frame = CGRect(x:tableView.frame.width - 35,y:145,width:30,height:30)
+        btnFav.frame = CGRect(x:15,y:10,width:40,height:40)
+        
+        var tableUsrT03:INF002FavDao = INF002FavDao()
+        var lmkFav:UsrT03FavoriteTable? = tableUsrT03.queryFav("\(landMarks![indexPath.row].item(MSTT04_LANDMARK_LMAK_ID))")
+        
         var imgFav = UIImage(named: "INF00202.png")
+        if(lmkFav!.rowid != nil && lmkFav!.rowid != ""){
+            imgFav = UIImage(named: "INF00206.png")
+        }
+        
         btnFav.setBackgroundImage(imgFav, forState: UIControlState.Normal)
         btnFav.tag = 101
         
