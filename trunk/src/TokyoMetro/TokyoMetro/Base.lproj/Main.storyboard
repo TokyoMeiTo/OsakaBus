@@ -78,17 +78,17 @@
                                                         <rect key="frame" x="19" y="61" width="160" height="25"/>
                                                         <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                                                     </view>
-                                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u5o-yK-Mkz">
-                                                        <rect key="frame" x="121" y="87" width="60" height="30"/>
-                                                        <state key="normal" title="设为终点">
-                                                            <color key="titleColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                        </state>
-                                                    </button>
                                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Zi-EX-YY8">
                                                         <rect key="frame" x="65" y="122" width="60" height="30"/>
                                                         <state key="normal" title="站点详情">
                                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                        </state>
+                                                    </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u5o-yK-Mkz">
+                                                        <rect key="frame" x="121" y="87" width="60" height="30"/>
+                                                        <state key="normal" title="设为终点">
+                                                            <color key="titleColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
                                                     </button>
@@ -240,6 +240,9 @@
                                                 <state key="normal">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="showStationTips" destination="0Uf-t0-ZZH" eventType="touchUpInside" id="Irk-NV-5Xf"/>
+                                                </connections>
                                             </button>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="menu-12" translatesAutoresizingMaskIntoConstraints="NO" id="Ssa-U3-sez">
                                                 <rect key="frame" x="97" y="12" width="42" height="42"/>
@@ -257,9 +260,6 @@
                                                 <state key="normal">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
-                                                <connections>
-                                                    <segue destination="eP0-Yc-ubN" kind="push" id="rPH-oc-oZq"/>
-                                                </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="美食" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tdu-ko-uUR">
                                                 <rect key="frame" x="80" y="148" width="79" height="21"/>
@@ -342,6 +342,9 @@
                                                 <state key="normal">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="showTips" destination="0Uf-t0-ZZH" eventType="touchUpInside" id="qIL-6q-dW1"/>
+                                                </connections>
                                             </button>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="menu-11" translatesAutoresizingMaskIntoConstraints="NO" id="DVg-bU-fho">
                                                 <rect key="frame" x="18" y="12" width="42" height="42"/>
@@ -414,9 +417,22 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="bodyView" destination="bIT-le-fTq" id="fSp-bf-OXj"/>
-                        <outlet property="btnToSearchRoute" destination="soL-BA-wIq" id="dNY-Za-WBY"/>
-                        <outlet property="menuView" destination="phn-R5-chP" id="ld1-jl-T9y"/>
+                        <outlet property="mBodyView" destination="bIT-le-fTq" id="coH-SD-weN"/>
+                        <outlet property="mBtnImgAdd" destination="d4n-OV-9uO" id="wfD-hE-IZo"/>
+                        <outlet property="mBtnImgDec" destination="YZA-mR-YEA" id="jlR-LP-oDM"/>
+                        <outlet property="mBtnToSearchRoute" destination="soL-BA-wIq" id="gtV-6K-UxK"/>
+                        <outlet property="mImgLineGraph" destination="Bin-mn-QXQ" id="uJ9-4G-RbH"/>
+                        <outlet property="mMainWrapper" destination="xcS-Af-V8x" id="ac4-lJ-coE"/>
+                        <outlet property="mMenuView" destination="phn-R5-chP" id="cVb-F2-1ST"/>
+                        <outlet property="mPopupBtnEnd" destination="u5o-yK-Mkz" id="yiZ-Hg-Lda"/>
+                        <outlet property="mPopupBtnMore" destination="2Zi-EX-YY8" id="ghY-t5-xmA"/>
+                        <outlet property="mPopupBtnStart" destination="u1B-aD-TLh" id="96j-qV-Rmf"/>
+                        <outlet property="mPopupStationName" destination="q7I-t2-auh" id="5P7-gw-LAv"/>
+                        <outlet property="mPopupStationNameJP" destination="q7I-t2-auh" id="1NP-zb-F2q"/>
+                        <outlet property="mPopupStationView" destination="DEB-YQ-fOd" id="29a-L8-heq"/>
+                        <outlet property="mPopupViewSetImage" destination="dwN-M7-28c" id="Jgs-SX-9dx"/>
+                        <outlet property="mScrollView" destination="wrB-5V-Sih" id="q9v-sf-iNS"/>
+                        <outlet property="mStationInfoLayerView" destination="x1z-mg-yUs" id="5G0-eF-8vt"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="b92-nw-fei" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2690,7 +2706,6 @@
         <!--设定-->
         <scene sceneID="aiu-Lf-lxv">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="zZg-EK-GUW" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="QAg-q9-LZD" customClass="Setting" customModule="TokyoMetro" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="LLb-6I-EoP"/>
@@ -2796,6 +2811,7 @@
                         <outlet property="mTabSettingItem" destination="Bu8-nx-IFS" id="onO-oK-y7a"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zZg-EK-GUW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-698" y="-502"/>
         </scene>
@@ -3009,11 +3025,11 @@
     <resources>
         <image name="00000665_hanzomon_L_1" width="768" height="468"/>
         <image name="3x-3-蓝色-01.png" width="3544" height="2598"/>
-        <image name="INF00201" width="3544" height="2598"/>
-        <image name="INF00202" width="3544" height="2598"/>
+        <image name="INF00201" width="31" height="31"/>
+        <image name="INF00202" width="31" height="31"/>
         <image name="MetroCH-1" width="3544" height="2598"/>
-        <image name="USR00201" width="3544" height="2598"/>
-        <image name="USR00202" width="3544" height="2598"/>
+        <image name="USR00201" width="93" height="93"/>
+        <image name="USR00202" width="93" height="93"/>
         <image name="USR00303" width="3544" height="2598"/>
         <image name="answer" width="35" height="35"/>
         <image name="collect-01" width="37" height="37"/>

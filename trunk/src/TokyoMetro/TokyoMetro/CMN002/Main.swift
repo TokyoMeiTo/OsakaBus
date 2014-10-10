@@ -208,6 +208,21 @@ class Main: UIViewController,UIScrollViewDelegate {
             mBodyView.hidden = false
         }
     }
+    
+    @IBAction func showStationTips() {
+        var tipsList: TipsContentList = self.storyboard?.instantiateViewControllerWithIdentifier("TipsContentList") as TipsContentList
+        
+        tipsList.tipsType = "2"
+        self.navigationController?.pushViewController(tipsList, animated: true)
+    }
+    
+    @IBAction func showTips() {
+        var tipsList: TipsContentList = self.storyboard?.instantiateViewControllerWithIdentifier("TipsContentList") as TipsContentList
+        
+        tipsList.tipsType = "1"
+        self.navigationController?.pushViewController(tipsList, animated: true)
+    }
+    
     // 根据点击的像素点从db中获取车站id
     func singleTapAction(sender:UITapGestureRecognizer) {
 
