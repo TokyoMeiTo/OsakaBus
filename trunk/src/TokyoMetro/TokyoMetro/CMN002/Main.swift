@@ -82,6 +82,17 @@ class Main: UIViewController,UIScrollViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let folder = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String
+        let path = folder.stringByAppendingPathComponent("TokyoMetroCache")
+        var fileExists = NSFileManager().fileExistsAtPath(path)
+        
+        if(!fileExists){
+            var localCacheController = self.storyboard!.instantiateViewControllerWithIdentifier("localcache") as LocalCacheController
+            localCacheController.classType = 0
+            
+            self.navigationController!.presentViewController(localCacheController, animated: true, completion: nil)
+        }
+        
         // ScreenSize
         self.mScreenSize = UIScreen.mainScreen().bounds.size
 
@@ -399,9 +410,9 @@ class Main: UIViewController,UIScrollViewDelegate {
             // 跳转到此站详细页面
             mPopupStationView.hidden = true
             var stationDetail : StationDetail = self.storyboard?.instantiateViewControllerWithIdentifier("StationDetail") as StationDetail
-            stationDetail.cellJPName = self.mPopupStationNameJP
-            stationDetail.cellJPNameKana = self.statioStationNameKana
-            stationDetail.MetroID = self.selectStationMetroID
+//            stationDetail.cellJPName = self.mPopupStationNameJP
+//            stationDetail.cellJPNameKana = self.statioStationNameKana
+//            stationDetail.MetroID = self.selectStationMetroID
             self.navigationController?.pushViewController(stationDetail, animated:true)
 
         default:
