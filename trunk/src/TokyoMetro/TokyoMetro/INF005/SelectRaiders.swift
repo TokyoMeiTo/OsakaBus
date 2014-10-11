@@ -33,7 +33,15 @@ class SelectRaiders: UIViewController {
     }
     
     func outlineCli(sender: UIButton) {
+        var pdfUrl = ""
         
+        if (sender.tag == 201) {
+            pdfUrl = "mayiwo".getStrategyPDFPath()
+        } else if (sender.tag == 202) {
+            pdfUrl = "xiecheng".getStrategyPDFPath()
+        } else {
+            pdfUrl = "qunaer".getStrategyPDFPath()
+        }
     }
     
 }
