@@ -36,10 +36,10 @@ class LandMarkListController: UIViewController, UITableViewDelegate, NSObjectPro
         tbList.dataSource = self
         tbList.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         // 查询按钮点击事件
-//        var searchButton:UIBarButtonItem? = self.navigationItem.rightBarButtonItem
-//        searchButton!.target = self
-//        searchButton!.action = "buttonAction:"
-        self.navigationItem.rightBarButtonItem = nil
+        var searchButton:UIBarButtonItem? = UIBarButtonItem(title: "查找", style: UIBarButtonItemStyle.Plain, target:self, action: "buttonAction:")
+        searchButton!.target = self
+        searchButton!.action = "buttonAction:"
+        self.navigationItem.rightBarButtonItem = searchButton!
         
     }
     override func didReceiveMemoryWarning() {
@@ -131,21 +131,20 @@ class LandMarkListController: UIViewController, UITableViewDelegate, NSObjectPro
             subview.removeFromSuperview()
         }
         // cell显示内容
-        var imgLandMark = UIImage(named: "\(landMarks![indexPath.row].item(MSTT04_LANDMARK_IMAG_ID1))")
+        var imgLandMark = UIImage(named: LocalCacheController.readFile("\(landMarks![indexPath.row].item(MSTT04_LANDMARK_IMAG_ID1))"))
         if("\(landMarks![indexPath.row].item(MSTT04_LANDMARK_LMAK_NAME_EXT1))" == "皇居"){
-            imgLandMark = UIImage(named: "\(landMarks![indexPath.row].item(MSTT04_LANDMARK_IMAG_ID2))")
+            imgLandMark = UIImage(named: LocalCacheController.readFile("\(landMarks![indexPath.row].item(MSTT04_LANDMARK_IMAG_ID2))"))
         }
-        
         var imageViewLandMark = UIImageView(frame: CGRectMake(0, 0, tableView.frame.width, 170))
         imageViewLandMark.image = imgLandMark
         cell.addSubview(imageViewLandMark)
         
-        var lblTemp = UILabel(frame: CGRect(x:0,y:135,width:tableView.frame.width,height:40))
+        var lblTemp = UILabel(frame: CGRect(x:0,y:135,width:tableView.frame.width,height:35))
         lblTemp.alpha = 0.4
         lblTemp.backgroundColor = UIColor.blackColor()
         cell.addSubview(lblTemp)
         
-        var lblLandMark = UILabel(frame: CGRect(x:15,y:135,width:tableView.frame.width,height:40))
+        var lblLandMark = UILabel(frame: CGRect(x:15,y:130,width:tableView.frame.width,height:40))
         lblLandMark.backgroundColor = UIColor.clearColor()
         lblLandMark.font = UIFont.boldSystemFontOfSize(16)
         lblLandMark.textColor = UIColor.whiteColor()

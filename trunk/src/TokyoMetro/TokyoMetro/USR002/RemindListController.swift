@@ -244,15 +244,16 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
             btnCancel.enabled = true
             btnEdit.enabled = false
         case btnEdit:
-            var remindDetailController = self.storyboard!.instantiateViewControllerWithIdentifier("reminddetail") as RemindDetailController
-            remindDetailController.title = ARRIVE_STATION_TITLE
-            remindDetailController.segIndex = NUM_0
-            if(alarm == nil){
-                remindDetailController.tableUsrT01 = nil
-            }else{
-                remindDetailController.tableUsrT01 = alarm!
-            }
-//            var remindDetailController = self.storyboard!.instantiateViewControllerWithIdentifier("localcache") as LocalCacheController
+//            var remindDetailController = self.storyboard!.instantiateViewControllerWithIdentifier("reminddetail") as RemindDetailController
+//            remindDetailController.title = ARRIVE_STATION_TITLE
+//            remindDetailController.segIndex = NUM_0
+//            if(alarm == nil){
+//                remindDetailController.tableUsrT01 = nil
+//            }else{
+//                remindDetailController.tableUsrT01 = alarm!
+//            }
+            var remindDetailController = self.storyboard!.instantiateViewControllerWithIdentifier("localcache") as LocalCacheController
+            remindDetailController.classType = 1
             self.navigationController!.pushViewController(remindDetailController, animated:true)
         case self.navigationItem.rightBarButtonItem!:
             var remindDetailController = self.storyboard!.instantiateViewControllerWithIdentifier("reminddetail") as RemindDetailController
