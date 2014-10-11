@@ -113,7 +113,10 @@ class LineStationList: UIViewController, UITableViewDelegate, UITableViewDataSou
         var map: MstT02StationTable = stationArr[indexPath.row] as MstT02StationTable
         
         var textName = cell.viewWithTag(201) as UILabel
-        textName.text = map.item(MSTT02_STAT_NAME_EXT1) as? String
+        textName.text = (map.item(MSTT02_STAT_ID) as String).station()
+        
+        var textJPName = cell.viewWithTag(204) as UILabel
+        textJPName.text = (map.item(MSTT02_STAT_NAME) as String) + "（" + (map.item(MSTT02_STAT_NAME_KANA) as String) + "）"
         
         var btnImg: UIImageView = cell.viewWithTag(203) as UIImageView
         btnImg.image = lineStationImage(map.item(MSTT02_STAT_SEQ) as String)
@@ -149,7 +152,7 @@ class LineStationList: UIViewController, UITableViewDelegate, UITableViewDataSou
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 45
+        return 48
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -157,6 +160,7 @@ class LineStationList: UIViewController, UITableViewDelegate, UITableViewDataSou
         
         var map: MstT02StationTable = stationArr[indexPath.row] as MstT02StationTable
         detail.cellJPName = map.item(MSTT02_STAT_NAME) as String
+        detail.cellJPNameKana = map.item(MSTT02_STAT_NAME_KANA) as String
         detail.stat_id = map.item(MSTT02_STAT_ID) as String
         detail.statMetroId = map.item(MSTT02_STAT_METRO_ID) as String
 

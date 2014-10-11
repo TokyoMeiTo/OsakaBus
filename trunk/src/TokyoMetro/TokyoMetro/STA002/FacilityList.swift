@@ -92,28 +92,7 @@ class FacilityList: UIViewController,UITableViewDelegate,UITableViewDataSource {
         var key = facilityArr[indexPath.section][indexPath.row] as StaT04FacilityTable
         
         var faciDesp = key.item(STAT04_FACI_DESP) as? String
-        
-//        var imgFacility = UIImageView()
-//        
-//        if (faciType == "4") {
-//            
-//            imgFacility.frame = CGRectMake(15, 10, 60, 30)
-//            var image: UIImage = UIImage(named: "in_toilet_wheelchair.png")
-//            imgFacility.image = image
-//        } else if (faciType == "1") {
-//            var frame:CGRect = CGRectMake(15, 10, 31, 30)
-//            imgFacility.frame = frame
-//            imgFacility.image = UIImage(named: "escalator_wheelchair.png")
-//        } else if (faciType == "2") {
-//            imgFacility.frame = CGRectMake(15, 10, 31, 30)
-//            imgFacility.image = UIImage(named: "escalator.png")
-//        } else if (faciType == "3") {
-//            imgFacility.frame = CGRectMake(15, 10, 31, 30)
-//            imgFacility.image = UIImage(named: "in_lift.png")
-//        }
-//        
-//        cell.addSubview(imgFacility)
-        
+
         var labName = cell.viewWithTag(102) as UILabel
         labName.text = faciDesp
         
@@ -121,7 +100,7 @@ class FacilityList: UIViewController,UITableViewDelegate,UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 50
+        return 60
     }
     
     

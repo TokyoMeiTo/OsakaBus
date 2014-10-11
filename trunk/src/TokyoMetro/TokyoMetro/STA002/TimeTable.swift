@@ -81,8 +81,10 @@ class TimeTable: UIViewController,UITableViewDelegate,UITableViewDataSource {
         odbTime()
         if (segment.selectedSegmentIndex == 0) {
             allTimeArr = destTimeArr1
-        } else {
+        } else if (segment.selectedSegmentIndex == 1){
             allTimeArr = destTimeArr2
+        } else {
+            allTimeArr = destTimeArr3
         }
         
         table.reloadData()
@@ -146,6 +148,7 @@ class TimeTable: UIViewController,UITableViewDelegate,UITableViewDataSource {
         setSegment()
         destTimeArr1.removeAllObjects()
         destTimeArr2.removeAllObjects()
+        destTimeArr3.removeAllObjects()
         allTimeArr.removeAllObjects()
         odbTime()
         
@@ -169,25 +172,10 @@ class TimeTable: UIViewController,UITableViewDelegate,UITableViewDataSource {
         
     }
     
-//    func getEndStation(index: Int) -> String{
-//        var string = ""
-//        if (endStationArr.count == 0){
-//            return string
-//        }
-//        
-//        if (index < endStationArr.count) {
-//            string = endStationArr[index]
-//        } else {
-//            string = endStationArr[endStationArr.count - 1]
-//        }
-//        
-//        return string
-//    }
-//    
     
     func odbTime() {
         
-        if (destTimeArr1.count == 3 && destTimeArr2.count == 3) {
+        if (destTimeArr1.count == 3 && destTimeArr2.count == 3 && destTimeArr3.count == 3) {
             return
         }
         var index = segment.selectedSegmentIndex
@@ -672,75 +660,6 @@ class TimeTable: UIViewController,UITableViewDelegate,UITableViewDataSource {
         
         return image
     }
-
-//    
-//    func getDirtStatId(lineId: String, type: Int) -> String{
-//        var dirtStatId = ""
-//        switch (lineId) {
-//        case "28001":
-//            if (type == 0) {
-//                dirtStatId = "2800119"
-//            } else {
-//                dirtStatId = "2800101"
-//            }
-//        case "28003":
-//            if (type == 0) {
-//                dirtStatId = "2800321"
-//            } else {
-//                dirtStatId = "2800301"
-//            }
-//        case "28004":
-//            if (type == 0) {
-//                dirtStatId = "2800423"
-//            } else {
-//                dirtStatId = "2800401"
-//            }
-//        case "28005":
-//            if (type == 0) {
-//                dirtStatId = "2800520"
-//            } else {
-//                dirtStatId = "2800501"
-//            }
-//        case "28006":
-//            if (type == 0) {
-//                dirtStatId = "2800624"
-//            } else {
-//                dirtStatId = "2800601"
-//            }
-//        case "28008":
-//            if (type == 0) {
-//                dirtStatId = "2800814"
-//            } else {
-//                dirtStatId = "2800801"
-//            }
-//        case "28009":
-//            if (type == 0) {
-//                dirtStatId = "2800919"
-//            } else {
-//                dirtStatId = "2800901"
-//            }
-//        case "28010":
-//            if (type == 0) {
-//                dirtStatId = "2801016"
-//            } else {
-//                dirtStatId = "2801001"
-//            }
-//        case "28002":
-//            if (type == 0) {
-//                dirtStatId = "2800228"
-//            } else if (type == 1)  {
-//                dirtStatId = "2800201"
-//            } else {
-//                
-//            }
-//        default:
-//            dirtStatId = "2800119"
-//        }
-//        
-//        return dirtStatId
-//    }
-//    
-//  
 
     
 }

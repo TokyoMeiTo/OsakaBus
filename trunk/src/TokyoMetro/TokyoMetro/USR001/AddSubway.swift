@@ -19,6 +19,8 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var stationArr: NSMutableArray = NSMutableArray.array()
     // 换乘线路
     var changeLineArr: NSMutableArray = NSMutableArray.array()
+    // 站点日文名与假名
+    var statJPNameArr: NSMutableArray = NSMutableArray.array()
     // 收藏的路径
     var ruteArr: NSMutableArray = NSMutableArray.array()
     
@@ -51,16 +53,22 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
             key as UsrT03FavoriteTable
             stationArr.addObject(key)
             
+            // 取各站的lineId
             var statGroupId = key.item(USRT03_STAT_ID) as String
             var lineArr = [String]()
+            var statJPName = ""
             for (var i = 0; i < allRows.count; i++) {
                 var map: MstT02StationTable = allRows[i] as MstT02StationTable
                 if ((map.item(MSTT02_STAT_GROUP_ID) as String) == statGroupId || (map.item(MSTT02_STAT_ID) as String) == statGroupId) {
                     
                     lineArr.append(map.item(MSTT02_LINE_ID) as String)
+                    if (statJPName == "") {
+                        statJPName = (map.item(MSTT02_STAT_NAME) as String) + "（" + (map.item(MSTT02_STAT_NAME_KANA) as String) + "）"
+                    }
                 }
             }
             
+            statJPNameArr.addObject(statJPName)
             changeLineArr.addObject(lineArr)
         }
         
@@ -137,7 +145,8 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
             var textName = cell.viewWithTag(201) as UILabel
             textName.text = (map.item(USRT03_STAT_ID) as String).station()
             
-//            var textJPName = cell.viewWithTag(203) as UILabel
+            var textJPName = cell.viewWithTag(203) as UILabel
+            textJPName.text = statJPNameArr[indexPath.row] as? String
             
             var view = cell.viewWithTag(202) as UIView!
             

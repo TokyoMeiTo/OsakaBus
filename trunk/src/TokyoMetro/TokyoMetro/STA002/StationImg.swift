@@ -70,16 +70,9 @@ class StationImg: UIViewController, UIScrollViewDelegate {
     
     func addMap() -> UIImage{
     
-        var url = NSURL.URLWithString(stationMapUrl)
         
-        var data = NSData.dataWithContentsOfURL(url, options: nil, error: nil)
-        if (data != nil) {
-            var image = UIImage(data: data)
-            return image
-        } else {
-            return UIImage(named: "00000665_map_13")
-        }
-
+        var image = UIImage(named: stationMapUrl)
+        return image
     }
     
     override func didReceiveMemoryWarning() {

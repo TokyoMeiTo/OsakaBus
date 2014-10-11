@@ -99,21 +99,21 @@ class HelpContentList: UIViewController, UITableViewDataSource, UITableViewDeleg
         
         var chString = map.item(INFT03_RESCURE_RESC_CONTENT_CN) as String
         var chText = UILabel()
-        chText.frame = CGRectMake(0, 8, 290, textHeight(chString))
+        chText.frame = CGRectMake(0, 10, 290, textHeight(chString))
         chText.text = chString
         chText.font = UIFont.systemFontOfSize(15)
         chText.numberOfLines = 0
         
         rescView.addSubview(chText)
         
-        var jpString = map.item(INFT03_RESCURE_RESC_CONTENT_JP) as String
-        var jpText = UILabel()
-        jpText.frame = CGRectMake(0, 12 + chText.frame.height, 290, textHeight(jpString))
-        jpText.text = jpString
-        jpText.font = UIFont.systemFontOfSize(15)
-        jpText.numberOfLines = 0
-        
-        rescView.addSubview(jpText)
+//        var jpString = map.item(INFT03_RESCURE_RESC_CONTENT_JP) as String
+//        var jpText = UILabel()
+//        jpText.frame = CGRectMake(0, 12 + chText.frame.height, 290, textHeight(jpString))
+//        jpText.text = jpString
+//        jpText.font = UIFont.systemFontOfSize(15)
+//        jpText.numberOfLines = 0
+//        
+//        rescView.addSubview(jpText)
         
         cell.addSubview(rescView)
         
@@ -124,17 +124,19 @@ class HelpContentList: UIViewController, UITableViewDataSource, UITableViewDeleg
         
         var map: InfT03RescureTable = rescArr[indexPath.section][indexPath.row] as InfT03RescureTable
         var cnString = map.item(INFT03_RESCURE_RESC_CONTENT_CN) as String
-        var jpString = map.item(INFT03_RESCURE_RESC_CONTENT_JP) as String
+//        var jpString = map.item(INFT03_RESCURE_RESC_CONTENT_JP) as String
         
-        return CGFloat(textHeight(cnString) + textHeight(jpString) + 20)
+        return CGFloat(textHeight(cnString) + 20)
     }
     
-//    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-//        var helpContent: HelpContent = self.storyboard?.instantiateViewControllerWithIdentifier("HelpContent") as HelpContent
-//        
-//        
-//        self.navigationController?.pushViewController(helpContent, animated: true)
-//    }
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        var helpContentDetail: HelpContentDetail = self.storyboard?.instantiateViewControllerWithIdentifier("HelpContentDetail") as HelpContentDetail
+        
+        var map: InfT03RescureTable = rescArr[indexPath.section][indexPath.row] as InfT03RescureTable
+        helpContentDetail.chTtile = map.item(INFT03_RESCURE_RESC_CONTENT_CN) as String
+        helpContentDetail.jpTtile = map.item(INFT03_RESCURE_RESC_CONTENT_JP) as String
+        self.navigationController?.pushViewController(helpContentDetail, animated: true)
+    }
     
     func textHeight(value:String) -> CGFloat {
         

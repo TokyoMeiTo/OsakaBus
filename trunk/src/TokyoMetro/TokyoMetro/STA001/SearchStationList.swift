@@ -57,17 +57,16 @@ class SearchStationList: UIViewController, UITableViewDelegate, UITableViewDataS
     
     func searchStation(name: String) {
         
+        if(name.isEmpty){
+            return;
+        }
+        
         var table = MstT02StationTable()
         
-        var rows: NSArray = table.excuteQuery("select *,count(distinct STAT_NAME_EXT1) from MSTT02_STATION where 1 = 1 and STAT_ID like '280%' and STAT_NAME_EXT1 like '%\(name)%' group by STAT_NAME_EXT1")
+        var rows: NSArray = table.excuteQuery("select *, ROWID, count(distinct STAT_NAME_EXT1) from MSTT02_STATION where 1 = 1 and STAT_ID like '280%' and (STAT_NAME_EXT1 like '%\(name)%' or STAT_NAME_EXT2 like '%\(name)%' or STAT_NAME_EXT3 like '%\(name)%' or STAT_NAME_EXT4 like '%\(name)%' or STAT_NAME_EXT5 like '%\(name)%' or STAT_NAME like '%\(name)%' or STAT_NAME_KANA or STAT_NAME_ROME like '%\(name)%' like '%\(name)%') group by STAT_NAME_EXT1")
         
-        var allRows: NSArray = table.excuteQuery("select * from MSTT02_STATION where 1 = 1 and STAT_ID like '280%'")
-        
-//        var table = MstT02StationTable()
-//        
-//        table.statName = name
-//        var rows: NSArray = table.excuteQuery("select *,count(distinct STAT_NAME_EXT1) from MSTT02_STATION where 1 = 1 and STAT_NAME_EXT1 like '%\(name)%' group by STAT_NAME_EXT1")
-//        
+        var allRows: NSArray = table.excuteQuery("select *, ROWID from MSTT02_STATION where 1 = 1 and STAT_ID like '280%'")
+ 
         stationArr.removeAllObjects()
         for key in rows {
             
@@ -95,6 +94,9 @@ class SearchStationList: UIViewController, UITableViewDelegate, UITableViewDataS
         var textName = cell.viewWithTag(201) as UILabel
         textName.text = map.item(MSTT02_STAT_NAME_EXT1) as? String
         
+        var textJPName = cell.viewWithTag(203) as UILabel
+        textJPName.text = (map.item(MSTT02_STAT_NAME) as String) + "（" + (map.item(MSTT02_STAT_NAME_KANA) as String) + "）"
+        
         var view = cell.viewWithTag(202) as UIView!
         
         if (view != nil) {
@@ -102,7 +104,7 @@ class SearchStationList: UIViewController, UITableViewDelegate, UITableViewDataS
         }
         
         var lineView = UIView()
-        lineView.frame = CGRectMake(225, 0, 80, 45)
+        lineView.frame = CGRectMake(225, 5, 80, 45)
         lineView.tag = 202
         
         var arrStation: [String] = changeLineArr[indexPath.row] as [String]
@@ -122,7 +124,7 @@ class SearchStationList: UIViewController, UITableViewDelegate, UITableViewDataS
     
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 43
+        return 55
     }
     
     
@@ -153,6 +155,7 @@ class SearchStationList: UIViewController, UITableViewDelegate, UITableViewDataS
             
             var map: MstT02StationTable = stationArr[indexPath.row] as MstT02StationTable
             detail.cellJPName = map.item(MSTT02_STAT_NAME) as String
+            detail.cellJPNameKana = map.item(MSTT02_STAT_NAME_KANA) as String
             detail.stat_id = map.item(MSTT02_STAT_ID) as String
             detail.statMetroId = map.item(MSTT02_STAT_METRO_ID) as String
             
@@ -171,6 +174,22 @@ class SearchStationList: UIViewController, UITableViewDelegate, UITableViewDataS
         searchBar.resignFirstResponder()
         searchStation(searchBar.text)
         table.reloadData()
+    }
+    
+    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        searchStation(searchBar.text)
+        table.reloadData()
+    }
+    
+    
+    func searchBar(searchBar: UISearchBar, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+//        if(text.indexOf("%") > 0 || text.indexOf("?") > 0){
+//            return false;
+//        }else{
+            searchStation(searchBar.text)
+            table.reloadData()
+            return true
+//        }
     }
     
     func searchBarShouldBeginEditing(searchBar: UISearchBar) -> Bool {

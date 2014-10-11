@@ -23,7 +23,8 @@ class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        addData()
+//        addData()
+        self.title = "出口一览"
         odbExitInfo()
     }
     
@@ -50,62 +51,62 @@ class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBAction func segmentChanged(sender: UISegmentedControl) {
     
-        if (sender.selectedSegmentIndex == 0) {
+//        if (sender.selectedSegmentIndex == 0) {
+//        
+//            exitTable.hidden = false
+//            mapView.hidden = true
+//            
+//            exitTable.reloadData()
+//        } else {
         
             exitTable.hidden = false
             mapView.hidden = true
             
             exitTable.reloadData()
-        } else {
-        
-            exitTable.hidden = false
-            mapView.hidden = true
-            
-            exitTable.reloadData()
-        }
+//        }
     }
     
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        if (segment.selectedSegmentIndex == 0) {
-            return arrList.count
-        } else {
-            return 1
-        }
-    }
-    
-    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if (segment.selectedSegmentIndex == 0) {
-            return arrList[section][0] as? String
-        } else {
-            return ""
-        }
-    }
+//    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+//        if (segment.selectedSegmentIndex == 0) {
+//            return arrList.count
+//        } else {
+//            return 1
+//        }
+//    }
+//    
+//    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+//        if (segment.selectedSegmentIndex == 0) {
+//            return arrList[section][0] as? String
+//        } else {
+//            return ""
+//        }
+//    }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if (segment.selectedSegmentIndex == 0) {
-            return arrList[section][1].count
-        } else {
+//        if (segment.selectedSegmentIndex == 0) {
+//            return arrList[section][1].count
+//        } else {
             return rows.count
-        }
+//        }
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        if (segment.selectedSegmentIndex == 0) {
-            let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("ExitInfoCell", forIndexPath: indexPath) as UITableViewCell
-            
-            cell.textLabel!.text = arrList[indexPath.section][1][indexPath.row] as? String
-            
-            return cell
-        } else {
+//        if (segment.selectedSegmentIndex == 0) {
+//            let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("ExitInfoCell", forIndexPath: indexPath) as UITableViewCell
+//            
+//            cell.textLabel!.text = arrList[indexPath.section][1][indexPath.row] as? String
+//            
+//            return cell
+//        } else {
             let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("StationExit", forIndexPath: indexPath) as UITableViewCell
             
             var map = rows[indexPath.row] as StaT01StationExitTable
             cell.textLabel!.text = map.item(STAT01_STAT_EXIT_NAME) as? String
             
             return cell
-        }
+//        }
         
     }
     

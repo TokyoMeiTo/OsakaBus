@@ -76,4 +76,66 @@ extension String {
     func right(right:UInt,left:UInt) -> String {
         return (self as NSString).right(right,left:left);
     }
+    
+    
+    /**
+    * 获取StationInnerMap下的图片路径
+    */
+    func getStationInnerMapImagePath() -> String {
+        let folder = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String
+        let path = folder.stringByAppendingPathComponent("TokyoMetroCache/Resource/StationInnerMap/" + self + ".png")
+        println(path)
+        var fileExists = NSFileManager().fileExistsAtPath(path)
+        var file:UnsafeMutablePointer<FILE>?
+        if(fileExists){
+            file = fopen(path, "")
+        }
+        return path
+    }
+    
+    /**
+    * 获取Landmark下的图片路径
+    */
+    func getLandmarkImagePath() -> String {
+        let folder = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String
+        let path = folder.stringByAppendingPathComponent("TokyoMetroCache/Resource/Landmark/" + self + ".png")
+        println(path)
+        var fileExists = NSFileManager().fileExistsAtPath(path)
+        var file:UnsafeMutablePointer<FILE>?
+        if(fileExists){
+            file = fopen(path, "")
+        }
+        return path
+    }
+    
+    /**
+    * 获取LineGraph下的图片路径
+    */
+    func getLineGraphImagePath() -> String {
+        let folder = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String
+        let path = folder.stringByAppendingPathComponent("TokyoMetroCache/Resource/LineGraph/" + self + ".png")
+        println(path)
+        var fileExists = NSFileManager().fileExistsAtPath(path)
+        var file:UnsafeMutablePointer<FILE>?
+        if(fileExists){
+            file = fopen(path, "")
+        }
+        return path
+    }
+    
+    /**
+    * 获取攻略PDF路径
+    */
+    func getStrategyPDFPath() -> String {
+        let folder = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String
+        let path = folder.stringByAppendingPathComponent("TokyoMetroCache/Resource/Strategy/" + self + ".pdf")
+        println(path)
+        var fileExists = NSFileManager().fileExistsAtPath(path)
+        var file:UnsafeMutablePointer<FILE>?
+        if(fileExists){
+            file = fopen(path, "")
+        }
+        return path
+    }
+    
 }

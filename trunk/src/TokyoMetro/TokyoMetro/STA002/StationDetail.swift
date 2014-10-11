@@ -51,6 +51,8 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
     // 其他链接
     var selectList = ["车站时刻表", "车站结构图", "车站位置图", "站内商业设施", "车站设施"]
     
+    var depaTimeArr: NSMutableArray = NSMutableArray.array()
+    
     required init(coder aDecoder: NSCoder) {
         
         super.init(coder:aDecoder)
@@ -63,7 +65,7 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
         //车站本地化名
         cellNameLabel.text = stat_id.station()
         //车站日文名
-        cellJPNmaeLabel.text = cellJPName
+        cellJPNmaeLabel.text = cellJPName + "（" + cellJPNameKana + "）"
         //标题
         self.title = stat_id.station()
         //查询车站信息
@@ -79,15 +81,10 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
         // 添加站点相关信息的链接
         addStationSelect()
         
-        odbSchedule()
+        odbTime(stat_id)
 
     }
     
-    func odbSchedule() {
-        var table = LinT01TrainScheduleTrainTable()
-        
-        var rows = table.excuteQuery("select * from LINT01_TRAIN_SCHEDULE where 1 = 1 and STAT_ID = '2800116' and (FIRST_TRAIN_FLAG = '1' or FIRST_TRAIN_FLAG = '9')")
-    }
     
     func odbStation(){
         var table = MstT02StationTable()
@@ -206,6 +203,8 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
         }
     }
     
+    
+    
     func addString(value: String, addValue:String) -> String{
         
         if (addValue.isEmpty) {
@@ -251,6 +250,59 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
             }
         }
     }
+    
+    func odbTime(statId: String) {
+        
+//        if (destTimeArr1.count == 3 && destTimeArr2.count == 3 && destTimeArr3.count == 3) {
+//            return
+//        }
+        
+        var table = LinT01TrainScheduleTrainTable()
+        var rows = table.excuteQuery("select * from LINT01_TRAIN_SCHEDULE where 1 = 1 and STAT_ID = '\(statId)' and FIRST_TRAIN_FLAG = '1' and SCHE_TYPE = '1'")
+        
+//        dirtStationArr = [String]()
+        var timeArr: NSMutableArray = NSMutableArray.array()
+        for key in rows {
+            key as LinT01TrainScheduleTrainTable
+//            dirtStationArr.append(key.item(LINT01_TRAIN_SCHEDULE_DIRT_STAT_ID) as String)
+            var dirtStat: String = key.item(LINT01_TRAIN_SCHEDULE_DIRT_STAT_ID) as String
+            
+
+            var timeTypeArr1 = table.excuteQuery("select *,min(DEPA_TIME) from LINT01_TRAIN_SCHEDULE where 1 = 1 and STAT_ID = '\(statId)' and DIRT_STAT_ID = '\(dirtStat)' and SCHE_TYPE = '1' and (FIRST_TRAIN_FLAG = '1' or FIRST_TRAIN_FLAG = '9') group by FIRST_TRAIN_FLAG")
+            
+            var timeTypeArr2 = table.excuteQuery("select *,min(DEPA_TIME) from LINT01_TRAIN_SCHEDULE where 1 = 1 and STAT_ID = '\(statId)' and DIRT_STAT_ID = '\(dirtStat)' and SCHE_TYPE = '2' and (FIRST_TRAIN_FLAG = '1' or FIRST_TRAIN_FLAG = '9') group by FIRST_TRAIN_FLAG")
+            
+            var timeTypeArr3 = table.excuteQuery("select *,min(DEPA_TIME) from LINT01_TRAIN_SCHEDULE where 1 = 1 and STAT_ID = '\(statId)' and DIRT_STAT_ID = '\(dirtStat)' and SCHE_TYPE = '3' and (FIRST_TRAIN_FLAG = '1' or FIRST_TRAIN_FLAG = '9') group by FIRST_TRAIN_FLAG")
+            
+            
+//            table.reset()
+//            table.statId = statId
+//            table.dirtStatId = dirtStationArr[index]
+//            table.scheType = "2"
+//            var timeTypeArr2 = table.selectAll()
+//            
+//            
+//            table.reset()
+//            table.statId = statId
+//            table.dirtStatId = dirtStationArr[index]
+//            table.scheType = "3"
+//            var timeTypeArr3 = table.selectAll()
+            
+            timeArr.removeAllObjects()
+            timeArr.addObject(timeTypeArr1)
+            timeArr.addObject(timeTypeArr2)
+            timeArr.addObject(timeTypeArr3)
+            
+            depaTimeArr.addObject(timeArr)
+
+        }
+
+    }
+    
+//    func timeFormat(time: NSArray) -> String{
+//        
+//    }
+
     
     @IBAction func showStationExit() {
     
@@ -347,6 +399,16 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
             return
         }
         
+        
+        
+        for key in statSeqArr {
+            key as MstT02StationTable
+            
+            odbTime(key.item(MSTT02_STAT_ID) as String)
+        }
+        
+        
+        
         for (var i = 0; i < arrClose.count; i++) {
             
             var time1: UIView = UIView()
@@ -438,7 +500,7 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
         }
     }
     
-    @IBAction func showTime() {
+    func showTime() {
     
         var timeDetail: TimeTable = self.storyboard?.instantiateViewControllerWithIdentifier("TimeTable") as TimeTable
         
@@ -446,6 +508,9 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
         timeDetail.lineArr = statSeqArr
         timeDetail.nameKana = cellJPNmaeLabel.text
         
+        var backButton = UIBarButtonItem(title: "返回", style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = backButton
+
         self.navigationController?.pushViewController(timeDetail, animated: true)
     }
     

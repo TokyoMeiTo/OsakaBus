@@ -30,6 +30,8 @@ class Main: UIViewController,UIScrollViewDelegate {
     @IBOutlet weak var mBtnImgAdd: UIButton!
     @IBOutlet weak var mBtnImgDec: UIButton!
     
+    @IBOutlet weak var mUpButton: UIButton!
+    
     // 判断是否要显示底部menu
     var mIsMenuShow = false
     // 屏幕尺寸
@@ -97,7 +99,6 @@ class Main: UIViewController,UIScrollViewDelegate {
         
         self.mPopupStationView.layer.borderWidth = 1
         self.mPopupStationView.layer.cornerRadius = 4
-        // self.mPopupViewSetImage.alpha = 0.5
         
         //
         mPopupBtnStart.addTarget(self, action: POPUPVIEWBTNACTION, forControlEvents: UIControlEvents.TouchUpInside)
@@ -128,7 +129,7 @@ class Main: UIViewController,UIScrollViewDelegate {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         mIsMenuShow = false
-        mMenuView.frame = CGRectMake(0, mScreenSize.height - 65, mScreenSize.width, 65)
+        mMenuView.frame = CGRectMake(0, mScreenSize.height - 75, mScreenSize.width, 75)
         mBodyView.hidden = true
         mBodyView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.4)
     }
@@ -192,20 +193,32 @@ class Main: UIViewController,UIScrollViewDelegate {
      *   展示和收起底部menu菜单
      */
     @IBAction func showMenu() {
+        var image: UIImage!
         if (mIsMenuShow) {
             mIsMenuShow = false
+            image = UIImage(named: "icon-up-01")
+//            self.mUpButton.setBackgroundImage(image, forState: UIControlState.Normal)
             UIView.animateWithDuration(0.5, animations: { () -> Void in
-                self.mMenuView.frame = CGRectMake(0, self.mScreenSize.height - 65, self.mScreenSize.width, 65)
+                self.mMenuView.frame = CGRectMake(0, self.mScreenSize.height - 75, self.mScreenSize.width, 75)
             })
+
             // 隐藏遮罩
             mBodyView.hidden = true
+            mBtnImgAdd.enabled = true
+            mBtnImgDec.enabled = true
+            
         } else {
             mIsMenuShow = true
+            image = UIImage(named: "icon-down-01")
+//            self.mUpButton.setBackgroundImage(image, forState: UIControlState.Normal)
             UIView.animateWithDuration(0.5, animations: { () -> Void in
-                self.mMenuView.frame = CGRectMake(0, self.mScreenSize.height - 240, self.mScreenSize.width, 240)
+                self.mMenuView.frame = CGRectMake(0, self.mScreenSize.height - 250, self.mScreenSize.width, 250)
             })
             // 显示遮罩
             mBodyView.hidden = false
+            mBtnImgAdd.enabled = false
+            mBtnImgDec.enabled = false
+            
         }
     }
     
@@ -221,6 +234,41 @@ class Main: UIViewController,UIScrollViewDelegate {
         
         tipsList.tipsType = "1"
         self.navigationController?.pushViewController(tipsList, animated: true)
+    }
+    
+    @IBAction func showLandMark() {
+        var landMarkListController: LandMarkListController = self.storyboard?.instantiateViewControllerWithIdentifier("landmarklist") as LandMarkListController
+        
+        landMarkListController.landMarkType = 0
+        self.navigationController?.pushViewController(landMarkListController, animated: true)
+    }
+    
+    @IBAction func showFood() {
+        var landMarkListController: LandMarkListController = self.storyboard?.instantiateViewControllerWithIdentifier("landmarklist") as LandMarkListController
+        
+        landMarkListController.landMarkType = 1
+        self.navigationController?.pushViewController(landMarkListController, animated: true)
+    }
+    
+    @IBAction func showShopping() {
+        var landMarkListController: LandMarkListController = self.storyboard?.instantiateViewControllerWithIdentifier("landmarklist") as LandMarkListController
+        
+        landMarkListController.landMarkType = 2
+        self.navigationController?.pushViewController(landMarkListController, animated: true)
+    }
+    
+    @IBAction func showHelpContent() {
+        var helpContentList: HelpContentList = self.storyboard?.instantiateViewControllerWithIdentifier("HelpContentList") as HelpContentList
+        
+        helpContentList.rescType = "1"
+        self.navigationController?.pushViewController(helpContentList, animated: true)
+    }
+    
+    @IBAction func showStationHelpContent() {
+        var helpContentList: HelpContentList = self.storyboard?.instantiateViewControllerWithIdentifier("HelpContentList") as HelpContentList
+        
+        helpContentList.rescType = "2"
+        self.navigationController?.pushViewController(helpContentList, animated: true)
     }
     
     // 根据点击的像素点从db中获取车站id
@@ -350,6 +398,11 @@ class Main: UIViewController,UIScrollViewDelegate {
         case mPopupBtnMore:
             // 跳转到此站详细页面
             mPopupStationView.hidden = true
+            var stationDetail : StationDetail = self.storyboard?.instantiateViewControllerWithIdentifier("StationDetail") as StationDetail
+            stationDetail.cellJPName = self.mPopupStationNameJP
+            stationDetail.cellJPNameKana = self.statioStationNameKana
+            stationDetail.MetroID = self.selectStationMetroID
+            self.navigationController?.pushViewController(stationDetail, animated:true)
 
         default:
             mPopupStationView.hidden = false
@@ -365,8 +418,6 @@ class Main: UIViewController,UIScrollViewDelegate {
         routeSearch.startStationText = self.setStationStartId
         routeSearch.endStationText = self.setStationEndId
         
-        self.setStationStartId = ""
-        self.setStationEndId = ""
         self.navigationController?.pushViewController(routeSearch, animated:true)
     }
     
