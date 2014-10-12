@@ -80,6 +80,7 @@
 		A184391719EA64C200E11778 /* LinkWebSite.swift in Sources */ = {isa = PBXBuildFile; fileRef = A184391619EA64C200E11778 /* LinkWebSite.swift */; };
 		A184391919EAB58F00E11778 /* ComercialInsideDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = A184391819EAB58F00E11778 /* ComercialInsideDetail.swift */; };
 		A184391C19EAB71900E11778 /* StaT03ComercialInsideTable.m in Sources */ = {isa = PBXBuildFile; fileRef = A184391B19EAB71900E11778 /* StaT03ComercialInsideTable.m */; };
+		A184391E19EABE1900E11778 /* StationFacilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = A184391D19EABE1900E11778 /* StationFacilities.swift */; };
 		A18474FD19E4E19200D2DD7B /* INF002Dao.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18474FC19E4E19200D2DD7B /* INF002Dao.swift */; };
 		A18474FF19E4E1D100D2DD7B /* Sta003Dao.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18474FE19E4E1D100D2DD7B /* Sta003Dao.swift */; };
 		A184750219E4FB2400D2DD7B /* MstV01StationGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = A184750119E4FB2400D2DD7B /* MstV01StationGroup.m */; };
@@ -309,6 +310,7 @@
 		A184391819EAB58F00E11778 /* ComercialInsideDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComercialInsideDetail.swift; sourceTree = "<group>"; };
 		A184391A19EAB71900E11778 /* StaT03ComercialInsideTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StaT03ComercialInsideTable.h; sourceTree = "<group>"; };
 		A184391B19EAB71900E11778 /* StaT03ComercialInsideTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StaT03ComercialInsideTable.m; sourceTree = "<group>"; };
+		A184391D19EABE1900E11778 /* StationFacilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StationFacilities.swift; sourceTree = "<group>"; };
 		A18474FC19E4E19200D2DD7B /* INF002Dao.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = INF002Dao.swift; sourceTree = "<group>"; };
 		A18474FE19E4E1D100D2DD7B /* Sta003Dao.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sta003Dao.swift; sourceTree = "<group>"; };
 		A184750019E4FB2400D2DD7B /* MstV01StationGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MstV01StationGroup.h; sourceTree = "<group>"; };
@@ -950,6 +952,7 @@
 		A1ECD46919D2D41F00D5A0E2 /* STA002 */ = {
 			isa = PBXGroup;
 			children = (
+				A184391D19EABE1900E11778 /* StationFacilities.swift */,
 				A1ECD46A19D2D41F00D5A0E2 /* ExitInfo.swift */,
 				A1ECD46B19D2D41F00D5A0E2 /* ExitMap.swift */,
 				A1ECD46C19D2D41F00D5A0E2 /* FacilityList.swift */,
@@ -1250,6 +1253,7 @@
 				A1ECD48319D2D41F00D5A0E2 /* MstT01LineTable.m in Sources */,
 				A1ECD47C19D2D41F00D5A0E2 /* CmnT03StationGridTable.m in Sources */,
 				3B2420AD19B5ABFD00DAE392 /* ONWSocketRequest.m in Sources */,
+				A184391E19EABE1900E11778 /* StationFacilities.swift in Sources */,
 				A1ECD48E19D2D41F00D5A0E2 /* LandMarkSearchController.swift in Sources */,
 				A1FDB38E19E8283C00083F9D /* CMN002DAO+mnT03StationGridTable.swift in Sources */,
 				3B2420A719B5ABFD00DAE392 /* Reachability.m in Sources */,
