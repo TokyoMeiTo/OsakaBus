@@ -18,7 +18,6 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
     let uri:String = "http://192.168.1.84/Resource.zip"
     let filePath:String = "Resource.zip"
     let unZipPath:String = "TokyoMetroCache"
-    var lblMobileSize = UILabel(frame: CGRect(x:15,y:5,width:290,height:80))
     
     /* NSFileManager */
     let fileManager = NSFileManager()
@@ -143,7 +142,6 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
                     self.loadProgress = "下载失败"
                     // 在子线程中更新UI
                     dispatch_async(dispatch_get_main_queue()) { () -> Void in
-                        self.lblMobileSize.text = self.loadProgress
                         self.tbList.reloadData()
                     }
                 }
@@ -217,14 +215,12 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
             }else{
                 println("解压失败")
                 loadProgress = "解压失败"
-                lblMobileSize.text = self.loadProgress
                 tbList.reloadData()
             }
             unzip.UnzipCloseFile()
         }else{
             println("解压失败")
             loadProgress = "解压失败"
-            lblMobileSize.text = self.loadProgress
             tbList.reloadData()
         }
         downloading = false
@@ -302,6 +298,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
                 UIHeader.addSubview(lblText)
                 return UIHeader
             case 2:
+                var lblMobileSize = UILabel(frame: CGRect(x:120,y:10,width:tableView.frame.width,height:80))
                 lblMobileSize.backgroundColor = UIColor.clearColor()
                 lblMobileSize.font = UIFont.systemFontOfSize(16)
                 lblMobileSize.textColor = UIColor.blackColor()
