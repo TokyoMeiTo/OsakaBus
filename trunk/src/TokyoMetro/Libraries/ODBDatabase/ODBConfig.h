@@ -18,8 +18,8 @@
 //database name
 #define ODB_DATABASE_NAME @"work"
 #define ODB_DATABASE_EXT_NAME @"db"
-#define ODB_DATABASE_FULL_NAME [NSString stringWithFormat:@"/%@.%@",ODB_DATABASE_NAME,ODB_DATABASE_EXT_NAME]
-#define ODB_DATABASE_FULL_PATH [ODB_APP_DOC_PATH stringByAppendingPathComponent:ODB_DATABASE_NAME]
+#define ODB_DATABASE_FULL_NAME [NSString stringWithFormat:@"/TokyoMetroCache/Resource/Database/%@.%@",ODB_DATABASE_NAME,ODB_DATABASE_EXT_NAME]
+#define ODB_DATABASE_FULL_PATH [ODB_APP_DOC_PATH stringByAppendingPathComponent:ODB_DATABASE_FULL_NAME]
 
 //database connect username
 #define ODB_DATABASE_USERNAME @""

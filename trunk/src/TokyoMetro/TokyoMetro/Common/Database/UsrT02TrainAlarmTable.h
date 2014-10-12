@@ -13,9 +13,9 @@
 #define USRT02_TRAIN_ALARM                      @"USRT02_TRAIN_ALARM"
 #define USRT02_TRAIN_ALARM_TRAI_ALAM_ID         @"TRAI_ALAM_ID"
 #define USRT02_TRAIN_ALARM_LINE_ID              @"LINE_ID"
-#define USRT02_TRAIN_ALARM_LINE_NAME_LOCL       @"LINE_NAME_LOCL"
+//#define USRT02_TRAIN_ALARM_LINE_NAME_LOCL       @"LINE_NAME_LOCL"
 #define USRT02_TRAIN_ALARM_STAT_ID              @"STAT_ID"
-#define USRT02_TRAIN_ALARM_STAT_NAME_LOCL       @"STAT_NAME_LOCL"
+//#define USRT02_TRAIN_ALARM_STAT_NAME_LOCL       @"STAT_NAME_LOCL"
 #define USRT02_TRAIN_ALARM_FIRST_TIME           @"FIRST_TIME"
 #define USRT02_TRAIN_ALARM_LAST_TIME            @"LAST_TIME"
 #define USRT02_TRAIN_ALARM_TRAI_DIRT            @"TRAI_DIRT"
@@ -32,9 +32,9 @@
 
 @property(copy,nonatomic)NSString* traiAlamId;
 @property(copy,nonatomic)NSString* lineId;
-@property(copy,nonatomic)NSString* lineNameLocl;
+//@property(copy,nonatomic)NSString* lineNameLocl;
 @property(copy,nonatomic)NSString* statId;
-@property(copy,nonatomic)NSString* statNameLocl;
+//@property(copy,nonatomic)NSString* statNameLocl;
 @property(copy,nonatomic)NSString* firstTime;
 @property(copy,nonatomic)NSString* lastTime;
 @property(copy,nonatomic)NSString* traiDirt;

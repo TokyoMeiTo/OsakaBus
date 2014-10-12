@@ -11,9 +11,9 @@
 
 @synthesize traiAlamId;
 @synthesize lineId;
-@synthesize lineNameLocl;
+//@synthesize lineNameLocl;
 @synthesize statId;
-@synthesize statNameLocl;
+//@synthesize statNameLocl;
 @synthesize firstTime;
 @synthesize lastTime;
 @synthesize traiDirt;
@@ -31,9 +31,9 @@
         self.tableName = USRT02_TRAIN_ALARM;
         self.columns = [NSArray arrayWithObjects:USRT02_TRAIN_ALARM_TRAI_ALAM_ID,
                                                 USRT02_TRAIN_ALARM_LINE_ID,
-                                                USRT02_TRAIN_ALARM_LINE_NAME_LOCL,
+//                                                USRT02_TRAIN_ALARM_LINE_NAME_LOCL,
                                                 USRT02_TRAIN_ALARM_STAT_ID,
-                                                USRT02_TRAIN_ALARM_STAT_NAME_LOCL,
+//                                                USRT02_TRAIN_ALARM_STAT_NAME_LOCL,
                                                 USRT02_TRAIN_ALARM_FIRST_TIME,
                                                 USRT02_TRAIN_ALARM_LAST_TIME,
                                                 USRT02_TRAIN_ALARM_TRAI_DIRT,
@@ -45,9 +45,9 @@
                                                 USRT02_TRAIN_ALARM_SAVE_TIEM,nil];
         self.dataTypes = [NSArray arrayWithObjects:ODB_DATATYPE_TEXT,
                                                     ODB_DATATYPE_TEXT,
+//                                                    ODB_DATATYPE_TEXT,
                                                     ODB_DATATYPE_TEXT,
-                                                    ODB_DATATYPE_TEXT,
-                                                    ODB_DATATYPE_TEXT,
+//                                                    ODB_DATATYPE_TEXT,
                                                     ODB_DATATYPE_TEXT,
                                                     ODB_DATATYPE_TEXT,
                                                     ODB_DATATYPE_TEXT,
@@ -67,13 +67,17 @@
         self.traiAlamId = value;
     }else if([item isEqualToString:USRT02_TRAIN_ALARM_LINE_ID]){
         self.lineId = value;
-    }else if([item isEqualToString:USRT02_TRAIN_ALARM_LINE_NAME_LOCL]){
-        self.lineNameLocl = value;
-    }else if([item isEqualToString:USRT02_TRAIN_ALARM_STAT_ID]){
+    }
+//    else if([item isEqualToString:USRT02_TRAIN_ALARM_LINE_NAME_LOCL]){
+//        self.lineNameLocl = value;
+//    }
+    else if([item isEqualToString:USRT02_TRAIN_ALARM_STAT_ID]){
         self.statId = value;
-    }else if([item isEqualToString:USRT02_TRAIN_ALARM_STAT_NAME_LOCL]){
-        self.statNameLocl = value;
-    }else if([item isEqualToString:USRT02_TRAIN_ALARM_FIRST_TIME]){
+    }
+//    else if([item isEqualToString:USRT02_TRAIN_ALARM_STAT_NAME_LOCL]){
+//        self.statNameLocl = value;
+//    }
+    else if([item isEqualToString:USRT02_TRAIN_ALARM_FIRST_TIME]){
         self.firstTime = value;
     }else if([item isEqualToString:USRT02_TRAIN_ALARM_LAST_TIME]){
         self.lastTime = value;
@@ -101,13 +105,17 @@
         return self.traiAlamId;
     }else if([item isEqualToString:USRT02_TRAIN_ALARM_LINE_ID]){
         return self.lineId;
-    }else if([item isEqualToString:USRT02_TRAIN_ALARM_LINE_NAME_LOCL]){
-        return self.lineNameLocl;
-    }else if([item isEqualToString:USRT02_TRAIN_ALARM_STAT_ID]){
+    }
+//    else if([item isEqualToString:USRT02_TRAIN_ALARM_LINE_NAME_LOCL]){
+//        return self.lineNameLocl;
+//    }
+    else if([item isEqualToString:USRT02_TRAIN_ALARM_STAT_ID]){
         return self.statId;
-    }else if([item isEqualToString:USRT02_TRAIN_ALARM_STAT_NAME_LOCL]){
-        return self.statNameLocl;
-    }else if([item isEqualToString:USRT02_TRAIN_ALARM_FIRST_TIME]){
+    }
+//    else if([item isEqualToString:USRT02_TRAIN_ALARM_STAT_NAME_LOCL]){
+//        return self.statNameLocl;
+//    }
+    else if([item isEqualToString:USRT02_TRAIN_ALARM_FIRST_TIME]){
         return self.firstTime;
     }else if([item isEqualToString:USRT02_TRAIN_ALARM_LAST_TIME]){
         return self.lastTime;
