@@ -389,8 +389,8 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
                 
                 // 跳转到设置提醒页面
                 var remindListController : RemindListController = self.storyboard?.instantiateViewControllerWithIdentifier("RemindListController") as RemindListController
-                // remindListController.focusNumber = getStationDetialById(routeStartStationId)
-                //                                  = getStationDetialById(routeEndStationId)
+                remindListController.routeStatTable01 = getStationDetialById(routeStartStationId)
+                remindListController.routeStatTable02 = getStationDetialById(routeEndStationId)
                 self.navigationController?.pushViewController(remindListController, animated:true)
                 
             
