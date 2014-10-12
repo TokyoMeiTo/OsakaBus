@@ -206,7 +206,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
                     resultCelllblStationMoveTime.hidden = true
                     
                     // 设置终点图片
-                    resultCellIvStaionIcon.image = "RouteEnd".getImage()
+                    resultCellIvStaionIcon.image = "route_end".getImage()
                     resultCelllblStationName.text = stationEnd.text as String
 
                 } else {  
@@ -229,7 +229,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
                     
                     if (indexPath.row - 1 == 0){
                         // 设置起点图片
-                        resultCellIvStaionIcon.image = "RouteStart".getImage()
+                        resultCellIvStaionIcon.image = "route_start".getImage()
                         
                         if (strresultExchType == "255") {
                             resultCelllblStationMoveTime.text = "步行" + (strresultExchMoveTime as String) + "分钟"
@@ -247,7 +247,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
                     } else {
                         
                         if (strresultExchType == "255") {
-                            resultCellIvStaionIcon.image = "RouteExchangeWalk".getImage()
+                            resultCellIvStaionIcon.image = "routeexchange_walk".getImage()
                             resultCelllblStationMoveTime.text = "步行" + (strresultExchMoveTime as String) + "分钟"
                             resultCelllblStationLineName.hidden = true
                             resultCelllblStationWaitTime.hidden = true
@@ -256,7 +256,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
                             resultCelllblStationLineName.hidden = false
                             var strresultExchlineId = routStartDic["resultExchlineId"] as? NSString
                             resultCelllblStationLineName.text = (strresultExchlineId as String).line()
-                            resultCellIvStaionIcon.image = "RouteExchangeMetro".getImage()
+                            resultCellIvStaionIcon.image = "routeexchange_metro".getImage()
                             var strresultExchDestId = routStartDic["resultExchDestId"] as? NSString
                             resultCelllblStationLineName.text = "换乘" + (strresultExchlineId as String).line() + " 往" + (strresultExchDestId as String).station() + "方向"
                         }
