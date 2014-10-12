@@ -256,7 +256,7 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
         var table = LinT01TrainScheduleTrainTable()
         var rows = table.excuteQuery("select *, ROWID from LINT01_TRAIN_SCHEDULE where 1 = 1 and STAT_ID = '\(statId)' and FIRST_TRAIN_FLAG = '1' and SCHE_TYPE = '1'")
         
-        var timeArr: NSMutableArray = NSMutableArray.array()
+        
         for key in rows {
             key as LinT01TrainScheduleTrainTable
             var dirtStat: String = key.item(LINT01_TRAIN_SCHEDULE_DIRT_STAT_ID) as String
@@ -269,16 +269,14 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
             var timeTypeArr3 = table.excuteQuery("select *, ROWID from LINT01_TRAIN_SCHEDULE where 1 = 1 and STAT_ID = '\(statId)' and DIRT_STAT_ID = '\(dirtStat)' and SCHE_TYPE = '3' and (FIRST_TRAIN_FLAG = '1' or FIRST_TRAIN_FLAG = '9')")
             
             
-            timeArr.removeAllObjects()
+            var timeArr: NSMutableArray = NSMutableArray.array()
             timeArr.addObject([lineId, dirtStat, timeFormat(timeTypeArr1)])
             timeArr.addObject([lineId, dirtStat, timeFormat(timeTypeArr2)])
             timeArr.addObject([lineId, dirtStat, timeFormat(timeTypeArr3)])
             
             println(timeArr[0])
             depaTimeArr.addObject(timeArr)
-            
         }
-
     }
     
     func timeFormat(time: NSArray) -> String{
@@ -366,6 +364,11 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
         }
     }
     
+    @IBAction func setStartStation() {
+    
+//        var ruteSearch: ru
+    }
+    
     func addLineView() {
         
         for (var i = 0; i < statSeqArr.count; i++) {
@@ -373,8 +376,7 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
             var map = statSeqArr[i] as MstT02StationTable
             var lineImage: UIImageView = UIImageView()
             lineImage.frame = CGRectMake(CGFloat(20 + i * 35), 85, 30, 30)
-            lineImage.image = stationIcon(map.item(MSTT02_STAT_SEQ) as String)
-//            lineImage.image = (map.item(MSTT02_LINE_ID) as String).
+            lineImage.image = (map.item(MSTT02_STAT_ID) as String).getStationIconImage()
             
             self.scrollView.addSubview(lineImage)
         }
@@ -410,9 +412,7 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
             
             odbTime(key.item(MSTT02_STAT_ID) as String)
         }
-        
-        
-        
+
         for (var i = 0; i < depaTimeArr.count; i++) {
             println(depaTimeArr[i][0])
             var array: [String] = depaTimeArr[i][0] as [String]
@@ -421,7 +421,7 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
             
             var icon: UIImageView = UIImageView()
             icon.frame = CGRectMake(0, 8.5, 18, 18)
-            icon.image = lineImage(array[0])
+            icon.image = array[0].getLineMiniImage()
             time1.addSubview(icon)
             
             var open1: UILabel = UILabel()
@@ -440,8 +440,7 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
             
             self.scrollView.addSubview(time1)
         }
-        
-        
+
     }
     
     func addStationSelect() {
@@ -535,35 +534,6 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
     }
 
     
-    func lineImage(lineNum: String) -> UIImage {
-        
-        var image = UIImage(named: "tablecell_lineicon_mini_c.png")
-        switch (lineNum) {
-            
-        case "28005":
-            image = UIImage(named: "tablecell_lineicon_mini_c.png")
-        case "28010":
-            image = UIImage(named: "tablecell_lineicon_mini_f.png")
-        case "28001":
-            image = UIImage(named: "tablecell_lineicon_mini_g.png")
-        case "28003":
-            image = UIImage(named: "tablecell_lineicon_mini_h.png")
-        case "28002":
-            image = UIImage(named: "tablecell_lineicon_mini_m.png")
-        case "28009":
-            image = UIImage(named: "tablecell_lineicon_mini_n.png")
-        case "28004":
-            image = UIImage(named: "tablecell_lineicon_mini_t.png")
-        case "28006":
-            image = UIImage(named: "tablecell_lineicon_mini_y.png")
-        case "28008":
-            image = UIImage(named: "tablecell_lineicon_mini_z.png")
-        default:
-            image = UIImage(named: "tablecell_lineicon_mini_c.png")
-        }
-        
-        return image
-    }
     
     func stationIcon(statSeq: String) -> UIImage {
         var image = UIImage(named: "station_icon_c-01.png")

@@ -285,7 +285,8 @@ class StationLine: UIViewController, UITableViewDataSource, UITableViewDelegate 
                 let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("LineListCell", forIndexPath: indexPath) as UITableViewCell
  
                 var imgLine = cell.viewWithTag(301) as UIImageView
-                imgLine.image = lineImageNormal(lineMap.item(MSTT01_LINE_ID) as String)
+
+                imgLine.image = (lineMap.item(MSTT01_LINE_ID) as String).getLineImage()
                 
                 var lineName = cell.viewWithTag(302) as UILabel
                 lineName.text = (lineMap.item(MSTT01_LINE_ID) as String).line()
@@ -329,7 +330,8 @@ class StationLine: UIViewController, UITableViewDataSource, UITableViewDelegate 
                 for (var i = 0; i < arrStation.count; i++) {
                     var line: UIImageView = UIImageView()
                     line.frame = CGRectMake(CGFloat(66 - (i+1)*18 - i * 4), 13, 18, 18)
-                    line.image = lineImage(arrStation[i])
+//                    line.image = lineImage(arrStation[i])
+                    line.image = arrStation[i].getLineMiniImage()
                     
                     lineView.addSubview(line)
                 }
@@ -365,69 +367,7 @@ class StationLine: UIViewController, UITableViewDataSource, UITableViewDelegate 
             self.navigationController?.pushViewController(detail, animated: true)
         }
     }
-    
-    
-    func lineImage(lineNum: String) -> UIImage {
-        
-        var image = UIImage(named: "tablecell_lineicon_mini_c.png")
-        switch (lineNum) {
-            
-        case "28005":
-            image = UIImage(named: "tablecell_lineicon_mini_c.png")
-        case "28010":
-            image = UIImage(named: "tablecell_lineicon_mini_f.png")
-        case "28001":
-            image = UIImage(named: "tablecell_lineicon_mini_g.png")
-        case "28003":
-            image = UIImage(named: "tablecell_lineicon_mini_h.png")
-        case "28002":
-            image = UIImage(named: "tablecell_lineicon_mini_m.png")
-        case "28009":
-            image = UIImage(named: "tablecell_lineicon_mini_n.png")
-        case "28004":
-            image = UIImage(named: "tablecell_lineicon_mini_t.png")
-        case "28006":
-            image = UIImage(named: "tablecell_lineicon_mini_y.png")
-        case "28008":
-            image = UIImage(named: "tablecell_lineicon_mini_z.png")
-        default:
-            image = UIImage(named: "tablecell_lineicon_mini_c.png")
-        }
-        
-        return image
-    }
-    
-    
-    func lineImageNormal(lineNum: String) -> UIImage {
-        
-        var image = UIImage(named: "tablecell_lineicon_g.png")
-        switch (lineNum) {
-            
-        case "28001":
-            image = UIImage(named: "tablecell_lineicon_g.png")
-        case "28002":
-            image = UIImage(named: "tablecell_lineicon_m.png")
-        case "28003":
-            image = UIImage(named: "tablecell_lineicon_h.png")
-        case "28004":
-            image = UIImage(named: "tablecell_lineicon_t.png")
-        case "28005":
-            image = UIImage(named: "tablecell_lineicon_c.png")
-        case "28006":
-            image = UIImage(named: "tablecell_lineicon_y.png")
-        case "28008":
-            image = UIImage(named: "tablecell_lineicon_z.png")
-        case "28009":
-            image = UIImage(named: "tablecell_lineicon_n.png")
-        case "28010":
-            image = UIImage(named: "tablecell_lineicon_f.png")
-        default:
-            image = UIImage(named: "tablecell_lineicon_g.png")
-        }
-        
-        return image
-    }
-    
+
     
     func destStatName(lineId: String) -> String {
     

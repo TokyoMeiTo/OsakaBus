@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="F1F-Fs-9ra">
     <dependencies>
-        <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <scenes>
@@ -913,7 +912,7 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="n8f-MS-FH8" id="aCe-Nc-Kb0">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" tag="301" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="tablecell_lineicon_m" translatesAutoresizingMaskIntoConstraints="NO" id="LkN-g2-3nD">
+                                                <imageView userInteractionEnabled="NO" tag="301" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="tablecell_lineicon_28002" translatesAutoresizingMaskIntoConstraints="NO" id="LkN-g2-3nD">
                                                     <rect key="frame" x="5" y="20" width="44" height="44"/>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" tag="403" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="efn-be-0qx">
@@ -3346,6 +3345,7 @@ lable</string>
         <image name="ride" width="37" height="37"/>
         <image name="setting-app-icon" width="125" height="125"/>
         <image name="start-station-btn" width="93" height="29"/>
+        <image name="tablecell_lineicon_28002" width="44" height="44"/>
         <image name="tablecell_lineicon_c" width="44" height="44"/>
         <image name="tablecell_lineicon_f" width="44" height="44"/>
         <image name="tablecell_lineicon_g" width="44" height="44"/>

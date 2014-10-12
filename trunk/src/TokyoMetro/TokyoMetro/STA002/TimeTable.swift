@@ -58,7 +58,7 @@ class TimeTable: UIViewController,UITableViewDelegate,UITableViewDataSource {
         if (lineArr.count > 0) {
             lineId = (lineArr[0] as MstT02StationTable).item(MSTT02_LINE_ID) as String
             statId = (lineArr[0] as MstT02StationTable).item(MSTT02_STAT_ID) as String
-            statIcon.image = lineImageNormal(lineId)
+            statIcon.image = lineId.getLineImage()
         }
         odbDirtStatId()
 
@@ -118,7 +118,7 @@ class TimeTable: UIViewController,UITableViewDelegate,UITableViewDataSource {
             view.frame = CGRectMake(0, CGFloat(i * 50), 180, 50)
             var lineImage = UIImageView()
             lineImage.frame = CGRectMake(8, 3, 44, 44)
-            lineImage.image = lineImageNormal(key.item(MSTT02_LINE_ID) as String)
+            lineImage.image = (key.item(MSTT02_LINE_ID) as String).getLineImage()
             view.addSubview(lineImage)
             
             var lineName = UILabel()
@@ -143,7 +143,7 @@ class TimeTable: UIViewController,UITableViewDelegate,UITableViewDataSource {
         lineId = key.item(MSTT02_LINE_ID) as String
         statId = key.item(MSTT02_STAT_ID) as String
         // 替换图标
-        statIcon.image = lineImageNormal(lineId)
+        statIcon.image = lineId.getLineImage()
         odbDirtStatId()
         setSegment()
         destTimeArr1.removeAllObjects()
@@ -630,36 +630,6 @@ class TimeTable: UIViewController,UITableViewDelegate,UITableViewDataSource {
         }
     }
     
-    
-    func lineImageNormal(lineNum: String) -> UIImage {
-        
-        var image = UIImage(named: "tablecell_lineicon_g.png")
-        switch (lineNum) {
-            
-        case "28001":
-            image = UIImage(named: "tablecell_lineicon_g.png")
-        case "28002":
-            image = UIImage(named: "tablecell_lineicon_m.png")
-        case "28003":
-            image = UIImage(named: "tablecell_lineicon_h.png")
-        case "28004":
-            image = UIImage(named: "tablecell_lineicon_t.png")
-        case "28005":
-            image = UIImage(named: "tablecell_lineicon_c.png")
-        case "28006":
-            image = UIImage(named: "tablecell_lineicon_y.png")
-        case "28008":
-            image = UIImage(named: "tablecell_lineicon_z.png")
-        case "28009":
-            image = UIImage(named: "tablecell_lineicon_n.png")
-        case "28010":
-            image = UIImage(named: "tablecell_lineicon_f.png")
-        default:
-            image = UIImage(named: "tablecell_lineicon_g.png")
-        }
-        
-        return image
-    }
 
     
 }

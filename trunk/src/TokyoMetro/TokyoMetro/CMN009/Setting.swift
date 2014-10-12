@@ -111,7 +111,6 @@ class Setting : UIViewController, UITableViewDelegate, UITableViewDataSource, OA
            webLinkAction("免责声明", webSite:"http://www.google.com")
             
         default:
-        case self.mBtnOfficeWebSite:
         webLinkAction("冈三华大", webSite:"http://www.google.com")
         }
 
