@@ -16,12 +16,10 @@ class LandMarkMapController: UIViewController, MKMapViewDelegate, UIActionSheetD
     @IBOutlet weak var mkMap: MKMapView!
     
     /* 起点軽度   */
-    let fromLat = 35.672737//31.23312372 // 天地科技广场1号楼
+    var fromLat:CDouble = 35.683618//31.23312372 // 天地科技广场1号楼
     /* 起点緯度 */
-    let fromLon = 139.768898//121.38368547 // 天地科技广场1号楼
+    var fromLon:CDouble = 139.766453//121.38368547 // 天地科技广场1号楼
     
-    /* 当前位置信息 */
-    var location:CLLocation?
     /* 地标 */
     var landMark:MstT04LandMarkTable?
     var landMarkType:String = "景点"
@@ -39,9 +37,6 @@ class LandMarkMapController: UIViewController, MKMapViewDelegate, UIActionSheetD
      * 显示地图
      */
     func initMap(){
-//        if(location == nil){
-//            return
-//        }
         mkMap.delegate = self
         // 设置地图显示类型
         mkMap.mapType = MKMapType.Standard
@@ -49,13 +44,19 @@ class LandMarkMapController: UIViewController, MKMapViewDelegate, UIActionSheetD
         
         var span: MKCoordinateSpan = MKCoordinateSpanMake(0.01, 0.01)
         
+        var statLat:Double = ("\(landMark!.item(MSTT04_LANDMARK_LMAK_LAT))" as NSString).doubleValue
+        var statLon:Double = ("\(landMark!.item(MSTT04_LANDMARK_LMAK_LON))" as NSString).doubleValue
+        
+        var statLocation = CLLocation(latitude: fromLat, longitude: fromLon)
+        
         // MKMapView定位到当前位置
-        var coordinateOnEarth = CLLocationCoordinate2D(latitude:fromLat, longitude:fromLon)
+        var coordinateOnEarth = statLocation.coordinate
         var annotation = MKPointAnnotation()
         annotation.title = "\(landMark!.item(MSTT04_LANDMARK_LMAK_NAME_EXT1))"
         annotation.coordinate = coordinateOnEarth
         
         mkMap.setCenterCoordinate(coordinateOnEarth, animated:false)
+        
         mkMap.addAnnotation(annotation)
         mkMap.selectAnnotation(annotation, animated: true)
         

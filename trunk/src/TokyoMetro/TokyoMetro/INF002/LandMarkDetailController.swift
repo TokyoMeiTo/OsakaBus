@@ -75,7 +75,7 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, NSObjectP
                 lmkFavAdd.statExitId = "0"
                 lmkFavAdd.ruteId = "0"
                 if(lmkFavAdd.insert()){
-//                    RemindDetailController.showMessage("通知", msg:"收藏成功", buttons:["OK"], delegate: nil)
+                    viewDidLoad()
                 }
             }
             
@@ -90,6 +90,10 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, NSObjectP
                 lastController.viewDidLoad()
             }
             self.navigationController!.popViewControllerAnimated(true)
+        case 103:
+            var stationDetail = self.storyboard!.instantiateViewControllerWithIdentifier("landmarkmap") as StationDetail
+            
+            self.navigationController!.pushViewController(stationDetail, animated:true)
         default:
             println("nothing")
         }
@@ -397,6 +401,8 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, NSObjectP
             var btnLine:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
             btnLine.frame = CGRect(x:15,y:45,width:130,height:30)
             btnLine.setTitle("\(landMark!.item(MSTT04_LANDMARK_LINE_ID))".line() + "\(landMark!.item(MSTT04_LANDMARK_STAT_ID))".station(), forState: UIControlState.Normal)
+            btnLine.tag = 110
+            btnLine.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
             cell.addSubview(btnLine)
         default:
             println("nothing")

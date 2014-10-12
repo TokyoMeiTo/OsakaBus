@@ -162,13 +162,14 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
     override func observeValueForKeyPath(keyPath: String!, ofObject object: AnyObject!, change: [NSObject : AnyObject]!, context: UnsafeMutablePointer<Void>) {
         if (keyPath=="fractionCompleted") {
             var progress:NSProgress = object as NSProgress;
-            if(countElements("\(progress.fractionCompleted * 100)") > 4){
-                loadProgress = "正在下载: " + "\(progress.fractionCompleted * 100)".left(5) + "%"
-            }
-            println(loadProgress!)
-            // 在子线程中更新UI
-            dispatch_async(dispatch_get_main_queue()) { () -> Void in
-                self.tbList.reloadData()
+            if(countElements("\(progress.fractionCompleted)") > 5){
+                var progressTemp:Double = ("\(progress.fractionCompleted)".left(6) as NSString).doubleValue
+                loadProgress = "正在下载: " + "\(progressTemp * 100)" + "%"
+                println(progress.fractionCompleted)
+                // 在子线程中更新UI
+                dispatch_async(dispatch_get_main_queue()) { () -> Void in
+                    self.tbList.reloadData()
+                }
             }
         }
     }

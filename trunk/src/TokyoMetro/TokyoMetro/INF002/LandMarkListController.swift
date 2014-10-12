@@ -30,6 +30,17 @@ class LandMarkListController: UIViewController, UITableViewDelegate, NSObjectPro
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        switch landMarkType{
+        case 0:
+            self.title = "热门景点"
+        case 1:
+            self.title = "美食"
+        case 2:
+            self.title = "购物"
+        default:
+            println("nothing")
+        }
+        
         landMarks = selectLandMarkTable(landMarkType)
         
         tbList.delegate = self
@@ -55,6 +66,7 @@ class LandMarkListController: UIViewController, UITableViewDelegate, NSObjectPro
         switch sender{
         case self.navigationItem.rightBarButtonItem!:
             var landMarkSearchController = self.storyboard!.instantiateViewControllerWithIdentifier("landmarksearch") as LandMarkSearchController
+            
             self.navigationController!.pushViewController(landMarkSearchController, animated:true)
         default:
             println("nothing")

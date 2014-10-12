@@ -27,6 +27,7 @@
 #import "LinT06FareTable.h"
 #import "UITouchableView.h"
 #import "StaT01StationExitTable.h"
+#import "StaT03ComercialInsideTable.h"
 #import "StaT04FacilityTable.h"
 #import "LinT01TrainScheduleTable.h"
 #import "LinT05RouteDetailTable.h"
