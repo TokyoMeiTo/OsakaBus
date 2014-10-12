@@ -48,11 +48,13 @@ class Main: UIViewController,UIScrollViewDelegate {
     var setStationEndId : String = ""
     
     // 显示弹框的车站的车站名 JP
-    var mst02StationNameJP : String = ""
+    var selectStationNameJP : String = ""
     // 显示弹框的车站的车站id
     var selectStationID : String = ""
     // 显示弹框的车站的metroId
     var selectStationMetroID : String = ""
+    // 显示弹框的车站的Kana
+    var selectStationNameKana: String = ""
     
     var stationGrideFromX:CGFloat = 0.0
     var stationGrideFromY:CGFloat = 0.0
@@ -70,7 +72,6 @@ class Main: UIViewController,UIScrollViewDelegate {
     let IMAGEDOUBLEACTION: Selector = "doubleTapAction:"
     let IMAGESINGLEACTION: Selector = "singleTapAction:"
     let POPUPVIEWBTNACTION: Selector = "setStation:"
-    let CONTROLLIMG: Selector = "ControllImage:"
     
     var mViewStartShade : UIView = UIView()
     var mViewEndShade : UIView = UIView()
@@ -81,6 +82,8 @@ class Main: UIViewController,UIScrollViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        mImgLineGraph.image = UIImage(named: "MetroCH".getLineGraphImagePath())
         
         let folder = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String
         let path = folder.stringByAppendingPathComponent("TokyoMetroCache")
@@ -96,28 +99,23 @@ class Main: UIViewController,UIScrollViewDelegate {
         // ScreenSize
         self.mScreenSize = UIScreen.mainScreen().bounds.size
 
-        // ScrollView
-        self.mScrollView.minimumZoomScale = self.mScrollView.frame.size.height / self.mMainWrapper.frame.size.height
-        self.mScrollView.maximumZoomScale = self.mMainWrapper.frame.size.width / self.mScrollView.frame.size.width
+        // ScrollView、
+        self.mScrollView.minimumZoomScale = 0.5
+        self.mScrollView.maximumZoomScale = 5
         self.mScrollView.zoomScale = 1.0
         self.mScrollView.contentSize = self.mMainWrapper.frame.size
 
         self.mStationInfoLayerView.hidden = false
+        self.mStationInfoLayerView.alpha = 0.5
 
         self.mPopupStationView.hidden = true
-        self.mPopupStationView.backgroundColor = UIColor(patternImage: mImgLineGraphNormal("MainPop"))
-        
-        
-        self.mPopupStationView.layer.borderWidth = 1
+        self.mPopupStationView.backgroundColor = UIColor(patternImage: "main_pop".getImage())
         self.mPopupStationView.layer.cornerRadius = 4
         
         //
         mPopupBtnStart.addTarget(self, action: POPUPVIEWBTNACTION, forControlEvents: UIControlEvents.TouchUpInside)
         mPopupBtnEnd.addTarget(self, action: POPUPVIEWBTNACTION, forControlEvents: UIControlEvents.TouchUpInside)
         mPopupBtnMore.addTarget(self, action: POPUPVIEWBTNACTION, forControlEvents: UIControlEvents.TouchUpInside)
-        
-        mBtnImgAdd.addTarget(self, action: CONTROLLIMG, forControlEvents: UIControlEvents.TouchUpInside)
-        mBtnImgDec.addTarget(self, action: CONTROLLIMG, forControlEvents: UIControlEvents.TouchUpInside)
         
         // 设置双击放大事件
         var myTapGesture :UITapGestureRecognizer = UITapGestureRecognizer()
@@ -169,21 +167,19 @@ class Main: UIViewController,UIScrollViewDelegate {
     }
     
     // 控制图片放大和缩小
-    func ControllImage(sender:UIButton) {
+     @IBAction func ControllImage(sender:UIButton) {
         var offsetX:CGFloat = (mScrollView.bounds.size.width >
             mScrollView.contentSize.width) ? (mScrollView.bounds.size.width - mScrollView.contentSize.width)/2 : 0.0
         var offsetY:CGFloat = (mScrollView.bounds.size.height >
             mScrollView.contentSize.height) ? (mScrollView.bounds.size.height - mScrollView.contentSize.height)/2 : 0.0
         
         self.mMainWrapper.center = CGPointMake(mScrollView.contentSize.width * 0.5 + offsetX , mScrollView.contentSize.height * 0.5 + offsetY)
-        
-        
+
         switch (sender) {
-            
         case self.mBtnImgAdd:
             if (self.mScrollView.zoomScale < 4) {
                 UIView.animateWithDuration(0.3, animations: { () -> Void in
-                    self.mScrollView.zoomScale = (self.mScrollView.zoomScale + 1)
+                   self.mScrollView.zoomScale = (self.mScrollView.zoomScale + 1)
                 })
             }
             
@@ -294,24 +290,28 @@ class Main: UIViewController,UIScrollViewDelegate {
         locatPoint.x = touchX
         locatPoint.y = touchY
         
-        println("触碰点坐标")
-        println("\(locatPoint.x)   \(locatPoint.y)")
-        
         var stationData:CMN002StationData! = cmn002Model.findTouchedStation(touchX, touchY: touchY)
         //画面显示
         
         if (stationData != nil) {
             self.mPopupStationName.text = stationData.statNameExt1 as String
             self.mPopupStationNameJP.text = stationData.statName as String
-            
+            // 设定全局变量
             self.mCuttentStationID = stationData.statId as String
+            self.selectStationNameJP  = stationData.statName as String
+            self.selectStationMetroID = stationData.statNameMetroId as String
+            self.selectStationNameKana = stationData.statNameKana as String
             self.stationGrideFromX = stationData.statFromX / 2
             self.stationGrideFromY = stationData.statFromY / 2
             self.stationGrideToX = stationData.statToX / 2
             self.stationGrideToY = stationData.statToY / 2
             
-            var mFindeStationLines:NSMutableArray = cmn002Model.findStationLines(stationData)
+            println("车站四个点   \(stationGrideFromX),    \(stationGrideFromY),      \(stationGrideToX),\(stationGrideToY)      ")
             
+            println("陈展ID     \(self.mCuttentStationID)    ")
+            
+            // 显示弹框上站点的所有线路图标
+            var mFindeStationLines:NSMutableArray = cmn002Model.findStationLines(stationData)
             var view = mPopupViewSetImage.viewWithTag(202) as UIView!
             if (view != nil) {
                 view.removeFromSuperview()
@@ -323,7 +323,7 @@ class Main: UIViewController,UIScrollViewDelegate {
             for (var i = 0; i < mFindeStationLines.count; i++) {
                 var mlinesLineImg: UIImageView = UIImageView()
                 mlinesLineImg.frame = CGRectMake(CGFloat(130 - i * 20), 0, 25, 25)
-                mlinesLineImg.image = mImgLineGraphNormal(mFindeStationLines[i] as String)
+                mlinesLineImg.image = (mFindeStationLines[i] as String).getLineImage()
                 mPopupLineView.addSubview(mlinesLineImg)
             }
             mPopupViewSetImage.addSubview(mPopupLineView)
@@ -337,49 +337,10 @@ class Main: UIViewController,UIScrollViewDelegate {
             self.mScrollView.setContentOffset(offertoPoint, animated: true)
             self.mPopupStationView.frame = CGRectMake(locatPoint.x - 100, locatPoint.y - 200, 200, 160)
 
-
-            
             self.mPopupStationView.hidden = false
             
             addUITag()
         }
-    }
-    
-    // 根据数据库中的路线id获取图片
-    func mImgLineGraphNormal(lineNum: String) -> UIImage {
-        
-        var image = UIImage(named: "tablecell_lineicon_g.png")
-        switch (lineNum) {
-            
-        case "28001":
-            image = UIImage(named: "tablecell_lineicon_g.png")
-        case "28002":
-            image = UIImage(named: "tablecell_lineicon_m.png")
-        case "28003":
-            image = UIImage(named: "tablecell_lineicon_h.png")
-        case "28004":
-            image = UIImage(named: "tablecell_lineicon_t.png")
-        case "28005":
-            image = UIImage(named: "tablecell_lineicon_c.png")
-        case "28006":
-            image = UIImage(named: "tablecell_lineicon_y.png")
-        case "28008":
-            image = UIImage(named: "tablecell_lineicon_z.png")
-        case "28009":
-            image = UIImage(named: "tablecell_lineicon_n.png")
-        case "28010":
-            image = UIImage(named: "tablecell_lineicon_f.png")
-        case "MainPop":
-            image = UIImage(named: "MainPop.png")
-        case "MainMenu":
-            image = UIImage(named: "MainMenu.png")
-            
-        default:
-            image = UIImage(named: "tablecell_lineicon_g.png")
-            
-        }
-        
-        return image
     }
     
     // 点击弹框中的设置起点和终点， 记录当前的数据， 完成后跳转页面
@@ -410,9 +371,10 @@ class Main: UIViewController,UIScrollViewDelegate {
             // 跳转到此站详细页面
             mPopupStationView.hidden = true
             var stationDetail : StationDetail = self.storyboard?.instantiateViewControllerWithIdentifier("StationDetail") as StationDetail
-//            stationDetail.cellJPName = self.mPopupStationNameJP
-//            stationDetail.cellJPNameKana = self.statioStationNameKana
-//            stationDetail.MetroID = self.selectStationMetroID
+            stationDetail.stat_id = self.mCuttentStationID
+            stationDetail.statMetroId = self.selectStationMetroID
+            stationDetail.cellJPName = self.selectStationNameJP
+            stationDetail.cellJPNameKana = self.selectStationNameKana
             self.navigationController?.pushViewController(stationDetail, animated:true)
 
         default:
@@ -463,13 +425,9 @@ class Main: UIViewController,UIScrollViewDelegate {
         mViewEndShade.alpha = 0.5
         
         mViewEndShade.frame = CGRectMake(stationGrideFromX - 5, stationGrideFromY - 5, stationGrideToX -  stationGrideFromX + 10, stationGrideToY -  stationGrideFromY + 10)
-        
-        
-        
+
         self.mImgLineGraph.addSubview(mViewEndShade)
-        
         self.tagEndmViewShade = 2
-        
     }
     
     
@@ -488,11 +446,7 @@ class Main: UIViewController,UIScrollViewDelegate {
         mViewShade.frame = CGRectMake(stationGrideFromX - 5, stationGrideFromY - 5, stationGrideToX -  stationGrideFromX + 10, stationGrideToY -  stationGrideFromY + 10)
         
         self.mImgLineGraph.addSubview(mViewShade)
-        self.tagmViewShade = 2
-        
-        println("触碰点坐标")
-        println("\(stationGrideFromX - 5)   \(stationGrideFromY - 5)")
-        
+        self.tagmViewShade = 2        
     }
     
 }
