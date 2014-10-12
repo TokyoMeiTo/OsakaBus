@@ -10,7 +10,8 @@ import UIKit
 
 class FacilityList: UIViewController,UITableViewDelegate,UITableViewDataSource {
 
-    @IBOutlet weak var table: UITableView!
+    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var segment: UISegmentedControl!
 
     var facilityArr: NSMutableArray = NSMutableArray.array()
     
@@ -19,8 +20,7 @@ class FacilityList: UIViewController,UITableViewDelegate,UITableViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        odbFacility()
+        odbFacility("0")
     }
     
     override func didReceiveMemoryWarning() {
@@ -28,11 +28,14 @@ class FacilityList: UIViewController,UITableViewDelegate,UITableViewDataSource {
     }
     
     
-    func odbFacility() {
+    func odbFacility(faciLocl: String) {
     
         var table = StaT04FacilityTable()
         
+        facilityArr = NSMutableArray.array()
+        
         table.statId = statId
+        table.faciLocl = faciLocl
         var rows = table.selectAll()
         var facilityArr1: NSMutableArray = NSMutableArray.array()
         var facilityArr2: NSMutableArray = NSMutableArray.array()
@@ -78,6 +81,16 @@ class FacilityList: UIViewController,UITableViewDelegate,UITableViewDataSource {
 
     }
     
+    @IBAction func segmentChnaged() {
+        if (segment.selectedSegmentIndex == 0) {
+            odbFacility("0")
+            tableView.reloadData()
+        } else {
+            odbFacility("1")
+            tableView.reloadData()
+        }
+    }
+    
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return facilityArr.count
     }
@@ -108,17 +121,39 @@ class FacilityList: UIViewController,UITableViewDelegate,UITableViewDataSource {
         var view = UIView()
         view.frame = CGRectMake(0, 0, 320, 36)
         view.backgroundColor = UIColor(red: 103/255, green: 188/255, blue: 228/255, alpha: 1)
-//        view.backgroundColor = UIColor.blueColor()
         
         var key = facilityArr[section][0] as StaT04FacilityTable
         var faciType = key.item(STAT04_FACI_TYPE) as String
         
         var image = UIImageView()
-        image.frame = CGRectMake(15, 4, 28, 28)
-        image.image = UIImage(named: "escalator_wheelchair.png")
+        if (faciType == "1") {
+            image.frame = CGRectMake(15, 4, 28, 28)
+            image.image = UIImage(named: "escalator_wheelchair")
+        } else if (faciType == "2") {
+            image.frame = CGRectMake(15, 4, 28, 28)
+            image.image = UIImage(named: "escalator")
+        }  else if (faciType == "3") {
+            image.frame = CGRectMake(15, 4, 28, 28)
+            if (segment.selectedSegmentIndex == 0) {
+                image.image = UIImage(named: "out_lift")
+            } else {
+                image.image = UIImage(named: "in_lift")
+            }
+            
+        } else if (faciType == "4") {
+            image.frame = CGRectMake(15, 4, 43, 28)
+            if (segment.selectedSegmentIndex == 0) {
+                image.image = UIImage(named: "out_toilet_wheelchair")
+            } else {
+                image.image = UIImage(named: "in_toilet_wheelchair")
+            }
+        } else if (faciType == "0") {
+
+        }
+        
         
         var title = UILabel()
-        title.frame = CGRectMake(55, 0, 250, 36)
+        title.frame = CGRectMake(65, 0, 250, 36)
         title.backgroundColor = UIColor.clearColor()
         title.text = faciType.facilityType()
         

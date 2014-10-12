@@ -366,7 +366,20 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
     
     @IBAction func setStartStation() {
     
-//        var ruteSearch: ru
+        var routeSearch: RouteSearch = self.storyboard?.instantiateViewControllerWithIdentifier("RouteSearch") as RouteSearch
+        
+        routeSearch.startStationText = group_id
+        
+        self.navigationController?.pushViewController(routeSearch, animated: true)
+    }
+    
+    @IBAction func setEndStation() {
+        
+        var routeSearch: RouteSearch = self.storyboard?.instantiateViewControllerWithIdentifier("RouteSearch") as RouteSearch
+        
+        routeSearch.endStationText = group_id
+        
+        self.navigationController?.pushViewController(routeSearch, animated: true)
     }
     
     func addLineView() {

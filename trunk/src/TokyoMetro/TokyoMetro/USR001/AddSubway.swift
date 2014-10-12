@@ -24,6 +24,8 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
     // 收藏的路径
     var ruteArr: NSMutableArray = NSMutableArray.array()
     
+    var ruteRowIdArr: NSMutableArray = NSMutableArray.array()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -91,6 +93,7 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
             var ruteRows = routeTable.selectAll()
             if (ruteRows.count > 0) {
                 ruteArr.addObject(ruteRows[0])
+                ruteRowIdArr.addObject(key.rowid)
             }
         }
 
@@ -107,8 +110,8 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     func removeRute(index: Int) -> Bool {
         var table = UsrT03FavoriteTable()
-        var map: UsrT03FavoriteTable = ruteArr[index] as UsrT03FavoriteTable
-        table.rowid = map.rowid
+//        var map: UsrT03FavoriteTable = ruteArr[index] as UsrT03FavoriteTable
+        table.rowid = ruteRowIdArr[index] as String
         
         return table.delete()
     }
@@ -233,6 +236,7 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 } else if (segment.selectedSegmentIndex == 0) {
                     if (removeRute(indexPath.row)) {
                         ruteArr.removeObjectAtIndex(indexPath.row)
+                        ruteRowIdArr.removeObjectAtIndex(indexPath.row)
                         table.reloadData()
                     }
                 } else {

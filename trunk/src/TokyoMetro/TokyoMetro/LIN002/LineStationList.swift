@@ -176,6 +176,7 @@ class LineStationList: UIViewController, UITableViewDelegate, UITableViewDataSou
         if (isReverse) {
             
             image = lineNum.getLineStatImage("d")
+            println(image.size.height)
             if (image.size.height > 0) {
             
             } else {

@@ -44,7 +44,7 @@ class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     func odbExitInfo() {
         var table = StaT01StationExitTable()
-        table.statId = statId
+//        table.statId = statId
         rows = table.selectWithOrder(STAT01_STAT_EXIT_ID, desc: true)
         
     }
