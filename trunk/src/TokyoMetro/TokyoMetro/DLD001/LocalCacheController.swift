@@ -135,11 +135,16 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
                 response, localfile, error in
                 if(error == nil){
                     println("下载成功解压文件")
+                    self.loadProgress = "100.00 %"
+                    dispatch_async(dispatch_get_main_queue()) { () -> Void in
+                        self.tbList.reloadData()
+                    }
                     self.unzipFile()
                 }else{
                     println("下载失败")
                     self.downloading = false
                     self.loadProgress = "下载失败"
+                    self.canUpdate = false
                     // 在子线程中更新UI
                     dispatch_async(dispatch_get_main_queue()) { () -> Void in
                         self.tbList.reloadData()
@@ -162,10 +167,12 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
     override func observeValueForKeyPath(keyPath: String!, ofObject object: AnyObject!, change: [NSObject : AnyObject]!, context: UnsafeMutablePointer<Void>) {
         if (keyPath=="fractionCompleted") {
             var progress:NSProgress = object as NSProgress;
-            if(countElements("\(progress.fractionCompleted)") > 5){
+            if(countElements("\(progress.fractionCompleted)") > 5 && progress.fractionCompleted > 0.0001){
                 var progressTemp:Double = ("\(progress.fractionCompleted)".left(6) as NSString).doubleValue
-                loadProgress = "正在下载: " + "\(progressTemp * 100)" + "%"
-                println(progress.fractionCompleted)
+                println("\(progress.fractionCompleted)")
+                println(countElements("\(progress.fractionCompleted)"))
+                println("\(progressTemp * 100)" + " %")
+                loadProgress = "\(progressTemp * 100)" + " %"
                 // 在子线程中更新UI
                 dispatch_async(dispatch_get_main_queue()) { () -> Void in
                     self.tbList.reloadData()
@@ -211,17 +218,20 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
             if(result){
                 println("解压成功")
                 loadProgress = "下载完成"
+                canUpdate = false
                 updateComplete = true
                 tbList.reloadData()
             }else{
                 println("解压失败")
                 loadProgress = "解压失败"
+                canUpdate = false
                 tbList.reloadData()
             }
             unzip.UnzipCloseFile()
         }else{
             println("解压失败")
             loadProgress = "解压失败"
+            canUpdate = false
             tbList.reloadData()
         }
         downloading = false
@@ -275,6 +285,18 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
                 UIHeader.addSubview(lblText)
                 return UIHeader
             case 2:
+                if(!updateComplete && canUpdate){
+                    var lblProgressTemp = UILabel(frame: CGRect(x:50,y:5,width:tableView.frame.width - 30,height:80))
+                    lblProgressTemp.backgroundColor = UIColor.clearColor()
+                    lblProgressTemp.font = UIFont.systemFontOfSize(16)
+                    lblProgressTemp.textColor = UIColor.blackColor()
+                    lblProgressTemp.text = "正在下载:"
+                    lblProgressTemp.textAlignment = NSTextAlignment.Left
+                    UIHeader.addSubview(lblProgressTemp)
+                }
+                if(!canUpdate){
+                    canUpdate = true
+                }
                 var lblMobileSize = UILabel(frame: CGRect(x:15,y:5,width:tableView.frame.width - 30,height:80))
                 lblMobileSize.backgroundColor = UIColor.clearColor()
                 lblMobileSize.font = UIFont.systemFontOfSize(16)
@@ -299,6 +321,18 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
                 UIHeader.addSubview(lblText)
                 return UIHeader
             case 2:
+                if(!updateComplete && canUpdate){
+                    var lblProgressTemp = UILabel(frame: CGRect(x:50,y:5,width:tableView.frame.width - 30,height:80))
+                    lblProgressTemp.backgroundColor = UIColor.clearColor()
+                    lblProgressTemp.font = UIFont.systemFontOfSize(16)
+                    lblProgressTemp.textColor = UIColor.blackColor()
+                    lblProgressTemp.text = "正在下载:"
+                    lblProgressTemp.textAlignment = NSTextAlignment.Left
+                    UIHeader.addSubview(lblProgressTemp)
+                }
+                if(!canUpdate){
+                    canUpdate = true
+                }
                 var lblMobileSize = UILabel(frame: CGRect(x:15,y:5,width:tableView.frame.width,height:80))
                 lblMobileSize.backgroundColor = UIColor.clearColor()
                 lblMobileSize.font = UIFont.systemFontOfSize(16)

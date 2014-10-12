@@ -79,6 +79,9 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
     /* 线程池 */
     var queue:NSOperationQueue = NSOperationQueue()
     
+    var routeStatTable01:MstT02StationTable?
+    var routeStatTable02:MstT02StationTable?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         intitValue()
