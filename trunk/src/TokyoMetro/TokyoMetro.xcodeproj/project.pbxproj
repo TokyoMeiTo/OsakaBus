@@ -78,6 +78,8 @@
 		A17EDAB119E8CD4200D58386 /* HelpContentDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17EDAB019E8CD4200D58386 /* HelpContentDetail.swift */; };
 		A1831B2119DA54C5002639DB /* MstT04LandMarkTable.m in Sources */ = {isa = PBXBuildFile; fileRef = A1831B2019DA54C5002639DB /* MstT04LandMarkTable.m */; };
 		A184391719EA64C200E11778 /* LinkWebSite.swift in Sources */ = {isa = PBXBuildFile; fileRef = A184391619EA64C200E11778 /* LinkWebSite.swift */; };
+		A184391919EAB58F00E11778 /* ComercialInsideDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = A184391819EAB58F00E11778 /* ComercialInsideDetail.swift */; };
+		A184391C19EAB71900E11778 /* StaT03ComercialInsideTable.m in Sources */ = {isa = PBXBuildFile; fileRef = A184391B19EAB71900E11778 /* StaT03ComercialInsideTable.m */; };
 		A18474FD19E4E19200D2DD7B /* INF002Dao.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18474FC19E4E19200D2DD7B /* INF002Dao.swift */; };
 		A18474FF19E4E1D100D2DD7B /* Sta003Dao.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18474FE19E4E1D100D2DD7B /* Sta003Dao.swift */; };
 		A184750219E4FB2400D2DD7B /* MstV01StationGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = A184750119E4FB2400D2DD7B /* MstV01StationGroup.m */; };
@@ -304,6 +306,9 @@
 		A1831B1F19DA54C5002639DB /* MstT04LandMarkTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MstT04LandMarkTable.h; sourceTree = "<group>"; };
 		A1831B2019DA54C5002639DB /* MstT04LandMarkTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MstT04LandMarkTable.m; sourceTree = "<group>"; };
 		A184391619EA64C200E11778 /* LinkWebSite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkWebSite.swift; sourceTree = "<group>"; };
+		A184391819EAB58F00E11778 /* ComercialInsideDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComercialInsideDetail.swift; sourceTree = "<group>"; };
+		A184391A19EAB71900E11778 /* StaT03ComercialInsideTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StaT03ComercialInsideTable.h; sourceTree = "<group>"; };
+		A184391B19EAB71900E11778 /* StaT03ComercialInsideTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StaT03ComercialInsideTable.m; sourceTree = "<group>"; };
 		A18474FC19E4E19200D2DD7B /* INF002Dao.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = INF002Dao.swift; sourceTree = "<group>"; };
 		A18474FE19E4E1D100D2DD7B /* Sta003Dao.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sta003Dao.swift; sourceTree = "<group>"; };
 		A184750019E4FB2400D2DD7B /* MstV01StationGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MstV01StationGroup.h; sourceTree = "<group>"; };
@@ -830,6 +835,8 @@
 				A1ECD44419D2D41F00D5A0E2 /* LinT06FareTable.h */,
 				A1ECD44519D2D41F00D5A0E2 /* LinT06FareTable.m */,
 				A1ECD44619D2D41F00D5A0E2 /* MstT01LineTable.h */,
+				A184391A19EAB71900E11778 /* StaT03ComercialInsideTable.h */,
+				A184391B19EAB71900E11778 /* StaT03ComercialInsideTable.m */,
 				A1ECD44719D2D41F00D5A0E2 /* MstT01LineTable.m */,
 				A1ECD44819D2D41F00D5A0E2 /* MstT02StationTable.h */,
 				A1ECD44919D2D41F00D5A0E2 /* MstT02StationTable.m */,
@@ -949,6 +956,7 @@
 				A1ECD46D19D2D41F00D5A0E2 /* StationDetail.swift */,
 				A1ECD46E19D2D41F00D5A0E2 /* StationImg.swift */,
 				A1ECD46F19D2D41F00D5A0E2 /* TimeTable.swift */,
+				A184391819EAB58F00E11778 /* ComercialInsideDetail.swift */,
 			);
 			path = STA002;
 			sourceTree = "<group>";
@@ -1262,6 +1270,7 @@
 				A1ECD47F19D2D41F00D5A0E2 /* InfT04StatKnowledgeTable.m in Sources */,
 				A1ECD49919D2D41F00D5A0E2 /* FacilityList.swift in Sources */,
 				A1F1FC8519E96E74004A59C9 /* AFHTTPRequestOperation.m in Sources */,
+				A184391C19EAB71900E11778 /* StaT03ComercialInsideTable.m in Sources */,
 				A1ECD49E19D2D41F00D5A0E2 /* GPSHelper.swift in Sources */,
 				3B24209F19B5ABFD00DAE392 /* ASIAuthenticationDialog.m in Sources */,
 				3B2420E119B5AD1500DAE392 /* OWINAsyncXMLParser.m in Sources */,
@@ -1293,6 +1302,7 @@
 				A1ECD4A019D2D41F00D5A0E2 /* AddSubway.swift in Sources */,
 				A1F1FC9919E96E74004A59C9 /* zip.c in Sources */,
 				3B24210F19B5B5BC00DAE392 /* FMDatabasePool.m in Sources */,
+				A184391919EAB58F00E11778 /* ComercialInsideDetail.swift in Sources */,
 				3B2420A319B5ABFD00DAE392 /* ASIFormDataRequest.m in Sources */,
 				A17EDAAF19E8C0FE00D58386 /* LocalCacheController.swift in Sources */,
 				A15CA4A619D57BDD00716A00 /* LinT05RouteDetailTable.m in Sources */,
