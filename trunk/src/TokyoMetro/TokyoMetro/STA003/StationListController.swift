@@ -410,34 +410,7 @@ class ListController: UITableViewController {
     }
     
     func lineImage(lineNum: String) -> UIImage {
-        
-        var image = UIImage(named: "tablecell_lineicon_mini_c.png")
-        switch (lineNum) {
-            
-        case "28005":
-            image = UIImage(named: "tablecell_lineicon_mini_c.png")
-        case "28010":
-            image = UIImage(named: "tablecell_lineicon_mini_f.png")
-        case "28001":
-            image = UIImage(named: "tablecell_lineicon_mini_g.png")
-        case "28003":
-            image = UIImage(named: "tablecell_lineicon_mini_h.png")
-        case "28002":
-            image = UIImage(named: "tablecell_lineicon_mini_m.png")
-        case "28009":
-            image = UIImage(named: "tablecell_lineicon_mini_n.png")
-        case "28004":
-            image = UIImage(named: "tablecell_lineicon_mini_t.png")
-        case "28006":
-            image = UIImage(named: "tablecell_lineicon_mini_y.png")
-        case "28008":
-            image = UIImage(named: "tablecell_lineicon_mini_z.png")
-            
-        default:
-            image = UIImage(named: "tablecell_lineicon_mini_c.png")
-        }
-        
-        return image
+        return lineNum.getLineImage()
     }
 
 
