@@ -35,6 +35,7 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
         var searchButton:UIBarButtonItem = self.navigationItem.rightBarButtonItem!
         searchButton.target = self
         searchButton.action = "buttonAction:"
+        self.navigationItem.setHidesBackButton(true, animated: false)
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

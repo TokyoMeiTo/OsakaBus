@@ -15,9 +15,9 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
 
     var classType:Int = 0
     
-    let uri:String = "http://192.168.1.84/Resource.zip"
+    let uri:String = "http://code4app.com/down/9d8327fe3ab62342817bccf432989dc1/?id=505d14116803facd09000000"//"http://192.168.1.84/Resource.zip"
     let filePath:String = "Resource.zip"
-    let unZipPath:String = "TokyoMetroCache"
+    let unZipPath:String = "TokyoMetroCacheTest"
     var lblMobileSize = UILabel(frame: CGRect(x:15,y:5,width:290,height:80))
     
     /* NSFileManager */
@@ -29,7 +29,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
     /* TableView条目 */
     var items: NSMutableArray = NSMutableArray.array()
     var downloading:Bool = false
-    var loadProgress:String = "正在下载：20KB/10KB"
+    var loadProgress:String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,20 +41,39 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
         // Dispose of any resources that can be recreated.
     }
     
+    override func viewWillAppear(animated: Bool) {
+        self.presentedViewController?.beginAppearanceTransition(true, animated: true)
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+         self.presentedViewController?.endAppearanceTransition()
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        self.presentedViewController?.beginAppearanceTransition(true, animated: true)
+    }
+    
+    override func viewDidDisappear(animated: Bool) {
+        self.presentedViewController?.endAppearanceTransition()
+    }
+    
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return UIStatusBarStyle.Default
+    }
+    
+    override func prefersStatusBarHidden() -> Bool {
+        return false
+    }
+    
     func intitValue(){
         self.title = "本地数据管理"
-//        switch classType{
-//        case 0:
-//            items = NSMutableArray.array()
-//            items.addObject(["",[""]])
-//            items.addObject(["",[""]])
-//            items.addObject(["",[""]])
-//        default:
-//            items = NSMutableArray.array()
-//            items.addObject(["",[""]])
-//            items.addObject(["",[""]])
-//            items.addObject(["",[""]])
-//        }
+        self.navigationItem.rightBarButtonItem = nil
+        switch classType{
+        case 0:
+            self.navigationItem.setHidesBackButton(true, animated: false)
+        default:
+            println("nothing")
+        }
         loadItems()
         tbList.delegate = self
         tbList.dataSource = self
@@ -96,74 +115,6 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
         }
     }
     
-//    func download (uri:String){
-//        // 定义一个progress指针
-//        var progress:NSProgress?
-//        
-//        // 创建一个URL链接
-//       // NSURL *url = [NSURL URLWithString:\
-//        //@"http://wallpapers.wallbase.cc/rozne/wallpaper-3020771.jpg"];
-//        
-//        // 初始化一个请求
-//        var request:NSURLRequest = NSURLRequest(URL: NSURL(string: uri))
-//        
-//        // 获取一个Session管理器
-//       let session = AFHTTPSessionManager()
-//        
-//        // 开始下载任务
-////        var downloadTask:NSURLSessionDownloadTask = session.downloadTaskWithRequest(request, progress:&progress, destination:{(file, response) in self.pathUrl}, completionHandler:{
-////            response, localfile, error in
-////            if(error == nil){
-////                println("下载成功解压文件")
-////                self.unzipFile()
-////            }else{
-////                println("下载失败")
-////                self.downloading = false
-////            }
-////            });
-//        
-//         var downloadTask:NSURLSessionDownloadTask  = session.downloadTaskWithRequest(request, progress: &progress, destination: {
-//            (file, response) in
-//            
-//            var documentsDirectoryURL:NSURL = NSFileManager.defaultManager().URLForDirectory(.DocumentDirectory , inDomain:.UserDomainMask, appropriateForURL: nil, create: false, error: nil)!
-//            
-//           // var documentsDirectoryURL:NSURL = [NSFileManager.defaultManager.URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
-//            
-//            
-//            
-//            // 根据网址信息拼接成一个完整的文件存储路径并返回给block
-//            return documentsDirectoryURL.URLByAppendingPathComponent(response.suggestedFilename!);
-//            
-//            
-//            },
-//            completionHandler:
-//            {
-//                response, localfile, error in
-//                if(error == nil){
-//                    println("下载成功解压文件")
-//                    self.unzipFile()
-//                }else{
-//                    println("下载失败")
-//                    self.downloading = false
-//                }
-//                
-//                progress?.removeObserver(self, forKeyPath: "fractionCompleted", context: nil)
-//                // 结束后移除掉这个progress
-////                progress removeObserver:self
-////                    forKeyPath:@"fractionCompleted"
-////                context:NULL];
-//                
-//        })
-//        
-//        // 设置这个progress的唯一标示符
-//        //[progress setUserInfoObject:@"someThing" forKey:@"Y.X."];
-//        progress?.setUserInfoObject("DO SOME", forKey: "11111")
-//        downloadTask.resume()
-//        
-//        // 给这个progress添加监听任务
-//        progress!.addObserver(self, forKeyPath: "fractionCompleted", options: NSKeyValueObservingOptions.New | NSKeyValueObservingOptions.Old, context: nil)
-//    }
-    
     /**
      * 下载压缩文件
      */
@@ -176,11 +127,11 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
 
         downloading = true
         let folder = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String
-        let unzipPath = folder.stringByAppendingPathComponent(unZipPath)
+        let unzipPath = folder.stringByAppendingPathComponent(filePath)
         // 删除文件夹
         fileManager.removeItemAtPath(unzipPath, error: nil)
-        // 创建文件夹
-        fileManager.createDirectoryAtPath(unzipPath, withIntermediateDirectories:true, attributes:nil, error:nil)
+//        // 创建文件夹
+//        fileManager.createDirectoryAtPath(unzipPath, withIntermediateDirectories:true, attributes:nil, error:nil)
         var downloadTask = session.downloadTaskWithRequest(request, progress: &progress, destination: {(file, response) in self.pathUrl},
             completionHandler:
             {
@@ -191,6 +142,12 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
                 }else{
                     println("下载失败")
                     self.downloading = false
+                    self.loadProgress = "下载失败"
+                    // 在子线程中更新UI
+                    dispatch_async(dispatch_get_main_queue()) { () -> Void in
+                        self.lblMobileSize.text = self.loadProgress
+                        self.tbList.reloadData()
+                    }
                 }
         })
         downloadTask.resume()
@@ -209,12 +166,13 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
     override func observeValueForKeyPath(keyPath: String!, ofObject object: AnyObject!, change: [NSObject : AnyObject]!, context: UnsafeMutablePointer<Void>) {
         if (keyPath=="fractionCompleted") {
             var progress:NSProgress = object as NSProgress;
-            //println(progress.fractionCompleted);
             loadProgress = "正在下载:\(progress.fractionCompleted * 100)%"
-            lblMobileSize.text = loadProgress
-            tbList.reloadData()
+            // 在子线程中更新UI
+            dispatch_async(dispatch_get_main_queue()) { () -> Void in
+                self.lblMobileSize.text = self.loadProgress
+                self.tbList.reloadData()
+            }
         }
-
     }
     
     var pathUrl: NSURL
@@ -242,14 +200,21 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
             var result = unzip.UnzipFileTo(unzipPath, overWrite:true);
             if(result){
                 println("解压成功")
+                loadProgress = "下载完成"
                 updateComplete = true
                 tbList.reloadData()
             }else{
                 println("解压失败")
+                loadProgress = "解压失败"
+                lblMobileSize.text = self.loadProgress
+                tbList.reloadData()
             }
             unzip.UnzipCloseFile()
         }else{
             println("解压失败")
+            loadProgress = "解压失败"
+            lblMobileSize.text = self.loadProgress
+            tbList.reloadData()
         }
         downloading = false
     }
@@ -341,6 +306,8 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
     
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         switch section{
+        case 0:
+            return 0
         case 1:
             return 90
         case 2:
@@ -363,7 +330,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
         case 0:
             return 135
         default:
-            return 50
+            return 40
         }
     }
     
@@ -407,7 +374,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
             case 1:
                 if(!updateComplete){
                     var btnDownload:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-                    btnDownload.frame = CGRect(x:(tableView.frame.width - 220)/2,y:5,width:220,height:50)
+                    btnDownload.frame = CGRect(x:(tableView.frame.width - 250)/2,y:5,width:250,height:45)
                     var imgDownload = UIImage(named: "DLD00101.png")
                     btnDownload.setBackgroundImage(imgDownload, forState: UIControlState.Normal)
                     //btnDownload.setTitle("开始下载", forState: UIControlState.Normal)
@@ -418,7 +385,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
                     cell.addSubview(btnDownload)
                 }else{
                     var btnUse:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-                    btnUse.frame = CGRect(x:(tableView.frame.width - 220)/2,y:5,width:220,height:50)
+                    btnUse.frame = CGRect(x:(tableView.frame.width - 250)/2,y:5,width:250,height:45)
                     var imgUse = UIImage(named: "DLD00102.png")
                     btnUse.setBackgroundImage(imgUse, forState: UIControlState.Normal)
                     //btnUse.setTitle("立即使用", forState: UIControlState.Normal)
@@ -466,7 +433,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
                 cell.addSubview(lblMobileSize)
             case 1:
                 var btnDownload:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-                btnDownload.frame = CGRect(x:(tableView.frame.width - 220)/2,y:5,width:220,height:50)
+                btnDownload.frame = CGRect(x:(tableView.frame.width - 250)/2,y:5,width:250,height:45)
                 var imgDownload = UIImage(named: "DLD00101.png")
                 btnDownload.setBackgroundImage(imgDownload, forState: UIControlState.Normal)
                 //btnDownload.setTitle("重新下载", forState: UIControlState.Normal)
