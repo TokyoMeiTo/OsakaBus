@@ -77,6 +77,42 @@ extension String {
         return (self as NSString).right(right,left:left);
     }
     
+    func getLineStatImage() -> UIImage {
+        
+        var image = UIImage(named: "line_stat_\(self)")
+        return image
+    }
+    
+    func getLineStatImage(type: String) -> UIImage {
+        
+        var image = UIImage(named: "line_stat_\(self)\(type)")
+        return image
+    }
+    
+    func getStationIconImage() -> UIImage {
+        
+        var image = UIImage(named: "station_icon_\(self)")
+        return image
+    }
+    
+    func getLineImage() -> UIImage {
+        
+        var image = UIImage(named: "tablecell_lineicon_\(self)")
+        return image
+    }
+    
+    func getLineMiniImage() -> UIImage {
+        
+        var image = UIImage(named: "tablecell_lineicon_mini_\(self)")
+        return image
+    }
+    
+    func getImage() -> UIImage {
+        
+        var image = UIImage(named: "\(self)")
+        return image
+    }
+    
     
     /**
     * 获取StationInnerMap下的图片路径
