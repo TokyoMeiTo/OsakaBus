@@ -77,6 +77,7 @@
 		A17EDAAF19E8C0FE00D58386 /* LocalCacheController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17EDA9D19E8C0FE00D58386 /* LocalCacheController.swift */; };
 		A17EDAB119E8CD4200D58386 /* HelpContentDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17EDAB019E8CD4200D58386 /* HelpContentDetail.swift */; };
 		A1831B2119DA54C5002639DB /* MstT04LandMarkTable.m in Sources */ = {isa = PBXBuildFile; fileRef = A1831B2019DA54C5002639DB /* MstT04LandMarkTable.m */; };
+		A184391719EA64C200E11778 /* LinkWebSite.swift in Sources */ = {isa = PBXBuildFile; fileRef = A184391619EA64C200E11778 /* LinkWebSite.swift */; };
 		A18474FD19E4E19200D2DD7B /* INF002Dao.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18474FC19E4E19200D2DD7B /* INF002Dao.swift */; };
 		A18474FF19E4E1D100D2DD7B /* Sta003Dao.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18474FE19E4E1D100D2DD7B /* Sta003Dao.swift */; };
 		A184750219E4FB2400D2DD7B /* MstV01StationGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = A184750119E4FB2400D2DD7B /* MstV01StationGroup.m */; };
@@ -124,7 +125,6 @@
 		A1ECD4A119D2D41F00D5A0E2 /* RemindDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1ECD47719D2D41F00D5A0E2 /* RemindDetailController.swift */; };
 		A1ECD4A219D2D41F00D5A0E2 /* RemindListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1ECD47819D2D41F00D5A0E2 /* RemindListController.swift */; };
 		A1EE754319D445490064BC90 /* RouteSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EE754119D445490064BC90 /* RouteSearch.swift */; };
-		A1EE754419D445490064BC90 /* RouteSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EE754219D445490064BC90 /* RouteSearchResult.swift */; };
 		A1F1FC8519E96E74004A59C9 /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = A1F1FC5419E96E74004A59C9 /* AFHTTPRequestOperation.m */; };
 		A1F1FC8619E96E74004A59C9 /* AFHTTPRequestOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A1F1FC5619E96E74004A59C9 /* AFHTTPRequestOperationManager.m */; };
 		A1F1FC8719E96E74004A59C9 /* AFHTTPSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A1F1FC5819E96E74004A59C9 /* AFHTTPSessionManager.m */; };
@@ -303,6 +303,7 @@
 		A17EDAB019E8CD4200D58386 /* HelpContentDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpContentDetail.swift; sourceTree = "<group>"; };
 		A1831B1F19DA54C5002639DB /* MstT04LandMarkTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MstT04LandMarkTable.h; sourceTree = "<group>"; };
 		A1831B2019DA54C5002639DB /* MstT04LandMarkTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MstT04LandMarkTable.m; sourceTree = "<group>"; };
+		A184391619EA64C200E11778 /* LinkWebSite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkWebSite.swift; sourceTree = "<group>"; };
 		A18474FC19E4E19200D2DD7B /* INF002Dao.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = INF002Dao.swift; sourceTree = "<group>"; };
 		A18474FE19E4E1D100D2DD7B /* Sta003Dao.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sta003Dao.swift; sourceTree = "<group>"; };
 		A184750019E4FB2400D2DD7B /* MstV01StationGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MstV01StationGroup.h; sourceTree = "<group>"; };
@@ -362,7 +363,6 @@
 		A1ECD47719D2D41F00D5A0E2 /* RemindDetailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemindDetailController.swift; sourceTree = "<group>"; };
 		A1ECD47819D2D41F00D5A0E2 /* RemindListController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemindListController.swift; sourceTree = "<group>"; };
 		A1EE754119D445490064BC90 /* RouteSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RouteSearch.swift; path = TokyoMetro/CMN003/RouteSearch.swift; sourceTree = SOURCE_ROOT; };
-		A1EE754219D445490064BC90 /* RouteSearchResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RouteSearchResult.swift; path = TokyoMetro/CMN003/RouteSearchResult.swift; sourceTree = SOURCE_ROOT; };
 		A1F1FC5319E96E74004A59C9 /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperation.h; sourceTree = "<group>"; };
 		A1F1FC5419E96E74004A59C9 /* AFHTTPRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPRequestOperation.m; sourceTree = "<group>"; };
 		A1F1FC5519E96E74004A59C9 /* AFHTTPRequestOperationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperationManager.h; sourceTree = "<group>"; };
@@ -782,7 +782,6 @@
 			isa = PBXGroup;
 			children = (
 				A1EE754119D445490064BC90 /* RouteSearch.swift */,
-				A1EE754219D445490064BC90 /* RouteSearchResult.swift */,
 			);
 			path = CMN003;
 			sourceTree = "<group>";
@@ -790,6 +789,7 @@
 		A1ECD43519D2D41F00D5A0E2 /* CMN009 */ = {
 			isa = PBXGroup;
 			children = (
+				A184391619EA64C200E11778 /* LinkWebSite.swift */,
 				A17CE0C619D8FF9E00A27092 /* AppServers.swift */,
 				A1A44B9619D52B5B007963F4 /* Setting.swift */,
 			);
@@ -1209,7 +1209,6 @@
 				A1ECD47919D2D41F00D5A0E2 /* Main.swift in Sources */,
 				A1F1FC9719E96E74004A59C9 /* mztools.c in Sources */,
 				A1ECD48619D2D41F00D5A0E2 /* UsrT01ArrivalAlarmTable.m in Sources */,
-				A1EE754419D445490064BC90 /* RouteSearchResult.swift in Sources */,
 				A1F1FC8719E96E74004A59C9 /* AFHTTPSessionManager.m in Sources */,
 				3B2420A919B5ABFD00DAE392 /* AsyncUdpSocket.m in Sources */,
 				A17EDA6F19E8B72A00D58386 /* USR002Dao.swift in Sources */,
@@ -1284,6 +1283,7 @@
 				A1ECD49819D2D41F00D5A0E2 /* ExitMap.swift in Sources */,
 				3B2420DE19B5AD1500DAE392 /* NSString+Decimal.m in Sources */,
 				3B2420A419B5ABFD00DAE392 /* ASIHTTPRequest.m in Sources */,
+				A184391719EA64C200E11778 /* LinkWebSite.swift in Sources */,
 				3B2420E219B5AD1500DAE392 /* OWINHttpRequest.m in Sources */,
 				A1F1FC9519E96E74004A59C9 /* UIWebView+AFNetworking.m in Sources */,
 				A1ECD49519D2D41F00D5A0E2 /* LineStationList.swift in Sources */,

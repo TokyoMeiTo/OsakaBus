@@ -10,8 +10,22 @@ import UIKit
 
 class SelectRaiders: UIViewController {
     
+    @IBOutlet weak var onlineBtn1: UIButton!
+    @IBOutlet weak var onlineBtn2: UIButton!
+    @IBOutlet weak var onlineBtn3: UIButton!
+    @IBOutlet weak var outlineBtn1: UIButton!
+    @IBOutlet weak var outlineBtn2: UIButton!
+    @IBOutlet weak var outlineBtn3: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        onlineBtn1.addTarget(self, action: "onlineClick:", forControlEvents: UIControlEvents.TouchUpInside)
+        onlineBtn2.addTarget(self, action: "onlineClick:", forControlEvents: UIControlEvents.TouchUpInside)
+        onlineBtn3.addTarget(self, action: "onlineClick:", forControlEvents: UIControlEvents.TouchUpInside)
+        outlineBtn1.addTarget(self, action: "outlineClick:", forControlEvents: UIControlEvents.TouchUpInside)
+        outlineBtn2.addTarget(self, action: "outlineClick:", forControlEvents: UIControlEvents.TouchUpInside)
+        outlineBtn3.addTarget(self, action: "outlineClick:", forControlEvents: UIControlEvents.TouchUpInside)
     }
     
     override func didReceiveMemoryWarning() {
@@ -21,27 +35,46 @@ class SelectRaiders: UIViewController {
     
     func onlineClick(sender: UIButton) {
         var url = ""
+        var txtTitle = ""
         if (sender.tag == 201) {
             url = "http://m.mafengwo.cn/travel-scenic-spot/mafengwo/10222.html"
+            txtTitle = "蚂蜂窝"
         } else if (sender.tag == 202) {
             url = "http://m.ctrip.com/you/place/294"
+            txtTitle = "携程"
         } else {
             url = "http://touch.go.qunar.com/300679?#"
+            txtTitle = "去哪儿"
         }
         
+        var detail: RaidersDetail = self.storyboard?.instantiateViewControllerWithIdentifier("RaidersDetail") as RaidersDetail
         
+        detail.url = url
+        detail.isOpenPDF = false
+        detail.txtTitle = txtTitle
+        self.navigationController?.pushViewController(detail, animated: true)
     }
     
-    func outlineCli(sender: UIButton) {
+    func outlineClick(sender: UIButton) {
         var pdfUrl = ""
-        
-        if (sender.tag == 201) {
+        var txtTitle = ""
+        if (sender.tag == 301) {
             pdfUrl = "mayiwo".getStrategyPDFPath()
-        } else if (sender.tag == 202) {
+            txtTitle = "蚂蜂窝"
+        } else if (sender.tag == 302) {
             pdfUrl = "xiecheng".getStrategyPDFPath()
+            txtTitle = "携程"
         } else {
             pdfUrl = "qunaer".getStrategyPDFPath()
+            txtTitle = "去哪儿"
         }
+        
+        var detail: RaidersDetail = self.storyboard?.instantiateViewControllerWithIdentifier("RaidersDetail") as RaidersDetail
+        
+        detail.url = pdfUrl
+        detail.isOpenPDF = true
+        detail.txtTitle = txtTitle
+        self.navigationController?.pushViewController(detail, animated: true)
     }
     
 }

@@ -69,8 +69,7 @@ class StationImg: UIViewController, UIScrollViewDelegate {
     
     
     func addMap() -> UIImage{
-    
-        
+ 
         var image = UIImage(named: stationMapUrl)
         return image
     }

@@ -108,10 +108,6 @@
                                                         <rect key="frame" x="18" y="72" width="160" height="1"/>
                                                         <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                                                     </view>
-                                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZvP-hm-oRC">
-                                                        <rect key="frame" x="0.0" y="-83" width="320" height="469"/>
-                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                    </view>
                                                 </subviews>
                                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                             </view>
@@ -1768,10 +1764,10 @@
             </objects>
             <point key="canvasLocation" x="248" y="2431"/>
         </scene>
-        <!--View Controller-->
+        <!--Raiders Detail-->
         <scene sceneID="8RA-lr-DIk">
             <objects>
-                <viewController id="zfY-PB-hd6" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="RaidersDetail" id="zfY-PB-hd6" customClass="RaidersDetail" customModule="TokyoMetro" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="2qF-lc-D7A"/>
                         <viewControllerLayoutGuide type="bottom" id="cVh-u9-IlB"/>
@@ -1780,15 +1776,27 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <webView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="A1p-Lh-v59">
-                                <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                            <webView contentMode="scaleToFill" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="A1p-Lh-v59">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="delegate" destination="zfY-PB-hd6" id="HSe-yN-nvl"/>
+                                </connections>
                             </webView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="A1p-Lh-v59" firstAttribute="leading" secondItem="UWr-G9-AD2" secondAttribute="leading" id="F02-0z-zSE"/>
+                            <constraint firstAttribute="trailing" secondItem="A1p-Lh-v59" secondAttribute="trailing" id="UYu-cC-wVw"/>
+                            <constraint firstAttribute="bottom" secondItem="A1p-Lh-v59" secondAttribute="bottom" id="ePU-9D-XAa"/>
+                            <constraint firstItem="A1p-Lh-v59" firstAttribute="top" secondItem="UWr-G9-AD2" secondAttribute="top" id="qUm-Ad-1c9"/>
+                        </constraints>
                     </view>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <connections>
+                        <outlet property="webView" destination="A1p-Lh-v59" id="QdD-C5-GC0"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uTE-qB-fZP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -2491,10 +2499,10 @@ lable</string>
             </objects>
             <point key="canvasLocation" x="-887" y="2877"/>
         </scene>
-        <!--View Controller-->
+        <!--Select Raiders-->
         <scene sceneID="FV9-2W-BPj">
             <objects>
-                <viewController id="Ui5-Ek-69k" sceneMemberID="viewController">
+                <viewController id="Ui5-Ek-69k" customClass="SelectRaiders" customModule="TokyoMetro" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="6TH-NT-2ys"/>
                         <viewControllerLayoutGuide type="bottom" id="Td7-aR-HDZ"/>
@@ -2506,40 +2514,40 @@ lable</string>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="O3e-3P-G3e">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Etb-Aa-j4i">
-                                        <rect key="frame" x="40" y="392" width="120" height="50"/>
+                                    <button opaque="NO" tag="303" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Etb-Aa-j4i">
+                                        <rect key="frame" x="40" y="328" width="120" height="50"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <state key="normal" title="离线" backgroundImage="outline_btn">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RQ3-rX-QkY">
-                                        <rect key="frame" x="160" y="129" width="120" height="50"/>
+                                    <button opaque="NO" tag="201" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RQ3-rX-QkY">
+                                        <rect key="frame" x="160" y="65" width="120" height="50"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <state key="normal" title="在线" backgroundImage="online_btn">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x41-Ho-Zxw">
-                                        <rect key="frame" x="40" y="129" width="120" height="50"/>
+                                    <button opaque="NO" tag="301" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x41-Ho-Zxw">
+                                        <rect key="frame" x="40" y="65" width="120" height="50"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <state key="normal" title="离线" backgroundImage="outline_btn">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AAv-FY-uh1">
-                                        <rect key="frame" x="40" y="259" width="120" height="50"/>
+                                    <button opaque="NO" tag="302" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AAv-FY-uh1">
+                                        <rect key="frame" x="40" y="195" width="120" height="50"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <state key="normal" title="离线" backgroundImage="outline_btn">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xrw-ke-jJ9">
-                                        <rect key="frame" x="160" y="259" width="120" height="50"/>
+                                    <button opaque="NO" tag="202" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xrw-ke-jJ9">
+                                        <rect key="frame" x="160" y="195" width="120" height="50"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <state key="normal" title="在线" backgroundImage="online_btn">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -2547,25 +2555,25 @@ lable</string>
                                         </state>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="蚂蜂窝" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oEA-mG-lUL">
-                                        <rect key="frame" x="40" y="94" width="204" height="29"/>
+                                        <rect key="frame" x="40" y="30" width="204" height="29"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="携程" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W0a-KL-mXK">
-                                        <rect key="frame" x="40" y="222" width="204" height="29"/>
+                                        <rect key="frame" x="40" y="158" width="204" height="29"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="去哪儿" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C0g-oe-pwi">
-                                        <rect key="frame" x="40" y="355" width="204" height="29"/>
+                                        <rect key="frame" x="40" y="291" width="204" height="29"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wa1-66-5pR">
-                                        <rect key="frame" x="160" y="392" width="120" height="50"/>
+                                    <button opaque="NO" tag="203" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wa1-66-5pR">
+                                        <rect key="frame" x="160" y="328" width="120" height="50"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <state key="normal" title="在线" backgroundImage="online_btn">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -2580,6 +2588,14 @@ lable</string>
                     <navigationItem key="navigationItem" id="dkK-sm-Fii"/>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <connections>
+                        <outlet property="onlineBtn1" destination="RQ3-rX-QkY" id="QXG-H3-a3i"/>
+                        <outlet property="onlineBtn2" destination="Xrw-ke-jJ9" id="sOe-Uh-DlN"/>
+                        <outlet property="onlineBtn3" destination="wa1-66-5pR" id="omf-f5-EQu"/>
+                        <outlet property="outlineBtn1" destination="x41-Ho-Zxw" id="aXG-ZN-a0f"/>
+                        <outlet property="outlineBtn2" destination="AAv-FY-uh1" id="kQK-4g-bKO"/>
+                        <outlet property="outlineBtn3" destination="Etb-Aa-j4i" id="JVs-QP-QXY"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wsY-O1-JyT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -3047,6 +3063,9 @@ lable</string>
                     </view>
                     <navigationItem key="navigationItem" title="设定" id="qnw-Du-av9"/>
                     <connections>
+                        <outlet property="mBtnAppServer" destination="Ono-yp-nFa" id="W6u-gP-fAb"/>
+                        <outlet property="mBtnOfficeWebSite" destination="xZH-lX-1Px" id="8Cr-nA-VpZ"/>
+                        <outlet property="mBtnRelifDuty" destination="8c3-E7-ZZ7" id="uma-cX-lki"/>
                         <outlet property="mTabSettingItem" destination="Bu8-nx-IFS" id="onO-oK-y7a"/>
                     </connections>
                 </viewController>
@@ -3253,6 +3272,38 @@ lable</string>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WOE-0T-fOI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-311" y="-485"/>
+        </scene>
+        <!--Link Web Site-->
+        <scene sceneID="Tqu-bK-gER">
+            <objects>
+                <viewController storyboardIdentifier="LinkWebSite" id="euw-Ni-w6o" customClass="LinkWebSite" customModule="TokyoMetro" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Wyy-bl-Zc0"/>
+                        <viewControllerLayoutGuide type="bottom" id="qy5-cK-92Z"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="yeI-hp-Xvt">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <webView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aFM-lT-Ja3">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="delegate" destination="euw-Ni-w6o" id="5lw-Le-jsv"/>
+                                </connections>
+                            </webView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <connections>
+                        <outlet property="mWebView" destination="aFM-lT-Ja3" id="r6D-hU-uoU"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="T7c-tu-bFv" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-195" y="3805"/>
         </scene>
     </scenes>
     <resources>

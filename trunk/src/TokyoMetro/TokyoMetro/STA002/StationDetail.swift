@@ -254,7 +254,7 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
     func odbTime(statId: String) {
 
         var table = LinT01TrainScheduleTrainTable()
-        var rows = table.excuteQuery("select * from LINT01_TRAIN_SCHEDULE where 1 = 1 and STAT_ID = '\(statId)' and FIRST_TRAIN_FLAG = '1' and SCHE_TYPE = '1'")
+        var rows = table.excuteQuery("select *, ROWID from LINT01_TRAIN_SCHEDULE where 1 = 1 and STAT_ID = '\(statId)' and FIRST_TRAIN_FLAG = '1' and SCHE_TYPE = '1'")
         
         var timeArr: NSMutableArray = NSMutableArray.array()
         for key in rows {
@@ -262,11 +262,11 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
             var dirtStat: String = key.item(LINT01_TRAIN_SCHEDULE_DIRT_STAT_ID) as String
             var lineId: String = key.item(LINT01_TRAIN_SCHEDULE_LINE_ID) as String
 
-            var timeTypeArr1 = table.excuteQuery("select * from LINT01_TRAIN_SCHEDULE where 1 = 1 and STAT_ID = '\(statId)' and DIRT_STAT_ID = '\(dirtStat)' and SCHE_TYPE = '1' and (FIRST_TRAIN_FLAG = '1' or FIRST_TRAIN_FLAG = '9')")
+            var timeTypeArr1 = table.excuteQuery("select *, ROWID from LINT01_TRAIN_SCHEDULE where 1 = 1 and STAT_ID = '\(statId)' and DIRT_STAT_ID = '\(dirtStat)' and SCHE_TYPE = '1' and (FIRST_TRAIN_FLAG = '1' or FIRST_TRAIN_FLAG = '9')")
             
-            var timeTypeArr2 = table.excuteQuery("select * from LINT01_TRAIN_SCHEDULE where 1 = 1 and STAT_ID = '\(statId)' and DIRT_STAT_ID = '\(dirtStat)' and SCHE_TYPE = '2' and (FIRST_TRAIN_FLAG = '1' or FIRST_TRAIN_FLAG = '9')")
+            var timeTypeArr2 = table.excuteQuery("select *, ROWID from LINT01_TRAIN_SCHEDULE where 1 = 1 and STAT_ID = '\(statId)' and DIRT_STAT_ID = '\(dirtStat)' and SCHE_TYPE = '2' and (FIRST_TRAIN_FLAG = '1' or FIRST_TRAIN_FLAG = '9')")
             
-            var timeTypeArr3 = table.excuteQuery("select *,from LINT01_TRAIN_SCHEDULE where 1 = 1 and STAT_ID = '\(statId)' and DIRT_STAT_ID = '\(dirtStat)' and SCHE_TYPE = '3' and (FIRST_TRAIN_FLAG = '1' or FIRST_TRAIN_FLAG = '9')")
+            var timeTypeArr3 = table.excuteQuery("select *, ROWID from LINT01_TRAIN_SCHEDULE where 1 = 1 and STAT_ID = '\(statId)' and DIRT_STAT_ID = '\(dirtStat)' and SCHE_TYPE = '3' and (FIRST_TRAIN_FLAG = '1' or FIRST_TRAIN_FLAG = '9')")
             
             
             timeArr.removeAllObjects()
@@ -274,8 +274,9 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
             timeArr.addObject([lineId, dirtStat, timeFormat(timeTypeArr2)])
             timeArr.addObject([lineId, dirtStat, timeFormat(timeTypeArr3)])
             
+            println(timeArr[0])
             depaTimeArr.addObject(timeArr)
-
+            
         }
 
     }
@@ -300,11 +301,11 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
                 if (strTime == "") {
                     strTime = key.item(LINT01_TRAIN_SCHEDULE_DEPA_TIME) as String
                 } else {
-                    var string: Int = strTime.numberOfDecimal()
+                    var string: Int! = strTime.toInt()
                     if (string < 400) {
                         string = string + 2400
                     }
-                    var string2: Int = (key.item(LINT01_TRAIN_SCHEDULE_DEPA_TIME) as String).numberOfDecimal()
+                    var string2: Int! = (key.item(LINT01_TRAIN_SCHEDULE_DEPA_TIME) as String).toInt()
                     if (string2 < 400) {
                         string2 = string2 + 2400
                     }
@@ -349,7 +350,8 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
     
         var stationMap: StationImg = self.storyboard?.instantiateViewControllerWithIdentifier("StationImg") as StationImg
         
-        stationMap.stationMapUrl = "http://www.tokyometro.jp/station/\(statMetroId.lowercaseString)/yardmap/images/yardmap.gif"
+//        stationMap.stationMapUrl = "http://www.tokyometro.jp/station/\(statMetroId.lowercaseString)/yardmap/images/yardmap.gif"
+        stationMap.stationMapUrl = group_id.getStationInnerMapImagePath()
         
         self.navigationController?.pushViewController(stationMap, animated: true)
     }
@@ -372,6 +374,7 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
             var lineImage: UIImageView = UIImageView()
             lineImage.frame = CGRectMake(CGFloat(20 + i * 35), 85, 30, 30)
             lineImage.image = stationIcon(map.item(MSTT02_STAT_SEQ) as String)
+//            lineImage.image = (map.item(MSTT02_LINE_ID) as String).
             
             self.scrollView.addSubview(lineImage)
         }
@@ -411,6 +414,7 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
         
         
         for (var i = 0; i < depaTimeArr.count; i++) {
+            println(depaTimeArr[i][0])
             var array: [String] = depaTimeArr[i][0] as [String]
             var time1: UIView = UIView()
             time1.frame = CGRectMake(20, CGFloat(220 + i * 35), 280, 35)
