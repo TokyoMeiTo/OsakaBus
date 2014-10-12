@@ -15,9 +15,9 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
 
     var classType:Int = 0
     
-    let uri:String = "http://code4app.com/down/9d8327fe3ab62342817bccf432989dc1/?id=505d14116803facd09000000"//"http://192.168.1.84/Resource.zip"
+    let uri:String = "http://192.168.1.84/Resource.zip"
     let filePath:String = "Resource.zip"
-    let unZipPath:String = "TokyoMetroCacheTest"
+    let unZipPath:String = "TokyoMetroCache"
     var lblMobileSize = UILabel(frame: CGRect(x:15,y:5,width:290,height:80))
     
     /* NSFileManager */
@@ -29,7 +29,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
     /* TableView条目 */
     var items: NSMutableArray = NSMutableArray.array()
     var downloading:Bool = false
-    var loadProgress:String = ""
+    var loadProgress:String? = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -128,10 +128,8 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
         downloading = true
         let folder = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String
         let unzipPath = folder.stringByAppendingPathComponent(filePath)
-        // 删除文件夹
+        // 删除文件
         fileManager.removeItemAtPath(unzipPath, error: nil)
-//        // 创建文件夹
-//        fileManager.createDirectoryAtPath(unzipPath, withIntermediateDirectories:true, attributes:nil, error:nil)
         var downloadTask = session.downloadTaskWithRequest(request, progress: &progress, destination: {(file, response) in self.pathUrl},
             completionHandler:
             {
@@ -166,13 +164,26 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
     override func observeValueForKeyPath(keyPath: String!, ofObject object: AnyObject!, change: [NSObject : AnyObject]!, context: UnsafeMutablePointer<Void>) {
         if (keyPath=="fractionCompleted") {
             var progress:NSProgress = object as NSProgress;
-            loadProgress = "正在下载:\(progress.fractionCompleted * 100)%"
+            if(countElements("\(progress.fractionCompleted * 100)") > 4){
+                loadProgress = "正在下载: " + "\(progress.fractionCompleted * 100)".left(5) + "%"
+            }
+            println(loadProgress!)
             // 在子线程中更新UI
             dispatch_async(dispatch_get_main_queue()) { () -> Void in
-                self.lblMobileSize.text = self.loadProgress
                 self.tbList.reloadData()
             }
         }
+    }
+    
+    func convertProgress(progress:String?) -> String{
+        var tempStr = "01234"
+        
+        var indexTo = tempStr.rangeOfString("4")
+        
+        if(progress == nil){
+            return ""
+        }
+        return progress!.substringToIndex(indexTo!.endIndex) + "%"
     }
     
     var pathUrl: NSURL

@@ -159,13 +159,13 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
         if(tableUsrT01 == nil){
             tableUsrT01 = UsrT01ArrivalAlarmTable()
             tableUsrT01!.lineFromId = "28001"
-            tableUsrT01!.lineFromNameLocl = "銀座線"
+//            tableUsrT01!.lineFromNameLocl = "銀座線"
             tableUsrT01!.statFromId = "2800101"
-            tableUsrT01!.statFromNameLocl = "浅草"
+//            tableUsrT01!.statFromNameLocl = "浅草"
             tableUsrT01!.lineToId = "28001"
-            tableUsrT01!.lineToNameLocl = "銀座線"
+//            tableUsrT01!.lineToNameLocl = "銀座線"
             tableUsrT01!.statToId = "2800101"
-            tableUsrT01!.statToNameLocl = "浅草"
+//            tableUsrT01!.statToNameLocl = "浅草"
             tableUsrT01!.beepFlag = "1"
             tableUsrT01!.voleFlag = "0"
             tableUsrT01!.costTime = "0"
@@ -942,10 +942,10 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
                 traiDirt1 = "\(stationsDirt[1].item(MSTT02_STAT_ID))"
                 if(segIndex == NUM_0){
                     tableUsrT01!.lineToId = lines[row].lineId
-                    tableUsrT01!.lineToNameLocl = lines[row].lineName
+//                    tableUsrT01!.lineToNameLocl = lines[row].lineName
                     
                     tableUsrT01!.statToId = stations[NUM_0].statId
-                    tableUsrT01!.statToNameLocl = stations[NUM_0].statName
+//                    tableUsrT01!.statToNameLocl = stations[NUM_0].statName
                 }else if(segIndex == NUM_1){
                     tableUsrT02!.lineId = lines[row].lineId
                     tableUsrT02!.statId = stations[NUM_0].statId
@@ -955,7 +955,7 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
                     station = "\(stations[row].statName)"
                     if(segIndex == NUM_0){
                         tableUsrT01!.statToId = stations[row].statId
-                        tableUsrT01!.statToNameLocl = stations[row].statName
+//                        tableUsrT01!.statToNameLocl = stations[row].statName
                     }else if(segIndex == NUM_1){
                         tableUsrT02!.statId = stations[row].statId
                     }
@@ -966,19 +966,19 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
                 // 线路
                 line = lines[row].lineId.line()
                 tableUsrT01!.lineFromId = lines[row].lineId
-                tableUsrT01!.lineFromNameLocl = lines[row].lineName
+//                tableUsrT01!.lineFromNameLocl = lines[row].lineName
                 // 站点
                 fromStations = selectStationTable(lines[row].lineId)
                 pickerView.reloadComponent(NUM_1)
                 pickerView.selectRow(NUM_0, inComponent: NUM_1, animated: true)
                 fromStation = "\(fromStations[NUM_0].statName)"
                 tableUsrT01!.statFromId = stations[NUM_0].statId
-                tableUsrT01!.statFromNameLocl = stations[NUM_0].statName
+//                tableUsrT01!.statFromNameLocl = stations[NUM_0].statName
             }else{
                 if(row < fromStations.count){
                     fromStation = "\(fromStations[row].statId)".station()
                     tableUsrT01!.statFromId = stations[row].statId
-                    tableUsrT01!.statFromNameLocl = stations[row].statName
+//                    tableUsrT01!.statFromNameLocl = stations[row].statName
                 }
             }
         }

@@ -145,8 +145,8 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
                 noAlarm()
                 alarm = nil
             }else{
-                lblArriveStation.text = "\(alarm!.item(USRT01_ARRIVAL_ALARM_STAT_TO_NAME_LOCL))"
-                lblArriveInfo.text = "\(alarm!.item(USRT01_ARRIVAL_ALARM_LINE_TO_NAME_LOCL))"
+                lblArriveStation.text = "\(alarm!.item(USRT01_ARRIVAL_ALARM_STAT_TO_ID))".station()
+                lblArriveInfo.text = "\(alarm!.item(USRT01_ARRIVAL_ALARM_LINE_TO_ID))".line()
                 updateTime(alarm!.item(USRT01_ARRIVAL_ALARM_COST_TIME).integerValue)
                 // 开启线程计时
                 var timerThread = TimerThread.shareInstance()
