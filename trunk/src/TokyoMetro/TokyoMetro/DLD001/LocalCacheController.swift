@@ -298,7 +298,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
                 UIHeader.addSubview(lblText)
                 return UIHeader
             case 2:
-                var lblMobileSize = UILabel(frame: CGRect(x:120,y:10,width:tableView.frame.width,height:80))
+                var lblMobileSize = UILabel(frame: CGRect(x:15,y:5,width:tableView.frame.width,height:80))
                 lblMobileSize.backgroundColor = UIColor.clearColor()
                 lblMobileSize.font = UIFont.systemFontOfSize(16)
                 lblMobileSize.textColor = UIColor.blackColor()
