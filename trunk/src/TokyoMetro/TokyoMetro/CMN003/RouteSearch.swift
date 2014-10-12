@@ -88,9 +88,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         var strEnd:NSString = "终点"
         self.stationStart.placeholder = strStart
         self.stationEnd.placeholder = strEnd
-        readStationIdCache()
-        self.stationStart.text = startStationText.station()
-        self.stationEnd.text = endStationText.station()
+        
         loadStation()
         
         btnExchange.layer.cornerRadius = 4
@@ -101,6 +99,27 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         stationStart.addTarget(self, action: FOUCSCHANGETO1, forControlEvents: UIControlEvents.EditingDidBegin)
         stationEnd.addTarget(self, action: FOUCSCHANGETO2, forControlEvents: UIControlEvents.EditingDidBegin)
         btnSearchRoute.addTarget(self, action: SEARCHWAYACTION, forControlEvents: UIControlEvents.TouchUpInside)
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        readStationIdCache()
+        if (startStationText != "") {
+            self.stationStart.text = startStationText.station()
+        } else {
+            
+        }
+        
+        if (endStationText != "") {
+            self.stationEnd.text = endStationText.station()
+        }
+
+        
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        setSationIdCache()
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -383,6 +402,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
                 setSationIdCache()
                 var searchAllStation : SearchStationList = self.storyboard?.instantiateViewControllerWithIdentifier("SearchStationList") as SearchStationList
                 searchAllStation.focusNumber = self.focusNumber
+                searchAllStation.classType = "routeSearch"
                 self.navigationController?.pushViewController(searchAllStation, animated:true)
             
             case 200:
@@ -622,12 +642,16 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         func setSationIdCache() {
     
             var accoutDefault : NSUserDefaults = NSUserDefaults()
-            var historyStationdate: NSMutableArray = NSMutableArray()
-            if accoutDefault.objectForKey("historyStationdata") != nil {
-                historyStationdate = accoutDefault.objectForKey("historyStationdata") as NSMutableArray
-            }
-            historyStationdate.addObject(stationStart.text)
-            historyStationdate.addObject(stationEnd.text)
+            var historyStationdate: NSMutableArray = NSMutableArray.array()
+//            if accoutDefault.objectForKey("historyStationdata") != nil {
+//                historyStationdate = accoutDefault.objectForKey("historyStationdata") as NSMutableArray
+//                historyStationdate.setObject(startStationText, atIndexedSubscript: 0)
+//                historyStationdate.setObject(endStationText, atIndexedSubscript: 1)
+//            } else {
+                historyStationdate.addObject(startStationText)
+                historyStationdate.addObject(endStationText)
+//            }
+            
             accoutDefault.setObject(historyStationdate, forKey: "historyStationdata")
         }
     
@@ -636,8 +660,8 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             var accoutDefaultRead : NSUserDefaults = NSUserDefaults()
             if accoutDefaultRead.objectForKey("historyStationdata") != nil {
                 var readdate : NSMutableArray = accoutDefaultRead.objectForKey("historyStationdata") as NSMutableArray
-                stationStart.text = readdate[0] as String
-                stationEnd.text = readdate[1] as String
+                stationStart.text = (readdate[0] as String).station()
+                stationEnd.text = (readdate[1] as String).station()
             }
         }
     

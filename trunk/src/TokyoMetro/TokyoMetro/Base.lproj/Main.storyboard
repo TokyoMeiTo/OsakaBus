@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="F1F-Fs-9ra">
     <dependencies>
-        <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <scenes>
@@ -1558,10 +1557,10 @@
             </objects>
             <point key="canvasLocation" x="2126" y="889"/>
         </scene>
-        <!--View Controller-->
+        <!--Comercial Inside Detail-->
         <scene sceneID="wUQ-oY-faQ">
             <objects>
-                <viewController id="yLH-If-zX2" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ComercialInsideDetail" id="yLH-If-zX2" customClass="ComercialInsideDetail" customModule="TokyoMetro" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="h71-Mh-M5Q"/>
                         <viewControllerLayoutGuide type="bottom" id="SSJ-dr-MIT"/>
@@ -1597,7 +1596,7 @@
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="W30-Iq-1H9">
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W30-Iq-1H9">
                                         <rect key="frame" x="36" y="269" width="264" height="58"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <string key="text">平时：8:30 ~ 22:00
@@ -1612,7 +1611,7 @@
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cT8-YG-Z2r">
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cT8-YG-Z2r">
                                         <rect key="frame" x="36" y="349" width="264" height="58"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <string key="text">平时：8:30 ~ 22:00
@@ -1632,6 +1631,13 @@
                     <navigationItem key="navigationItem" id="0g5-cb-fjo"/>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <connections>
+                        <outlet property="lblName" destination="Hh7-OM-Fpw" id="e1B-Ee-JUa"/>
+                        <outlet property="lblPrice" destination="A7j-Jr-Txr" id="Rmm-ld-qTc"/>
+                        <outlet property="lblPriceTitle" destination="pJG-f2-el2" id="wB5-06-V59"/>
+                        <outlet property="textLocal" destination="cT8-YG-Z2r" id="mdU-F1-dC7"/>
+                        <outlet property="textTime" destination="W30-Iq-1H9" id="2b9-p6-6Dg"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qjs-0J-HO5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -3156,9 +3162,9 @@ lable</string>
                                 </attributedString>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="   所有站点" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s2l-26-q3L">
-                                <rect key="frame" x="0.0" y="169" width="320" height="30"/>
+                                <rect key="frame" x="0.0" y="169" width="320" height="57"/>
                                 <color key="backgroundColor" red="0.80000001190000003" green="0.80000001190000003" blue="0.80000001190000003" alpha="1" colorSpace="calibratedRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -3178,19 +3184,19 @@ lable</string>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p7W-zw-igX">
                                 <rect key="frame" x="282" y="82" width="25" height="25"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <state key="normal">
+                                <state key="normal" backgroundImage="searchroute_collection">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="o62-rR-f1H">
                                 <rect key="frame" x="282" y="132" width="25" height="25"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <state key="normal" backgroundImage="SearchRouteCollection.png">
+                                <state key="normal" backgroundImage="searchroute_collection">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                             </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="IoW-3y-0pW">
-                                <rect key="frame" x="7" y="202" width="305" height="366"/>
+                                <rect key="frame" x="7" y="236" width="305" height="332"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SECell" id="Udm-NS-202">
@@ -3211,7 +3217,7 @@ lable</string>
                                                     <color key="textColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" tag="100" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iuF-aV-WIH">
+                                                <imageView userInteractionEnabled="NO" tag="100" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="searchroute_collection" translatesAutoresizingMaskIntoConstraints="NO" id="iuF-aV-WIH">
                                                     <rect key="frame" x="12" y="5" width="30" height="30"/>
                                                 </imageView>
                                             </subviews>
@@ -3262,9 +3268,29 @@ lable</string>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PAl-W4-pwS">
                                 <rect key="frame" x="16" y="80" width="45" height="80"/>
                                 <color key="backgroundColor" red="0.83878226899999997" green="0.81048016050000005" blue="0.83255360540000001" alpha="1" colorSpace="calibratedRGB"/>
-                                <state key="normal">
+                                <state key="normal" backgroundImage="exchangestation">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2LG-aG-8a0">
+                                <rect key="frame" x="217" y="199" width="90" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <state key="normal" title="设置到站提醒">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="isPopToAlarm" destination="jJE-2d-66J" eventType="touchUpInside" id="cc4-Di-bdP"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MSL-qf-bQH">
+                                <rect key="frame" x="217" y="172" width="90" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <state key="normal" title="点击收藏路径">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="isCollectionRoute" destination="jJE-2d-66J" eventType="touchUpInside" id="Uvd-UV-IBh"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
@@ -3285,8 +3311,10 @@ lable</string>
                     <connections>
                         <outlet property="btnCollect1" destination="p7W-zw-igX" id="OJm-hB-jwg"/>
                         <outlet property="btnCollect2" destination="o62-rR-f1H" id="qdE-ag-mL6"/>
+                        <outlet property="btnCollectRoute" destination="MSL-qf-bQH" id="Pp3-Wa-LFO"/>
                         <outlet property="btnExchange" destination="PAl-W4-pwS" id="xjf-6U-jCH"/>
                         <outlet property="btnSearchRoute" destination="qra-Zj-olG" id="ccr-c8-N1G"/>
+                        <outlet property="btnSetAlarm" destination="2LG-aG-8a0" id="acO-Fg-WuX"/>
                         <outlet property="lblTip" destination="s2l-26-q3L" id="yPa-Ii-g1g"/>
                         <outlet property="stationEnd" destination="pMd-ws-5Ve" id="cba-Hw-M38"/>
                         <outlet property="stationStart" destination="5ot-1g-6B7" id="KMp-yF-DdR"/>
@@ -3329,15 +3357,49 @@ lable</string>
             </objects>
             <point key="canvasLocation" x="-195" y="3805"/>
         </scene>
+        <!--站内设施-->
+        <scene sceneID="bmD-Fr-Ist">
+            <objects>
+                <viewController storyboardIdentifier="StationFacilities" useStoryboardIdentifierAsRestorationIdentifier="YES" id="yPB-SH-4bx" userLabel="站内设施" customClass="StationFacilities" customModule="TokyoMetro" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="OqO-9g-6Bg"/>
+                        <viewControllerLayoutGuide type="bottom" id="sJp-eD-o0M"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="KoW-RG-uuf">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="tcd-tF-4Xf">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <inset key="separatorInset" minX="15" minY="0.0" maxX="15" maxY="0.0"/>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="站内设施" id="J8H-H0-nzO">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="sfh-kl-UnG"/>
+                    </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <connections>
+                        <outlet property="tbList" destination="tcd-tF-4Xf" id="SeK-st-K8t"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hzE-A0-l4t" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-549" y="3805"/>
+        </scene>
     </scenes>
     <resources>
         <image name="00000665_hanzomon_L_1" width="768" height="468"/>
         <image name="INF00201" width="31" height="31"/>
         <image name="INF00202" width="31" height="31"/>
-        <image name="MainAddImage.png" width="1772" height="1299"/>
+        <image name="MainAddImage.png" width="3544" height="2598"/>
         <image name="MainDecImage.png" width="1772" height="1299"/>
         <image name="STA00301" width="182" height="206"/>
-        <image name="SearchRouteCollection.png" width="1772" height="1299"/>
         <image name="USR00201" width="93" height="93"/>
         <image name="USR00202" width="93" height="93"/>
         <image name="USR00203" width="93" height="93"/>
@@ -3346,6 +3408,7 @@ lable</string>
         <image name="collect-icon" width="24" height="24"/>
         <image name="collect-rute-icon" width="24" height="24"/>
         <image name="end-station-btn" width="93" height="29"/>
+        <image name="exchangestation" width="210" height="239"/>
         <image name="exit-info-btn" width="97" height="29"/>
         <image name="help_japan_people" width="351" height="304"/>
         <image name="help_japan_word" width="309" height="85"/>
@@ -3367,6 +3430,7 @@ lable</string>
         <image name="outline_btn" width="108" height="62"/>
         <image name="question" width="35" height="35"/>
         <image name="ride" width="37" height="37"/>
+        <image name="searchroute_collection" width="74" height="74"/>
         <image name="setting-app-icon" width="125" height="125"/>
         <image name="start-station-btn" width="93" height="29"/>
         <image name="tablecell_lineicon_28002" width="44" height="44"/>

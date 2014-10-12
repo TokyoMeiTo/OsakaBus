@@ -10,11 +10,11 @@ import UIKit
 
 class ComercialInsideDetail: UIViewController {
 
-    @IBAction weak var textTime: UITextField!
-    @IBAction weak var textLocal: UITextField!
-    @IBAction weak var lblName: UILabel!
-    @IBAction weak var lblPrice: UILabel!
-    @IBAction weak var lblPriceTitle: UILabel!
+    @IBOutlet weak var textTime: UITextView!
+    @IBOutlet weak var textLocal: UITextView!
+    @IBOutlet weak var lblName: UILabel!
+    @IBOutlet weak var lblPrice: UILabel!
+    @IBOutlet weak var lblPriceTitle: UILabel!
 
     var comeInsiTable: StaT03ComervialInsideTable!
     
@@ -26,7 +26,19 @@ class ComercialInsideDetail: UIViewController {
     
     func setContent() {
 
-//        lblName.text = comeInsiTable.item
+        self.title = "设施详细"
+        lblName.text = comeInsiTable.item(STAT03_COME_INSI_NAME) as? String
+        textTime.text = comeInsiTable.item(STAT03_COME_INSI_BISI_HOUR) as String
+        textLocal.text = comeInsiTable.item(STAT03_COME_INSI_LOCA_CH) as String
+        
+        var price = comeInsiTable.item(STAT03_COME_INSI_PRICE) as? String
+        if (price == nil) {
+            lblPriceTitle.hidden = true
+            lblPrice.hidden = true
+        } else {
+            lblPrice.text = price
+        }
+
     }
     
 }

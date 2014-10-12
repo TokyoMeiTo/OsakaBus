@@ -54,9 +54,12 @@ class StationFacilities: UIViewController, UITableViewDelegate, NSObjectProtocol
     */
     func selectStaT03Table(statId:String) -> Array<StaT03ComervialInsideTable>{
         var staT03Table:StaT03ComervialInsideTable = StaT03ComervialInsideTable()
-        let QUERY_FACILITLES = "select * , ROWID from STAT03_COMERCIAL_INSIDE where LINE_ID LIKE '?%%'"
+//        let QUERY_FACILITLES = "select * , ROWID from STAT03_COMERCIAL_INSIDE where LINE_ID LIKE '?%%'"
         
-        facilities = staT03Table.excuteQuery( QUERY_FACILITLES, withArgumentsInArray:[statId]) as? Array<StaT03ComervialInsideTable>
+//        facilities = staT03Table.excuteQuery( QUERY_FACILITLES, withArgumentsInArray:[statId]) as? Array<StaT03ComervialInsideTable>
+        
+        staT03Table.comeInsiId = statId
+        facilities = staT03Table.selectLike() as? Array<StaT03ComervialInsideTable>
         return facilities!
     }
     
@@ -71,8 +74,12 @@ class StationFacilities: UIViewController, UITableViewDelegate, NSObjectProtocol
         return 1
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath: NSIndexPath){
-
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath){
+        var comercialInsideDetail: ComercialInsideDetail = self.storyboard?.instantiateViewControllerWithIdentifier("ComercialInsideDetail") as ComercialInsideDetail
+//        comercialInsideDetail.statId = group_id
+        comercialInsideDetail.comeInsiTable = facilities![indexPath.row]
+        
+        self.navigationController?.pushViewController(comercialInsideDetail, animated: true)
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

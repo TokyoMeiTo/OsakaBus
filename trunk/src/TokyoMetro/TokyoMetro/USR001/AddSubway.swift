@@ -183,9 +183,9 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
             var openStation =  cell.viewWithTag(301) as UILabel
             var closeStation =  cell.viewWithTag(302) as UILabel
             
-            openStation.text = "起点：" + (key.item(LINT04_ROUTE_START_STAT_ID) as String)
+            openStation.text = "起点：" + (key.item(LINT04_ROUTE_START_STAT_ID) as String).station()
             
-            closeStation.text = "终点：" + (key.item(LINT04_ROUTE_TERM_STAT_ID) as String)
+            closeStation.text = "终点：" + (key.item(LINT04_ROUTE_TERM_STAT_ID) as String).station()
             
             return cell
         } else {
