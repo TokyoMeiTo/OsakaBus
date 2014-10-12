@@ -56,23 +56,22 @@ class Setting : UIViewController, UITableViewDelegate, UITableViewDataSource, OA
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
+        switch indexPath.row {
+        case 0:
+            var localCacheController : LocalCacheController = self.storyboard?.instantiateViewControllerWithIdentifier("localcache") as LocalCacheController
+            localCacheController.classType = 1
+            self.navigationController?.pushViewController(localCacheController, animated:true)
+        case 1:
+            webLinkAction("评价", webSite:"http://www.baidu.com")
+        case 2:
+            webLinkAction("分享", webSite:"http://www.google.com")
+        default:
+        
+            var appservers : LocalCacheController = self.storyboard?.instantiateViewControllerWithIdentifier("localcache") as LocalCacheController
+        self.navigationController?.pushViewController(appservers, animated:true)
 
-        // TODO
-//        
-//        switch indexPath.row {
-//        case 0:
-//            var appservers : LocalCacheController = self.storyboard?.instantiateViewControllerWithIdentifier("localcache") as LocalCacheController
-//            self.navigationController?.pushViewController(appservers, animated:true)
-//        case 1:
-//            webLinkAction("评价", webSite:"http://www.baidu.com")
-//        case 2:
-//            webLinkAction("分享", webSite:"http://www.google.com")
-//        default:
-//            
-//            var appservers : LocalCacheController = self.storyboard?.instantiateViewControllerWithIdentifier("localcache") as LocalCacheController
-//            self.navigationController?.pushViewController(appservers, animated:true)
-//            
-//        }
+        }
         
         
         
@@ -100,20 +99,21 @@ class Setting : UIViewController, UITableViewDelegate, UITableViewDataSource, OA
     func btnLinkAction(sender:UIButton) {
         var appservers : AppServerse = self.storyboard?.instantiateViewControllerWithIdentifier("appServerse") as AppServerse
         self.navigationController?.pushViewController(appservers, animated:true)
-//        switch (sender) {
+        switch (sender) {
             
-//        case self.mBtnAppServer:
-//            var appservers : AppServerse = self.storyboard?.instantiateViewControllerWithIdentifier("appServerse") as AppServerse
-//            self.navigationController?.pushViewController(appservers, animated:true)
-//        case self.mBtnOfficeWebSite:
-//            webLinkAction("冈三华大", webSite:"http://www.google.com")
-//        case self.mBtnRelifDuty:
- //            webLinkAction("免责声明", webSite:"http://www.google.com")
-//            
-//        default:
-        //              case self.mBtnOfficeWebSite:
-        //            webLinkAction("冈三华大", webSite:"http://www.google.com")
-//        }
+        case self.mBtnAppServer:
+            var appservers : AppServerse = self.storyboard?.instantiateViewControllerWithIdentifier("appServerse") as AppServerse
+            
+            self.navigationController?.pushViewController(appservers, animated:true)
+        case self.mBtnOfficeWebSite:
+            webLinkAction("冈三华大", webSite:"http://www.google.com")
+        case self.mBtnRelifDuty:
+           webLinkAction("免责声明", webSite:"http://www.google.com")
+            
+        default:
+        case self.mBtnOfficeWebSite:
+        webLinkAction("冈三华大", webSite:"http://www.google.com")
+        }
 
     }
     

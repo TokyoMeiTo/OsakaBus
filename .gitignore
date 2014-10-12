@@ -29,3 +29,5 @@ DerivedData
 *.svn*
 .db
 .DS_Store
+
+*.pbxproj
