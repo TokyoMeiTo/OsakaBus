@@ -382,7 +382,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             case 100:
                 setSationIdCache()
                 var searchAllStation : SearchStationList = self.storyboard?.instantiateViewControllerWithIdentifier("SearchStationList") as SearchStationList
-                //stationDetail.focusNumber = self.focusNumber
+                searchAllStation.focusNumber = self.focusNumber
                 self.navigationController?.pushViewController(searchAllStation, animated:true)
             
             case 200:
