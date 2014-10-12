@@ -42,6 +42,19 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
     }
     
     func intitValue(){
+        self.title = "本地数据管理"
+//        switch classType{
+//        case 0:
+//            items = NSMutableArray.array()
+//            items.addObject(["",[""]])
+//            items.addObject(["",[""]])
+//            items.addObject(["",[""]])
+//        default:
+//            items = NSMutableArray.array()
+//            items.addObject(["",[""]])
+//            items.addObject(["",[""]])
+//            items.addObject(["",[""]])
+//        }
         loadItems()
         tbList.delegate = self
         tbList.dataSource = self
@@ -199,6 +212,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
             //println(progress.fractionCompleted);
             loadProgress = "正在下载:\(progress.fractionCompleted * 100)%"
             lblMobileSize.text = loadProgress
+            tbList.reloadData()
         }
 
     }
