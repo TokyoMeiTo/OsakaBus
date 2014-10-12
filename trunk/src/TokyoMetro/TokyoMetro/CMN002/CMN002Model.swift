@@ -51,6 +51,7 @@ class CMN002Model {
                 result.statNameExt1 = mMst02DaoRow.statNameExt1 as String
                 result.statName = mMst02DaoRow.statName as String
                 result.statNameMetroId = mMst02DaoRow.statNameMetroId as String
+                result.statNameKana = mMst02DaoRow.statNameKana as String
 //                result.statFromX = mCmnT03Row.stationGrideFromX as CGFloat
 //                result.statFromY = mCmnT03Row.stationGrideFromX as CGFloat
 //                result.statToX = mCmnT03Row.stationGrideFromX as CGFloat

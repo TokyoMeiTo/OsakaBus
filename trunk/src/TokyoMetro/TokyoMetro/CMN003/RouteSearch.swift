@@ -7,7 +7,7 @@
 //
 
 import Foundation
-class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource {
+class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource, UIAlertViewDelegate{
     
 
     //////////////// 控件
@@ -87,12 +87,14 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         self.stationStart.text = startStationText.station()
         self.stationEnd.text = endStationText.station()
         
-        stationStart.becomeFirstResponder()
+       // stationStart.becomeFirstResponder()
         loadStation()
+        
+        btnExchange.layer.cornerRadius = 4
 
         btnExchange.addTarget(self, action: EXCHANGEACTION, forControlEvents: UIControlEvents.TouchUpInside)
-        stationStart.addTarget(self, action: FOUCSCHANGETO1, forControlEvents: UIControlEvents.AllEditingEvents)
-        stationEnd.addTarget(self, action: FOUCSCHANGETO2, forControlEvents: UIControlEvents.AllEditingEvents)
+        stationStart.addTarget(self, action: FOUCSCHANGETO1, forControlEvents: UIControlEvents.EditingDidBegin)
+        stationEnd.addTarget(self, action: FOUCSCHANGETO2, forControlEvents: UIControlEvents.EditingDidBegin)
         btnSearchRoute.addTarget(self, action: SEARCHWAYACTION, forControlEvents: UIControlEvents.TouchUpInside)
         btnCollect1.addTarget(self, action: ADDUSERFAVORITE, forControlEvents: UIControlEvents.TouchUpInside)
         btnCollect2.addTarget(self, action: ADDUSERFAVORITE, forControlEvents: UIControlEvents.TouchUpInside)
@@ -128,6 +130,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("SECell", forIndexPath: indexPath) as UITableViewCell
             var celllblSatationName : UILabel = cell.viewWithTag(101) as UILabel!
             var celllblSatationNameJP : UILabel = cell.viewWithTag(102) as UILabel!
+            var celllblCollection : UIImageView = cell.viewWithTag(100) as UIImageView!
             
             celllblSatationName.text  = self.allOfStationItems.objectAtIndex(self.allOfStationItems.count - 1 - indexPath.row) as? String
             celllblSatationNameJP.text  = self.allOfStationItemsJP.objectAtIndex(self.allOfStationItems.count - 1 - indexPath.row) as? String
@@ -136,7 +139,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             for (var i = 0; i < lineImageItemsRow.count; i++) {
                 var map = lineImageItemsRow[i] as MstT02StationTable
                 var lineIcon: UIImageView = UIImageView()
-                lineIcon.frame = CGRectMake(CGFloat(290 - i * 25), 5, 30, 30)
+                lineIcon.frame = CGRectMake(CGFloat(260 - i * 25), 5, 30, 30)
                 lineIcon.image = lineImageNormal(map.item(MSTT02_LINE_ID) as String)
                 cell.addSubview(lineIcon)
             }
@@ -145,23 +148,23 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("routeResultCell", forIndexPath: indexPath) as UITableViewCell
             var resultCellIvStaionIcon : UIImageView = cell.viewWithTag(1001) as UIImageView
             var resultCelllblStationName : UILabel = cell.viewWithTag(1002) as UILabel
-            var resultCelllblStationDirection : UILabel = cell.viewWithTag(1003) as UILabel
+           // var resultCelllblStationDirection : UILabel = cell.viewWithTag(1003) as UILabel
             var resultCelllblStationLineName : UILabel = cell.viewWithTag(1005) as UILabel
             var resultCelllblStationWaitTime : UILabel = cell.viewWithTag(1004) as UILabel
             var resultCelllblStationMoveTime : UILabel = cell.viewWithTag(1006) as UILabel
             
             if indexPath.row == 0 {
                 resultCellIvStaionIcon.hidden = true
-                resultCelllblStationDirection.hidden = true
+                // resultCelllblStationDirection.hidden = true
                 resultCelllblStationName.hidden = true
                 resultCelllblStationLineName.hidden = true
                 resultCelllblStationWaitTime.hidden = true
                 resultCelllblStationMoveTime.hidden = true
 
-                
                 var cellInfo:UIView = UIView()
                 cellInfo.frame = CGRectMake(5,5,310,60)
-                // cellInfo.backgroundColor = UIColor(patternImage: mImgLineGraphNormal("MainPop"))
+                cellInfo.backgroundColor = UIColor.whiteColor()
+                cellInfo.layer.cornerRadius = 4
                 var lable1: UILabel! = cell.viewWithTag(2001) as? UILabel
                 if (lable1 != nil) {
                     lable1.removeFromSuperview()
@@ -171,8 +174,12 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
                 resultCelllblStationTip1.frame = CGRectMake(15,5,200,20)
                 resultCelllblStationTip1.font = UIFont.systemFontOfSize(17)
                 resultCelllblStationTip1.tag = 2001
-                resultCelllblStationTip1.text = "换乘" + (routeDetial.count - 2).description + "次"
-                
+                if (routeDetial.count - 2 > 0) {
+                     resultCelllblStationTip1.text = "换乘" + (routeDetial.count - 2).description + "次"
+                } else {
+                    resultCelllblStationTip1.hidden = true
+                }
+
                 var lable2: UILabel! = cell.viewWithTag(2002) as? UILabel
                 if (lable2 != nil) {
                     lable2.removeFromSuperview()
@@ -190,33 +197,69 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             } else {
                 if (indexPath.row == routeDetial.count){
                     
-                    resultCellIvStaionIcon.hidden = true
-                    resultCelllblStationDirection.hidden = true
-                    resultCelllblStationName.hidden = true
+                    resultCellIvStaionIcon.hidden = false
+                    resultCelllblStationName.hidden = false
                     resultCelllblStationLineName.hidden = true
                     resultCelllblStationWaitTime.hidden = true
                     resultCelllblStationMoveTime.hidden = true
                     
+                    // 设置终点图片
+                    resultCellIvStaionIcon.image = lineImageNormal("RouteDetialEnd")
+                    resultCelllblStationName.text = stationEnd.text as String
+
+                } else {  
+                    var routStartDic = self.routeDetial.objectAtIndex(indexPath.row - 1) as NSDictionary
                     
-                } else {
+                    var strresultExchStatId = routStartDic["resultExchStatId"] as? NSString
+
+                    var strresultExchWaitTime = routStartDic["resultExchWaitTime"] as? NSString
+                    var strresultExchMoveTime = routStartDic["resultExchMoveTime"] as? NSString
                     
-                        var routStartDic = self.routeDetial.objectAtIndex(indexPath.row - 1) as NSDictionary
+                    resultCelllblStationLineName.font =  UIFont.systemFontOfSize(12)
+                    
+                    var strresultExchType = routStartDic["resultExchType"] as? NSString
+                    
+                    
+                    resultCelllblStationName.text = (strresultExchStatId as String).station()
+                    
+                    resultCelllblStationWaitTime.text = "等待" + (strresultExchWaitTime as String) + "分钟"
+                    resultCelllblStationMoveTime.text = "乘车" + (strresultExchMoveTime as String) + "分钟"
+                    
+                    if (indexPath.row - 1 == 0){
+                        // 设置起点图片
+                        resultCellIvStaionIcon.image = lineImageNormal("RouteDetialStart")
                         
-                        var strresultExchStatId = routStartDic["resultExchStatId"] as? NSString
-                        resultCelllblStationName.text = (strresultExchStatId as String).station()
+                        if (strresultExchType == "255") {
+                            resultCelllblStationMoveTime.text = "步行" + (strresultExchMoveTime as String) + "分钟"
+                            resultCelllblStationLineName.hidden = true
+                            resultCelllblStationWaitTime.hidden = true
+                            
+                        } else if (strresultExchType == "8") {
+                            resultCelllblStationLineName.hidden = false
+                            var strresultExchlineId = routStartDic["resultExchlineId"] as? NSString
+                            resultCelllblStationLineName.text = (strresultExchlineId as String).line()
+                            var strresultExchDestId = routStartDic["resultExchDestId"] as? NSString
+                            resultCelllblStationLineName.text = "乘" + (strresultExchlineId as String).line() + " 往" + (strresultExchDestId as String).station() + "方向"
+                        }
+
+                    } else {
                         
-                        var strresultExchDestId = routStartDic["resultExchDestId"] as? NSString
-                        resultCelllblStationDirection.text = (strresultExchDestId as String).station() + "方向"
-                        
-                        var strresultExchlineId = routStartDic["resultExchlineId"] as? NSString
-                        resultCelllblStationLineName.text = (strresultExchlineId as String).line()
-      
-                        var strresultExchWaitTime = routStartDic["resultExchWaitTime"] as? NSString
-                        resultCelllblStationWaitTime.text = "等待" + (strresultExchWaitTime as String) + "分钟"
-                        
-                        var strresultExchMoveTime = routStartDic["resultExchMoveTime"] as? NSString
-                        resultCelllblStationMoveTime.text = "移动" + (strresultExchMoveTime as String) + "分钟"
-                   
+                        if (strresultExchType == "255") {
+                            resultCellIvStaionIcon.image = lineImageNormal("RouteDetialWalk")
+                            resultCelllblStationMoveTime.text = "步行" + (strresultExchMoveTime as String) + "分钟"
+                            resultCelllblStationLineName.hidden = true
+                            resultCelllblStationWaitTime.hidden = true
+                            
+                        } else if (strresultExchType == "8") {
+                            resultCelllblStationLineName.hidden = false
+                            var strresultExchlineId = routStartDic["resultExchlineId"] as? NSString
+                            resultCelllblStationLineName.text = (strresultExchlineId as String).line()
+                            resultCellIvStaionIcon.image = lineImageNormal("RouteDetialMetro")
+                            var strresultExchDestId = routStartDic["resultExchDestId"] as? NSString
+                            resultCelllblStationLineName.text = "换乘" + (strresultExchlineId as String).line() + " 往" + (strresultExchDestId as String).station() + "方向"
+                        }
+                    }
+                    
                 }
             }
             return cell
@@ -246,38 +289,18 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
                 }
             
            }
-        } else {
-            
+        } else if (self.pageTag == "2") {
+//            var routStartDic = self.routeDetial.objectAtIndex(indexPath.row - 1) as NSDictionary
+//            var strresultExchStatId = routStartDic["resultExchStatId"] as? NSString
+//            var stationDetail : StationDetail = self.storyboard?.instantiateViewControllerWithIdentifier("StationDetail") as StationDetail
+//            stationDetail.cellJPName = self.mPopupStationNameJP
+//            stationDetail.cellJPNameKana = ""
+//            stationDetail.cellDesc = ""
+//            self.navigationController?.pushViewController(stationDetail, animated:true)
         }
         hideKeyBoard()
 
     }
-    
-//    // 根据数据库中的路线id获取图片
-//    func mImgLineGraphNormal(lineNum: String) -> UIImage {
-//        
-//        var image = UIImage(named: "tablecell_lineicon_g.png")
-//        switch (lineNum) {
-//            
-//        case "28001":
-//            image = UIImage(named: "tablecell_lineicon_g.png")
-//
-//        case "MainPop":
-//            image = UIImage(named: "MainPop.png")
-//        case "MainUIbarLeft":
-//            image = UIImage(named: "MainUIbarLeft.png")
-//        case "MainUIbarRight":
-//            image = UIImage(named: "MainUIbarRight.png")
-//        case "MainMenu":
-//            image = UIImage(named: "MainMenu.png")
-//            
-//        default:
-//            image = UIImage(named: "tablecell_lineicon_g.png")
-//            
-//        }
-//        
-//        return image
-//    }
     
     // 起点和终点交换
     func exchangeAction(){
@@ -295,8 +318,6 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         if ( self.stationStart.text == "" || self.stationEnd.text == "" || self.stationStart.text == self.stationEnd.text) {
             errAlertView("提示信息", errMgs: "请重新输入车站名", errBtnTitle: "确认")
         } else {
-            
-            self.lblTip.text = "   路线搜索中..."
             searchRouteAction()
             hideKeyBoard()
          }
@@ -320,12 +341,28 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
     
     func foucsChangeTo1 () {
         self.focusNumber = "1"
-        tbView.reloadData()
+        isPopToStationList()
     }
     
     func foucsChangeTo2 () {
         self.focusNumber = "2"
-        tbView.reloadData()
+        isPopToStationList()
+    }
+    
+    // 弹出对话框，判断是否要跳转到StationList页面
+    func isPopToStationList() {
+        var sureBtn: UIAlertView = UIAlertView(title: "提示", message: "您确定跳转到所有站点列表页面进行查找吗？", delegate: self, cancelButtonTitle: "取消", otherButtonTitles: "确定")
+        sureBtn.show()
+    }
+    
+    func alertView(alertView: UIAlertView, didDismissWithButtonIndex buttonIndex: Int) {
+
+        if (buttonIndex == 1) {
+            var searchAllStation : SearchStationList = self.storyboard?.instantiateViewControllerWithIdentifier("SearchStationList") as SearchStationList
+            //      stationDetail.focusNumber = self.focusNumber
+            self.navigationController?.pushViewController(searchAllStation, animated:true)
+        }
+
     }
     
     override func didReceiveMemoryWarning() {
@@ -411,6 +448,16 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             image = UIImage(named: "tablecell_lineicon_n.png")
         case "28010":
             image = UIImage(named: "tablecell_lineicon_f.png")
+        case "RouteResultDetial":
+            image = UIImage(named: "RouteResultDetial.png")
+        case "RouteDetialWalk":
+            image = UIImage(named: "RouteDetialWalk.png")
+        case "RouteDetialMetro":
+            image = UIImage(named: "RouteDetialMetro.png")
+        case "RouteDetialStart":
+            image = UIImage(named: "RouteDetialStart.png")
+        case "RouteDetialEnd":
+            image = UIImage(named: "RouteDetialEnd.png")
             
         default:
             image = UIImage(named: "tablecell_lineicon_g.png")
@@ -457,17 +504,9 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         }
 
         var user03table = UsrT03FavoriteTable()
-        println("121122222232222222222222")
-        println(serarchStationIdByStationName(insetStationName))
-        
         user03table.statId = serarchStationIdByStationName(insetStationName)
         user03table.favoType = "01"
-        
-        
         var user03insertBefore = user03table.selectAll()
-        println("099999999999999999999999999999     user03insertBefore.description")
-        println(user03insertBefore.description)
-        
         var checkInsert : NSMutableArray = NSMutableArray.array()
         for user03checkInsertValue in user03insertBefore {
             user03checkInsertValue  as UsrT03FavoriteTable
@@ -497,8 +536,6 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         var routeId : NSString = ""
         routeId = (nsStaionID1.substringFromIndex(3) + nsStaionID2.substringFromIndex(3))
         routeID = routeId as String
-        println("1234567899000000000111111111   routeID")
-        println("\(routeID)")
         return routeID
     }
     // 根据路线ID查询费用
@@ -512,9 +549,6 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             var fare : String = key.item(LINT06_FARE_FARE_ADULT).description
             resultFare = fare
         }
-        
-        println("1234567899000000000111111111   frae")
-        println("\(resultFare)")
         return resultFare
     }
     
@@ -522,9 +556,6 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
     func getRouteline() {
         
         self.routeDetial.removeAllObjects()
-//        tbView.reloadData()
-        println("1234567899000000000111111111   routeDeital05Row  routeID")
-        println(self.routeID)
 
         routeDetial05table.ruteId = self.routeID
         var routeDeital05Row = routeDetial05table.selectAll()
@@ -532,7 +563,9 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         for key2 in routeDeital05Row {
             key2 as LinT05RouteDetailTable
           //  var resultGroupId = key.item(LINT05_ROUTE_DETAIL_RUTE_ID_GROUP_ID) as? String
-          //  var resultExchType = key.item(LINT05_ROUTE_DETAIL_EXCH_TYPE) as? String
+            
+          //  8 : 换乘  255：步行
+            var resultExchType = key2.item(LINT05_ROUTE_DETAIL_EXCH_TYPE) as? String
             
             var resultExchStatId = key2.item(LINT05_ROUTE_DETAIL_EXCH_STAT_ID) as? NSString
             var resultExchlineId = key2.item(LINT05_ROUTE_DETAIL_EXCH_LINE_ID) as? NSString
@@ -541,7 +574,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             var resultExchMoveTime : AnyObject = key2.item(LINT05_ROUTE_DETAIL_MOVE_TIME)
             var resultExchWaitTime: AnyObject = key2.item(LINT05_ROUTE_DETAIL_WAIT_TIME)
             
-            var routeItem = ["resultExchStatId":resultExchStatId ,"resultExchlineId":resultExchlineId, "resultExchDestId":resultExchDestId, "resultExchSeq":resultExchSeq.description, "resultExchMoveTime":resultExchMoveTime.description, "resultExchWaitTime":resultExchWaitTime.description]
+            var routeItem = ["resultExchStatId":resultExchStatId ,"resultExchlineId":resultExchlineId, "resultExchDestId":resultExchDestId, "resultExchSeq":resultExchSeq.description, "resultExchMoveTime":resultExchMoveTime.description, "resultExchWaitTime":resultExchWaitTime.description, "resultExchType":resultExchType]
             self.routeDetial.addObject(routeItem)
         }
         self.lblTip.text = "   路线搜索结果"

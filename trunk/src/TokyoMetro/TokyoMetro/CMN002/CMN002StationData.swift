@@ -16,6 +16,7 @@ class CMN002StationData {
     var statNameMetroId:String = ""
     var statNameExt1:String = ""
     var statName:String = ""
+    var statNameKana:String = ""
     var statDesp:String = ""
     var statFromX:CGFloat = 0.0
     var statFromY:CGFloat = 0.0
