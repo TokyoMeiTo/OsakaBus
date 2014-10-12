@@ -71,7 +71,7 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
         //查询车站信息
         odbStation()
         //查询时刻表信息
-        odbTrainSchedule()
+//        odbTrainSchedule()
         // 获取屏幕尺寸
         size = UIScreen.mainScreen().bounds.size
         // 代码添加车站icon
@@ -81,7 +81,7 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
         // 添加站点相关信息的链接
         addStationSelect()
         
-        odbTime(stat_id)
+//        odbTime(stat_id)
 
     }
     
@@ -218,7 +218,7 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
     }
     
     
-    func collectStation () {
+    func collectStation() {
     
         var table = UsrT03FavoriteTable()
         
@@ -252,46 +252,27 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
     }
     
     func odbTime(statId: String) {
-        
-//        if (destTimeArr1.count == 3 && destTimeArr2.count == 3 && destTimeArr3.count == 3) {
-//            return
-//        }
-        
+
         var table = LinT01TrainScheduleTrainTable()
         var rows = table.excuteQuery("select * from LINT01_TRAIN_SCHEDULE where 1 = 1 and STAT_ID = '\(statId)' and FIRST_TRAIN_FLAG = '1' and SCHE_TYPE = '1'")
         
-//        dirtStationArr = [String]()
         var timeArr: NSMutableArray = NSMutableArray.array()
         for key in rows {
             key as LinT01TrainScheduleTrainTable
-//            dirtStationArr.append(key.item(LINT01_TRAIN_SCHEDULE_DIRT_STAT_ID) as String)
             var dirtStat: String = key.item(LINT01_TRAIN_SCHEDULE_DIRT_STAT_ID) as String
-            
+            var lineId: String = key.item(LINT01_TRAIN_SCHEDULE_LINE_ID) as String
 
-            var timeTypeArr1 = table.excuteQuery("select *,min(DEPA_TIME) from LINT01_TRAIN_SCHEDULE where 1 = 1 and STAT_ID = '\(statId)' and DIRT_STAT_ID = '\(dirtStat)' and SCHE_TYPE = '1' and (FIRST_TRAIN_FLAG = '1' or FIRST_TRAIN_FLAG = '9') group by FIRST_TRAIN_FLAG")
+            var timeTypeArr1 = table.excuteQuery("select * from LINT01_TRAIN_SCHEDULE where 1 = 1 and STAT_ID = '\(statId)' and DIRT_STAT_ID = '\(dirtStat)' and SCHE_TYPE = '1' and (FIRST_TRAIN_FLAG = '1' or FIRST_TRAIN_FLAG = '9')")
             
-            var timeTypeArr2 = table.excuteQuery("select *,min(DEPA_TIME) from LINT01_TRAIN_SCHEDULE where 1 = 1 and STAT_ID = '\(statId)' and DIRT_STAT_ID = '\(dirtStat)' and SCHE_TYPE = '2' and (FIRST_TRAIN_FLAG = '1' or FIRST_TRAIN_FLAG = '9') group by FIRST_TRAIN_FLAG")
+            var timeTypeArr2 = table.excuteQuery("select * from LINT01_TRAIN_SCHEDULE where 1 = 1 and STAT_ID = '\(statId)' and DIRT_STAT_ID = '\(dirtStat)' and SCHE_TYPE = '2' and (FIRST_TRAIN_FLAG = '1' or FIRST_TRAIN_FLAG = '9')")
             
-            var timeTypeArr3 = table.excuteQuery("select *,min(DEPA_TIME) from LINT01_TRAIN_SCHEDULE where 1 = 1 and STAT_ID = '\(statId)' and DIRT_STAT_ID = '\(dirtStat)' and SCHE_TYPE = '3' and (FIRST_TRAIN_FLAG = '1' or FIRST_TRAIN_FLAG = '9') group by FIRST_TRAIN_FLAG")
+            var timeTypeArr3 = table.excuteQuery("select *,from LINT01_TRAIN_SCHEDULE where 1 = 1 and STAT_ID = '\(statId)' and DIRT_STAT_ID = '\(dirtStat)' and SCHE_TYPE = '3' and (FIRST_TRAIN_FLAG = '1' or FIRST_TRAIN_FLAG = '9')")
             
-            
-//            table.reset()
-//            table.statId = statId
-//            table.dirtStatId = dirtStationArr[index]
-//            table.scheType = "2"
-//            var timeTypeArr2 = table.selectAll()
-//            
-//            
-//            table.reset()
-//            table.statId = statId
-//            table.dirtStatId = dirtStationArr[index]
-//            table.scheType = "3"
-//            var timeTypeArr3 = table.selectAll()
             
             timeArr.removeAllObjects()
-            timeArr.addObject(timeTypeArr1)
-            timeArr.addObject(timeTypeArr2)
-            timeArr.addObject(timeTypeArr3)
+            timeArr.addObject([lineId, dirtStat, timeFormat(timeTypeArr1)])
+            timeArr.addObject([lineId, dirtStat, timeFormat(timeTypeArr2)])
+            timeArr.addObject([lineId, dirtStat, timeFormat(timeTypeArr3)])
             
             depaTimeArr.addObject(timeArr)
 
@@ -299,9 +280,44 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
 
     }
     
-//    func timeFormat(time: NSArray) -> String{
-//        
-//    }
+    func timeFormat(time: NSArray) -> String{
+        
+        if (time.count < 2){
+            return ""
+        }
+        
+        var startTime: String = ""
+        var endTime: String = ""
+        var strTime: String = ""
+        for key in time {
+            key as LinT01TrainScheduleTrainTable
+            var trainFlag: String = key.item(LINT01_TRAIN_SCHEDULE_FIRST_TRAIN_FLAG) as String
+            
+            if (trainFlag == "1") {
+                startTime = (key.item(LINT01_TRAIN_SCHEDULE_DEPA_TIME) as String).dateWithFormat("HHmm", target: "HH:mm")
+            } else if (trainFlag == "9") {
+                
+                if (strTime == "") {
+                    strTime = key.item(LINT01_TRAIN_SCHEDULE_DEPA_TIME) as String
+                } else {
+                    var string: Int = strTime.numberOfDecimal()
+                    if (string < 400) {
+                        string = string + 2400
+                    }
+                    var string2: Int = (key.item(LINT01_TRAIN_SCHEDULE_DEPA_TIME) as String).numberOfDecimal()
+                    if (string2 < 400) {
+                        string2 = string2 + 2400
+                    }
+                    
+                    if (string2 > string) {
+                        strTime = key.item(LINT01_TRAIN_SCHEDULE_DEPA_TIME) as String
+                    }
+                }
+            }
+        }
+        endTime = strTime.dateWithFormat("HHmm", target: "HH:mm")
+        return "\(startTime)/\(endTime)"
+    }
 
     
     @IBAction func showStationExit() {
@@ -365,42 +381,27 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
     @IBAction func weekendSegmentChanged(sender: UISegmentedControl) {
         
         if (sender.selectedSegmentIndex == 0) {
-            arrTime = cellJapanTime.componentsSeparatedByString(",")
 
-            for (var i = 0; i < arrTime.count; i++) {
-                (self.scrollView.viewWithTag(300 + i) as UILabel).text = arrTime[i]
+            for (var i = 0; i < depaTimeArr.count; i++) {
+                var array: [String] = depaTimeArr[i][0] as [String]
+                (self.scrollView.viewWithTag(300 + i) as UILabel).text = array[2]
             }
         } else if (sender.selectedSegmentIndex == 1) {
-            arrTime = cellJapanWETime.componentsSeparatedByString(",")
             
-            for (var i = 0; i < arrTime.count; i++) {
-                (self.scrollView.viewWithTag(300 + i) as UILabel).text = arrTime[i]
+            for (var i = 0; i < depaTimeArr.count; i++) {
+                var array: [String] = depaTimeArr[i][1] as [String]
+                (self.scrollView.viewWithTag(300 + i) as UILabel).text = array[2]
             }
         } else {
-            arrTime = cellJapanHolidayTime.componentsSeparatedByString(",")
-            
-            for (var i = 0; i < arrTime.count; i++) {
-                (self.scrollView.viewWithTag(300 + i) as UILabel).text = arrTime[i]
+            for (var i = 0; i < depaTimeArr.count; i++) {
+                var array: [String] = depaTimeArr[i][2] as [String]
+                (self.scrollView.viewWithTag(300 + i) as UILabel).text = array[2]
             }
         }
     }
     
     func addLineTime() {
-        
-        if(cellClose.isEmpty) {
-            return
-        }
-        
-        arrClose = cellClose.componentsSeparatedByString(",")
-        arrTime = cellJapanTime.componentsSeparatedByString(",")
-        var arrLine = cellLine.componentsSeparatedByString(",")
-        
-        if (arrClose.count != arrTime.count) {
-            return
-        }
-        
-        
-        
+
         for key in statSeqArr {
             key as MstT02StationTable
             
@@ -409,25 +410,25 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
         
         
         
-        for (var i = 0; i < arrClose.count; i++) {
-            
+        for (var i = 0; i < depaTimeArr.count; i++) {
+            var array: [String] = depaTimeArr[i][0] as [String]
             var time1: UIView = UIView()
             time1.frame = CGRectMake(20, CGFloat(220 + i * 35), 280, 35)
             
             var icon: UIImageView = UIImageView()
             icon.frame = CGRectMake(0, 8.5, 18, 18)
-            icon.image = lineImage(arrLine[i])
+            icon.image = lineImage(array[0])
             time1.addSubview(icon)
             
             var open1: UILabel = UILabel()
             open1.frame = CGRectMake(25, 0, 155, 35)
-            open1.text = "开往\(arrClose[i])："
+            open1.text = "开往\(array[1].station())："
             open1.font = UIFont.boldSystemFontOfSize(18)
             time1.addSubview(open1)
             
             var open2: UILabel = UILabel()
             open2.frame = CGRectMake(180, 0, 100, 35)
-            open2.text = arrTime[i]
+            open2.text = "\(array[2])"
             open2.font = UIFont.boldSystemFontOfSize(18)
             open2.textColor = UIColor.grayColor()
             open2.tag = 300 + i
@@ -442,7 +443,7 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
     func addStationSelect() {
 
         var table = UITableView()
-        table.frame = CGRectMake(0, CGFloat(220 + arrClose.count * 35 + 15), 320, CGFloat(46 * selectList.count))
+        table.frame = CGRectMake(0, CGFloat(220 + depaTimeArr.count * 35 + 15), 320, CGFloat(46 * selectList.count))
         table.delegate = self
         table.dataSource = self
         table.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0)
