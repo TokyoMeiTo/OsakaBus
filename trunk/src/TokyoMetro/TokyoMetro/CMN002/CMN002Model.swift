@@ -45,6 +45,7 @@ class CMN002Model {
                 var mMst02Dao = MstT02StationTable()
                 mMst02Dao.statId = stationId
                 var mMst02DaoRow:MstT02StationTable = mMst02Dao.select() as MstT02StationTable
+                
                 var result:CMN002StationData = CMN002StationData()
                 result.statId = mMst02DaoRow.statId as String
                 result.statGroupId = mMst02DaoRow.statGroupId as String
@@ -52,10 +53,6 @@ class CMN002Model {
                 result.statName = mMst02DaoRow.statName as String
                 result.statNameMetroId = mMst02DaoRow.statNameMetroId as String
                 result.statNameKana = mMst02DaoRow.statNameKana as String
-//                result.statFromX = mCmnT03Row.stationGrideFromX as CGFloat
-//                result.statFromY = mCmnT03Row.stationGrideFromX as CGFloat
-//                result.statToX = mCmnT03Row.stationGrideFromX as CGFloat
-//                result.statToY = mCmnT03Row.stationGrideFromX as CGFloat
                 
                 result.statFromX = mCmnT03Row.item(CMNT03_PONT_X_FROM) as CGFloat
                 result.statFromY = mCmnT03Row.item(CMNT03_PONT_Y_FROM) as CGFloat

@@ -28,7 +28,6 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         historyArr = ["上野", "浅草桥", "大手町"]
 
         odbRoute()
