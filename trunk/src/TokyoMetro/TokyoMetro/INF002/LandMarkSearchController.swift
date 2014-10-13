@@ -16,16 +16,29 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
     /* TableView条目 */
     var items: NSMutableArray = NSMutableArray.array()
     /* landMarksType */
-    var landMarksType:Array<String> = ["购物中心","景点","美食"]
+    var landMarksSubType:Array<String>?
     /* landMarksRange */
     var landMarksRange:Array<String> = ["东京","千代田区","附近5000米以内","附近3000米以内","附近1000米以内","附近500米以内","附近100米以内"]
     var landMarkType:Int = 0
+    var landMarkSubType:Int = 0
     var landMarkRange:Int = 0
+    
+    /* 起点軽度 */
+    var fromLat = 35.672737//31.23312372 // 天地科技广场1号楼
+    /* 起点緯度 */
+    var fromLon = 139.768898//121.38368547 // 天地科技广场1号楼
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        items.addObject(["地标类型：",landMarksType])
+        var inf002Dao:INF002Dao = INF002Dao()
+        var subTypeTemp:NSArray = inf002Dao.querySubType()
+        landMarksSubType = Array<String>()
+        for subType in subTypeTemp{
+            landMarksSubType!.append("\(subType.item(MSTT04_LANDMARK_LMAK_SUB_TYPE))")
+        }
+
+        items.addObject(["地标类型：",landMarksSubType!])
         items.addObject(["地标范围：",landMarksRange])
         tbList.delegate = self
         tbList.dataSource = self
@@ -49,6 +62,21 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
     func buttonAction(sender: UIButton){
         switch sender{
         case self.navigationItem.rightBarButtonItem!:
+            var controllers:AnyObject? = self.navigationController!.viewControllers
+            var lastController:LandMarkListController = controllers![controllers!.count - 2] as LandMarkListController
+            var inf002Dao:INF002Dao = INF002Dao()
+            switch landMarkType{
+            case 0:
+                lastController.landMarks = inf002Dao.queryLandMarksFilter("景点", distance: 1000, subType: "") as? Array<MstT04LandMarkTable>
+            case 1:
+                lastController.landMarks = inf002Dao.queryLandMarksFilter("美食", distance: 1000, subType: "") as? Array<MstT04LandMarkTable>
+            case 2:
+                lastController.landMarks = inf002Dao.queryLandMarksFilter("购物", distance: 1000, subType: "") as? Array<MstT04LandMarkTable>
+            default:
+                println("nothing")
+            }
+            
+            lastController.viewDidLoad()
             self.navigationController!.popViewControllerAnimated(true)
         default:
             println("nothing")

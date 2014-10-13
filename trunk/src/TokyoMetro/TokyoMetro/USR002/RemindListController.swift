@@ -113,6 +113,7 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
         self.view.backgroundColor = UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
         lblArriveInfo.textColor = UIColor.redColor()
         lblArriveInfo.font = UIFont(name:"Helvetica-Bold", size:14)
+        
     }
     
     /**
@@ -136,6 +137,70 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
     func arriveStation(){
         self.navigationItem.rightBarButtonItem = nil
         tbList.hidden = true
+        
+        if(fromRoute()){
+            var alarms:Array<UsrT01ArrivalAlarmTable>? = selectArrivalAlarmTable()
+            if(alarms!.count > 0){
+                alarm = alarms![alarms!.count - NUM_1]
+                if(alarm!.item(USRT01_ARRIVAL_ALARM_CANCEL_FLAG) == nil || alarm!.item(USRT01_ARRIVAL_ALARM_CANCEL_FLAG).integerValue == 1){
+                    var tableUsrT01:UsrT01ArrivalAlarmTable? = UsrT01ArrivalAlarmTable()
+                    // 当前没有到站提醒
+                    tableUsrT01!.arriAlamId = "\(alarm!.item(USRT01_ARRIVAL_ALARM_ARRI_ALAM_ID).integerValue + 1)"
+                    tableUsrT01!.lineFromId = routeStatTable01!.lineId
+                    tableUsrT01!.statFromId = routeStatTable01!.statGroupId
+                    tableUsrT01!.lineToId = routeStatTable02!.lineId
+                    tableUsrT01!.statToId = routeStatTable02!.statGroupId
+                    tableUsrT01!.beepFlag = "1"
+                    tableUsrT01!.voleFlag = "0"
+                    tableUsrT01!.costTime = "0"
+                    tableUsrT01!.alarmTime = "0"
+                    tableUsrT01!.saveTime = RemindDetailController.convertDate2LocalTime(NSDate.date())
+                    tableUsrT01!.onboardTime = "000000000000"
+                    tableUsrT01!.cancelFlag = "0"
+                    tableUsrT01!.cancelTime = "00000000000000"
+                    var costTime:Int = selectLinT05RouteDetailTable(tableUsrT01!.statFromId, toStationId: tableUsrT01!.statToId)
+                    tableUsrT01!.costTime = "\(costTime)"
+                    tableUsrT01!.insert()
+                }else{
+                    var tableUsrT01:UsrT01ArrivalAlarmTable? = UsrT01ArrivalAlarmTable()
+                    tableUsrT01!.lineFromId = routeStatTable01!.lineId
+                    tableUsrT01!.statFromId = routeStatTable01!.statGroupId
+                    tableUsrT01!.lineToId = routeStatTable02!.lineId
+                    tableUsrT01!.statToId = routeStatTable02!.statGroupId
+                    tableUsrT01!.beepFlag = "1"
+                    tableUsrT01!.voleFlag = "0"
+                    tableUsrT01!.costTime = "0"
+                    tableUsrT01!.alarmTime = "0"
+                    tableUsrT01!.saveTime = RemindDetailController.convertDate2LocalTime(NSDate.date())
+                    tableUsrT01!.onboardTime = "000000000000"
+                    tableUsrT01!.cancelFlag = "0"
+                    tableUsrT01!.cancelTime = "00000000000000"
+                    var costTime:Int = selectLinT05RouteDetailTable(tableUsrT01!.statFromId, toStationId: tableUsrT01!.statToId)
+                    tableUsrT01!.costTime = "\(costTime)"
+                    tableUsrT01!.update()
+                }
+            }else{
+                var tableUsrT01:UsrT01ArrivalAlarmTable? = UsrT01ArrivalAlarmTable()
+                // 当前没有到站提醒
+                tableUsrT01!.arriAlamId = "1"
+                tableUsrT01!.lineFromId = routeStatTable01!.lineId
+                tableUsrT01!.statFromId = routeStatTable01!.statGroupId
+                tableUsrT01!.lineToId = routeStatTable02!.lineId
+                tableUsrT01!.statToId = routeStatTable02!.statGroupId
+                tableUsrT01!.beepFlag = "1"
+                tableUsrT01!.voleFlag = "0"
+                tableUsrT01!.costTime = "0"
+                tableUsrT01!.alarmTime = "0"
+                tableUsrT01!.saveTime = RemindDetailController.convertDate2LocalTime(NSDate.date())
+                tableUsrT01!.onboardTime = "000000000000"
+                tableUsrT01!.cancelFlag = "0"
+                tableUsrT01!.cancelTime = "00000000000000"
+                var costTime:Int = selectLinT05RouteDetailTable(tableUsrT01!.statFromId, toStationId: tableUsrT01!.statToId)
+                tableUsrT01!.costTime = "\(costTime)"
+                tableUsrT01!.insert()
+            }
+        }
+        
         // button点击事件
         btnCancel.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
         btnStart.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
@@ -187,6 +252,13 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
         tbList.dataSource = self
         tbList.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         tbList.reloadData()
+    }
+    
+    /**
+     * 从线路选择画面过来
+     */
+    func fromRoute() -> Bool{
+        return routeStatTable01 != nil && routeStatTable02 != nil
     }
     
     /**
@@ -255,8 +327,6 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
             }else{
                 remindDetailController.tableUsrT01 = alarm!
             }
-//            var remindDetailController = self.storyboard!.instantiateViewControllerWithIdentifier("localcache") as LocalCacheController
-//            remindDetailController.classType = 1
             self.navigationController!.pushViewController(remindDetailController, animated:true)
         case self.navigationItem.rightBarButtonItem!:
             var remindDetailController = self.storyboard!.instantiateViewControllerWithIdentifier("reminddetail") as RemindDetailController
@@ -380,6 +450,23 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
         var trainAlarms:Array<UsrT02TrainAlarmTable> = tableUsrT02.selectAll() as Array<UsrT02TrainAlarmTable>
         return trainAlarms
     }
+    
+    /**
+     * 从DB查询花费时间
+     */
+    func selectLinT05RouteDetailTable(startStationId: String, toStationId: String) -> Int{
+        var tableLinT04 = LinT04RouteTable()
+        tableLinT04.startStatId = startStationId
+        tableLinT04.termStatId = toStationId
+        var ruteId: String = "\((tableLinT04.select() as LinT04RouteTable).item(LINT04_ROUTE_RUTE_ID))"
+        var costTime:Int = 0
+        var tableLinT05 = LinT05RouteDetailTable()
+        tableLinT05.ruteId = ruteId
+        var test = tableLinT05.select() as LinT05RouteDetailTable
+        costTime = ("\((tableLinT05.select() as LinT05RouteDetailTable).item(LINT05_ROUTE_DETAIL_MOVE_TIME))" as NSString).integerValue
+        return costTime * 60
+    }
+
     
     /**
      * 本地推送消息

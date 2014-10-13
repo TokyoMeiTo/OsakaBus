@@ -66,7 +66,8 @@ class LandMarkListController: UIViewController, UITableViewDelegate, NSObjectPro
         switch sender{
         case self.navigationItem.rightBarButtonItem!:
             var landMarkSearchController = self.storyboard!.instantiateViewControllerWithIdentifier("landmarksearch") as LandMarkSearchController
-            
+            landMarkSearchController.fromLat = self.fromLat
+            landMarkSearchController.fromLon = self.fromLon
             self.navigationController!.pushViewController(landMarkSearchController, animated:true)
         default:
             println("nothing")

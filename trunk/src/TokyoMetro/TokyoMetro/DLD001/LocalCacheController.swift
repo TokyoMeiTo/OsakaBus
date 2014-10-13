@@ -15,7 +15,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
 
     var classType:Int = 0
     
-    let uri:String = "http://192.168.1.84/Resource.zip"
+    let uri:String = "http://192.168.1.84/Resource.zip"//"http://qd.baidupcs.com/file/8793004b8eb196a2d8a990cf3bd6e9d6?fid=2047242392-250528-1530314747&time=1413163152&sign=FDTAXER-DCb740ccc5511e5e8fedcff06b081203-9bNODLPOIQYbOQ1%2BBNElSK6xxyw%3D&to=qb&fm=Qin,B,U,nc&newver=1&newfm=1&flow_ver=3&expires=8h&rt=sh&r=531068060&mlogid=1869520282&vuk=-&vbdid=3152997201&fn=maxuqu%20-%20%E5%89%AF%E6%9C%AC%20-%20%E5%89%AF%E6%9C%AC%20%282%29.zip"
     let filePath:String = "Resource.zip"
     let unZipPath:String = "TokyoMetroCache"
     
@@ -167,6 +167,10 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
      * NSProgress监听事件
      */
     override func observeValueForKeyPath(keyPath: String!, ofObject object: AnyObject!, change: [NSObject : AnyObject]!, context: UnsafeMutablePointer<Void>) {
+//        if(self.UIloading){
+//            return
+//        }
+        //self.UIloading = true
         if (keyPath=="fractionCompleted") {
             var progress:NSProgress = object as NSProgress;
             if(countElements("\(progress.fractionCompleted)") > 5 && progress.fractionCompleted > 0.0001){
@@ -174,11 +178,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
                 loadProgress = " " + progressTemp + " %"
                 // 在子线程中更新UI
                 dispatch_async(dispatch_get_main_queue()) { () -> Void in
-                    if(!self.UIloading){
-                        self.UIloading = true
-                        self.tbList.reloadData()
-                        self.UIloading = false
-                    }
+                    self.tbList.reloadData()
                 }
             }
         }
@@ -231,7 +231,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
             unzip.UnzipCloseFile()
         }else{
             println("解压失败")
-            loadProgress = "解压失败"
+            loadProgress = "失败"
             tbList.reloadData()
         }
         downloading = false
@@ -294,7 +294,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
                     lblProgressTemp.textAlignment = NSTextAlignment.Right
                     UIHeader.addSubview(lblProgressTemp)
                 }else{
-                    if(updateComplete){
+                    if(updateComplete || loadProgress != ""){
                         var lblProgressTemp = UILabel(frame: CGRect(x:0,y:5,width:tableView.frame.width/2,height:80))
                         lblProgressTemp.backgroundColor = UIColor.clearColor()
                         lblProgressTemp.font = UIFont.systemFontOfSize(16)
@@ -337,7 +337,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
                     lblProgressTemp.textAlignment = NSTextAlignment.Right
                     UIHeader.addSubview(lblProgressTemp)
                 }else{
-                    if(updateComplete){
+                    if(updateComplete || loadProgress != ""){
                         var lblProgressTemp = UILabel(frame: CGRect(x:0,y:5,width:tableView.frame.width/2,height:80))
                         lblProgressTemp.backgroundColor = UIColor.clearColor()
                         lblProgressTemp.font = UIFont.systemFontOfSize(16)
@@ -530,4 +530,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
         }
     }
 
+    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        //UIloading = false
+    }
 }
