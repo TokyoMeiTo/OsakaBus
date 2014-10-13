@@ -203,7 +203,7 @@ class Main: UIViewController,UIScrollViewDelegate {
         var image: UIImage!
         if (mIsMenuShow) {
             mIsMenuShow = false
-            image = UIImage(named: "icon-up-01")
+            image = UIImage(named: "helf_up_btn")
 //            self.mUpButton.setBackgroundImage(image, forState: UIControlState.Normal)
             UIView.animateWithDuration(0.5, animations: { () -> Void in
                 self.mMenuView.frame = CGRectMake(0, self.mScreenSize.height - 75, self.mScreenSize.width, 75)
@@ -216,7 +216,7 @@ class Main: UIViewController,UIScrollViewDelegate {
             
         } else {
             mIsMenuShow = true
-            image = UIImage(named: "icon-down-01")
+            image = UIImage(named: "helf_down_btn")
 //            self.mUpButton.setBackgroundImage(image, forState: UIControlState.Normal)
             UIView.animateWithDuration(0.5, animations: { () -> Void in
                 self.mMenuView.frame = CGRectMake(0, self.mScreenSize.height - 250, self.mScreenSize.width, 250)
@@ -227,6 +227,17 @@ class Main: UIViewController,UIScrollViewDelegate {
             mBtnImgDec.enabled = false
             
         }
+    }
+    
+    @IBAction func showStationLine(sender: UIButton) {
+        var stationLine: StationLine = self.storyboard?.instantiateViewControllerWithIdentifier("StationLine") as StationLine
+        
+        if (sender.tag == 502) {
+            stationLine.segmentIndex = 0
+        } else if (sender.tag == 503) {
+            stationLine.segmentIndex = 1
+        }
+        self.navigationController?.pushViewController(stationLine, animated: true)
     }
     
     @IBAction func showStationTips() {

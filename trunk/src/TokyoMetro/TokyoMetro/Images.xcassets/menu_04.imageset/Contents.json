@@ -7,11 +7,12 @@
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "menu-03@2x.png"
+      "filename" : "menu_04@2x.png"
     },
     {
       "idiom" : "universal",
-      "scale" : "3x"
+      "scale" : "3x",
+      "filename" : "menu_04@3x.png"
     }
   ],
   "info" : {

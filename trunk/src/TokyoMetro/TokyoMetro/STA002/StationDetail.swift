@@ -49,7 +49,7 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
     // 站点statId、statSeq、lineId数组
     var statSeqArr: NSArray = NSArray.array()
     // 其他链接
-    var selectList = ["车站时刻表", "车站结构图", "车站位置图", "站内商业设施", "车站设施"]
+    var selectList = ["车站时刻表", "车站结构图", "站内商业设施", "车站设施"]
     
     var depaTimeArr: NSMutableArray = NSMutableArray.array()
     
@@ -507,10 +507,8 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
         case 1:
             pushStationMap()
         case 2:
-            showExitMap()
-        case 3:
             showComercialInside()
-        case 4:
+        case 3:
             showFacility()
         default:
             pushStationMap()

@@ -24,15 +24,27 @@ class StationLine: UIViewController, UITableViewDataSource, UITableViewDelegate 
     // 首末站
     var destArr: NSMutableArray = NSMutableArray.array()
     
-    var sectionTitle = ["B","C","D","E","F","G","H","J","L","M","N","P","Q","R","S","T","W","X","Y","Z"]
+    var segmentIndex: Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         lineView.hidden = true
+        
+        if (segmentIndex == 0) {
+            segment.selectedSegmentIndex = 0
+        } else {
+            segment.selectedSegmentIndex = 1
+        }
+
         odbStation()
         odbLine()
         
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+
     }
     
     
@@ -81,104 +93,6 @@ class StationLine: UIViewController, UITableViewDataSource, UITableViewDelegate 
             
             changeLineArr.addObject(lineArr)
         }
-        
-//        var arrB = [MstT02StationTable]()
-//        var arrC = [MstT02StationTable]()
-//        var arrD = [MstT02StationTable]()
-//        var arrE = [MstT02StationTable]()
-//        var arrF = [MstT02StationTable]()
-//        var arrG = [MstT02StationTable]()
-//        var arrH = [MstT02StationTable]()
-//        var arrJ = [MstT02StationTable]()
-//        var arrL = [MstT02StationTable]()
-//        var arrM = [MstT02StationTable]()
-//        var arrN = [MstT02StationTable]()
-//        var arrP = [MstT02StationTable]()
-//        var arrQ = [MstT02StationTable]()
-//        var arrR = [MstT02StationTable]()
-//        var arrS = [MstT02StationTable]()
-//        var arrT = [MstT02StationTable]()
-//        var arrW = [MstT02StationTable]()
-//        var arrX = [MstT02StationTable]()
-//        var arrY = [MstT02StationTable]()
-//        var arrZ = [MstT02StationTable]()
-//        
-//        for (var i = 0; i < array.count; i++) {
-//            var map = array[i] as MstT02StationTable
-//            var nameExt:NSString = map.item(MSTT02_STAT_NAME_EXT3) as NSString
-//            
-//            switch (nameExt.substringToIndex(1)) {
-//            case "B":
-//                arrB.append(map)
-//                
-//            case "C":
-//                arrC.append(map)
-//            case "D":
-//                arrD.append(map)
-//            case "E":
-//                arrE.append(map)
-//            case "F":
-//                arrF.append(map)
-//            case "G":
-//                arrG.append(map)
-//            case "H":
-//                arrH.append(map)
-//            case "J":
-//                arrJ.append(map)
-//            case "L":
-//                arrL.append(map)
-//            case "M":
-//                arrM.append(map)
-//            case "N":
-//                arrN.append(map)
-//            case "P":
-//                arrP.append(map)
-//            case "Q":
-//                arrQ.append(map)
-//            case "R":
-//                arrR.append(map)
-//            case "S":
-//                arrS.append(map)
-//            case "T":
-//                arrT.append(map)
-//            case "W":
-//                arrW.append(map)
-//            case "X":
-//                arrX.append(map)
-//            case "Y":
-//                arrY.append(map)
-//            case "Z":
-//                arrZ.append(map)
-//            default:
-////                stationArr.addObject(array[i])
-//            
-//                var arr = [MstT02StationTable]()
-//                arr.append(map)
-//            }
-//            
-//        }
-//        
-//        stationArr.addObject(arrB)
-//        stationArr.addObject(arrC)
-//        stationArr.addObject(arrD)
-//        stationArr.addObject(arrE)
-//        stationArr.addObject(arrF)
-//        stationArr.addObject(arrG)
-//        stationArr.addObject(arrH)
-//        stationArr.addObject(arrJ)
-//        stationArr.addObject(arrL)
-//        stationArr.addObject(arrM)
-//        stationArr.addObject(arrN)
-//        stationArr.addObject(arrP)
-//        stationArr.addObject(arrQ)
-//        stationArr.addObject(arrR)
-//        stationArr.addObject(arrS)
-//        stationArr.addObject(arrT)
-//        stationArr.addObject(arrW)
-//        stationArr.addObject(arrX)
-//        stationArr.addObject(arrY)
-//        stationArr.addObject(arrZ)
-        
     }
     
     func odbLine(){
@@ -189,51 +103,12 @@ class StationLine: UIViewController, UITableViewDataSource, UITableViewDelegate 
         
         for key in rows {
             LineArr.addObject(key)
-            
-//            key as MstT01LineTable
-//            var lineId = key.item(MSTT01_LINE_ID) as String
-//            
-//            var mstt02 = MstT02StationTable()
-//            
-//            if (lineId == "28002") {
-//                destArr.addObject(["\(map1.item(MSTT02_STAT_NAME_EXT1)) - \(map1.item(MSTT02_STAT_NAME_EXT2))"])
-//            } else {
-//                mstt02.lineId = lineId
-//                var array = mstt02.selectWithOrder(MSTT02_STAT_SEQ, desc: false)
-//                var map1: MstT02StationTable = array[0] as MstT02StationTable
-//                var map2: MstT02StationTable = array[array.count - 1] as MstT02StationTable
-//                var statName1 = (map1.item(MSTT02_STAT_ID) as String).station()
-//                var statName2 = (map2.item(MSTT02_STAT_ID) as String).station()
-//                destArr.addObject(["\(map1.item(MSTT02_STAT_ID)) - \(map1.item(MSTT02_STAT_NAME_EXT2))"])
-//            }
+
         }
         
     }
     
-//    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-//        if (segment.selectedSegmentIndex == 0) {
-//            return 1
-//        } else {
-//            return stationArr.count
-//        }
-//    }
-    
-//    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {        
-//        if (segment.selectedSegmentIndex == 0) {
-//            return ""
-//        } else {
-//            return sectionTitle[section]
-//        }
-//    }
-    
-//    func sectionIndexTitlesForTableView(tableView: UITableView) -> [AnyObject]! {
-//        
-//        if (segment.selectedSegmentIndex == 0) {
-//            return nil
-//        } else {
-//            return sectionTitle
-//        }
-//    }
+
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if (segment.selectedSegmentIndex == 0) {

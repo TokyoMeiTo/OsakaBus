@@ -115,14 +115,14 @@ class TimeTable: UIViewController,UITableViewDelegate,UITableViewDataSource {
         for (var i = 0; i < lineArr.count; i++) {
             var key = lineArr[i] as MstT02StationTable
             var view = UIView()
-            view.frame = CGRectMake(0, CGFloat(i * 50), 180, 50)
+            view.frame = CGRectMake(0, CGFloat(i * 60 + 5), 180, 60)
             var lineImage = UIImageView()
-            lineImage.frame = CGRectMake(8, 3, 44, 44)
+            lineImage.frame = CGRectMake(8, 8, 44, 44)
             lineImage.image = (key.item(MSTT02_LINE_ID) as String).getLineImage()
             view.addSubview(lineImage)
             
             var lineName = UILabel()
-            lineName.frame = CGRectMake(58, 0, 122, 50)
+            lineName.frame = CGRectMake(58, 1, 122, 59)
             lineName.text = (key.item(MSTT02_LINE_ID)  as String).line()
             lineName.textColor = UIColor.whiteColor()
             view.addSubview(lineName)
@@ -130,11 +130,22 @@ class TimeTable: UIViewController,UITableViewDelegate,UITableViewDataSource {
             view.tag = 300 + i
             var tapGesture = UITapGestureRecognizer(target: self, action: "lineSelected:")
             view.addGestureRecognizer(tapGesture)
+
+            if (i > 0) {
+                var lblLine = UILabel()
+                lblLine.frame = CGRectMake(0, 0, 200, 1)
+                lblLine.backgroundColor = UIColor.darkGrayColor()
+                view.addSubview(lblLine)
+            }
             
             lineView.addSubview(view)
+            
         }
         
-        lineView.frame = CGRectMake(70, 200, 180, CGFloat(lineArr.count * 50))
+        lineView.layer.borderColor = UIColor(red: 87/255, green: 86/255, blue: 86/255, alpha: 1).CGColor
+        lineView.layer.borderWidth = 2
+        lineView.layer.cornerRadius = 5
+        lineView.frame = CGRectMake(60, 200, 200, CGFloat(lineArr.count * 60) + 10)
     }
     
     func lineSelected(sender:UITapGestureRecognizer) {
@@ -314,19 +325,32 @@ class TimeTable: UIViewController,UITableViewDelegate,UITableViewDataSource {
         timeArr.addObject(arr17)
         timeArr.addObject(arr18)
         timeArr.addObject(arr19)
-        timeArr.addObject(arr20)
-
+        if (arr20.count > 0) {
+            timeArr.addObject(arr20)
+        }
+        
         return timeArr
     }
     
-
     
-    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if (table == tableView) {
-            return "时刻(东京时间)"
-        } else {
-            return nil
-        }
+    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        var view = UIView()
+        view.frame = CGRectMake(0, 0, 320, 25)
+        view.backgroundColor = UIColor(red: 219/255, green: 121/255, blue: 158/255, alpha: 1)
+        
+        var lblHoure = UILabel()
+        lblHoure.frame = CGRectMake(0, 0, 45, 25)
+        lblHoure.textAlignment = NSTextAlignment.Center
+        lblHoure.text = "时"
+        
+        var lblMin = UILabel()
+        lblMin.frame = CGRectMake(45, 0, 275, 25)
+        lblMin.textAlignment = NSTextAlignment.Center
+        lblMin.text = "分(日本时间)"
+        
+        view.addSubview(lblHoure)
+        view.addSubview(lblMin)
+        return view
     }
     
     
