@@ -526,7 +526,7 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items[section][1].count
+        return 1//items[section][1].count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {

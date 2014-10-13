@@ -41,30 +41,6 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
         // Dispose of any resources that can be recreated.
     }
     
-    override func viewWillAppear(animated: Bool) {
-        self.presentedViewController?.beginAppearanceTransition(true, animated: true)
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-         self.presentedViewController?.endAppearanceTransition()
-    }
-    
-    override func viewWillDisappear(animated: Bool) {
-        self.presentedViewController?.beginAppearanceTransition(true, animated: true)
-    }
-    
-    override func viewDidDisappear(animated: Bool) {
-        self.presentedViewController?.endAppearanceTransition()
-    }
-    
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return UIStatusBarStyle.Default
-    }
-    
-    override func prefersStatusBarHidden() -> Bool {
-        return false
-    }
-    
     func intitValue(){
         self.title = "离线数据管理"
         self.navigationItem.rightBarButtonItem = nil
@@ -138,17 +114,17 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
                 response, localfile, error in
                 if(error == nil){
                     println("下载成功解压文件")
-                    self.loadProgress = "100.00 %"
                     dispatch_async(dispatch_get_main_queue()) { () -> Void in
+                        self.loadProgress = "100.00 %"
                         self.tbList.reloadData()
                     }
                     self.unzipFile()
                 }else{
                     println("下载失败")
-                    self.downloading = false
-                    self.loadProgress = "失败"
                     // 在子线程中更新UI
                     dispatch_async(dispatch_get_main_queue()) { () -> Void in
+                        self.downloading = false
+                        self.loadProgress = "失败"
                         self.tbList.reloadData()
                     }
                 }
@@ -174,11 +150,10 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
         if (keyPath=="fractionCompleted") {
             var progress:NSProgress = object as NSProgress;
             if(countElements("\(progress.fractionCompleted)") > 5 && progress.fractionCompleted > 0.0001){
-                var progressTemp = "\(progress.fractionCompleted * 100)".left(5)
-                loadProgress = " " + progressTemp + " %"
                 // 在子线程中更新UI
-                dispatch_async(dispatch_get_main_queue()) { () -> Void in
-//                    self.tbList.reloadSections(NSIndexSet(index: 2), withRowAnimation: UITableViewRowAnimation.None)
+                dispatch_sync(dispatch_get_main_queue()) { () -> Void in
+                    var progressTemp = "\(progress.fractionCompleted * 100)".left(5)
+                    self.loadProgress = " " + progressTemp + " %"
                     self.tbList.reloadData()
                 }
             }
