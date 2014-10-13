@@ -51,7 +51,6 @@ class LandMarkListController: UIViewController, UITableViewDelegate, NSObjectPro
         searchButton!.target = self
         searchButton!.action = "buttonAction:"
         self.navigationItem.rightBarButtonItem = searchButton!
-        
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

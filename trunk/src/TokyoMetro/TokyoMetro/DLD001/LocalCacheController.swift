@@ -66,7 +66,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
     }
     
     func intitValue(){
-        self.title = "本地数据管理"
+        self.title = "离线数据管理"
         self.navigationItem.rightBarButtonItem = nil
         switch classType{
         case 0:
@@ -178,6 +178,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
                 loadProgress = " " + progressTemp + " %"
                 // 在子线程中更新UI
                 dispatch_async(dispatch_get_main_queue()) { () -> Void in
+//                    self.tbList.reloadSections(NSIndexSet(index: 2), withRowAnimation: UITableViewRowAnimation.None)
                     self.tbList.reloadData()
                 }
             }
@@ -270,7 +271,13 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
     }
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        var lastUIHeader:UIView? = tableView.viewWithTag(110)
+        if(lastUIHeader != nil){
+            lastUIHeader!.removeFromSuperview()
+        }
+        
         var UIHeader:UIView = UIView(frame: CGRect(x:0,y:0,width:tableView.frame.width,height:80))
+        UIHeader.tag = 110
         switch classType{
         case 0:
             switch section{
@@ -405,7 +412,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
                 imageViewCache.image = imgCache
                 cell.addSubview(imageViewCache)
                 
-                var lblCacheVersion = UILabel(frame: CGRect(x:120,y:20,width:tableView.frame.width,height:40))
+                var lblCacheVersion = UILabel(frame: CGRect(x:120,y:20,width:tableView.frame.width,height:tableView.frame.height/13))
                 lblCacheVersion.backgroundColor = UIColor.clearColor()
                 lblCacheVersion.font = UIFont.systemFontOfSize(15)
                 lblCacheVersion.textColor = UIColor.blackColor()
@@ -413,7 +420,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
                 lblCacheVersion.textAlignment = NSTextAlignment.Left
                 cell.addSubview(lblCacheVersion)
                 
-                var lblCacheSize = UILabel(frame: CGRect(x:120,y:50,width:tableView.frame.width,height:40))
+                var lblCacheSize = UILabel(frame: CGRect(x:120,y:50,width:tableView.frame.width,height:tableView.frame.height/13))
                 lblCacheSize.backgroundColor = UIColor.clearColor()
                 lblCacheSize.font = UIFont.systemFontOfSize(15)
                 lblCacheSize.textColor = UIColor.blackColor()
@@ -421,7 +428,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
                 lblCacheSize.textAlignment = NSTextAlignment.Left
                 cell.addSubview(lblCacheSize)
                 
-                var lblMobileSize = UILabel(frame: CGRect(x:120,y:80,width:tableView.frame.width,height:40))
+                var lblMobileSize = UILabel(frame: CGRect(x:120,y:80,width:tableView.frame.width,height:tableView.frame.height/13))
                 lblMobileSize.backgroundColor = UIColor.clearColor()
                 lblMobileSize.font = UIFont.systemFontOfSize(15)
                 lblMobileSize.textColor = UIColor.blackColor()
@@ -431,10 +438,9 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
             case 1:
                 if(!updateComplete){
                     var btnDownload:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-                    btnDownload.frame = CGRect(x:(tableView.frame.width - 250)/2,y:5,width:250,height:45)
+                    btnDownload.frame = CGRect(x:(tableView.frame.width - 250)/2,y:5,width:250,height:tableView.frame.height/13)
                     var imgDownload = UIImage(named: "DLD00101.png")
                     btnDownload.setBackgroundImage(imgDownload, forState: UIControlState.Normal)
-                    //btnDownload.setTitle("开始下载", forState: UIControlState.Normal)
                     btnDownload.tag = 101
                     
                     btnDownload.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
@@ -442,10 +448,9 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
                     cell.addSubview(btnDownload)
                 }else{
                     var btnUse:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-                    btnUse.frame = CGRect(x:(tableView.frame.width - 250)/2,y:5,width:250,height:45)
+                    btnUse.frame = CGRect(x:(tableView.frame.width - 250)/2,y:5,width:250,height:tableView.frame.height/13)
                     var imgUse = UIImage(named: "DLD00102.png")
                     btnUse.setBackgroundImage(imgUse, forState: UIControlState.Normal)
-                    //btnUse.setTitle("立即使用", forState: UIControlState.Normal)
                     btnUse.tag = 102
                     btnUse.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
                     cell.backgroundColor = UIColor.clearColor()
@@ -465,7 +470,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
                 imageViewCache.image = imgCache
                 cell.addSubview(imageViewCache)
                 
-                var lblCacheVersion = UILabel(frame: CGRect(x:120,y:20,width:tableView.frame.width,height:40))
+                var lblCacheVersion = UILabel(frame: CGRect(x:120,y:20,width:tableView.frame.width,height:tableView.frame.height/13))
                 lblCacheVersion.backgroundColor = UIColor.clearColor()
                 lblCacheVersion.font = UIFont.systemFontOfSize(15)
                 lblCacheVersion.textColor = UIColor.blackColor()
@@ -473,7 +478,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
                 lblCacheVersion.textAlignment = NSTextAlignment.Left
                 cell.addSubview(lblCacheVersion)
                 
-                var lblCacheSize = UILabel(frame: CGRect(x:120,y:50,width:tableView.frame.width,height:40))
+                var lblCacheSize = UILabel(frame: CGRect(x:120,y:50,width:tableView.frame.width,height:tableView.frame.height/13))
                 lblCacheSize.backgroundColor = UIColor.clearColor()
                 lblCacheSize.font = UIFont.systemFontOfSize(15)
                 lblCacheSize.textColor = UIColor.blackColor()
@@ -481,7 +486,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
                 lblCacheSize.textAlignment = NSTextAlignment.Left
                 cell.addSubview(lblCacheSize)
                 
-                var lblMobileSize = UILabel(frame: CGRect(x:120,y:80,width:tableView.frame.width,height:40))
+                var lblMobileSize = UILabel(frame: CGRect(x:120,y:80,width:tableView.frame.width,height:tableView.frame.height/13))
                 lblMobileSize.backgroundColor = UIColor.clearColor()
                 lblMobileSize.font = UIFont.systemFontOfSize(15)
                 lblMobileSize.textColor = UIColor.blackColor()
@@ -490,7 +495,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
                 cell.addSubview(lblMobileSize)
             case 1:
                 var btnDownload:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-                btnDownload.frame = CGRect(x:(tableView.frame.width - 250)/2,y:5,width:250,height:45)
+                btnDownload.frame = CGRect(x:(tableView.frame.width - 250)/2,y:5,width:250,height: tableView.frame.height/13)
                 var imgDownload = UIImage(named: "DLD00101.png")
                 btnDownload.setBackgroundImage(imgDownload, forState: UIControlState.Normal)
                 //btnDownload.setTitle("重新下载", forState: UIControlState.Normal)

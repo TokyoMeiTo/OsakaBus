@@ -169,7 +169,7 @@ class StationListController: UIViewController, GPSDelegate{
         var latitude : CDouble = coordinateOnMars.latitude
         var longitude : CDouble = coordinateOnMars.longitude
         
-        var fromLocation = CLLocation(latitude: fromLat, longitude: fromLon)
+        var fromLocation = location//CLLocation(latitude: fromLat, longitude: fromLon)
         
         // 初始化MKMapController变量
         mapController.gaiLoading = self.gaiLoading
@@ -191,7 +191,7 @@ class StationListController: UIViewController, GPSDelegate{
         }
         
         // MKMapView定位到当前位置
-        var coordinateOnEarth = CLLocationCoordinate2D(latitude:latitude, longitude:longitude)
+        var coordinateOnEarth = location.coordinate//CLLocationCoordinate2D(latitude:latitude, longitude:longitude)
         var annotation = MKPointAnnotation()
         annotation.title = LOCATION_STRING
         annotation.coordinate = coordinateOnEarth
@@ -243,11 +243,18 @@ class StationListController: UIViewController, GPSDelegate{
      * 位置定位完成
      */
     func locationUpdateComplete(location: CLLocation){
-        locationTest = CLLocation(latitude: fromLat, longitude: fromLon)
+        locationTest = location//CLLocation(latitude: fromLat, longitude: fromLon)
         // 获取最近的3个站点
         stations = StationListController.selectStationTable(locationTest!)
-        // 显示最近站点列表
-        initList(stations!)
+        // 获得UISegmentedControl索引位置
+        if(sgmMain.selectedSegmentIndex == NUM_0){
+            // 显示最近站点列表
+            initList(stations!)
+        }else if(sgmMain.selectedSegmentIndex == NUM_1){
+            // 在地图上显示最近站点
+            initMap(locationTest!,stations: stations!)
+        }else{
+        }
         ActivityIndicatorController.disMiss(gaiLoading)
     }
     

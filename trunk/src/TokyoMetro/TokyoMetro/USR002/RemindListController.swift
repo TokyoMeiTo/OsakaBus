@@ -160,7 +160,11 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
                     tableUsrT01!.cancelTime = "00000000000000"
                     var costTime:Int = selectLinT05RouteDetailTable(tableUsrT01!.statFromId, toStationId: tableUsrT01!.statToId)
                     tableUsrT01!.costTime = "\(costTime)"
-                    tableUsrT01!.insert()
+                    if(costTime <= 0){
+                        RemindDetailController.showMessage("通知", msg:"对不起，无效的线路,请重新选择",buttons:[MSG_0003], delegate: nil)
+                    }else{
+                        tableUsrT01!.insert()
+                    }
                 }else{
                     var tableUsrT01:UsrT01ArrivalAlarmTable? = UsrT01ArrivalAlarmTable()
                     tableUsrT01!.lineFromId = routeStatTable01!.lineId
@@ -177,7 +181,11 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
                     tableUsrT01!.cancelTime = "00000000000000"
                     var costTime:Int = selectLinT05RouteDetailTable(tableUsrT01!.statFromId, toStationId: tableUsrT01!.statToId)
                     tableUsrT01!.costTime = "\(costTime)"
-                    tableUsrT01!.update()
+                    if(costTime <= 0){
+                        RemindDetailController.showMessage("通知", msg:"对不起，无效的线路,请重新选择",buttons:[MSG_0003], delegate: nil)
+                    }else{
+                       tableUsrT01!.update()
+                    }
                 }
             }else{
                 var tableUsrT01:UsrT01ArrivalAlarmTable? = UsrT01ArrivalAlarmTable()
@@ -197,7 +205,11 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
                 tableUsrT01!.cancelTime = "00000000000000"
                 var costTime:Int = selectLinT05RouteDetailTable(tableUsrT01!.statFromId, toStationId: tableUsrT01!.statToId)
                 tableUsrT01!.costTime = "\(costTime)"
-                tableUsrT01!.insert()
+                if(costTime <= 0){
+                    RemindDetailController.showMessage("通知", msg:"对不起，无效的线路,请重新选择",buttons:[MSG_0003], delegate: nil)
+                }else{
+                    tableUsrT01!.insert()
+                }
             }
         }
         
@@ -526,7 +538,7 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
         }
         cell.textLabel!.text = items[indexPath.section][2][indexPath.row] as? String
         cell.textLabel!.textColor = UIColor.blackColor()
-        cell.textLabel!.font = UIFont(name:"Helvetica-Bold", size:13)
+        cell.textLabel!.font = UIFont(name:"Helvetica-Bold", size:15)
         var lblLastMetroTime = UILabel(frame: CGRect(x:65,y:0,width:230,height:43))
         lblLastMetroTime.tag = 101
         lblLastMetroTime.text = items[indexPath.section][1][indexPath.row] as? String

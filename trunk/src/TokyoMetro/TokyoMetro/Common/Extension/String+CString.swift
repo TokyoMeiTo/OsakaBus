@@ -174,4 +174,20 @@ extension String {
         return path
     }
     
+    /**
+     * 获取区域
+     */
+    func getDistrict() -> Array<String> {
+        var specialWards:Array<String> = Array<String>()
+        for(var i=1;i<24;i++){
+            var specialWard = ""
+            if(i<10){
+                specialWard = "0\(i)"
+            }else{
+                specialWard = "\(i)"
+            }
+            specialWards.append(specialWard.specialWard())
+        }
+        return specialWards
+    }
 }

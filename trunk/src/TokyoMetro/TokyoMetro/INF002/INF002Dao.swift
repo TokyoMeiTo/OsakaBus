@@ -12,7 +12,7 @@ class INF002Dao:MstT04LandMarkTable {
     
     let QUERY_LANDMARK = "select * , ROWID from MSTT04_LANDMARK where LMAK_TYPE = ? AND LMAK_ID in (select min(LMAK_ID) from MSTT04_LANDMARK group by LMAK_NAME_EXT1) AND IMAG_ID1 IS NOT NULL"
     
-    let QUERY_LANDMARK_FILTER = "select * , ROWID from MSTT04_LANDMARK where LMAK_TYPE = ? AND LMAK_ID in (select min(LMAK_ID) from MSTT04_LANDMARK group by LMAK_NAME_EXT1) AND IMAG_ID1 IS NOT NULL AND (LMAK_LON - ?) * (LMAK_LON - ?) + (LMAK_LAT - ?)*(LMAK_LAT - ?) < ? AND LMAK_SUB_TYPE = ?"
+    let QUERY_LANDMARK_FILTER = "select * , ROWID from MSTT04_LANDMARK where LMAK_TYPE = ? AND LMAK_ID in (select min(LMAK_ID) from MSTT04_LANDMARK group by LMAK_NAME_EXT1) AND IMAG_ID1 IS NOT NULL AND (LMAK_LON - ?) * (LMAK_LON - ?) + (LMAK_LAT - ?)*(LMAK_LAT - ?) < ?"
 
     let QUERY_LANDMARK_SUBTYPE = "select * from MSTT04_LANDMARK where  LMAK_ID in (select min(LMAK_ID) from MSTT04_LANDMARK group by LMAK_SUB_TYPE)"
     
@@ -23,11 +23,12 @@ class INF002Dao:MstT04LandMarkTable {
         return self.excuteQuery( QUERY_LANDMARK, withArgumentsInArray: arr);
     }
     
-    func queryLandMarksFilter(lmkNm: String,distance: Int,subType: String) -> NSArray {
+    func queryLandMarksFilter(lmkNm: String,lon:CDouble, lat:CDouble,distance: Int) -> NSArray {
         var arr:NSMutableArray = NSMutableArray.array();
         arr.addObject(lmkNm);
+        arr.addObject(lon);
+        arr.addObject(lat);
         arr.addObject(distance);
-        arr.addObject(subType);
         
         return self.excuteQuery( QUERY_LANDMARK, withArgumentsInArray: arr);
     }

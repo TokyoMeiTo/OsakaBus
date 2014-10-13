@@ -449,7 +449,7 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
     func loadLastMetroItems(){
         items = NSMutableArray.array()
         items.addObject(["站点：",[station,""]])
-        items.addObject(["终点站：",[stationDirt0,stationDirt1]])
+        items.addObject(["方向：",[stationDirt0 + "方向",stationDirt1 + "方向"]])
         items.addObject(["提醒方式：",remindsMethod])
         items.addObject(["提醒时间：",remindsTime])
     }
