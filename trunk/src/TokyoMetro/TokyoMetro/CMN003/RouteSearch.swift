@@ -32,6 +32,8 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
     @IBOutlet weak var btnSetAlarm: UIButton!
     // 提示当前tableView是查询结果
     @IBOutlet weak var lblTip: UILabel!
+    @IBOutlet weak var ivCollection: UIImageView!
+    @IBOutlet weak var ivAlarm: UIImageView!
     
     //////////////// 全局变量
     
@@ -94,6 +96,8 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         btnExchange.layer.cornerRadius = 4
         btnCollectRoute.hidden = true
         btnSetAlarm.hidden = true
+        ivCollection.hidden = true
+        ivAlarm.hidden = true
 
         btnExchange.addTarget(self, action: EXCHANGEACTION, forControlEvents: UIControlEvents.TouchUpInside)
         stationStart.addTarget(self, action: FOUCSCHANGETO1, forControlEvents: UIControlEvents.EditingDidBegin)
@@ -628,6 +632,8 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         self.lblTip.text = "   路线搜索结果"
         btnCollectRoute.hidden = false
         btnSetAlarm.hidden = false
+        ivCollection.hidden = false
+        ivAlarm.hidden = false
     }
     
     // 跳转到站点详情页面

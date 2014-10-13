@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="F1F-Fs-9ra">
     <dependencies>
-        <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <scenes>
@@ -127,12 +126,18 @@
                                         <state key="normal" title="+" backgroundImage="btnAddImg">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <connections>
+                                            <action selector="ControllImage:" destination="0Uf-t0-ZZH" eventType="touchUpInside" id="4Uw-rt-yaA"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CVv-xL-Nan">
                                         <rect key="frame" x="0.0" y="40" width="35" height="40"/>
                                         <state key="normal" title="—" backgroundImage="btnDecImg">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <connections>
+                                            <action selector="ControllImage:" destination="0Uf-t0-ZZH" eventType="touchUpInside" id="tc3-wD-mEO"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -3195,9 +3200,9 @@ lable</string>
                                 </attributedString>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="   所有站点" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s2l-26-q3L">
-                                <rect key="frame" x="0.0" y="169" width="320" height="57"/>
+                                <rect key="frame" x="0.0" y="169" width="320" height="44"/>
                                 <color key="backgroundColor" red="0.80000001190000003" green="0.80000001190000003" blue="0.80000001190000003" alpha="1" colorSpace="calibratedRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -3312,9 +3317,10 @@ lable</string>
                                 </state>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2LG-aG-8a0">
-                                <rect key="frame" x="217" y="199" width="90" height="30"/>
+                                <rect key="frame" x="270" y="178" width="45" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <state key="normal" title="设置到站提醒">
+                                <state key="normal" title="提醒">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -3322,15 +3328,22 @@ lable</string>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MSL-qf-bQH">
-                                <rect key="frame" x="217" y="172" width="90" height="30"/>
+                                <rect key="frame" x="200" y="178" width="45" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <state key="normal" title="点击收藏路径">
+                                <state key="normal" title="收藏">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
                                     <action selector="isCollectionRoute" destination="jJE-2d-66J" eventType="touchUpInside" id="Uvd-UV-IBh"/>
                                 </connections>
                             </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="route_collection" translatesAutoresizingMaskIntoConstraints="NO" id="fEp-u8-0zR">
+                                <rect key="frame" x="175" y="177" width="30" height="30"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="route_alarm" translatesAutoresizingMaskIntoConstraints="NO" id="HDy-ZO-msr">
+                                <rect key="frame" x="245" y="176" width="30" height="30"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                     </view>
@@ -3354,6 +3367,8 @@ lable</string>
                         <outlet property="btnExchange" destination="PAl-W4-pwS" id="xjf-6U-jCH"/>
                         <outlet property="btnSearchRoute" destination="qra-Zj-olG" id="ccr-c8-N1G"/>
                         <outlet property="btnSetAlarm" destination="2LG-aG-8a0" id="acO-Fg-WuX"/>
+                        <outlet property="ivAlarm" destination="HDy-ZO-msr" id="0so-6u-bCK"/>
+                        <outlet property="ivCollection" destination="fEp-u8-0zR" id="Kck-wN-YIS"/>
                         <outlet property="lblTip" destination="s2l-26-q3L" id="yPa-Ii-g1g"/>
                         <outlet property="stationEnd" destination="pMd-ws-5Ve" id="cba-Hw-M38"/>
                         <outlet property="stationStart" destination="5ot-1g-6B7" id="KMp-yF-DdR"/>
@@ -3470,6 +3485,8 @@ lable</string>
         <image name="question" width="35" height="35"/>
         <image name="reverse" width="23" height="22"/>
         <image name="ride" width="37" height="37"/>
+        <image name="route_alarm" width="50" height="50"/>
+        <image name="route_collection" width="50" height="50"/>
         <image name="searchroute_collection" width="74" height="74"/>
         <image name="setting-app-icon" width="125" height="125"/>
         <image name="start-station-btn" width="93" height="29"/>

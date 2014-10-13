@@ -15,6 +15,7 @@ class ComercialInsideDetail: UIViewController {
     @IBOutlet weak var lblName: UILabel!
     @IBOutlet weak var lblPrice: UILabel!
     @IBOutlet weak var lblPriceTitle: UILabel!
+    @IBOutlet weak var img: UILabel!
 
     var comeInsiTable: StaT03ComervialInsideTable!
     
