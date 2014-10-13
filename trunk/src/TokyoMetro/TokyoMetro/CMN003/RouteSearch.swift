@@ -7,7 +7,7 @@
 //
 
 import Foundation
-class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource, UIAlertViewDelegate{
+class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource, UIAlertViewDelegate, UITextFieldDelegate{
     
 
     //////////////// 控件
@@ -670,6 +670,12 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             var accoutDefaultClear : NSUserDefaults = NSUserDefaults()
             accoutDefaultClear.setObject("", forKey: "historyStationdata")
         }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        stationStart.resignFirstResponder()
+        stationEnd.resignFirstResponder()
+        return true
+    }
 }
 
 
