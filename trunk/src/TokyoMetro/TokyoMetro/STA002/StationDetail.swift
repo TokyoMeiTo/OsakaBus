@@ -466,7 +466,7 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
 
         self.scrollView.addSubview(table)
         
-        scrollView.contentSize = CGSizeMake(320, table.frame.origin.y + CGFloat(46 * selectList.count + 30))
+        scrollView.contentSize = CGSizeMake(320, table.frame.origin.y + CGFloat(46 * selectList.count))
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -530,7 +530,7 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
         timeDetail.lineArr = statSeqArr
         timeDetail.nameKana = cellJPNmaeLabel.text
         
-        var backButton = UIBarButtonItem(title: "返回", style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+        var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
         self.navigationItem.backBarButtonItem = backButton
 
         self.navigationController?.pushViewController(timeDetail, animated: true)

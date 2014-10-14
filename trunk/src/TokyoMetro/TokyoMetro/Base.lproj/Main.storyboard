@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="F1F-Fs-9ra">
     <dependencies>
+        <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <scenes>
@@ -894,7 +895,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceVertical="YES" indicatorStyle="white" translatesAutoresizingMaskIntoConstraints="NO" id="yMt-Q5-jKG">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="523"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="H50-2t-xdD">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="167"/>
@@ -948,9 +949,9 @@
                                     <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="HGt-Pf-Iba">
                                         <rect key="frame" x="63" y="175" width="184" height="29"/>
                                         <segments>
-                                            <segment title="工作日"/>
+                                            <segment title="平日"/>
                                             <segment title="周末"/>
-                                            <segment title="节假日"/>
+                                            <segment title="假日"/>
                                         </segments>
                                         <color key="tintColor" red="0.33725490200000002" green="0.49803921569999998" blue="0.73725490199999999" alpha="1" colorSpace="deviceRGB"/>
                                         <connections>
@@ -963,10 +964,20 @@
                                     <outlet property="delegate" destination="HX9-zw-x8p" id="4uY-Td-KgM"/>
                                 </connections>
                             </scrollView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jpA-yK-yxn">
+                                <rect key="frame" x="0.0" y="524" width="320" height="45"/>
+                                <state key="normal" title="收藏">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="C4e-Vd-7rC">
+                                <rect key="frame" x="0.0" y="400" width="160" height="284"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="yMt-Q5-jKG" secondAttribute="bottom" id="EbL-Ll-wkN"/>
+                            <constraint firstAttribute="bottom" secondItem="yMt-Q5-jKG" secondAttribute="bottom" constant="45" id="EbL-Ll-wkN"/>
                             <constraint firstAttribute="trailing" secondItem="yMt-Q5-jKG" secondAttribute="trailing" id="hIt-kD-F2u"/>
                             <constraint firstItem="yMt-Q5-jKG" firstAttribute="leading" secondItem="xeP-V7-1xG" secondAttribute="leading" id="tRA-X5-hdf"/>
                             <constraint firstItem="yMt-Q5-jKG" firstAttribute="top" secondItem="xeP-V7-1xG" secondAttribute="top" id="xfP-mt-dON"/>
@@ -1010,7 +1021,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="CollectCell" rowHeight="55" id="OyD-uo-1el">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="CollectCell" rowHeight="55" id="OyD-uo-1el">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="OyD-uo-1el" id="8bA-YQ-BXL">
@@ -1035,7 +1046,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="LineCell" rowHeight="55" id="eAF-gz-y1t">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="LineCell" rowHeight="55" id="eAF-gz-y1t">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="eAF-gz-y1t" id="8JT-G0-0VF">
@@ -1421,8 +1432,7 @@
                                         <rect key="frame" x="36" y="269" width="264" height="58"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <string key="text">平时：8:30 ~ 22:00
-周末：
-关门前半小时内不再接待入店客人</string>
+周末：\\n关门前半小时内不再接待入店客人</string>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
@@ -1453,6 +1463,7 @@
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
+                        <outlet property="image" destination="BCp-QJ-ku7" id="N2B-iS-OwE"/>
                         <outlet property="lblName" destination="Hh7-OM-Fpw" id="e1B-Ee-JUa"/>
                         <outlet property="lblPrice" destination="A7j-Jr-Txr" id="Rmm-ld-qTc"/>
                         <outlet property="lblPriceTitle" destination="pJG-f2-el2" id="wB5-06-V59"/>
@@ -1477,7 +1488,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="52L-kT-L9h">
-                                <rect key="frame" x="0.0" y="64" width="320" height="85"/>
+                                <rect key="frame" x="0.0" y="64" width="320" height="75"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Qo-bZ-LdX">
                                         <rect key="frame" x="15" y="0.0" width="290" height="85"/>
@@ -1486,7 +1497,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
-                                <color key="backgroundColor" red="0.2627450980392157" green="0.72549019607843135" blue="0.94117647058823528" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.98039215690000003" green="0.4431372549" blue="0.53333333329999999" alpha="1" colorSpace="deviceRGB"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sd5-nm-Y0q">
                                 <rect key="frame" x="0.0" y="139" width="320" height="245"/>
@@ -1523,7 +1534,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
-                                <color key="backgroundColor" red="0.98039215686274506" green="0.44313725490196076" blue="0.53333333333333333" alpha="1" colorSpace="deviceRGB"/>
+                                <color key="backgroundColor" red="0.26274509800000001" green="0.72549019609999998" blue="0.94117647059999998" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="s5P-En-pAa" secondAttribute="bottom" id="8ht-mV-Z3H"/>
                                     <constraint firstAttribute="trailing" secondItem="Ba1-wu-Mg4" secondAttribute="trailing" constant="272" id="Akh-Q3-m36"/>

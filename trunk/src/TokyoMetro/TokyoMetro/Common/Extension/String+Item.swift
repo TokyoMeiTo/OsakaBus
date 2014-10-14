@@ -208,4 +208,8 @@ extension String {
   func localizedString(key:String) -> String {
     return NSLocalizedString(key,tableName:ITEM_TABLE_NAME,comment:"")
   }
+    
+    func localizedString() -> String{
+        return NSLocalizedString(self,tableName:ITEM_TABLE_NAME,comment:"")
+    }
 }

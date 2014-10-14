@@ -96,7 +96,7 @@ class StationFacilities: UIViewController, UITableViewDelegate, NSObjectProtocol
             subview.removeFromSuperview()
         }
         // cell显示内容
-        var imgLandMark = UIImage(named: LocalCacheController.readFile("\(facilities![indexPath.row].item(STAT03_COME_INSI_IMAGE))"))
+        var imgLandMark: UIImage = UIImage(named: (facilities![indexPath.row].item(STAT03_COME_INSI_IMAGE) as String).getStationInnerComPath())
         var imageViewLandMark = UIImageView(frame: CGRectMake(0, 0, tableView.frame.width, 170))
         imageViewLandMark.image = imgLandMark
         cell.addSubview(imageViewLandMark)

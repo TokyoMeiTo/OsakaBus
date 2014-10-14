@@ -160,6 +160,22 @@ extension String {
     }
     
     /**
+    * 获取LineGraph下的图片路径
+    */
+    func getStationInnerComPath() -> String {
+        let folder = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String
+        let path = folder.stringByAppendingPathComponent("TokyoMetroCache/Resource/StationInnerCom/" + self + ".png")
+        println(path)
+        var fileExists = NSFileManager().fileExistsAtPath(path)
+        var file:UnsafeMutablePointer<FILE>?
+        if(fileExists){
+            file = fopen(path, "")
+        }
+        return path
+    }
+
+    
+    /**
     * 获取攻略PDF路径
     */
     func getStrategyPDFPath() -> String {

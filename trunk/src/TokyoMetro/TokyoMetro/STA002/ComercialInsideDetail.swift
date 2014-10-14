@@ -15,7 +15,7 @@ class ComercialInsideDetail: UIViewController {
     @IBOutlet weak var lblName: UILabel!
     @IBOutlet weak var lblPrice: UILabel!
     @IBOutlet weak var lblPriceTitle: UILabel!
-    @IBOutlet weak var img: UILabel!
+    @IBOutlet weak var image: UIImageView!
 
     var comeInsiTable: StaT03ComervialInsideTable!
     
@@ -29,7 +29,7 @@ class ComercialInsideDetail: UIViewController {
 
         self.title = "设施详细"
         lblName.text = comeInsiTable.item(STAT03_COME_INSI_NAME) as? String
-        textTime.text = comeInsiTable.item(STAT03_COME_INSI_BISI_HOUR) as String
+        textTime.text = (comeInsiTable.item(STAT03_COME_INSI_BISI_HOUR) as String).relpaceAll("\\n", target: "\n")
         textLocal.text = comeInsiTable.item(STAT03_COME_INSI_LOCA_CH) as String
         
         var price = comeInsiTable.item(STAT03_COME_INSI_PRICE) as? String
@@ -39,6 +39,8 @@ class ComercialInsideDetail: UIViewController {
         } else {
             lblPrice.text = price
         }
+        
+        image.image = UIImage(named: (comeInsiTable.item(STAT03_COME_INSI_LOCA_CH) as String).getStationInnerComPath())
 
     }
     

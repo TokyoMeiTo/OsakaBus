@@ -24,6 +24,8 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
     // 收藏的路径
     var ruteArr: NSMutableArray = NSMutableArray.array()
     
+    var detailArr: NSMutableArray = NSMutableArray.array()
+    
     var ruteRowIdArr: NSMutableArray = NSMutableArray.array()
     
     override func viewDidLoad() {
@@ -47,7 +49,7 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
         table.favoType = "01"
         var rows: NSArray = table.selectAll()
         
-        var allRows: NSArray = stationTable.excuteQuery("select * from MSTT02_STATION where 1 = 1 and STAT_ID like '280%'")
+        var allRows: NSArray = stationTable.excuteQuery("select *, ROWID from MSTT02_STATION where 1 = 1 and STAT_ID like '280%'")
         
         for key in rows {
             
@@ -58,6 +60,7 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
             var statGroupId = key.item(USRT03_STAT_ID) as String
             var lineArr = [String]()
             var statJPName = ""
+            var array: [String] = [String]()
             for (var i = 0; i < allRows.count; i++) {
                 var map: MstT02StationTable = allRows[i] as MstT02StationTable
                 if ((map.item(MSTT02_STAT_GROUP_ID) as String) == statGroupId || (map.item(MSTT02_STAT_ID) as String) == statGroupId) {
@@ -65,10 +68,13 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
                     lineArr.append(map.item(MSTT02_LINE_ID) as String)
                     if (statJPName == "") {
                         statJPName = (map.item(MSTT02_STAT_NAME) as String) + "（" + (map.item(MSTT02_STAT_NAME_KANA) as String) + "）"
+                        array.append(map.item(MSTT02_STAT_NAME) as String)
+                        array.append(map.item(MSTT02_STAT_NAME_KANA) as String)
                     }
                 }
             }
             
+            detailArr.addObject(array)
             statJPNameArr.addObject(statJPName)
             changeLineArr.addObject(lineArr)
         }
@@ -122,6 +128,23 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
     }
     
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if (segment.selectedSegmentIndex == 0) {
+            
+        } else {
+            var detail: StationDetail = self.storyboard?.instantiateViewControllerWithIdentifier("StationDetail") as StationDetail
+            
+            var map: UsrT03FavoriteTable = stationArr[indexPath.row] as UsrT03FavoriteTable
+            detail.cellJPName = detailArr[indexPath.row][0] as String
+            detail.cellJPNameKana = detailArr[indexPath.row][1] as String
+            detail.stat_id = map.item(USRT03_STAT_ID) as String
+//            detail.statMetroId = map.item(MSTT02_STAT_METRO_ID) as String
+            
+            
+            self.navigationController?.pushViewController(detail, animated: true)
+        }
+    }
+    
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
@@ -157,14 +180,14 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
             }
             
             var lineView = UIView()
-            lineView.frame = CGRectMake(195, 5, 110, 45)
+            lineView.frame = CGRectMake(185, 5, 105, 45)
             lineView.tag = 202
             
             var arrStation: [String] = changeLineArr[indexPath.row] as [String]
 
             for (var i = 0; i < arrStation.count; i++) {
                  var line: UIImageView = UIImageView()
-                 line.frame = CGRectMake(CGFloat(110 - (i+1)*18 - i * 4), 14, 18, 18)
+                 line.frame = CGRectMake(CGFloat(105 - (i+1)*18 - i * 4), 14, 18, 18)
                  line.image = arrStation[i].getLineMiniImage()
                     
                  lineView.addSubview(line)
@@ -253,9 +276,9 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
         return true
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
-    }
+//    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+//        
+//        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+//    }
 
 }
