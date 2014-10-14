@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="F1F-Fs-9ra">
     <dependencies>
-        <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <scenes>
@@ -661,7 +660,7 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="5UD-QF-wdm">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="5UD-QF-wdm">
                                 <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -782,6 +781,12 @@
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="5UD-QF-wdm" firstAttribute="leading" secondItem="Ix7-4B-6qw" secondAttribute="leading" id="45t-sO-Vnf"/>
+                            <constraint firstAttribute="bottom" secondItem="5UD-QF-wdm" secondAttribute="bottom" id="4Bq-0V-S4d"/>
+                            <constraint firstAttribute="trailing" secondItem="5UD-QF-wdm" secondAttribute="trailing" id="6ml-mB-jXD"/>
+                            <constraint firstItem="5UD-QF-wdm" firstAttribute="top" secondItem="Ix7-4B-6qw" secondAttribute="top" constant="64" id="qRO-fM-6Hy"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Ci8-6T-rAG">
                         <nil key="title"/>
@@ -913,7 +918,7 @@
                                         </connections>
                                     </button>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2YC-gY-4PM">
-                                        <rect key="frame" x="20" y="15" width="280" height="35"/>
+                                        <rect key="frame" x="20" y="15" width="236" height="35"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="25"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
@@ -925,7 +930,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oAz-bk-RHd">
-                                        <rect key="frame" x="109" y="126" width="94" height="30"/>
+                                        <rect key="frame" x="109" y="125" width="94" height="30"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <state key="normal" title="设为终点" backgroundImage="end-station-btn">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -958,38 +963,47 @@
                                             <action selector="weekendSegmentChanged:" destination="HX9-zw-x8p" eventType="valueChanged" id="sFg-Cn-Iyq"/>
                                         </connections>
                                     </segmentedControl>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="station_uncollect_icon" translatesAutoresizingMaskIntoConstraints="NO" id="fl4-bR-wHY">
+                                        <rect key="frame" x="265" y="18" width="31" height="31"/>
+                                    </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <outlet property="delegate" destination="HX9-zw-x8p" id="4uY-Td-KgM"/>
                                 </connections>
                             </scrollView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jpA-yK-yxn">
-                                <rect key="frame" x="0.0" y="524" width="320" height="45"/>
-                                <state key="normal" title="收藏">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                            </button>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="C4e-Vd-7rC">
-                                <rect key="frame" x="0.0" y="400" width="160" height="284"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="C4e-Vd-7rC">
+                                <rect key="frame" x="0.0" y="523" width="320" height="45"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jpA-yK-yxn">
+                                        <rect key="frame" x="0.0" y="1" width="320" height="44"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <state key="normal" title="收藏">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="addSubway" destination="HX9-zw-x8p" eventType="touchUpInside" id="woV-rc-sZU"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="bottom" secondItem="C4e-Vd-7rC" secondAttribute="bottom" id="2U2-qm-Nf3"/>
                             <constraint firstAttribute="bottom" secondItem="yMt-Q5-jKG" secondAttribute="bottom" constant="45" id="EbL-Ll-wkN"/>
+                            <constraint firstItem="C4e-Vd-7rC" firstAttribute="leading" secondItem="xeP-V7-1xG" secondAttribute="leading" id="P0b-mJ-gBr"/>
+                            <constraint firstItem="C4e-Vd-7rC" firstAttribute="top" secondItem="yMt-Q5-jKG" secondAttribute="bottom" id="fLC-B3-yaC"/>
                             <constraint firstAttribute="trailing" secondItem="yMt-Q5-jKG" secondAttribute="trailing" id="hIt-kD-F2u"/>
                             <constraint firstItem="yMt-Q5-jKG" firstAttribute="leading" secondItem="xeP-V7-1xG" secondAttribute="leading" id="tRA-X5-hdf"/>
+                            <constraint firstAttribute="trailing" secondItem="C4e-Vd-7rC" secondAttribute="trailing" id="v7p-jH-zbe"/>
                             <constraint firstItem="yMt-Q5-jKG" firstAttribute="top" secondItem="xeP-V7-1xG" secondAttribute="top" id="xfP-mt-dON"/>
                         </constraints>
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="GCi-3H-VFI">
-                        <barButtonItem key="rightBarButtonItem" image="collect-01" id="dzz-2X-4Vd">
-                            <connections>
-                                <action selector="addSubway" destination="HX9-zw-x8p" id="OyD-p8-dav"/>
-                            </connections>
-                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" image="station_local" id="dzz-2X-4Vd"/>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
@@ -997,6 +1011,7 @@
                     <connections>
                         <outlet property="cellJPNmaeLabel" destination="ZdP-nv-Gce" id="vZW-LJ-qWf"/>
                         <outlet property="cellNameLabel" destination="2YC-gY-4PM" id="rBf-FU-Anr"/>
+                        <outlet property="imgCollect" destination="fl4-bR-wHY" id="ydg-Ha-RHS"/>
                         <outlet property="scrollView" destination="yMt-Q5-jKG" id="4jj-Ob-CMX"/>
                         <outlet property="weSegment" destination="HGt-Pf-Iba" id="WMH-ai-TlB"/>
                     </connections>
@@ -1017,8 +1032,21 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="99q-QS-3Qs">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="cl0-6b-zDa">
+                                <rect key="frame" x="20" y="70" width="280" height="29"/>
+                                <segments>
+                                    <segment title="车站"/>
+                                    <segment title="路线"/>
+                                    <segment title="景点"/>
+                                    <segment title="美食"/>
+                                    <segment title="购物"/>
+                                </segments>
+                                <connections>
+                                    <action selector="segmentChangedLinster:" destination="BI7-LI-qmB" eventType="valueChanged" id="Xb5-pD-eJU"/>
+                                </connections>
+                            </segmentedControl>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="99q-QS-3Qs">
+                                <rect key="frame" x="0.0" y="105" width="320" height="568"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="CollectCell" rowHeight="55" id="OyD-uo-1el">
@@ -1093,23 +1121,18 @@
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="99q-QS-3Qs" firstAttribute="leading" secondItem="lT1-1w-5w7" secondAttribute="leading" id="TBX-27-q0f"/>
+                            <constraint firstAttribute="trailing" secondItem="99q-QS-3Qs" secondAttribute="trailing" id="Tzr-7y-e0z"/>
+                            <constraint firstAttribute="bottom" secondItem="99q-QS-3Qs" secondAttribute="bottom" constant="-105" id="duU-A9-1qo"/>
+                            <constraint firstItem="99q-QS-3Qs" firstAttribute="top" secondItem="lT1-1w-5w7" secondAttribute="top" constant="105" id="jj6-Nf-pnd"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="JdB-8F-c1G">
                         <nil key="title"/>
-                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="3ly-0I-lrU">
-                            <rect key="frame" x="68" y="7" width="185" height="30"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <segments>
-                                <segment title="路径"/>
-                                <segment title="站点"/>
-                            </segments>
-                            <connections>
-                                <action selector="segmentChangedLinster:" destination="BI7-LI-qmB" eventType="valueChanged" id="Udv-Ek-C6G"/>
-                            </connections>
-                        </segmentedControl>
                     </navigationItem>
                     <connections>
-                        <outlet property="segment" destination="3ly-0I-lrU" id="ayl-Ap-KBt"/>
+                        <outlet property="segment" destination="cl0-6b-zDa" id="ldE-xK-Xst"/>
                         <outlet property="table" destination="99q-QS-3Qs" id="aMm-PT-Qgj"/>
                     </connections>
                 </viewController>
@@ -1194,7 +1217,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="u0z-Wm-5O3">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="u0z-Wm-5O3">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -1224,6 +1247,12 @@
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="u0z-Wm-5O3" secondAttribute="bottom" id="1md-J7-4Hz"/>
+                            <constraint firstItem="u0z-Wm-5O3" firstAttribute="top" secondItem="1rX-8C-4XY" secondAttribute="top" id="Qly-jh-AIH"/>
+                            <constraint firstAttribute="trailing" secondItem="u0z-Wm-5O3" secondAttribute="trailing" id="hTQ-1e-MPp"/>
+                            <constraint firstItem="u0z-Wm-5O3" firstAttribute="leading" secondItem="1rX-8C-4XY" secondAttribute="leading" id="t8T-a1-Za0"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="1ZB-mg-mYh"/>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
@@ -1316,7 +1345,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="8sP-id-Sif">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="8sP-id-Sif">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -1341,6 +1370,12 @@
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="8sP-id-Sif" secondAttribute="bottom" id="Ar4-kq-MDk"/>
+                            <constraint firstAttribute="trailing" secondItem="8sP-id-Sif" secondAttribute="trailing" id="kPD-Oz-fmb"/>
+                            <constraint firstItem="8sP-id-Sif" firstAttribute="leading" secondItem="4m0-Co-YTr" secondAttribute="leading" id="uzn-vv-BeZ"/>
+                            <constraint firstItem="8sP-id-Sif" firstAttribute="top" secondItem="4m0-Co-YTr" secondAttribute="top" id="y23-WL-Tcr"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="9we-un-K4R"/>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
@@ -1362,7 +1397,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="8du-JP-0va">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="8du-JP-0va">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -1381,6 +1416,12 @@
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="8du-JP-0va" firstAttribute="top" secondItem="DlB-jf-m8R" secondAttribute="top" id="61x-Gi-UIx"/>
+                            <constraint firstAttribute="trailing" secondItem="8du-JP-0va" secondAttribute="trailing" id="X5L-tY-9eY"/>
+                            <constraint firstItem="8du-JP-0va" firstAttribute="leading" secondItem="DlB-jf-m8R" secondAttribute="leading" id="lEz-Q9-RYX"/>
+                            <constraint firstAttribute="bottom" secondItem="8du-JP-0va" secondAttribute="bottom" id="z0x-Bm-f8e"/>
+                        </constraints>
                     </view>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
@@ -1691,7 +1732,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Xku-Fg-KOQ">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Xku-Fg-KOQ">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -1721,6 +1762,12 @@ lable</string>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="Xku-Fg-KOQ" secondAttribute="trailing" id="461-kl-YJm"/>
+                            <constraint firstItem="Xku-Fg-KOQ" firstAttribute="top" secondItem="Ahk-BX-547" secondAttribute="top" id="PqB-XI-Pq6"/>
+                            <constraint firstAttribute="bottom" secondItem="Xku-Fg-KOQ" secondAttribute="bottom" id="agC-CZ-Cs7"/>
+                            <constraint firstItem="Xku-Fg-KOQ" firstAttribute="leading" secondItem="Ahk-BX-547" secondAttribute="leading" id="zQx-MD-BAr"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="RTr-Oa-MR5">
                         <nil key="title"/>
@@ -1773,7 +1820,7 @@ lable</string>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="gKh-VN-ypX">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="gKh-VN-ypX">
                                 <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -1799,6 +1846,12 @@ lable</string>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="gKh-VN-ypX" firstAttribute="leading" secondItem="Dkf-5h-h7g" secondAttribute="leading" id="H1l-9d-MSu"/>
+                            <constraint firstAttribute="trailing" secondItem="gKh-VN-ypX" secondAttribute="trailing" id="ZCq-KC-8Zl"/>
+                            <constraint firstItem="gKh-VN-ypX" firstAttribute="top" secondItem="Dkf-5h-h7g" secondAttribute="top" constant="64" id="cdi-D5-DQD"/>
+                            <constraint firstAttribute="bottom" secondItem="gKh-VN-ypX" secondAttribute="bottom" id="cpF-tR-Z4E"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Q0r-lD-E6a">
                         <nil key="title"/>
@@ -3217,7 +3270,7 @@ lable</string>
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <webView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aFM-lT-Ja3">
+                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aFM-lT-Ja3">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
@@ -3226,6 +3279,12 @@ lable</string>
                             </webView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="aFM-lT-Ja3" firstAttribute="top" secondItem="yeI-hp-Xvt" secondAttribute="top" id="73J-Kw-XcC"/>
+                            <constraint firstAttribute="bottom" secondItem="aFM-lT-Ja3" secondAttribute="bottom" id="8vy-4o-RXi"/>
+                            <constraint firstAttribute="trailing" secondItem="aFM-lT-Ja3" secondAttribute="trailing" id="VVh-N3-hxX"/>
+                            <constraint firstItem="aFM-lT-Ja3" firstAttribute="leading" secondItem="yeI-hp-Xvt" secondAttribute="leading" id="oRl-cg-18l"/>
+                        </constraints>
                     </view>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
@@ -3249,13 +3308,41 @@ lable</string>
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="tcd-tF-4Xf">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0ub-HS-Kpc">
+                                <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="暂无商业设施" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="orK-TK-Mcg">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="orK-TK-Mcg" firstAttribute="leading" secondItem="0ub-HS-Kpc" secondAttribute="leading" id="E71-TX-hkf"/>
+                                    <constraint firstAttribute="bottom" secondItem="orK-TK-Mcg" secondAttribute="bottom" id="QJs-qg-PfP"/>
+                                    <constraint firstItem="orK-TK-Mcg" firstAttribute="top" secondItem="0ub-HS-Kpc" secondAttribute="top" id="lMJ-mk-9FU"/>
+                                    <constraint firstAttribute="trailing" secondItem="orK-TK-Mcg" secondAttribute="trailing" id="oSP-Po-daW"/>
+                                </constraints>
+                            </view>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="tcd-tF-4Xf">
+                                <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <inset key="separatorInset" minX="15" minY="0.0" maxX="15" maxY="0.0"/>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="tcd-tF-4Xf" firstAttribute="leading" secondItem="KoW-RG-uuf" secondAttribute="leading" id="3EX-2u-6u4"/>
+                            <constraint firstAttribute="trailing" secondItem="0ub-HS-Kpc" secondAttribute="trailing" id="6cb-ap-MB0"/>
+                            <constraint firstAttribute="bottom" secondItem="tcd-tF-4Xf" secondAttribute="bottom" id="JYw-Qz-qfC"/>
+                            <constraint firstAttribute="bottom" secondItem="0ub-HS-Kpc" secondAttribute="bottom" id="OAB-tL-6lg"/>
+                            <constraint firstAttribute="trailing" secondItem="tcd-tF-4Xf" secondAttribute="trailing" id="V3Z-IF-bBY"/>
+                            <constraint firstItem="0ub-HS-Kpc" firstAttribute="leading" secondItem="KoW-RG-uuf" secondAttribute="leading" id="ZK5-Dv-Okx"/>
+                            <constraint firstItem="0ub-HS-Kpc" firstAttribute="top" secondItem="KoW-RG-uuf" secondAttribute="top" constant="64" id="tCP-w6-4JB"/>
+                            <constraint firstItem="tcd-tF-4Xf" firstAttribute="top" secondItem="KoW-RG-uuf" secondAttribute="top" constant="64" id="ueb-Lg-H4J"/>
+                        </constraints>
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="站内设施" id="J8H-H0-nzO">
@@ -3270,7 +3357,7 @@ lable</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hzE-A0-l4t" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-549" y="3805"/>
+            <point key="canvasLocation" x="-549" y="3796"/>
         </scene>
     </scenes>
     <resources>
@@ -3284,7 +3371,7 @@ lable</string>
         <image name="answer" width="35" height="35"/>
         <image name="btnAddImg" width="68" height="67"/>
         <image name="btnDecImg" width="68" height="67"/>
-        <image name="collect-01" width="37" height="37"/>
+        <image name="collect-01" width="23" height="22"/>
         <image name="collect-icon" width="24" height="24"/>
         <image name="collect-rute-icon" width="24" height="24"/>
         <image name="end-station-btn" width="93" height="29"/>
@@ -3316,6 +3403,8 @@ lable</string>
         <image name="searchroute_collection" width="74" height="74"/>
         <image name="setting-app-icon" width="125" height="125"/>
         <image name="start-station-btn" width="93" height="29"/>
+        <image name="station_local" width="23" height="24"/>
+        <image name="station_uncollect_icon" width="31" height="31"/>
         <image name="tablecell_lineicon_28002" width="44" height="44"/>
         <image name="tablecell_lineicon_c" width="44" height="44"/>
         <image name="tablecell_lineicon_f" width="44" height="44"/>

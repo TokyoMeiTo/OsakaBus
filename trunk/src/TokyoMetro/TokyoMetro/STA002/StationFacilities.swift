@@ -24,10 +24,13 @@ class StationFacilities: UIViewController, UITableViewDelegate, NSObjectProtocol
         
         facilities = selectStaT03Table(statId)
         
-        tbList.delegate = self
-        tbList.dataSource = self
-        tbList.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell")
-        
+        if (facilities?.count > 0) {
+            tbList.delegate = self
+            tbList.dataSource = self
+            tbList.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+        } else {
+            tbList.hidden = true
+        }
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -75,11 +78,10 @@ class StationFacilities: UIViewController, UITableViewDelegate, NSObjectProtocol
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath){
-        var comercialInsideDetail: ComercialInsideDetail = self.storyboard?.instantiateViewControllerWithIdentifier("ComercialInsideDetail") as ComercialInsideDetail
-//        comercialInsideDetail.statId = group_id
-        comercialInsideDetail.comeInsiTable = facilities![indexPath.row]
-        
-        self.navigationController?.pushViewController(comercialInsideDetail, animated: true)
+//        var comercialInsideDetail: ComercialInsideDetail = self.storyboard?.instantiateViewControllerWithIdentifier("ComercialInsideDetail") as ComercialInsideDetail
+//        comercialInsideDetail.comeInsiTable = facilities![indexPath.row]
+//        
+//        self.navigationController?.pushViewController(comercialInsideDetail, animated: true)
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -87,7 +89,7 @@ class StationFacilities: UIViewController, UITableViewDelegate, NSObjectProtocol
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 170
+        return 115
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -96,40 +98,80 @@ class StationFacilities: UIViewController, UITableViewDelegate, NSObjectProtocol
             subview.removeFromSuperview()
         }
         // cell显示内容
-        var imgLandMark: UIImage = UIImage(named: (facilities![indexPath.row].item(STAT03_COME_INSI_IMAGE) as String).getStationInnerComPath())
-        var imageViewLandMark = UIImageView(frame: CGRectMake(0, 0, tableView.frame.width, 170))
-        imageViewLandMark.image = imgLandMark
-        cell.addSubview(imageViewLandMark)
+//        var imgLandMark: UIImage = UIImage(named: (facilities![indexPath.row].item(STAT03_COME_INSI_IMAGE) as String).getStationInnerComPath())
+//        var imageViewLandMark = UIImageView(frame: CGRectMake(0, 0, tableView.frame.width, 170))
+//        imageViewLandMark.image = imgLandMark
+//        cell.addSubview(imageViewLandMark)
+//        
+//        var lblTemp = UILabel(frame: CGRect(x:0,y:135,width:tableView.frame.width,height:35))
+//        lblTemp.alpha = 0.4
+//        lblTemp.backgroundColor = UIColor.blackColor()
+//        cell.addSubview(lblTemp)
+//        
+//        var lblLandMark = UILabel(frame: CGRect(x:15,y:130,width:tableView.frame.width,height:40))
+//        lblLandMark.backgroundColor = UIColor.clearColor()
+//        lblLandMark.font = UIFont.boldSystemFontOfSize(16)
+//        lblLandMark.textColor = UIColor.whiteColor()
+//        lblLandMark.text = "\(facilities![indexPath.row].item(STAT03_COME_INSI_NAME))"
+//        lblLandMark.textAlignment = NSTextAlignment.Left
+//        cell.addSubview(lblLandMark)
         
-        var lblTemp = UILabel(frame: CGRect(x:0,y:135,width:tableView.frame.width,height:35))
-        lblTemp.alpha = 0.4
-        lblTemp.backgroundColor = UIColor.blackColor()
-        cell.addSubview(lblTemp)
+        var imgCompiner: UIImageView = UIImageView(frame: CGRectMake(5, 8, 100, 100))
+        imgCompiner.image = UIImage(named: (facilities![indexPath.row].item(STAT03_COME_INSI_IMAGE) as String).getStationInnerComPath())
         
-        var lblLandMark = UILabel(frame: CGRect(x:15,y:130,width:tableView.frame.width,height:40))
-        lblLandMark.backgroundColor = UIColor.clearColor()
-        lblLandMark.font = UIFont.boldSystemFontOfSize(16)
-        lblLandMark.textColor = UIColor.whiteColor()
-        lblLandMark.text = "\(facilities![indexPath.row].item(STAT03_COME_INSI_NAME))"
-        lblLandMark.textAlignment = NSTextAlignment.Left
-        cell.addSubview(lblLandMark)
+        cell.addSubview(imgCompiner)
         
-//        var btnFav:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-//        btnFav.frame = CGRect(x:15,y:10,width:40,height:40)
-//        
-//        var tableUsrT03:INF002FavDao = INF002FavDao()
-//        var lmkFav:UsrT03FavoriteTable? = tableUsrT03.queryFav("\(landMarks![indexPath.row].item(MSTT04_LANDMARK_LMAK_ID))")
-//        
-//        var imgFav = UIImage(named: "INF00202.png")
-//        if(lmkFav!.rowid != nil && lmkFav!.rowid != ""){
-//            imgFav = UIImage(named: "INF00206.png")
-//        }
-//        
-//        btnFav.setBackgroundImage(imgFav, forState: UIControlState.Normal)
-//        btnFav.tag = 101
-//        
-//        btnFav.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
-//        cell.addSubview(btnFav)
+        var strName = facilities![indexPath.row].item(STAT03_COME_INSI_NAME) as String
+        var lblName = UILabel(frame: CGRectMake(115, 5, 200, 21))
+        lblName.adjustsFontSizeToFitWidth = true
+        lblName.font = UIFont.boldSystemFontOfSize(16)
+        lblName.text = strName
+        cell.addSubview(lblName)
+        
+        var imageTime: UIImageView = UIImageView(frame: CGRectMake(115, 33, 14, 14))
+        cell.addSubview(imageTime)
+        
+        var strTime = (facilities![indexPath.row].item(STAT03_COME_INSI_BISI_HOUR) as String).relpaceAll("\\n", target: "\n")
+        var lblTime = UILabel(frame: CGRectMake(135, 31, 180, textHeight(strTime, width: 180, size: 14)))
+        lblTime.font = UIFont.systemFontOfSize(14)
+        lblTime.numberOfLines = 0
+        lblTime.text = strTime
+        cell.addSubview(lblTime)
+
+        var strPrice = facilities![indexPath.row].item(STAT03_COME_INSI_PRICE) as? String
+        if (strPrice != nil) {
+            
+            var imagePrc: UIImageView = UIImageView(frame: CGRectMake(115, CGFloat(lblTime.frame.height + 8 + lblTime.frame.origin.y), 14, 14))
+            cell.addSubview(imagePrc)
+            
+            var lblPrice = UILabel(frame: CGRectMake(135, CGFloat(lblTime.frame.height + 5 + lblTime.frame.origin.y), 180, textHeight(strPrice!, width: 180, size: 14)))
+            lblPrice.font = UIFont.systemFontOfSize(14)
+            lblPrice.numberOfLines = 0
+            
+            lblPrice.text = strPrice
+            cell.addSubview(lblPrice)
+            
+            var strAddress = facilities![indexPath.row].item(STAT03_COME_INSI_LOCA_CH) as String
+            var lblAddress = UILabel(frame: CGRectMake(135, CGFloat(lblPrice.frame.height + 8 + lblPrice.frame.origin.y), 180, textHeight(strAddress, width: 180, size: 14)))
+            lblAddress.font = UIFont.systemFontOfSize(14)
+            lblAddress.adjustsFontSizeToFitWidth = true
+            lblAddress.numberOfLines = 0
+            lblAddress.text = strAddress
+            cell.addSubview(lblAddress)
+        } else {
+            var strAddress = facilities![indexPath.row].item(STAT03_COME_INSI_LOCA_CH) as String
+            var lblAddress = UILabel(frame: CGRectMake(135, CGFloat(lblTime.frame.height + 5 + lblTime.frame.origin.y), 180, textHeight(strAddress, width: 180, size: 14)))
+            lblAddress.font = UIFont.systemFontOfSize(14)
+            lblAddress.adjustsFontSizeToFitWidth = true
+            lblAddress.numberOfLines = 0
+            lblAddress.text = strAddress
+            cell.addSubview(lblAddress)
+        }
+        
+        var lblLine = UILabel(frame: CGRectMake(0, 114, 320, 14))
+        lblLine.backgroundColor = UIColor.lightGrayColor()
+        cell.addSubview(lblLine)
+        
         return cell
     }
     
@@ -145,6 +187,16 @@ class StationFacilities: UIViewController, UITableViewDelegate, NSObjectProtocol
         } else if editingStyle == .Insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
         }
+    }
+    
+    
+    func textHeight(value:String, width: CGFloat, size: CGFloat) -> CGFloat {
+        
+        var font:NSDictionary = [NSFontAttributeName:UIFont.systemFontOfSize(size)]
+        var maxSize = CGSizeMake(width, 2000)
+        var size:CGSize = value.boundingRectWithSize(maxSize, options:NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: font, context: nil).size
+        
+        return size.height
     }
     
 }

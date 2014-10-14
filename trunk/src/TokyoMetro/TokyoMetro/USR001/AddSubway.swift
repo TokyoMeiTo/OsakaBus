@@ -30,7 +30,6 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        historyArr = ["上野", "浅草桥", "大手町"]
 
         odbRoute()
         odbStation()
@@ -130,18 +129,16 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if (segment.selectedSegmentIndex == 0) {
-            
-        } else {
             var detail: StationDetail = self.storyboard?.instantiateViewControllerWithIdentifier("StationDetail") as StationDetail
             
             var map: UsrT03FavoriteTable = stationArr[indexPath.row] as UsrT03FavoriteTable
             detail.cellJPName = detailArr[indexPath.row][0] as String
             detail.cellJPNameKana = detailArr[indexPath.row][1] as String
             detail.stat_id = map.item(USRT03_STAT_ID) as String
-//            detail.statMetroId = map.item(MSTT02_STAT_METRO_ID) as String
-            
             
             self.navigationController?.pushViewController(detail, animated: true)
+        } else if (segment.selectedSegmentIndex == 1) {
+            
         }
     }
     
@@ -149,10 +146,9 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if (segment.selectedSegmentIndex == 0) {
-            
-            return ruteArr.count
-        } else if (segment.selectedSegmentIndex == 1) {
             return stationArr.count
+        } else if (segment.selectedSegmentIndex == 1) {
+            return ruteArr.count
         } else {
         
             return historyArr.count
@@ -162,7 +158,7 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        if (segment.selectedSegmentIndex == 1) {
+        if (segment.selectedSegmentIndex == 0) {
             let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("CollectCell", forIndexPath: indexPath) as UITableViewCell
             
             var map: UsrT03FavoriteTable = stationArr[indexPath.row] as UsrT03FavoriteTable
@@ -192,12 +188,11 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
                     
                  lineView.addSubview(line)
             }
-
             
             cell.addSubview(lineView)
             
             return cell
-        } else if (segment.selectedSegmentIndex == 0) {
+        } else if (segment.selectedSegmentIndex == 1) {
         
             let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("LineCell", forIndexPath: indexPath) as UITableViewCell
             
@@ -226,9 +221,9 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         
-        if (segment.selectedSegmentIndex == 1) {
+        if (segment.selectedSegmentIndex == 0) {
             return 55
-        } else if (segment.selectedSegmentIndex == 0) {
+        } else if (segment.selectedSegmentIndex == 1) {
             return 55
         } else {
             return 43
@@ -249,13 +244,13 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
             if(editingStyle == UITableViewCellEditingStyle.Delete){
                 
-                if (segment.selectedSegmentIndex == 1) {
+                if (segment.selectedSegmentIndex == 0) {
                     
                     if (removeSubway(indexPath.row)) {
                         stationArr.removeObjectAtIndex(indexPath.row)
                         table.reloadData()
                     }
-                } else if (segment.selectedSegmentIndex == 0) {
+                } else if (segment.selectedSegmentIndex == 1) {
                     if (removeRute(indexPath.row)) {
                         ruteArr.removeObjectAtIndex(indexPath.row)
                         ruteRowIdArr.removeObjectAtIndex(indexPath.row)

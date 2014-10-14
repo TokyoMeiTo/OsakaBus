@@ -14,10 +14,8 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
     @IBOutlet weak var cellNameLabel: UILabel!
     @IBOutlet weak var cellJPNmaeLabel: UILabel!
     @IBOutlet weak var scrollView: UIScrollView!
-    @IBOutlet weak var btn1: UIButton!
-    @IBOutlet weak var btn2: UIButton!
-    @IBOutlet weak var btn3: UIButton!
     @IBOutlet weak var weSegment: UISegmentedControl!
+    @IBOutlet weak var imgCollect: UIImageView!
     
     var cellJPName:String = ""
     var cellJPNameKana:String = ""
@@ -80,8 +78,8 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
         addLineTime()
         // 添加站点相关信息的链接
         addStationSelect()
-        
-//        odbTime(stat_id)
+        // 检索该站是否已收藏
+        odbCollectStation()
 
     }
     
@@ -217,6 +215,18 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
         }
     }
     
+    func odbCollectStation() {
+        var table = UsrT03FavoriteTable()
+        table.favoType = "01"
+        table.statId = group_id
+        var rows = table.selectAll()
+        if (rows.count > 0) {
+            imgCollect.image = UIImage(named: "station_collect_icon")
+        } else {
+            imgCollect.image = UIImage(named: "station_uncollect_icon")
+        }
+    }
+    
     
     func collectStation() {
     
@@ -244,8 +254,14 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
             table.ext4 = ""
             table.ext5 = ""
             if (table.insert()) {
-                println("插入成功")
+                var sureBtn: UIAlertView = UIAlertView(title: "", message: "收藏成功！", delegate: self, cancelButtonTitle: "确定")
+                
+                sureBtn.show()
+                imgCollect.image = UIImage(named: "station_collect_icon")
             } else {
+                var sureBtn: UIAlertView = UIAlertView(title: "", message: "收藏失败！", delegate: self, cancelButtonTitle: "确定")
+                
+                sureBtn.show()
                 println("插入失败")
             }
         }
@@ -323,7 +339,7 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
     
         var stationExit: ExitInfo = self.storyboard?.instantiateViewControllerWithIdentifier("stationExit") as ExitInfo
         
-        stationExit.statId = stat_id
+        stationExit.statId = group_id
         
         self.navigationController?.pushViewController(stationExit, animated: true)
     }

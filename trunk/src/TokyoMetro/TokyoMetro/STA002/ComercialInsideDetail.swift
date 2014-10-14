@@ -40,7 +40,7 @@ class ComercialInsideDetail: UIViewController {
             lblPrice.text = price
         }
         
-        image.image = UIImage(named: (comeInsiTable.item(STAT03_COME_INSI_LOCA_CH) as String).getStationInnerComPath())
+        image.image = UIImage(named: (comeInsiTable.item(STAT03_COME_INSI_IMAGE) as String).getStationInnerComPath())
 
     }
     

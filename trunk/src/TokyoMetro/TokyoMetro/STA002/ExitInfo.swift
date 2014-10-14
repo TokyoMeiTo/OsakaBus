@@ -31,41 +31,15 @@ class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-    
-    
-    func addData() {
-    
-        arrList.addObject(["1出口",["月星-环球港"]])
-        arrList.addObject(["2出口",["月星-环球港"]])
-        arrList.addObject(["3出口",["白玉大楼", "白玉新苑"]])
-        arrList.addObject(["5出口",["银城大厦", "海棠大厦"]])
-        arrList.addObject(["6出口",["月星-环球港"]])
-    }
+
     
     func odbExitInfo() {
         var table = StaT01StationExitTable()
-//        table.statId = statId
+        table.statId = statId
         rows = table.selectWithOrder(STAT01_STAT_EXIT_ID, desc: true)
         
     }
-    
-    @IBAction func segmentChanged(sender: UISegmentedControl) {
-    
-//        if (sender.selectedSegmentIndex == 0) {
-//        
-//            exitTable.hidden = false
-//            mapView.hidden = true
-//            
-//            exitTable.reloadData()
-//        } else {
-        
-            exitTable.hidden = false
-            mapView.hidden = true
-            
-            exitTable.reloadData()
-//        }
-    }
-    
+
     
 //    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
 //        if (segment.selectedSegmentIndex == 0) {
