@@ -82,14 +82,15 @@ class StationListController: UIViewController, GPSDelegate{
      * 初始化全局变量
      */
     func initValue(){
+        self.navigationItem.rightBarButtonItem = nil
         tbList.hidden = true
         mkMap.hidden = true
         sgmMain.selectedSegmentIndex = NUM_0
         sgmMain.addTarget(self, action: "segmentChanged:", forControlEvents: UIControlEvents.ValueChanged)
         // 定位按钮点击事件
-        var reLocationButton:UIBarButtonItem = self.navigationItem.rightBarButtonItem!
-        reLocationButton.target = self
-        reLocationButton.action = "buttonAction:"
+//        var reLocationButton:UIBarButtonItem = self.navigationItem.rightBarButtonItem!
+//        reLocationButton.target = self
+//        reLocationButton.action = "buttonAction:"
     }
     
     /**
@@ -176,7 +177,7 @@ class StationListController: UIViewController, GPSDelegate{
         mapController.location = fromLocation
         mapController.stations = stations
         
-        // 显示距离最近的3个地铁站
+        // 显示距离最近的10个地铁站
         for(var i=0;i<stations.count;i++){
             var key = stations[i] as MstT02StationTable
             var statLat:AnyObject? = key.item(MSTT02_STAT_LAT)
@@ -271,42 +272,6 @@ class StationListController: UIViewController, GPSDelegate{
         
         stations = dao.queryMiniDistance(lon,lat: lat) as Array<MstT02StationTable>
         return stations
-//        var stations:Array<MstT02StationTable> = Array<MstT02StationTable>()
-//        var tableMstT02 = MstT02StationTable()
-//        var rows:NSArray = tableMstT02.selectAll()
-//        var distances:Array<CDouble> = [0,0,0,0,0,0,0]
-//        var stationIndex:Array<Int> = [0,1,2,3,4,5,6]
-//        var distancesTmp:Array<CDouble> = [0,0,0,0,0,0,0]
-//        var distancesTest:Array<CDouble> = Array<CDouble>()
-//        // 排序出最近的3个站点
-//        for(var i=0;i<rows.count;i++){
-//            var key = rows[i] as MstT02StationTable
-//            var statLat:AnyObject? = key.item(MSTT02_STAT_LAT)
-//            var statLon:AnyObject? = key.item(MSTT02_STAT_LON)
-//            var statLocation = CLLocation(latitude: statLat as CDouble, longitude: statLon as CDouble)
-//            distancesTest.append(calcDistance(fromLocation, statLocation: statLocation))
-//            if(i<7){
-//                distances[i] = calcDistance(fromLocation, statLocation: statLocation)
-//                distancesTmp[i] = distances[i]
-//            }else{
-//                distancesTmp.append(calcDistance(fromLocation, statLocation: statLocation))
-//                sort(&distancesTmp)
-//                for(var j=0;j<distances.count;j++){
-//                    if(distancesTmp[7] == distances[j]){
-//                        distances[j] = calcDistance(fromLocation, statLocation: statLocation)
-//                        stationIndex[j] = i
-//                        break
-//                    }
-//                }
-//                distancesTmp.removeAtIndex(7)
-//            }
-//        }
-//        // 检证是否最近
-//        //        println(distances)
-//        //        sort(&distancesTest)
-//        //        println("-------")
-//        //        println(distancesTest)
-//        return [rows[stationIndex[0]] as MstT02StationTable, rows[stationIndex[1]] as MstT02StationTable, rows[stationIndex[2]] as MstT02StationTable, rows[stationIndex[3]] as MstT02StationTable, rows[stationIndex[4]] as MstT02StationTable, rows[stationIndex[5]] as MstT02StationTable, rows[stationIndex[6]] as MstT02StationTable]
     }
     
     /**
@@ -372,6 +337,10 @@ class ListController: UITableViewController {
         return items!.count
     }
     
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 55
+    }
+    
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
         for subview in cell.subviews {
@@ -380,22 +349,23 @@ class ListController: UITableViewController {
             }
         }
         var tableMstT02 = items![indexPath.row] as MstT02StationTable
-        var statNm:String = ""
         var line:MstT01LineTable = sender!.selectLineTable("\(tableMstT02.item(MSTT02_LINE_ID))") as MstT01LineTable
-        statNm = "\(tableMstT02.item(MSTT02_STAT_NAME))"
+        var statNm:String = "\(tableMstT02.item(MSTT02_STAT_ID))".station()
         
-        var lblLine = UILabel(frame: CGRect(x:65,y:0,width:tableView.frame.width - 80,height:43))
-        lblLine.text = "\(line.item(MSTT01_LINE_NAME)):"
-        lblLine.textAlignment = NSTextAlignment.Left
-        cell.addSubview(lblLine)
-        
-        var lblStation = UILabel(frame: CGRect(x:160,y:0,width:tableView.frame.width - 80,height:43))
-        lblStation.textColor = UIColor.lightGrayColor()
+        var lblStation = UILabel(frame: CGRect(x:15,y:5,width:tableView.frame.width - 30,height:30))
+        lblStation.font = UIFont.systemFontOfSize(17)
         lblStation.text = statNm
         lblStation.textAlignment = NSTextAlignment.Left
         cell.addSubview(lblStation)
         
-        var imageViewLine = UIImageView(frame: CGRectMake(15, 5, 30, 30))
+        var lblDetail = UILabel(frame: CGRect(x:15,y:25,width:tableView.frame.width - 30,height:25))
+        lblDetail.font = UIFont.systemFontOfSize(14)
+        lblDetail.textColor = UIColor.lightGrayColor()
+        lblDetail.text = "\(tableMstT02.item(MSTT02_STAT_NAME))" + "(\(tableMstT02.item(MSTT02_STAT_NAME_KANA)))"
+        lblDetail.textAlignment = NSTextAlignment.Left
+        cell.addSubview(lblDetail)
+        
+        var imageViewLine = UIImageView(frame: CGRectMake(tableView.frame.width - 55, 12.5, 30, 30))
         imageViewLine.image = lineImage("\(tableMstT02.item(MSTT02_LINE_ID))")
         cell.addSubview(imageViewLine)
         cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator

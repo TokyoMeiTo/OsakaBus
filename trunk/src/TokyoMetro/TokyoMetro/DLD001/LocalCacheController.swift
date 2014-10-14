@@ -15,7 +15,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
 
     var classType:Int = 0
     
-    let uri:String = "http://192.168.1.84/Resource.zip"//"http://qd.baidupcs.com/file/8793004b8eb196a2d8a990cf3bd6e9d6?fid=2047242392-250528-1530314747&time=1413163152&sign=FDTAXER-DCb740ccc5511e5e8fedcff06b081203-9bNODLPOIQYbOQ1%2BBNElSK6xxyw%3D&to=qb&fm=Qin,B,U,nc&newver=1&newfm=1&flow_ver=3&expires=8h&rt=sh&r=531068060&mlogid=1869520282&vuk=-&vbdid=3152997201&fn=maxuqu%20-%20%E5%89%AF%E6%9C%AC%20-%20%E5%89%AF%E6%9C%AC%20%282%29.zip"
+    let uri:String = "http://osakabus.sinaapp.com/Resource.zip"//"http://qd.baidupcs.com/file/8793004b8eb196a2d8a990cf3bd6e9d6?fid=2047242392-250528-1530314747&time=1413163152&sign=FDTAXER-DCb740ccc5511e5e8fedcff06b081203-9bNODLPOIQYbOQ1%2BBNElSK6xxyw%3D&to=qb&fm=Qin,B,U,nc&newver=1&newfm=1&flow_ver=3&expires=8h&rt=sh&r=531068060&mlogid=1869520282&vuk=-&vbdid=3152997201&fn=maxuqu%20-%20%E5%89%AF%E6%9C%AC%20-%20%E5%89%AF%E6%9C%AC%20%282%29.zip"
     let filePath:String = "Resource.zip"
     let unZipPath:String = "TokyoMetroCache"
     
@@ -114,13 +114,14 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
                 response, localfile, error in
                 if(error == nil){
                     println("下载成功解压文件")
-                    dispatch_async(dispatch_get_main_queue()) { () -> Void in
-                        self.loadProgress = "100.00 %"
-                        self.tbList.reloadData()
-                    }
+//                    dispatch_async(dispatch_get_main_queue()) { () -> Void in
+//                        self.loadProgress = "100.00 %"
+//                        self.tbList.reloadData()
+//                    }
                     self.unzipFile()
                 }else{
                     println("下载失败")
+                    println(error)
                     // 在子线程中更新UI
                     dispatch_async(dispatch_get_main_queue()) { () -> Void in
                         self.downloading = false
@@ -143,10 +144,6 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
      * NSProgress监听事件
      */
     override func observeValueForKeyPath(keyPath: String!, ofObject object: AnyObject!, change: [NSObject : AnyObject]!, context: UnsafeMutablePointer<Void>) {
-//        if(self.UIloading){
-//            return
-//        }
-        //self.UIloading = true
         if (keyPath=="fractionCompleted") {
             var progress:NSProgress = object as NSProgress;
             if(countElements("\(progress.fractionCompleted)") > 5 && progress.fractionCompleted > 0.0001){
@@ -236,13 +233,6 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
     // MARK: - Table View
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return items.count
-    }
-    
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath: NSIndexPath){
-        if(didSelectRowAtIndexPath.section == 0){
-            var cell = tableView.cellForRowAtIndexPath(didSelectRowAtIndexPath)
-            cell!.selected = false
-        }
     }
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -413,7 +403,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
             case 1:
                 if(!updateComplete){
                     var btnDownload:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-                    btnDownload.frame = CGRect(x:(tableView.frame.width - 250)/2,y:5,width:250,height:tableView.frame.height/13)
+                    btnDownload.frame = CGRect(x:(tableView.frame.width - 250)/2,y:5,width:250,height:250/4)
                     var imgDownload = UIImage(named: "DLD00101.png")
                     btnDownload.setBackgroundImage(imgDownload, forState: UIControlState.Normal)
                     btnDownload.tag = 101
@@ -423,7 +413,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
                     cell.addSubview(btnDownload)
                 }else{
                     var btnUse:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-                    btnUse.frame = CGRect(x:(tableView.frame.width - 250)/2,y:5,width:250,height:tableView.frame.height/13)
+                    btnUse.frame = CGRect(x:(tableView.frame.width - 250)/2,y:5,width:250,height:250/4)
                     var imgUse = UIImage(named: "DLD00102.png")
                     btnUse.setBackgroundImage(imgUse, forState: UIControlState.Normal)
                     btnUse.tag = 102
@@ -470,7 +460,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
                 cell.addSubview(lblMobileSize)
             case 1:
                 var btnDownload:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-                btnDownload.frame = CGRect(x:(tableView.frame.width - 250)/2,y:5,width:250,height: tableView.frame.height/13)
+                btnDownload.frame = CGRect(x:(tableView.frame.width - 250)/2,y:5,width:250,height: 250/4)
                 var imgDownload = UIImage(named: "DLD00101.png")
                 btnDownload.setBackgroundImage(imgDownload, forState: UIControlState.Normal)
                 //btnDownload.setTitle("重新下载", forState: UIControlState.Normal)
@@ -485,20 +475,13 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
                 return cell
             }
         }
+        cell.selectionStyle = UITableViewCellSelectionStyle.None
     return cell
     }
     
     func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         // Return false if you do not want the specified item to be editable.
         return false
-    }
-    
-    func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
-        if(indexPath.section == 0){
-            var cell = tableView.cellForRowAtIndexPath(indexPath)
-            cell!.selected = false
-        }
-        return indexPath
     }
     
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {

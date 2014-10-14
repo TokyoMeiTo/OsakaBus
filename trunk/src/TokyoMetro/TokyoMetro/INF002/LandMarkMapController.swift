@@ -20,9 +20,14 @@ class LandMarkMapController: UIViewController, MKMapViewDelegate, UIActionSheetD
     /* 起点緯度 */
     var fromLon:CDouble = 139.766453//121.38368547 // 天地科技广场1号楼
     
+    /* 最近站点信息 */
+    var stations:Array<MstT02StationTable>?
     /* 地标 */
     var landMark:MstT04LandMarkTable?
     var landMarkType:String = "景点"
+    
+    var landMarkLocation:CLLocation?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -41,28 +46,65 @@ class LandMarkMapController: UIViewController, MKMapViewDelegate, UIActionSheetD
         // 设置地图显示类型
         mkMap.mapType = MKMapType.Standard
         mkMap.showsUserLocation = true
-        
+
         var span: MKCoordinateSpan = MKCoordinateSpanMake(0.01, 0.01)
         
         var statLat:Double = ("\(landMark!.item(MSTT04_LANDMARK_LMAK_LAT))" as NSString).doubleValue
         var statLon:Double = ("\(landMark!.item(MSTT04_LANDMARK_LMAK_LON))" as NSString).doubleValue
         
-        var statLocation = CLLocation(latitude: fromLat, longitude: fromLon)
+        if(landMarkLocation! == nil){
+            landMarkLocation = CLLocation(latitude: statLon, longitude: statLat)
+        }
         
+        //var statLocation = CLLocation(latitude: fromLat, longitude: fromLon)
+        
+        // 获取最近的10个站点
+        stations = StationListController.selectStationTable(landMarkLocation!)
+        
+        // 显示距离最近的10个地铁站
+        for(var i=0;i<stations!.count;i++){
+            var key = stations![i] as MstT02StationTable
+            var statLat:AnyObject? = key.item(MSTT02_STAT_LAT)
+            var statLon:AnyObject? = key.item(MSTT02_STAT_LON)
+            var annotation = MKPointAnnotation()
+            annotation.coordinate = CLLocationCoordinate2D(latitude:statLat as CLLocationDegrees, longitude:statLon as CLLocationDegrees)
+            annotation.title = "\(key.item(MSTT02_STAT_ID))".station()
+            mkMap.addAnnotation(annotation)
+            var region : MKCoordinateRegion = MKCoordinateRegionMake(annotation.coordinate, span)
+            mkMap.setRegion(region, animated:true)
+        }
+        
+        // NSInvalidArgumentException 'Invalid Coordinate +139.77180400, +35.68542600'
         // MKMapView定位到当前位置
-        var coordinateOnEarth = statLocation.coordinate
+        var coordinateOnEarth = landMarkLocation!.coordinate
         var annotation = MKPointAnnotation()
         annotation.title = "\(landMark!.item(MSTT04_LANDMARK_LMAK_NAME_EXT1))"
         annotation.coordinate = coordinateOnEarth
         
-        mkMap.setCenterCoordinate(coordinateOnEarth, animated:false)
+        mkMap.setCenterCoordinate(coordinateOnEarth, animated:true)
         
         mkMap.addAnnotation(annotation)
-        mkMap.selectAnnotation(annotation, animated: true)
         
         var region : MKCoordinateRegion = MKCoordinateRegionMake(coordinateOnEarth, span)
         mkMap.setRegion(region, animated:true)
     }
+    
+    /**
+     * 到DB中查找最近的站点
+     */
+    class func selectStationTable(fromLocation: CLLocation) -> Array<MstT02StationTable>{
+        var stationsNearest:Array<MstT02StationTable> = Array<MstT02StationTable>()
+        
+        var dao = Sta003Dao()
+        var coordinateOnMars: CLLocationCoordinate2D = fromLocation.coordinate
+        var lon:CDouble = coordinateOnMars.longitude
+        var lat:CDouble = coordinateOnMars.latitude
+        
+        stationsNearest = dao.queryMiniDistance(lon,lat: lat) as Array<MstT02StationTable>
+        return stationsNearest
+    }
+
+    
     
     func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) ->
         MKAnnotationView!{
@@ -75,7 +117,7 @@ class LandMarkMapController: UIViewController, MKMapViewDelegate, UIActionSheetD
             pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "\(landMark!.item(MSTT04_LANDMARK_LMAK_NAME_EXT1))")
             // 4'3'5
             var img = UIImage(named: "INF00204.png")
-            landMarkType = "\(landMark!.item(MSTT04_LANDMARK_LMAK_TYPE))" as String
+            landMarkType = "\(landMark!.item(MSTT04_LANDMARK_LMAK_TYPE))"
             switch landMarkType{
             case "景点":
                 img = UIImage(named: "INF00204.png")
@@ -85,6 +127,9 @@ class LandMarkMapController: UIViewController, MKMapViewDelegate, UIActionSheetD
                 img = UIImage(named: "INF00205.png")
             default:
                 println("nothing")
+            }
+            if(annotation.title != "\(landMark!.item(MSTT04_LANDMARK_LMAK_NAME_EXT1))"){
+                img = UIImage(named: "STA00301.png")
             }
             pinView!.pinColor = .Red
             pinView!.image = img

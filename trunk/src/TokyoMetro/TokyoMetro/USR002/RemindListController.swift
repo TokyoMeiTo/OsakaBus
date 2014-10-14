@@ -430,19 +430,37 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
         items = NSMutableArray.array()
         for(var i=0;i < trainAlarms!.count;i++){
             var train:UsrT02TrainAlarmTable = trainAlarms![i]
-            var directions = [convertTrainTime("\(train.item(USRT02_TRAIN_ALARM_FIRST_TIME))"),convertTrainTime("\(train.item(USRT02_TRAIN_ALARM_LAST_TIME))")]
+            
             var trainFlag:Array<String> = [ "早班车：", "末班车："]
-            items.addObject(["\(train.item(USRT02_TRAIN_ALARM_LINE_ID))".line() + ":" + "\(train.item(USRT02_TRAIN_ALARM_STAT_ID))".station(), directions, trainFlag])
+            var trainTime:Array<String> = [ "", ""]
+            var directions:Array<String> = ["",""]
+            
+            if("\(train.item(USRT02_TRAIN_ALARM_LAST_FLAG))" == "1"){
+                trainFlag = ["末班车：" , "早班车："]
+                trainTime = [convertTrainTime("\(train.item(USRT02_TRAIN_ALARM_LAST_TIME))"),convertTrainTime("\(train.item(USRT02_TRAIN_ALARM_FIRST_TIME))")]
+                directions = ["\(train.item(USRT02_TRAIN_ALARM_TRAI_DIRT))".station() + "方向",convertTrainTime("\(train.item(USRT02_TRAIN_ALARM_FIRST_TIME))")]
+                
+            }else{
+                trainFlag = ["早班车：" , "末班车："]
+                trainTime = [convertTrainTime("\(train.item(USRT02_TRAIN_ALARM_FIRST_TIME))"),convertTrainTime("\(train.item(USRT02_TRAIN_ALARM_FIRST_TIME))")]
+                directions = ["\(train.item(USRT02_TRAIN_ALARM_TRAI_DIRT))".station() + "方向",convertTrainTime("\(train.item(USRT02_TRAIN_ALARM_LAST_FLAG))")]
+            }
+            
+            items.addObject(["\(train.item(USRT02_TRAIN_ALARM_LINE_ID))".line() + ":" + "\(train.item(USRT02_TRAIN_ALARM_STAT_ID))".station(), directions, trainFlag, trainTime])
         }
     }
 
     func convertTrainTime(time:String) -> String{
+        if(countElements(time) < 4){
+            return time
+        }
+        
         var tempStr = "0123"
         
         var indexHourTo = tempStr.rangeOfString("1")
         var indexMinFrom = tempStr.rangeOfString("2")
         
-        return time.substringToIndex(indexHourTo!.endIndex) + ":" + time.substringFromIndex(indexMinFrom!.startIndex)
+        return "  " + time.substringToIndex(indexHourTo!.endIndex) + ":" + time.substringFromIndex(indexMinFrom!.startIndex) + "  "
     }
     
     /**
@@ -529,6 +547,10 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
         return 1//items[section][1].count
     }
     
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 50
+    }
+    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
         for subview in cell.subviews{
@@ -538,14 +560,23 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
         }
         cell.textLabel!.text = items[indexPath.section][2][indexPath.row] as? String
         cell.textLabel!.textColor = UIColor.blackColor()
-        cell.textLabel!.font = UIFont(name:"Helvetica-Bold", size:15)
-        var lblLastMetroTime = UILabel(frame: CGRect(x:65,y:0,width:230,height:43))
+        cell.textLabel!.font = UIFont.systemFontOfSize(18)
+        
+        var lblLastMetroTime = UILabel(frame: CGRect(x:75,y:0,width:230,height:50))
         lblLastMetroTime.tag = 101
-        lblLastMetroTime.text = items[indexPath.section][1][indexPath.row] as? String
+        lblLastMetroTime.font = UIFont.boldSystemFontOfSize(22)
+        lblLastMetroTime.text = items[indexPath.section][3][indexPath.row] as? String
         lblLastMetroTime.textAlignment = NSTextAlignment.Left
         cell.addSubview(lblLastMetroTime)
         
-        var switchAralm = UISwitch(frame: CGRect(x:250,y:5,width:60,height:30))
+        var lblLastMetroDirt = UILabel(frame: CGRect(x:150,y:0,width:230,height:50))
+        lblLastMetroDirt.tag = 101
+        lblLastMetroDirt.font = UIFont.systemFontOfSize(18)
+        lblLastMetroDirt.text = items[indexPath.section][1][indexPath.row] as? String
+        lblLastMetroDirt.textAlignment = NSTextAlignment.Left
+        cell.addSubview(lblLastMetroDirt)
+        
+        var switchAralm = UISwitch(frame: CGRect(x:250,y:10,width:60,height:30))
         switchAralm.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.ValueChanged)
         switchAralm.tag = 102
         var lblSection = UILabel()

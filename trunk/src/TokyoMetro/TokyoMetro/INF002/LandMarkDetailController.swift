@@ -17,8 +17,11 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, NSObjectP
     /* 最近站点列表UITableView */
     @IBOutlet weak var tbList: UITableView!
     
+    let SMALL_TEXT_SIZE:CGFloat = 15
+    let LABEL_TEXT_SIZE:CGFloat = 20
+    
     /* 地标显示内容的数量 */
-    let LANDMARK_DETAIL_COUNT:Int = 9
+    var itemCount:Int = 9
     
     /* 地标 */
     var landMark:MstT04LandMarkTable?
@@ -27,6 +30,8 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, NSObjectP
     var imgContainer:UIScrollView = UIScrollView(frame: CGRectMake(0, 0, 1600, 200))
     var viewContainer:UIView = UIView(frame: CGRectMake(0, 0, 1600, 200))
     
+    var stations:Array<MstT02StationTable>?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -34,6 +39,8 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, NSObjectP
         
         btnFav.hidden = true
         btnMap.hidden = true
+        
+        intitValue()
         
         // 返回按钮点击事件
         var backButton:UIBarButtonItem = UIBarButtonItem(title: "返回", style: UIBarButtonItemStyle.Plain, target:self, action: "buttonAction:")
@@ -52,6 +59,15 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, NSObjectP
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    /**
+     *
+     */
+    func intitValue(){
+        var daoINF002 = INF002Dao()
+        stations = daoINF002.queryLandMarkStations(landMark!)
+        itemCount = stations!.count + 9
     }
     
     /**
@@ -75,12 +91,13 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, NSObjectP
                 lmkFavAdd.statExitId = "0"
                 lmkFavAdd.ruteId = "0"
                 if(lmkFavAdd.insert()){
-                    viewDidLoad()
+                    tbList.reloadData()
                 }
             }
             
         case 102:
             var landMarkMapController = self.storyboard!.instantiateViewControllerWithIdentifier("landmarkmap") as LandMarkMapController
+            landMarkMapController.title = "\(landMark!.item(MSTT04_LANDMARK_LMAK_NAME_EXT1))"
             landMarkMapController.landMark = landMark!
             self.navigationController!.pushViewController(landMarkMapController, animated:true)
         case self.navigationItem.leftBarButtonItem!.tag:
@@ -112,7 +129,7 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, NSObjectP
         }
         return textSize!
     }
-    
+
     
     // MARK: - Segues
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -129,26 +146,23 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, NSObjectP
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return LANDMARK_DETAIL_COUNT
+        return itemCount
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         switch indexPath.row{
-        // 地标名（系统语言）
         case 0:
-//            if(landMark!.item(MSTT04_LANDMARK_IMAG_ID1) == nil || "\(landMark!.item(MSTT04_LANDMARK_IMAG_ID1))" == ""){
-//                return 0
-//            }
             return 200
         case 1:
-            return 30
+            // 地标名（系统语言）
+            return 40
         case 2:
-            return 30
+            return 25
         case 3:
             // label自适应高度
-            var infoFont:UIFont = UIFont.systemFontOfSize(15)
+            var infoFont:UIFont = UIFont.systemFontOfSize(SMALL_TEXT_SIZE)
             var nsStr:String = "\(landMark!.item(MSTT04_LANDMARK_LMAK_DESP))" as String
-            var lblSize:CGSize = CGSizeMake(320,2000)
+            var lblSize:CGSize = CGSizeMake(290,2000)
             
             return calLblHeight(nsStr, font: infoFont, constrainedToSize: lblSize).height + 50
         case 4:
@@ -156,30 +170,28 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, NSObjectP
                 return 0
             }
             // label自适应高度
-            var infoFont:UIFont = UIFont.systemFontOfSize(14)
+            var infoFont:UIFont = UIFont.systemFontOfSize(SMALL_TEXT_SIZE)
             var nsStr:String = "\(landMark!.item(MSTT04_LANDMARK_LMAK_TICL_PRIC))" as String
-            var lblSize:CGSize = CGSizeMake(320,2000)
+            var lblSize:CGSize = CGSizeMake(290,2000)
             return calLblHeight(nsStr, font: infoFont, constrainedToSize: lblSize).height + 40
         case 5:
             if(landMark!.item(MSTT04_LANDMARK_LMAK_AVAL_TIME) == nil || "\(landMark!.item(MSTT04_LANDMARK_LMAK_AVAL_TIME))" == ""){
                 return 0
             }
             // label自适应高度
-            var infoFont:UIFont = UIFont.systemFontOfSize(14)
+            var infoFont:UIFont = UIFont.systemFontOfSize(SMALL_TEXT_SIZE)
             var nsStr:NSString = "\(landMark!.item(MSTT04_LANDMARK_LMAK_AVAL_TIME))" as String
-            var lblSize:CGSize = CGSizeMake(320,2000)
+            var lblSize:CGSize = CGSizeMake(290,2000)
             return calLblHeight(nsStr, font: infoFont, constrainedToSize: lblSize).height + 40
         case 6:
             if(landMark!.item(MSTT04_LANDMARK_LMAK_ADDR) == nil || "\(landMark!.item(MSTT04_LANDMARK_LMAK_ADDR))" == ""){
                 return 0
             }
             // label自适应高度
-            var infoFont:UIFont = UIFont.systemFontOfSize(14)
+            var infoFont:UIFont = UIFont.systemFontOfSize(SMALL_TEXT_SIZE)
             var nsStr:NSString = "\(landMark!.item(MSTT04_LANDMARK_LMAK_ADDR))" as String
-            var lblSize:CGSize = CGSizeMake(320,2000)
+            var lblSize:CGSize = CGSizeMake(290,2000)
             return calLblHeight(nsStr, font: infoFont, constrainedToSize: lblSize).height + 40
-        case 7:
-            return 43
         default:
            return 43
         }
@@ -187,9 +199,12 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, NSObjectP
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
+        // 初始化tablecell
         for subview in cell.subviews{
             subview.removeFromSuperview()
         }
+        cell.accessoryType = UITableViewCellAccessoryType.None
+        
         switch indexPath.row{
         // 地标图片
         case 0:
@@ -274,7 +289,7 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, NSObjectP
             
         // 地标名（系统语言）
         case 1:
-            var lblLocalNM = UILabel(frame: CGRect(x:15,y:10,width:tableView.frame.width - 15,height:30))
+            var lblLocalNM = UILabel(frame: CGRect(x:15,y:10,width:tableView.frame.width - 15,height:40))
             if(landMark!.item(MSTT04_LANDMARK_LMAK_NAME_EXT1) != nil && "\(landMark!.item(MSTT04_LANDMARK_LMAK_NAME_EXT1))" != "" && "\(landMark!.item(MSTT04_LANDMARK_LMAK_NAME_EXT1))" != "nil"){
                 lblLocalNM.text = "\(landMark!.item(MSTT04_LANDMARK_LMAK_NAME_EXT1))"
             }else{
@@ -286,7 +301,7 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, NSObjectP
             cell.addSubview(lblLocalNM)
         // 地标名（日文汉字）
         case 2:
-            var lblJpNM = UILabel(frame: CGRect(x:15,y:5,width:tableView.frame.width - 30,height:35))
+            var lblJpNM = UILabel(frame: CGRect(x:15,y:3,width:tableView.frame.width - 30,height:25))
             if(landMark!.item(MSTT04_LANDMARK_LMAK_NAME_KANA) != nil && "\(landMark!.item(MSTT04_LANDMARK_LMAK_NAME_KANA))" != "" && "\(landMark!.item(MSTT04_LANDMARK_LMAK_NAME_KANA))" != "nil"){
                 lblJpNM.text = "\(landMark!.item(MSTT04_LANDMARK_LMAK_NAME_KANA))"
             }else{
@@ -297,7 +312,7 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, NSObjectP
             lblJpNM.textAlignment = NSTextAlignment.Left
             cell.addSubview(lblJpNM)
             
-            var lblTemp = UILabel(frame: CGRect(x:0,y:35,width:tableView.frame.width,height:1))
+            var lblTemp = UILabel(frame: CGRect(x:0,y:23,width:tableView.frame.width,height:1))
             lblTemp.textColor = UIColor.lightGrayColor()
             lblTemp.backgroundColor = UIColor.lightGrayColor()
             cell.addSubview(lblTemp)
@@ -306,7 +321,7 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, NSObjectP
             var lblInfoTitle = UILabel(frame: CGRect(x:15,y:15,width:tableView.frame.width - 30,height:30))
             lblInfoTitle.textColor = UIColor.lightGrayColor()
             lblInfoTitle.text = "简介"
-            lblInfoTitle.font = UIFont.systemFontOfSize(20)
+            lblInfoTitle.font = UIFont.systemFontOfSize(LABEL_TEXT_SIZE)
             lblInfoTitle.textAlignment = NSTextAlignment.Left
             cell.addSubview(lblInfoTitle)
             
@@ -318,11 +333,11 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, NSObjectP
             }
             lblInfo.numberOfLines = 0
             lblInfo.lineBreakMode = NSLineBreakMode.ByCharWrapping
-            lblInfo.font = UIFont.systemFontOfSize(15)
+            lblInfo.font = UIFont.systemFontOfSize(SMALL_TEXT_SIZE)
             lblInfo.textAlignment = NSTextAlignment.Left
             
-            var size:CGSize = CGSizeMake(320,2000)
-            lblInfo.frame.size.height = calLblHeight(lblInfo.text!, font: UIFont.systemFontOfSize(15), constrainedToSize: size).height
+            var size:CGSize = CGSizeMake(290,2000)
+            lblInfo.frame.size.height = calLblHeight(lblInfo.text!, font: UIFont.systemFontOfSize(SMALL_TEXT_SIZE), constrainedToSize: size).height
             cell.addSubview(lblInfo)
         // 地标票价
         case 4:
@@ -330,7 +345,7 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, NSObjectP
                 var lblInfoTitle = UILabel(frame: CGRect(x:15,y:10,width:tableView.frame.width - 30,height:30))
                 lblInfoTitle.textColor = UIColor.lightGrayColor()
                 lblInfoTitle.text = "票价"
-                lblInfoTitle.font = UIFont.systemFontOfSize(20)
+                lblInfoTitle.font = UIFont.systemFontOfSize(LABEL_TEXT_SIZE)
                 lblInfoTitle.textAlignment = NSTextAlignment.Left
                 cell.addSubview(lblInfoTitle)
                 
@@ -338,11 +353,11 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, NSObjectP
                 lblPRIC.numberOfLines = 0
                 lblPRIC.lineBreakMode = NSLineBreakMode.ByCharWrapping
                 lblPRIC.text = "\(landMark!.item(MSTT04_LANDMARK_LMAK_TICL_PRIC))"
-                lblPRIC.font = UIFont.systemFontOfSize(14)
+                lblPRIC.font = UIFont.systemFontOfSize(SMALL_TEXT_SIZE)
                 lblPRIC.textAlignment = NSTextAlignment.Left
                 
-                var size:CGSize = CGSizeMake(320,2000)
-                lblPRIC.frame.size.height = calLblHeight(lblPRIC.text!, font: UIFont.systemFontOfSize(14), constrainedToSize: size).height
+                var size:CGSize = CGSizeMake(290,2000)
+                lblPRIC.frame.size.height = calLblHeight(lblPRIC.text!, font: UIFont.systemFontOfSize(SMALL_TEXT_SIZE), constrainedToSize: size).height
                 
                 cell.addSubview(lblPRIC)
             }
@@ -352,7 +367,7 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, NSObjectP
                 var lblInfoTitle = UILabel(frame: CGRect(x:15,y:10,width:tableView.frame.width - 30,height:30))
                 lblInfoTitle.textColor = UIColor.lightGrayColor()
                 lblInfoTitle.text = "开放时间"
-                lblInfoTitle.font = UIFont.systemFontOfSize(20)
+                lblInfoTitle.font = UIFont.systemFontOfSize(LABEL_TEXT_SIZE)
                 lblInfoTitle.textAlignment = NSTextAlignment.Left
                 cell.addSubview(lblInfoTitle)
                 
@@ -360,11 +375,11 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, NSObjectP
                 lblTime.numberOfLines = 0
                 lblTime.lineBreakMode = NSLineBreakMode.ByCharWrapping
                 lblTime.text = "\(landMark!.item(MSTT04_LANDMARK_LMAK_AVAL_TIME))"
-                lblTime.font = UIFont.systemFontOfSize(14)
+                lblTime.font = UIFont.systemFontOfSize(SMALL_TEXT_SIZE)
                 lblTime.textAlignment = NSTextAlignment.Left
                 
-                var size:CGSize = CGSizeMake(320,2000)
-                lblTime.frame.size.height = calLblHeight(lblTime.text!, font: UIFont.systemFontOfSize(14), constrainedToSize: size).height
+                var size:CGSize = CGSizeMake(290,2000)
+                lblTime.frame.size.height = calLblHeight(lblTime.text!, font: UIFont.systemFontOfSize(SMALL_TEXT_SIZE), constrainedToSize: size).height
                 
                 cell.addSubview(lblTime)
             }
@@ -374,18 +389,18 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, NSObjectP
                 var lblInfoTitle = UILabel(frame: CGRect(x:15,y:10,width:tableView.frame.width - 30,height:30))
                 lblInfoTitle.textColor = UIColor.lightGrayColor()
                 lblInfoTitle.text = "地址"
-                lblInfoTitle.font = UIFont.systemFontOfSize(20)
+                lblInfoTitle.font = UIFont.systemFontOfSize(LABEL_TEXT_SIZE)
                 lblInfoTitle.textAlignment = NSTextAlignment.Left
                 cell.addSubview(lblInfoTitle)
                 
                 var lblADDR = UILabel(frame: CGRect(x:15,y:40,width:tableView.frame.width - 30,height:40))
                 lblADDR.numberOfLines = 0
                 lblADDR.text = "\(landMark!.item(MSTT04_LANDMARK_LMAK_ADDR))"
-                lblADDR.font = UIFont.systemFontOfSize(15)
+                lblADDR.font = UIFont.systemFontOfSize(SMALL_TEXT_SIZE)
                 lblADDR.textAlignment = NSTextAlignment.Left
                 
                 var size:CGSize = CGSizeMake(320,2000)
-                lblADDR.frame.size.height = calLblHeight(lblADDR.text!, font: UIFont.systemFontOfSize(14), constrainedToSize: size).height
+                lblADDR.frame.size.height = calLblHeight(lblADDR.text!, font: UIFont.systemFontOfSize(SMALL_TEXT_SIZE), constrainedToSize: size).height
                 
                 cell.addSubview(lblADDR)
             }
@@ -394,19 +409,47 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, NSObjectP
             var lblInfoTitle = UILabel(frame: CGRect(x:15,y:10,width:tableView.frame.width - 30,height:30))
             lblInfoTitle.textColor = UIColor.lightGrayColor()
             lblInfoTitle.text = "附近站点"
-            lblInfoTitle.font = UIFont.systemFontOfSize(20)
+            lblInfoTitle.font = UIFont.systemFontOfSize(LABEL_TEXT_SIZE)
             lblInfoTitle.textAlignment = NSTextAlignment.Left
             cell.addSubview(lblInfoTitle)
-            
+        case 8:
+            // 地标附近线路
             var btnLine:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-            btnLine.frame = CGRect(x:15,y:45,width:130,height:30)
-            btnLine.setTitle("\(landMark!.item(MSTT04_LANDMARK_LINE_ID))".line() + "\(landMark!.item(MSTT04_LANDMARK_STAT_ID))".station(), forState: UIControlState.Normal)
+            btnLine.frame = CGRect(x:15,y:0,width:tableView.frame.width - 30,height:43)
+            btnLine.setTitle("\(landMark!.item(MSTT04_LANDMARK_LINE_ID))".line() + "  " + "\(landMark!.item(MSTT04_LANDMARK_STAT_ID))".station(), forState: UIControlState.Normal)
             btnLine.tag = 110
             btnLine.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
+            cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+            cell.backgroundColor = UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
             cell.addSubview(btnLine)
         default:
             println("nothing")
         }
+        
+        if(indexPath.row > 7 && indexPath.row < itemCount - 1){
+//            var lblTemp0 = UILabel(frame: CGRect(x:15,y:0,width:tableView.frame.width - 30,height:1))
+//            lblTemp0.alpha = 0.3
+//            lblTemp0.textColor = UIColor.lightGrayColor()
+//            lblTemp0.backgroundColor = UIColor.lightGrayColor()
+//            cell.addSubview(lblTemp0)
+            
+            // 地标附近线路
+            var btnLine:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
+            btnLine.frame = CGRect(x:15,y:0,width:tableView.frame.width - 30,height:43)
+            btnLine.setTitle("\(stations![indexPath.row - 8].item(MSTT02_LINE_ID))".line() + "  " + "\(landMark!.item(MSTT02_STAT_ID))".station(), forState: UIControlState.Normal)
+            btnLine.tag = 110
+            btnLine.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
+            cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+            cell.backgroundColor = UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
+            cell.addSubview(btnLine)
+            
+            var lblTemp1 = UILabel(frame: CGRect(x:15,y:42,width:tableView.frame.width - 30,height:1))
+            lblTemp1.alpha = 0.3
+            lblTemp1.textColor = UIColor.lightGrayColor()
+            lblTemp1.backgroundColor = UIColor.lightGrayColor()
+            cell.addSubview(lblTemp1)
+        }
+        
         cell.selectionStyle = UITableViewCellSelectionStyle.None
         return cell
     }

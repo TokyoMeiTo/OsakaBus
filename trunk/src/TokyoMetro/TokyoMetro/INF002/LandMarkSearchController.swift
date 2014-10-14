@@ -51,7 +51,7 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
         pickerSpecialWard.delegate = self
         
         // 完成按钮点击事件
-        var searchButton:UIBarButtonItem = UIBarButtonItem(title: "完成", style: UIBarButtonItemStyle.Plain, target:self, action: "buttonAction:")
+        var searchButton:UIBarButtonItem = UIBarButtonItem(title: "返回", style: UIBarButtonItemStyle.Plain, target:self, action: "buttonAction:")
         self.navigationItem.leftBarButtonItem = searchButton
         self.navigationItem.setHidesBackButton(true, animated: false)
         self.navigationItem.rightBarButtonItem = nil

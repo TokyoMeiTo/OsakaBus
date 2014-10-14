@@ -450,6 +450,7 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
         items = NSMutableArray.array()
         items.addObject(["站点：",[station,""]])
         items.addObject(["方向：",[stationDirt0 + "方向",stationDirt1 + "方向"]])
+        items.addObject(["早末班车：",["早班车", "末班车"]])
         items.addObject(["提醒方式：",remindsMethod])
         items.addObject(["提醒时间：",remindsTime])
     }
@@ -523,17 +524,20 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
     /**
      * 从DB查询花费时间
      */
-    func selectLinT05RouteDetailTable(startStationId: String, toStationId: String) -> Int{
+    func selectLinT05RouteDetailTable(startStationId: String, toStationId: String) -> Array<LinT05RouteDetailTable>?{
+        let QUERY_EXCH = "select * , ROWID from LINT05_ROUTE_DETAIL where RUTE_ID = ?"
+        
         var tableLinT04 = LinT04RouteTable()
         tableLinT04.startStatId = "\((selectStationTableOne(startStationId) as MstT02StationTable).item(MSTT02_STAT_GROUP_ID))"
         tableLinT04.termStatId = "\((selectStationTableOne(toStationId) as MstT02StationTable).item(MSTT02_STAT_GROUP_ID))"
         var ruteId: String = "\((tableLinT04.select() as LinT04RouteTable).item(LINT04_ROUTE_RUTE_ID))"
         var costTime:Int = 0
         var tableLinT05 = LinT05RouteDetailTable()
-        tableLinT05.ruteId = ruteId
-        var test = tableLinT05.select() as LinT05RouteDetailTable
-        costTime = ("\((tableLinT05.select() as LinT05RouteDetailTable).item(LINT05_ROUTE_DETAIL_MOVE_TIME))" as NSString).integerValue
-        return costTime * 60
+        
+        var args:NSMutableArray = NSMutableArray.array();
+        args.addObject(ruteId);
+        
+        return tableLinT05.excuteQuery(QUERY_EXCH, withArgumentsInArray: args) as Array<LinT05RouteDetailTable>
     }
 
     /**
@@ -716,7 +720,7 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
                 tableUsrT01!.alarmTime = "\((remindTime + 1) * 60)"
             }
         }else if(segIndex == NUM_1){
-            if(didSelectRowAtIndexPath.section == 2){
+            if(didSelectRowAtIndexPath.section == 3){
                 remindType = didSelectRowAtIndexPath.row
                 // 提醒方式
                 if(remindType == NUM_0){
@@ -728,7 +732,7 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
                     tableUsrT02!.voleFlag = "1"
                     pushNotification(nil, min: -1, beep: false)
                 }
-            }else if(didSelectRowAtIndexPath.section == 3){
+            }else if(didSelectRowAtIndexPath.section == 4){
                 remindTime = didSelectRowAtIndexPath.row
                 // 提醒时间
                 tableUsrT02!.alarmTime = "\((remindTime + 1) * 60)"
@@ -738,6 +742,14 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
                     tableUsrT02!.traiDirt = traiDirt0
                 }else{
                     tableUsrT02!.traiDirt = traiDirt1
+                }
+            }else if(didSelectRowAtIndexPath.section == 2){
+                if(didSelectRowAtIndexPath.row == 0){
+                    tableUsrT02!.firstFlag = "1"
+                    tableUsrT02!.lastFlag = "0"
+                }else{
+                    tableUsrT02!.firstFlag = "0"
+                    tableUsrT02!.lastFlag = "1"
                 }
             }
         }
@@ -844,14 +856,20 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
                 cell.accessoryType = UITableViewCellAccessoryType.None
             }
         }else if(segIndex == NUM_1){
-            if(indexPath.section == 2 && indexPath.row == remindType){
+            if(indexPath.section == 3 && indexPath.row == remindType){
                 cell.accessoryType = UITableViewCellAccessoryType.Checkmark
-            }else if(indexPath.section == 3 && indexPath.row == remindTime){
+            }else if(indexPath.section == 4 && indexPath.row == remindTime){
                 cell.accessoryType = UITableViewCellAccessoryType.Checkmark
             }else if((indexPath.section == 0) && indexPath.row == 1){
                 cell.addSubview(pickLineStations[indexPath.section])
             }else if((indexPath.section == 1) && indexPath.row == stationDirtFlag){
                 cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+            }else if((indexPath.section == 2)){
+                if(indexPath.row == 0 && tableUsrT02?.firstFlag == "1"){
+                    cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+                }else if(indexPath.row == 1 && tableUsrT02?.lastFlag == "1"){
+                    cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+                }
             }else{
                 cell.accessoryType = UITableViewCellAccessoryType.None
             }

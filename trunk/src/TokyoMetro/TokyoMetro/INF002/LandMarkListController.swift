@@ -27,6 +27,8 @@ class LandMarkListController: UIViewController, UITableViewDelegate, NSObjectPro
     /* 地标类型 */
     var landMarkType:Int = 0
     
+    let BTN_SEARCH_TAG:Int = 110
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -47,14 +49,23 @@ class LandMarkListController: UIViewController, UITableViewDelegate, NSObjectPro
         tbList.dataSource = self
         tbList.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         // 查询按钮点击事件
-        var searchButton:UIBarButtonItem? = UIBarButtonItem(title: "查找", style: UIBarButtonItemStyle.Plain, target:self, action: "buttonAction:")
-        searchButton!.target = self
-        searchButton!.action = "buttonAction:"
-        self.navigationItem.rightBarButtonItem = searchButton!
+        var searchButtonTemp:UIButton? = UIButton.buttonWithType(UIButtonType.System) as? UIButton
+        searchButtonTemp!.frame = CGRect(x:0,y:0,width:25,height:25)
+        var imgLandMark = UIImage(named: "INF00207")
+        searchButtonTemp!.setBackgroundImage(imgLandMark, forState: UIControlState.Normal)
+        searchButtonTemp!.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
+        searchButtonTemp!.tag = BTN_SEARCH_TAG
+        var searchButton:UIBarButtonItem = UIBarButtonItem(customView: searchButtonTemp!)
+        self.navigationItem.rightBarButtonItem = searchButton
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        landMarks = selectLandMarkTable(landMarkType)
+        tbList.reloadData()
     }
     
     /**
@@ -62,8 +73,8 @@ class LandMarkListController: UIViewController, UITableViewDelegate, NSObjectPro
      * @param sender
      */
     func buttonAction(sender: UIButton){
-        switch sender{
-        case self.navigationItem.rightBarButtonItem!:
+        switch sender.tag{
+        case BTN_SEARCH_TAG:
             var landMarkSearchController = self.storyboard!.instantiateViewControllerWithIdentifier("landmarksearch") as LandMarkSearchController
             landMarkSearchController.fromLat = self.fromLat
             landMarkSearchController.fromLon = self.fromLon
@@ -124,7 +135,17 @@ class LandMarkListController: UIViewController, UITableViewDelegate, NSObjectPro
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath: NSIndexPath){
         var landMarkDetailController = self.storyboard!.instantiateViewControllerWithIdentifier("landmarkdetail") as LandMarkDetailController
-        landMarkDetailController.title = "地标详细"
+        switch landMarkType{
+        case 0:
+            landMarkDetailController.title = "热门景点"
+        case 1:
+            landMarkDetailController.title = "美食"
+        case 2:
+            landMarkDetailController.title = "购物"
+        default:
+            println("nothing")
+        }
+        
         landMarkDetailController.landMark = landMarks![didSelectRowAtIndexPath.row]
         self.navigationController!.pushViewController(landMarkDetailController, animated:true)
     }
