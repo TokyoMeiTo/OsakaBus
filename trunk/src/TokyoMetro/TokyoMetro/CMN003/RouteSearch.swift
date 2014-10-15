@@ -7,7 +7,8 @@
 //
 
 import Foundation
-class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource, UIAlertViewDelegate, UITextFieldDelegate{
+import CoreLocation
+class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource, UIAlertViewDelegate, GPSDelegate, UITextFieldDelegate{
     
 
     //////////////// 控件
@@ -26,14 +27,25 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
     @IBOutlet weak var btnCollect1: UIButton!
     // 收藏按钮2
     @IBOutlet weak var btnCollect2: UIButton!
-    // 收藏路径按钮
-    @IBOutlet weak var btnCollectRoute: UIButton!
-    // 设定闹钟
-    @IBOutlet weak var btnSetAlarm: UIButton!
+//    // 收藏路径按钮
+//    @IBOutlet weak var btnCollectRoute: UIButton!
+//    // 设定闹钟
+//    @IBOutlet weak var btnSetAlarm: UIButton!
+    // 最近站点
+    @IBOutlet weak var btnNearlyStation: UIButton!
+    // 收藏站点
+    @IBOutlet weak var btnCollectionStation: UIButton!
+    // 所有站点列表
+    @IBOutlet weak var btnPopToStaionList: UIButton!
     // 提示当前tableView是查询结果
     @IBOutlet weak var lblTip: UILabel!
-    @IBOutlet weak var ivCollection: UIImageView!
-    @IBOutlet weak var ivAlarm: UIImageView!
+    @IBOutlet weak var btnInView: UIView!
+    
+    // 屏幕尺寸
+    var mScreenSize: CGSize!
+    
+    /* 加载进度条ActivityIndicatorView */
+    @IBOutlet weak var gaiLoading: UIActivityIndicatorView!
     
     //////////////// 全局变量
     
@@ -43,6 +55,8 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
     var allOfStationItemsJP : NSMutableArray = NSMutableArray.array()
     // 用来记录搜索出的搜友站点Icon名
     var allOflineImageItems : NSMutableArray = NSMutableArray.array()
+    // 用来记录搜索出的搜站点日文名
+    var allOfStationItemsJpKana : NSMutableArray = NSMutableArray.array()
     // 用来记录从数据库中所搜的所有站点的信息
     var stationItems : NSMutableArray = NSMutableArray.array()
     // 用来记录从数据库收藏表中的站点ID
@@ -67,24 +81,47 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
     var startStationText : String = ""
     var endStationText : String = ""
     
+    var mImgZoomScale : CGFloat = 0.0
+    
     var mst02table = MstT02StationTable()
     var user03table = UsrT03FavoriteTable()
     var fare06table = LinT06FareTable()
     var routeDetial05table = LinT05RouteDetailTable()
     
+    var testView: UIView = UIView()
+    
+    /* GPSHelper */
+    let GPShelper: GPSHelper = GPSHelper()
+    
     // 区分查询前页面和查询后结果页面。 1 为查询前页面。 2为查询后结果页面
     var pageTag : String = "1"
-    
-    
     let FOUCSCHANGETO1 : Selector = "foucsChangeTo1"
     let FOUCSCHANGETO2 : Selector  = "foucsChangeTo2"
     let EXCHANGEACTION : Selector  = "exchangeAction"
     let SEARCHWAYACTION : Selector  = "searchWayAction"
     let ADDUSERFAVORITE : Selector  = "addUserfavorite:"
+    let COLLECTEDSTATION : Selector  = "loadCollectedStation"
+    
+    
+//    // 收藏路径按钮
+//    var btnCollectRoute: UIButton = UIButton()
+//    // 设定闹钟
+//    var btnSetAlarm: UIButton = UIButton()
+//    // 收藏路径按钮
+//    var btnCollectRouteImg: UIImageView = UIImageView()
+//    // 设定闹钟
+//    var btnSetAlarmImg: UIImageView = UIImageView()
+//    // 收藏路径按钮
+//    var btnCollectRouteName: UILabel = UILabel()
+//    // 设定闹钟
+//    var btnSetAlarmName: UILabel = UILabel()
+
 
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.mScreenSize = UIScreen.mainScreen().bounds.size
         
         var strStart:NSString = "起点"
         var strEnd:NSString = "终点"
@@ -92,17 +129,20 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         self.stationEnd.placeholder = strEnd
         
         loadStation()
-        
         btnExchange.layer.cornerRadius = 4
-        btnCollectRoute.hidden = true
-        btnSetAlarm.hidden = true
-        ivCollection.hidden = true
-        ivAlarm.hidden = true
 
         btnExchange.addTarget(self, action: EXCHANGEACTION, forControlEvents: UIControlEvents.TouchUpInside)
         stationStart.addTarget(self, action: FOUCSCHANGETO1, forControlEvents: UIControlEvents.EditingDidBegin)
         stationEnd.addTarget(self, action: FOUCSCHANGETO2, forControlEvents: UIControlEvents.EditingDidBegin)
         btnSearchRoute.addTarget(self, action: SEARCHWAYACTION, forControlEvents: UIControlEvents.TouchUpInside)
+        btnCollectionStation.addTarget(self, action: COLLECTEDSTATION, forControlEvents: UIControlEvents.TouchUpInside)
+        
+        testView.frame = CGRectMake(320, 568, 320, 44)
+        testView.backgroundColor = UIColor.whiteColor()
+        mTipView()
+        self.view.addSubview(testView)
+        
+        
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -118,8 +158,6 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         if (endStationText != "") {
             self.stationEnd.text = endStationText.station()
         }
-
-        
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -159,13 +197,16 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             var celllblCollection : UIImageView = cell.viewWithTag(100) as UIImageView!
             
             celllblSatationName.text  = self.allOfStationItems.objectAtIndex(self.allOfStationItems.count - 1 - indexPath.row) as? String
-            celllblSatationNameJP.text  = self.allOfStationItemsJP.objectAtIndex(self.allOfStationItems.count - 1 - indexPath.row) as? String
+            
+            var jpNameStr = self.allOfStationItemsJP.objectAtIndex(self.allOfStationItems.count - 1 - indexPath.row) as? String
+            var jpNameKanaStr = self.allOfStationItemsJpKana.objectAtIndex(self.allOfStationItems.count - 1 - indexPath.row) as? String
+            celllblSatationNameJP.text  = (jpNameStr! + "(" + jpNameKanaStr! +  ")") as String
             
             var lineImageItemsRow = self.allOflineImageItems.objectAtIndex(self.allOfStationItems.count - 1 - indexPath.row) as NSArray
             for (var i = 0; i < lineImageItemsRow.count; i++) {
                 var map = lineImageItemsRow[i] as MstT02StationTable
                 var lineIcon: UIImageView = UIImageView()
-                lineIcon.frame = CGRectMake(CGFloat(260 - i * 25), 5, 30, 30)
+                lineIcon.frame = CGRectMake(CGFloat(260 - i * 25), 10, 20, 20)
                 lineIcon.image = (map.item(MSTT02_LINE_ID) as String).getLineImage()
                 cell.addSubview(lineIcon)
             }
@@ -317,18 +358,35 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         } else if (self.pageTag == "2") {
             
             setSationIdCache()
+
             
-            var routStartDic = self.routeDetial.objectAtIndex(indexPath.row - 1) as NSDictionary
-            var strresultExchStatId = routStartDic["resultExchStatId"] as? NSString
+            if (indexPath.row  == routeDetial.count) {
+                let cell = tableView.cellForRowAtIndexPath(indexPath) as UITableViewCell!
+                var resultCelllblStationName : UILabel = cell.viewWithTag(1002) as UILabel
+                var tempStationId = serarchStationIdByStationName(resultCelllblStationName.text as String!)
+                var stationDetialArr:MstT02StationTable = getStationDetialById(tempStationId)
+                var stationDetail : StationDetail = self.storyboard?.instantiateViewControllerWithIdentifier("StationDetail") as StationDetail
+                stationDetail.stat_id = tempStationId
+                stationDetail.cellJPName = stationDetialArr.statName as String
+                stationDetail.cellJPNameKana = stationDetialArr.statNameKana as String
+                stationDetail.statMetroId = stationDetialArr.statNameMetroId as String
+                self.navigationController?.pushViewController(stationDetail, animated:true)
+                
+            } else if (indexPath.row  != 0){
+                var routStartDic = self.routeDetial.objectAtIndex(indexPath.row - 1) as NSDictionary
+                var strresultExchStatId = routStartDic["resultExchStatId"] as? NSString
+                
+                var stationDetialArr:MstT02StationTable = getStationDetialById(strresultExchStatId as String)
+                var stationDetail : StationDetail = self.storyboard?.instantiateViewControllerWithIdentifier("StationDetail") as StationDetail
+                stationDetail.stat_id = strresultExchStatId as String
+                stationDetail.cellJPName = stationDetialArr.statName as String
+                stationDetail.cellJPNameKana = stationDetialArr.statNameKana as String
+                stationDetail.statMetroId = stationDetialArr.statNameMetroId as String
+                self.navigationController?.pushViewController(stationDetail, animated:true)
+
+            }
             
-            var stationDetialArr:MstT02StationTable = getStationDetialById(strresultExchStatId as String)
-            var stationDetail : StationDetail = self.storyboard?.instantiateViewControllerWithIdentifier("StationDetail") as StationDetail
-            stationDetail.stat_id = strresultExchStatId as String
-            stationDetail.cellJPName = stationDetialArr.statName as String
-            stationDetail.cellJPNameKana = stationDetialArr.statNameKana as String
-            stationDetail.statMetroId = stationDetialArr.statNameMetroId as String
-            self.navigationController?.pushViewController(stationDetail, animated:true)
-        }
+                  }
         hideKeyBoard()
 
     }
@@ -364,36 +422,40 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             errAlertView("提示", errMgs: "您输入的车站名无效", errBtnTitle: "确认")
             return
         }
+        showTipBtn("1")
         getRouteIdByStationId(routeStartStationId, endStationId: routeEndStationId)
         getRouteline()
         self.pageTag = "2"
+        // showTipBtn("1")
         tbView.reloadData()
+        
     }
     
     func foucsChangeTo1 () {
         self.focusNumber = "1"
-        isPopToStationList()
+        hideKeyBoard()
+
     }
     
     func foucsChangeTo2 () {
         self.focusNumber = "2"
-        isPopToStationList()
+        hideKeyBoard()
     }
     
     // 弹出对话框，判断是否要跳转到StationList页面
-    func isPopToStationList() {
+    @IBAction func isPopToStationList() {
         var sureBtn: UIAlertView = UIAlertView(title: "提示", message: "您确定跳转到所有站点列表,进行站点查找吗？", delegate: self, cancelButtonTitle: "取消", otherButtonTitles: "确定")
         sureBtn.tag = 100
         sureBtn.show()
     }
     
-    @IBAction func isPopToAlarm() {
+    func isPopToAlarm() {
         var sureBtn: UIAlertView = UIAlertView(title: "提示", message: "您确定设定到站提醒吗？", delegate: self, cancelButtonTitle: "取消", otherButtonTitles: "确定")
         sureBtn.tag = 200
         sureBtn.show()
     }
     
-    @IBAction func isCollectionRoute() {
+    func isCollectionRoute() {
         var sureBtn: UIAlertView = UIAlertView(title: "提示", message: "您确定收藏该路线？", delegate: self, cancelButtonTitle: "取消", otherButtonTitles: "确定")
         sureBtn.tag = 300
         sureBtn.show()
@@ -416,8 +478,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
                 remindListController.routeStatTable01 = getStationDetialById(routeStartStationId)
                 remindListController.routeStatTable02 = getStationDetialById(routeEndStationId)
                 self.navigationController?.pushViewController(remindListController, animated:true)
-                
-            
+
            case 300:
                 addUserfavoriteRoute()
             
@@ -449,6 +510,11 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         stationEnd.resignFirstResponder()
         stationStart.resignFirstResponder()
     }
+    
+    func loadCollectedStation(){
+        loadStation()
+        showTipBtn("0")
+    }
 
     // 获取所有站的站名和图标
     func loadStation() {
@@ -458,6 +524,9 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         allOfStationItems.removeAllObjects()
         allOfStationItemsJP.removeAllObjects()
         allOflineImageItems.removeAllObjects()
+        allOfStationItemsJpKana.removeAllObjects()
+        self.usrStationIds.removeAllObjects()
+        self.tbView.reloadData()
         
         // 现将收藏表中所有id取出来
         user03table.favoType = "01"
@@ -478,16 +547,20 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
                 var stationNameJP:AnyObject = key.item(MSTT02_STAT_NAME)
                 var stationName:AnyObject = key.item(MSTT02_STAT_NAME_EXT1)
                 var statGroupId = key.item(MSTT02_STAT_GROUP_ID) as String
+                var stationNameKanatemp = key.item(MSTT02_STAT_NAME_KANA) as String
                 
                 var statSeqArr = mst02table.excuteQuery("select LINE_ID from MSTT02_STATION where 1 = 1 and STAT_GROUP_ID = \(statGroupId)")
                 self.allOflineImageItems.addObject(statSeqArr)
                 self.allOfStationItemsJP.addObject(stationNameJP)
                 self.allOfStationItems.addObject(stationName)
+                self.allOfStationItemsJpKana.addObject(stationNameKanatemp)
 
             }
             tbView.reloadData()
         }
-        self.lblTip.text = " 所有收藏站点"
+        self.lblTip.text = "所有收藏站点"
+        // self.btnInView.hidden = true
+        
     }
 
     // 根据车站名字搜索车站ID
@@ -504,7 +577,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         println("\(resultid)")
         return resultid
     }
-    
+
 
     // 添加收藏站点
     @IBAction func addUserfavoriteStation(sender: UIButton) {
@@ -609,7 +682,6 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
     func getRouteline() {
         
         self.routeDetial.removeAllObjects()
-
         routeDetial05table.ruteId = self.routeID
         var routeDeital05Row = routeDetial05table.selectAll()
         
@@ -629,16 +701,15 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             var routeItem = ["resultExchStatId":resultExchStatId ,"resultExchlineId":resultExchlineId, "resultExchDestId":resultExchDestId, "resultExchSeq":resultExchSeq.description, "resultExchMoveTime":resultExchMoveTime.description, "resultExchWaitTime":resultExchWaitTime.description, "resultExchType":resultExchType]
             self.routeDetial.addObject(routeItem)
         }
-        self.lblTip.text = "   路线搜索结果"
-        btnCollectRoute.hidden = false
-        btnSetAlarm.hidden = false
-        ivCollection.hidden = false
-        ivAlarm.hidden = false
+        self.lblTip.text = "路线搜索结果"
+        // self.btnInView.hidden = false
+
+       
     }
     
     // 跳转到站点详情页面
     func getStationDetialById(StationID:String) -> MstT02StationTable{
-        
+        var mst02table = MstT02StationTable()
         mst02table.statId = StationID
         var mMst02StationArr:MstT02StationTable = mst02table.select() as MstT02StationTable
         return mMst02StationArr
@@ -649,15 +720,8 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
     
             var accoutDefault : NSUserDefaults = NSUserDefaults()
             var historyStationdate: NSMutableArray = NSMutableArray.array()
-//            if accoutDefault.objectForKey("historyStationdata") != nil {
-//                historyStationdate = accoutDefault.objectForKey("historyStationdata") as NSMutableArray
-//                historyStationdate.setObject(startStationText, atIndexedSubscript: 0)
-//                historyStationdate.setObject(endStationText, atIndexedSubscript: 1)
-//            } else {
-                historyStationdate.addObject(startStationText)
-                historyStationdate.addObject(endStationText)
-//            }
-            
+            historyStationdate.addObject(startStationText)
+            historyStationdate.addObject(endStationText)
             accoutDefault.setObject(historyStationdate, forKey: "historyStationdata")
         }
     
@@ -677,11 +741,159 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             accoutDefaultClear.setObject("", forKey: "historyStationdata")
         }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        stationStart.resignFirstResponder()
-        stationEnd.resignFirstResponder()
-        return true
+    /**
+    * 加载当前位置
+    */
+    func loadLocation(){
+        ActivityIndicatorController.show(gaiLoading)
+        if(GPShelper.delegate == nil){
+            GPShelper.delegate = self
+        }
+        GPShelper.updateLocation()
     }
+    
+    /**
+    * 到DB中查找最近的站点
+    */
+    func selectStationTable(fromLocation: CLLocation) -> Array<MstT02StationTable>{
+        var stations:Array<MstT02StationTable> = Array<MstT02StationTable>()
+        
+        var dao = Sta003Dao()
+        var coordinateOnMars: CLLocationCoordinate2D = fromLocation.coordinate
+        var lon:CDouble = coordinateOnMars.longitude
+        var lat:CDouble = coordinateOnMars.latitude
+        
+        stations = dao.queryMiniDistance(lon,lat: lat) as Array<MstT02StationTable>
+        return stations
+
+    }
+    
+    @IBAction func locatNearlyStation() {
+         // loadLocation()
+        // 起点軽度
+        let fromLat = 35.672737//31.23312372 // 天地科技广场1号楼
+        // 起点緯度
+        let fromLon = 139.768898//121.38368547 // 天地科技广场1号楼
+        var testLocation :CLLocation = CLLocation(latitude: 35.672737, longitude: 139.768898)
+        locationUpdateComplete(testLocation)
+    }
+
+    // 位置定位到最近站点
+    func locationUpdateComplete(testLocation: CLLocation){
+        
+        self.pageTag = "1"
+        allStationlineGroup.removeAllObjects()
+        allOfStationItems.removeAllObjects()
+        allOfStationItemsJP.removeAllObjects()
+        allOflineImageItems.removeAllObjects()
+        allOfStationItemsJpKana.removeAllObjects()
+        self.tbView.reloadData()
+
+        var locationTest : CLLocation = CLLocation(latitude: testLocation.coordinate.latitude, longitude: testLocation.coordinate.longitude)
+        // 获取最近的10个站点
+        var stations : Array<MstT02StationTable> = selectStationTable(locationTest)
+        // 显示唯10条
+        for nearlystationId in stations{
+            var mMst02tableNearlyStation = MstT02StationTable()
+            
+                
+                mMst02tableNearlyStation.statId = nearlystationId.statId as String
+                
+                var mst02StationID:NSArray = mMst02tableNearlyStation.selectAll()
+                
+                for key in mst02StationID {
+                    
+                    key as MstT02StationTable
+                    var stationNameJP:AnyObject = key.item(MSTT02_STAT_NAME)
+                    var stationName:AnyObject = key.item(MSTT02_STAT_NAME_EXT1)
+                    var statGroupId = key.item(MSTT02_STAT_GROUP_ID) as String
+                    var stationNameKanatemp = key.item(MSTT02_STAT_NAME_KANA) as String
+                    
+                    
+                    var statSeqArr = mst02table.excuteQuery("select LINE_ID from MSTT02_STATION where 1 = 1 and STAT_GROUP_ID = \(statGroupId)")
+                    
+                    self.allOflineImageItems.addObject(statSeqArr)
+                    self.allOfStationItemsJP.addObject(stationNameJP)
+                    self.allOfStationItems.addObject(stationName)
+                    self.allOfStationItemsJpKana.addObject(stationNameKanatemp)
+                }
+            
+        }
+        tbView.reloadData()
+        self.lblTip.text = "最近站点"
+        showTipBtn("0")
+        // self.btnInView.hidden = true
+    }
+
+    // 进度转圈
+    class ActivityIndicatorController{
+        
+        class func show(gaiLoading: UIActivityIndicatorView) ->
+            Bool{
+                gaiLoading.hidden = true
+                gaiLoading.startAnimating()
+                return false
+        }
+        
+        class func disMiss(gaiLoading: UIActivityIndicatorView) ->
+            Bool{
+                gaiLoading.stopAnimating()
+                gaiLoading.hidden = true
+                return false
+        }
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        stationEnd.resignFirstResponder()
+        stationStart.resignFirstResponder()
+        return false
+    }
+
+    /**
+    *   展示和收起底部menu菜单
+    */
+    func showTipBtn(index : String) {
+//        mTipView()
+        if (index == "0") {
+            UIView.animateWithDuration(0.5, animations: { () -> Void in
+                // self.btnInView.frame = CGRectMake(0, self.mScreenSize.height, self.mScreenSize.width, 44)
+                self.testView.frame = CGRectMake(0, self.mScreenSize.height, self.mScreenSize.width, 44)
+                
+            })
+        } else if (index == "1"){
+            UIView.animateWithDuration(0.5, animations: { () -> Void in
+                // self.btnInView.frame = CGRectMake(0, self.mScreenSize.height - 44, self.mScreenSize.width, 44)
+                self.testView.frame = CGRectMake(0, self.mScreenSize.height - 44, self.mScreenSize.width, 44)
+            })
+        }
+    }
+    
+    func mTipView(){
+        
+        var btnCollectRoute: UIButton = UIButton(frame: CGRectMake(0, 0, 160, 44))
+        btnCollectRoute.setTitle("路线", forState: UIControlState.Normal)
+        btnCollectRoute.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
+        btnCollectRoute.addTarget(self, action: "isCollectionRoute", forControlEvents: UIControlEvents.TouchUpInside)
+        self.testView.addSubview(btnCollectRoute)
+        
+        var btnSetAlarm: UIButton = UIButton(frame: CGRectMake(160, 0, 160, 44))
+        btnSetAlarm.setTitle("提醒", forState: UIControlState.Normal)
+        btnSetAlarm.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
+        btnSetAlarm.addTarget(self, action: "isPopToAlarm", forControlEvents: UIControlEvents.TouchUpInside)
+        self.testView.addSubview(btnSetAlarm)
+        
+
+        var btnCollectRouteImg: UIImageView = UIImageView(frame: CGRectMake(20, 11, 22, 22))
+         btnCollectRouteImg.image = "route_alarm".getImage()
+        self.testView.addSubview(btnCollectRouteImg)
+        
+
+        var btnSetAlarmImg: UIImageView = UIImageView(frame: CGRectMake(180, 11, 22, 22))
+        btnSetAlarmImg.image = "route_collection".getImage()
+        self.testView.addSubview(btnSetAlarmImg)
+
+    }
+
 }
 
 
