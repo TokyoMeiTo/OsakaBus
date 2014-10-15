@@ -34,9 +34,9 @@ class SearchStationList: UIViewController, UITableViewDelegate, UITableViewDataS
     func odbStation(){
         var table = MstT02StationTable()
         
-        var rows: NSArray = table.excuteQuery("select *,count(distinct STAT_NAME_EXT1) from MSTT02_STATION where 1 = 1 and STAT_ID like '280%' group by STAT_NAME_EXT1")
+        var rows: NSArray = table.excuteQuery("select *, ROWID, count(distinct STAT_NAME_EXT1) from MSTT02_STATION where 1 = 1 and STAT_ID like '280%' group by STAT_NAME_EXT1")
         
-        var allRows: NSArray = table.excuteQuery("select * from MSTT02_STATION where 1 = 1 and STAT_ID like '280%'")
+        var allRows: NSArray = table.excuteQuery("select *, ROWID from MSTT02_STATION where 1 = 1 and STAT_ID like '280%'")
         
         for key in rows {
             
@@ -59,17 +59,18 @@ class SearchStationList: UIViewController, UITableViewDelegate, UITableViewDataS
     
     func searchStation(name: String) {
         
+        stationArr.removeAllObjects()
         if(name.isEmpty){
+            self.table.reloadData()
             return;
         }
         
         var table = MstT02StationTable()
         
-        var rows: NSArray = table.excuteQuery("select *, ROWID, count(distinct STAT_NAME_EXT1) from MSTT02_STATION where 1 = 1 and STAT_ID like '280%' and (STAT_NAME_EXT1 like '%\(name)%' or STAT_NAME_EXT2 like '%\(name)%' or STAT_NAME_EXT3 like '%\(name)%' or STAT_NAME_EXT4 like '%\(name)%' or STAT_NAME_EXT5 like '%\(name)%' or STAT_NAME like '%\(name)%' or STAT_NAME_KANA or STAT_NAME_ROME like '%\(name)%' like '%\(name)%') group by STAT_NAME_EXT1")
+        var rows: NSArray = table.excuteQuery("select *, ROWID, count(distinct STAT_NAME_EXT1) from MSTT02_STATION where 1 = 1 and STAT_ID like '280%' and (STAT_NAME_EXT1 like '%\(name)%' or STAT_NAME_EXT2 like '%\(name)%' or STAT_NAME_EXT3 like '%\(name)%' or STAT_NAME_EXT4 like '%\(name)%' or STAT_NAME_EXT5 like '%\(name)%' or STAT_NAME like '%\(name)%' or STAT_NAME_KANA like '%\(name)%' or STAT_NAME_ROME like '%\(name)%' like '%\(name)%') group by STAT_NAME_EXT1")
         
         var allRows: NSArray = table.excuteQuery("select *, ROWID from MSTT02_STATION where 1 = 1 and STAT_ID like '280%'")
- 
-        stationArr.removeAllObjects()
+        
         for key in rows {
             
             stationArr.addObject(key)
@@ -106,14 +107,14 @@ class SearchStationList: UIViewController, UITableViewDelegate, UITableViewDataS
         }
         
         var lineView = UIView()
-        lineView.frame = CGRectMake(225, 5, 80, 45)
+        lineView.frame = CGRectMake(220, 5, 70, 45)
         lineView.tag = 202
         
         var arrStation: [String] = changeLineArr[indexPath.row] as [String]
         if (arrStation != ["self"]) {
             for (var i = 0; i < arrStation.count; i++) {
                 var line: UIImageView = UIImageView()
-                line.frame = CGRectMake(CGFloat(80 - (i+1)*18 - i * 4), 13, 18, 18)
+                line.frame = CGRectMake(CGFloat(70 - (i+1)*18 - i * 4), 13, 18, 18)
                 line.image = arrStation[i].getLineMiniImage()
                 
                 lineView.addSubview(line)
@@ -155,10 +156,11 @@ class SearchStationList: UIViewController, UITableViewDelegate, UITableViewDataS
             }
             
             self.navigationController?.popToViewController(routeSearch, animated: true)
-        } else if (classType == "remindDetailController") {
-            var remindDetailController: RemindDetailController = self.navigationController!.viewControllers[self.navigationController!.viewControllers.count - 2] as RemindDetailController
-            
-            self.navigationController?.popToViewController(remindDetailController, animated: true)
+        } else if (classType == "landMarkSearchController") {
+            var landMarkSearchController: LandMarkSearchController? = self.navigationController!.viewControllers[self.navigationController!.viewControllers.count - 2] as? LandMarkSearchController
+            var mstT02StationTable: MstT02StationTable = stationArr[indexPath.row] as MstT02StationTable
+            landMarkSearchController!.landMarkStatId = "\(mstT02StationTable.item(MSTT02_STAT_GROUP_ID))"
+            self.navigationController?.popToViewController(landMarkSearchController!, animated: true)
         } else {
             var detail: StationDetail = self.storyboard?.instantiateViewControllerWithIdentifier("StationDetail") as StationDetail
             

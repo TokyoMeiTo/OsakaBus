@@ -138,7 +138,12 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
             
             self.navigationController?.pushViewController(detail, animated: true)
         } else if (segment.selectedSegmentIndex == 1) {
+            var routeSearch: RouteSearch = self.storyboard?.instantiateViewControllerWithIdentifier("RouteSearch") as RouteSearch
             
+            var key = ruteArr[indexPath.row] as LinT04RouteTable
+            routeSearch.startStationText = key.item(LINT04_ROUTE_START_STAT_ID) as String
+            routeSearch.endStationText = key.item(LINT04_ROUTE_TERM_STAT_ID) as String
+            self.navigationController?.pushViewController(routeSearch, animated: true)
         }
     }
     

@@ -25,6 +25,8 @@ class TimeTable: UIViewController,UITableViewDelegate,UITableViewDataSource {
     var lineId: String = ""
     // 日文名与假名
     var nameKana: String?
+    // 屏幕尺寸
+    var mScreenSize: CGSize!
     
     var selectedIndex = 0
     // tableview的数据源
@@ -45,7 +47,10 @@ class TimeTable: UIViewController,UITableViewDelegate,UITableViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.title = "时刻表"
+        self.title = "STA002_12".localizedString()
+        
+        // ScreenSize
+        self.mScreenSize = UIScreen.mainScreen().bounds.size
         
         lineMenuView.hidden = true
         
@@ -145,7 +150,9 @@ class TimeTable: UIViewController,UITableViewDelegate,UITableViewDataSource {
         lineView.layer.borderColor = UIColor(red: 87/255, green: 86/255, blue: 86/255, alpha: 1).CGColor
         lineView.layer.borderWidth = 2
         lineView.layer.cornerRadius = 5
-        lineView.frame = CGRectMake(60, 200, 200, CGFloat(lineArr.count * 60) + 10)
+        
+        var viewHeight: CGFloat = CGFloat(lineArr.count * 60 + 10)
+        lineView.frame = CGRectMake(60, CGFloat((mScreenSize.height - viewHeight - 64)/2 + 64), 200, viewHeight)
     }
     
     func lineSelected(sender:UITapGestureRecognizer) {
@@ -341,16 +348,20 @@ class TimeTable: UIViewController,UITableViewDelegate,UITableViewDataSource {
         var lblHoure = UILabel()
         lblHoure.frame = CGRectMake(0, 0, 45, 25)
         lblHoure.textAlignment = NSTextAlignment.Center
-        lblHoure.text = "时"
+        lblHoure.text = "STA002_13".localizedString()
         
         var lblMin = UILabel()
         lblMin.frame = CGRectMake(45, 0, 275, 25)
         lblMin.textAlignment = NSTextAlignment.Center
-        lblMin.text = "分(日本时间)"
+        lblMin.text = "STA002_14".localizedString()
         
         view.addSubview(lblHoure)
         view.addSubview(lblMin)
         return view
+    }
+    
+    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 25
     }
     
     

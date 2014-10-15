@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate, UITableViewDataSource {
     
@@ -97,7 +98,7 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
             key as MstT02StationTable
             
             group_id = key.item(MSTT02_STAT_GROUP_ID) as String
-            statSeqArr = table.excuteQuery("select STAT_SEQ,STAT_ID,LINE_ID from MSTT02_STATION where 1 = 1 and STAT_GROUP_ID = \(group_id)")
+            statSeqArr = table.excuteQuery("select *, ROWID from MSTT02_STATION where 1 = 1 and STAT_GROUP_ID = \(group_id)")
         }
     }
     
@@ -262,7 +263,6 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
                 var sureBtn: UIAlertView = UIAlertView(title: "", message: "收藏失败！", delegate: self, cancelButtonTitle: "确定")
                 
                 sureBtn.show()
-                println("插入失败")
             }
         }
     }
@@ -340,6 +340,8 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
         var stationExit: ExitInfo = self.storyboard?.instantiateViewControllerWithIdentifier("stationExit") as ExitInfo
         
         stationExit.statId = group_id
+        var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = backButton
         
         self.navigationController?.pushViewController(stationExit, animated: true)
     }
@@ -348,6 +350,26 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
     @IBAction func addSubway() {
     
         collectStation()
+    }
+    
+    @IBAction func showLandMarkMap() {
+    
+        var landMarkMap: LandMarkMapController = self.storyboard?.instantiateViewControllerWithIdentifier("landmarkmap") as LandMarkMapController
+        
+        if (statSeqArr.count > 0) {
+            var key: MstT02StationTable = statSeqArr[0] as MstT02StationTable
+            var statLat: Double = ("\(key.item(MSTT02_STAT_LAT))" as NSString).doubleValue
+            var statLon: Double = ("\(key.item(MSTT02_STAT_LON))" as NSString).doubleValue
+            landMarkMap.landMarkLocation = CLLocation(latitude: statLat, longitude: statLon)
+            landMarkMap.statId = group_id
+            
+            landMarkMap.title = "站点地图"
+        }
+        
+        var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = backButton
+        
+        self.navigationController?.pushViewController(landMarkMap, animated: true)
     }
     
     
@@ -363,9 +385,10 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
     @IBAction func pushStationMap() {
     
         var stationMap: StationImg = self.storyboard?.instantiateViewControllerWithIdentifier("StationImg") as StationImg
-        
-//        stationMap.stationMapUrl = "http://www.tokyometro.jp/station/\(statMetroId.lowercaseString)/yardmap/images/yardmap.gif"
+
         stationMap.stationMapUrl = group_id.getStationInnerMapImagePath()
+        var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = backButton
         
         self.navigationController?.pushViewController(stationMap, animated: true)
     }
@@ -385,6 +408,8 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
         var routeSearch: RouteSearch = self.storyboard?.instantiateViewControllerWithIdentifier("RouteSearch") as RouteSearch
         
         routeSearch.startStationText = group_id
+        var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = backButton
         
         self.navigationController?.pushViewController(routeSearch, animated: true)
     }
@@ -394,6 +419,8 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
         var routeSearch: RouteSearch = self.storyboard?.instantiateViewControllerWithIdentifier("RouteSearch") as RouteSearch
         
         routeSearch.endStationText = group_id
+        var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = backButton
         
         self.navigationController?.pushViewController(routeSearch, animated: true)
     }
@@ -457,6 +484,7 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
             open1.frame = CGRectMake(25, 0, 155, 35)
             open1.text = "开往\(array[1].station())："
             open1.font = UIFont.boldSystemFontOfSize(18)
+            open1.adjustsFontSizeToFitWidth = true
             time1.addSubview(open1)
             
             var open2: UILabel = UILabel()
@@ -535,6 +563,9 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
         var stationFacilities: StationFacilities = self.storyboard?.instantiateViewControllerWithIdentifier("StationFacilities") as StationFacilities
         stationFacilities.statId = group_id
         
+        var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = backButton
+        
         self.navigationController?.pushViewController(stationFacilities, animated: true)
     }
     
@@ -557,12 +588,17 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
         var facilityList: FacilityList = self.storyboard?.instantiateViewControllerWithIdentifier("FacilityList") as FacilityList
         
         facilityList.statId = group_id
+        var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = backButton
         
         self.navigationController?.pushViewController(facilityList, animated: true)
     }
     
     func showExitMap() {
         var exitMap: ExitMap = self.storyboard?.instantiateViewControllerWithIdentifier("ExitMap") as ExitMap
+        
+        var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = backButton
         
         self.navigationController?.pushViewController(exitMap, animated: true)
     }

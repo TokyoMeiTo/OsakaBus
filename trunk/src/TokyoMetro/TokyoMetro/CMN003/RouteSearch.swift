@@ -123,8 +123,8 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         
         self.mScreenSize = UIScreen.mainScreen().bounds.size
         
-        var strStart:NSString = "起点"
-        var strEnd:NSString = "终点"
+        var strStart:NSString = "PUBLIC_01".localizedString()
+        var strEnd:NSString = "PUBLIC_02".localizedString()
         self.stationStart.placeholder = strStart
         self.stationEnd.placeholder = strEnd
         
@@ -221,7 +221,6 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             
             if indexPath.row == 0 {
                 resultCellIvStaionIcon.hidden = true
-                // resultCelllblStationDirection.hidden = true
                 resultCelllblStationName.hidden = true
                 resultCelllblStationLineName.hidden = true
                 resultCelllblStationWaitTime.hidden = true
@@ -241,7 +240,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
                 resultCelllblStationTip1.font = UIFont.systemFontOfSize(17)
                 resultCelllblStationTip1.tag = 2001
                 if (routeDetial.count - 2 > 0) {
-                     resultCelllblStationTip1.text = "换乘" + (routeDetial.count - 2).description + "次"
+                     resultCelllblStationTip1.text = "EXCHANGE_TYPE_1".localizedString() + (routeDetial.count - 2).description + " " + "CMN003_23".localizedString()
                 } else {
                     resultCelllblStationTip1.hidden = true
                 }
@@ -255,7 +254,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
                 resultCelllblStationTip2.font = UIFont.systemFontOfSize(14)
                 resultCelllblStationTip2.frame = CGRectMake(15,30,200,20)
                 resultCelllblStationTip2.tag = 2002
-                resultCelllblStationTip2.text = "票价" + getFare()
+                resultCelllblStationTip2.text = "PUBLIC_10".localizedString() + getFare()
 
                 cellInfo.addSubview(resultCelllblStationTip1)
                 cellInfo.addSubview(resultCelllblStationTip2)
@@ -288,15 +287,15 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
                     
                     resultCelllblStationName.text = (strresultExchStatId as String).station()
                     
-                    resultCelllblStationWaitTime.text = "等待" + (strresultExchWaitTime as String) + "分钟"
-                    resultCelllblStationMoveTime.text = "乘车" + (strresultExchMoveTime as String) + "分钟"
+                    resultCelllblStationWaitTime.text = "CMN003_02".localizedString() + (strresultExchWaitTime as String) + "CMN003_03".localizedString()
+                    resultCelllblStationMoveTime.text = "CMN003_04".localizedString() + (strresultExchMoveTime as String) + "CMN003_03".localizedString()
                     
                     if (indexPath.row - 1 == 0){
                         // 设置起点图片
                         resultCellIvStaionIcon.image = "route_start".getImage()
                         
                         if (strresultExchType == "255") {
-                            resultCelllblStationMoveTime.text = "步行" + (strresultExchMoveTime as String) + "分钟"
+                            resultCelllblStationMoveTime.text = "CMN003_07".localizedString() + (strresultExchMoveTime as String) + "CMN003_03".localizedString()
                             resultCelllblStationLineName.hidden = true
                             resultCelllblStationWaitTime.hidden = true
                             
@@ -305,14 +304,14 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
                             var strresultExchlineId = routStartDic["resultExchlineId"] as? NSString
                             resultCelllblStationLineName.text = (strresultExchlineId as String).line()
                             var strresultExchDestId = routStartDic["resultExchDestId"] as? NSString
-                            resultCelllblStationLineName.text = "乘" + (strresultExchlineId as String).line() + " 往" + (strresultExchDestId as String).station() + "方向"
+                            resultCelllblStationLineName.text = "CMN003_05".localizedString() + (strresultExchlineId as String).line() + "CMN003_06".localizedString() + (strresultExchDestId as String).station() + "PUBLIC_04".localizedString()
                         }
 
                     } else {
                         
                         if (strresultExchType == "255") {
                             resultCellIvStaionIcon.image = "routeexchange_walk".getImage()
-                            resultCelllblStationMoveTime.text = "步行" + (strresultExchMoveTime as String) + "分钟"
+                            resultCelllblStationMoveTime.text = "CMN003_07".localizedString() + (strresultExchMoveTime as String) + "CMN003_03".localizedString()
                             resultCelllblStationLineName.hidden = true
                             resultCelllblStationWaitTime.hidden = true
                             
@@ -322,7 +321,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
                             resultCelllblStationLineName.text = (strresultExchlineId as String).line()
                             resultCellIvStaionIcon.image = "routeexchange_metro".getImage()
                             var strresultExchDestId = routStartDic["resultExchDestId"] as? NSString
-                            resultCelllblStationLineName.text = "换乘" + (strresultExchlineId as String).line() + " 往" + (strresultExchDestId as String).station() + "方向"
+                            resultCelllblStationLineName.text = "CMN003_01".localizedString() + (strresultExchlineId as String).line() + "CMN003_06".localizedString() + (strresultExchDestId as String).station() + "PUBLIC_04".localizedString()
                         }
                     }
                     
@@ -343,7 +342,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
                 if !(stationName == self.stationEnd.text)  {
                     self.stationStart.text = stationName
                  } else {
-                    errAlertView("错误信息", errMgs: "站点名相同", errBtnTitle: "确认")
+                    errAlertView("PUBLIC_04".localizedString(), errMgs: "CMN003_09".localizedString(), errBtnTitle: "PUBLIC_06".localizedString())
                 }
             
             } else if focusNumber == "2" {
@@ -351,7 +350,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
                 if !(stationName == self.stationStart.text) {
                    self.stationEnd.text = stationName
                 } else {
-                   errAlertView("错误信息", errMgs: "站点名相同", errBtnTitle: "确认")
+                   errAlertView("PUBLIC_04".localizedString(), errMgs: "CMN003_09".localizedString(), errBtnTitle: "PUBLIC_06".localizedString())
                 }
             
            }
@@ -405,7 +404,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         
         // 判断合法性
         if ( self.stationStart.text == "" || self.stationEnd.text == "" || self.stationStart.text == self.stationEnd.text) {
-            errAlertView("提示信息", errMgs: "请重新输入车站名", errBtnTitle: "确认")
+            errAlertView("CMN003_10".localizedString(), errMgs: "CMN003_11".localizedString(), errBtnTitle: "PUBLIC_06".localizedString())
         } else {
             searchRouteAction()
             hideKeyBoard()
@@ -419,7 +418,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         self.routeEndStationId = serarchStationIdByStationName(stationEnd.text)
         
         if (routeStartStationId == "" || routeEndStationId == "") {
-            errAlertView("提示", errMgs: "您输入的车站名无效", errBtnTitle: "确认")
+            errAlertView("CMN003_10".localizedString(), errMgs: "CMN003_13".localizedString(), errBtnTitle: "PUBLIC_06".localizedString())
             return
         }
         showTipBtn("1")
@@ -444,19 +443,19 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
     
     // 弹出对话框，判断是否要跳转到StationList页面
     @IBAction func isPopToStationList() {
-        var sureBtn: UIAlertView = UIAlertView(title: "提示", message: "您确定跳转到所有站点列表,进行站点查找吗？", delegate: self, cancelButtonTitle: "取消", otherButtonTitles: "确定")
+        var sureBtn: UIAlertView = UIAlertView(title: "CMN003_12".localizedString(), message: "CMN003_14".localizedString(), delegate: self, cancelButtonTitle: "PUBLIC_07".localizedString(), otherButtonTitles: "PUBLIC_06".localizedString())
         sureBtn.tag = 100
         sureBtn.show()
     }
     
     func isPopToAlarm() {
-        var sureBtn: UIAlertView = UIAlertView(title: "提示", message: "您确定设定到站提醒吗？", delegate: self, cancelButtonTitle: "取消", otherButtonTitles: "确定")
+        var sureBtn: UIAlertView = UIAlertView(title: "CMN003_12".localizedString(), message: "CMN003_15".localizedString(), delegate: self, cancelButtonTitle: "PUBLIC_07".localizedString(), otherButtonTitles: "PUBLIC_06".localizedString())
         sureBtn.tag = 200
         sureBtn.show()
     }
     
     func isCollectionRoute() {
-        var sureBtn: UIAlertView = UIAlertView(title: "提示", message: "您确定收藏该路线？", delegate: self, cancelButtonTitle: "取消", otherButtonTitles: "确定")
+        var sureBtn: UIAlertView = UIAlertView(title: "CMN003_12".localizedString(), message: "CMN003_16".localizedString(), delegate: self, cancelButtonTitle: "PUBLIC_07".localizedString(), otherButtonTitles: "PUBLIC_06".localizedString())
         sureBtn.tag = 300
         sureBtn.show()
     }
@@ -558,7 +557,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             }
             tbView.reloadData()
         }
-        self.lblTip.text = "所有收藏站点"
+        self.lblTip.text = "CMN003_17".localizedString()
         // self.btnInView.hidden = true
         
     }
@@ -573,8 +572,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             var searchstationId = mst02Row.item(MSTT02_STAT_ID) as String
             resultid = searchstationId
         }
-        println("车站ID")
-        println("\(resultid)")
+
         return resultid
     }
 
@@ -613,15 +611,15 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         }
 
         if checkInsert.count > 0 {
-            errAlertView("数据操作", errMgs:"收藏失败,站点已收藏", errBtnTitle:"确定")
+            errAlertView("CMN003_18".localizedString(), errMgs:"CMN003_19".localizedString(), errBtnTitle:"PUBLIC_06".localizedString())
         } else {
             user03table.favoTime = NSDate.date().description.yyyyMMddHHmmss()
             
             var user03insert = user03table.insert()
             if !user03insert {
-                errAlertView("数据操作", errMgs:"收藏失败", errBtnTitle:"确定")
+                errAlertView("CMN003_18".localizedString(), errMgs:"CMN003_20".localizedString(), errBtnTitle:"PUBLIC_06".localizedString())
             } else {
-                errAlertView("数据操作", errMgs:"收藏成功", errBtnTitle:"确定")
+                errAlertView("CMN003_18".localizedString(), errMgs:"CMN003_21".localizedString(), errBtnTitle:"PUBLIC_06".localizedString())
             }
         }
     }
@@ -641,15 +639,15 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         }
         
         if checkInsert.count > 0 {
-            errAlertView("数据操作", errMgs:"收藏失败,路线已收藏", errBtnTitle:"确定")
+            errAlertView("CMN003_18".localizedString(), errMgs:"CMN003_24".localizedString(), errBtnTitle:"PUBLIC_06".localizedString())
         } else {
             user03table.favoTime = NSDate.date().description.yyyyMMddHHmmss()
             
             var user03insert = user03table.insert()
             if !user03insert {
-                errAlertView("数据操作", errMgs:"收藏失败", errBtnTitle:"确定")
+                errAlertView("CMN003_18".localizedString(), errMgs:"CMN003_20".localizedString(), errBtnTitle:"PUBLIC_06".localizedString())
             } else {
-                errAlertView("数据操作", errMgs:"收藏成功", errBtnTitle:"确定")
+                errAlertView("CMN003_18".localizedString(), errMgs:"CMN003_21".localizedString(), errBtnTitle:"PUBLIC_06".localizedString())
             }
         }
     }
@@ -701,10 +699,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             var routeItem = ["resultExchStatId":resultExchStatId ,"resultExchlineId":resultExchlineId, "resultExchDestId":resultExchDestId, "resultExchSeq":resultExchSeq.description, "resultExchMoveTime":resultExchMoveTime.description, "resultExchWaitTime":resultExchWaitTime.description, "resultExchType":resultExchType]
             self.routeDetial.addObject(routeItem)
         }
-        self.lblTip.text = "路线搜索结果"
-        // self.btnInView.hidden = false
-
-       
+        self.lblTip.text = "CMN003_22".localizedString()
     }
     
     // 跳转到站点详情页面
@@ -769,6 +764,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
     }
     
     @IBAction func locatNearlyStation() {
+        // 定位时打开
          // loadLocation()
         // 起点軽度
         let fromLat = 35.672737//31.23312372 // 天地科技广场1号楼
@@ -796,7 +792,6 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         for nearlystationId in stations{
             var mMst02tableNearlyStation = MstT02StationTable()
             
-                
                 mMst02tableNearlyStation.statId = nearlystationId.statId as String
                 
                 var mst02StationID:NSArray = mMst02tableNearlyStation.selectAll()
@@ -820,9 +815,8 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             
         }
         tbView.reloadData()
-        self.lblTip.text = "最近站点"
+        self.lblTip.text = "PUBLIC_11".localizedString()
         showTipBtn("0")
-        // self.btnInView.hidden = true
     }
 
     // 进度转圈
@@ -853,16 +847,13 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
     *   展示和收起底部menu菜单
     */
     func showTipBtn(index : String) {
-//        mTipView()
         if (index == "0") {
             UIView.animateWithDuration(0.5, animations: { () -> Void in
-                // self.btnInView.frame = CGRectMake(0, self.mScreenSize.height, self.mScreenSize.width, 44)
                 self.testView.frame = CGRectMake(0, self.mScreenSize.height, self.mScreenSize.width, 44)
                 
             })
         } else if (index == "1"){
             UIView.animateWithDuration(0.5, animations: { () -> Void in
-                // self.btnInView.frame = CGRectMake(0, self.mScreenSize.height - 44, self.mScreenSize.width, 44)
                 self.testView.frame = CGRectMake(0, self.mScreenSize.height - 44, self.mScreenSize.width, 44)
             })
         }
@@ -871,27 +862,24 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
     func mTipView(){
         
         var btnCollectRoute: UIButton = UIButton(frame: CGRectMake(0, 0, 160, 44))
-        btnCollectRoute.setTitle("路线", forState: UIControlState.Normal)
+        btnCollectRoute.setTitle("CMN003_26".localizedString(), forState: UIControlState.Normal)
         btnCollectRoute.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
         btnCollectRoute.addTarget(self, action: "isCollectionRoute", forControlEvents: UIControlEvents.TouchUpInside)
         self.testView.addSubview(btnCollectRoute)
         
         var btnSetAlarm: UIButton = UIButton(frame: CGRectMake(160, 0, 160, 44))
-        btnSetAlarm.setTitle("提醒", forState: UIControlState.Normal)
+        btnSetAlarm.setTitle("CMN003_25".localizedString(), forState: UIControlState.Normal)
         btnSetAlarm.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
         btnSetAlarm.addTarget(self, action: "isPopToAlarm", forControlEvents: UIControlEvents.TouchUpInside)
         self.testView.addSubview(btnSetAlarm)
         
-
         var btnCollectRouteImg: UIImageView = UIImageView(frame: CGRectMake(20, 11, 22, 22))
          btnCollectRouteImg.image = "route_alarm".getImage()
         self.testView.addSubview(btnCollectRouteImg)
         
-
         var btnSetAlarmImg: UIImageView = UIImageView(frame: CGRectMake(180, 11, 22, 22))
         btnSetAlarmImg.image = "route_collection".getImage()
         self.testView.addSubview(btnSetAlarmImg)
-
     }
 
 }

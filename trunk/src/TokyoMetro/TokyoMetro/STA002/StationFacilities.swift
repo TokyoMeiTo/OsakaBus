@@ -57,9 +57,6 @@ class StationFacilities: UIViewController, UITableViewDelegate, NSObjectProtocol
     */
     func selectStaT03Table(statId:String) -> Array<StaT03ComervialInsideTable>{
         var staT03Table:StaT03ComervialInsideTable = StaT03ComervialInsideTable()
-//        let QUERY_FACILITLES = "select * , ROWID from STAT03_COMERCIAL_INSIDE where LINE_ID LIKE '?%%'"
-        
-//        facilities = staT03Table.excuteQuery( QUERY_FACILITLES, withArgumentsInArray:[statId]) as? Array<StaT03ComervialInsideTable>
         
         staT03Table.comeInsiId = statId
         facilities = staT03Table.selectLike() as? Array<StaT03ComervialInsideTable>
@@ -81,7 +78,7 @@ class StationFacilities: UIViewController, UITableViewDelegate, NSObjectProtocol
 //        var comercialInsideDetail: ComercialInsideDetail = self.storyboard?.instantiateViewControllerWithIdentifier("ComercialInsideDetail") as ComercialInsideDetail
 //        comercialInsideDetail.comeInsiTable = facilities![indexPath.row]
 //        
-//        self.navigationController?.pushViewController(comercialInsideDetail, animated: true)
+//        self.navigationController?.pushViewController(comercialInsideDetail, animated: true)        
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -97,25 +94,8 @@ class StationFacilities: UIViewController, UITableViewDelegate, NSObjectProtocol
         for subview in cell.subviews{
             subview.removeFromSuperview()
         }
-        // cell显示内容
-//        var imgLandMark: UIImage = UIImage(named: (facilities![indexPath.row].item(STAT03_COME_INSI_IMAGE) as String).getStationInnerComPath())
-//        var imageViewLandMark = UIImageView(frame: CGRectMake(0, 0, tableView.frame.width, 170))
-//        imageViewLandMark.image = imgLandMark
-//        cell.addSubview(imageViewLandMark)
-//        
-//        var lblTemp = UILabel(frame: CGRect(x:0,y:135,width:tableView.frame.width,height:35))
-//        lblTemp.alpha = 0.4
-//        lblTemp.backgroundColor = UIColor.blackColor()
-//        cell.addSubview(lblTemp)
-//        
-//        var lblLandMark = UILabel(frame: CGRect(x:15,y:130,width:tableView.frame.width,height:40))
-//        lblLandMark.backgroundColor = UIColor.clearColor()
-//        lblLandMark.font = UIFont.boldSystemFontOfSize(16)
-//        lblLandMark.textColor = UIColor.whiteColor()
-//        lblLandMark.text = "\(facilities![indexPath.row].item(STAT03_COME_INSI_NAME))"
-//        lblLandMark.textAlignment = NSTextAlignment.Left
-//        cell.addSubview(lblLandMark)
         
+        // cell显示内容
         var imgCompiner: UIImageView = UIImageView(frame: CGRectMake(5, 8, 100, 100))
         imgCompiner.image = UIImage(named: (facilities![indexPath.row].item(STAT03_COME_INSI_IMAGE) as String).getStationInnerComPath())
         
@@ -128,7 +108,8 @@ class StationFacilities: UIViewController, UITableViewDelegate, NSObjectProtocol
         lblName.text = strName
         cell.addSubview(lblName)
         
-        var imageTime: UIImageView = UIImageView(frame: CGRectMake(115, 33, 14, 14))
+        var imageTime: UIImageView = UIImageView(frame: CGRectMake(112, 29, 20, 20))
+        imageTime.image = UIImage(named: "station_time")
         cell.addSubview(imageTime)
         
         var strTime = (facilities![indexPath.row].item(STAT03_COME_INSI_BISI_HOUR) as String).relpaceAll("\\n", target: "\n")
@@ -141,7 +122,8 @@ class StationFacilities: UIViewController, UITableViewDelegate, NSObjectProtocol
         var strPrice = facilities![indexPath.row].item(STAT03_COME_INSI_PRICE) as? String
         if (strPrice != nil) {
             
-            var imagePrc: UIImageView = UIImageView(frame: CGRectMake(115, CGFloat(lblTime.frame.height + 8 + lblTime.frame.origin.y), 14, 14))
+            var imagePrc: UIImageView = UIImageView(frame: CGRectMake(112, CGFloat(lblTime.frame.height + 3 + lblTime.frame.origin.y), 20, 20))
+            imagePrc.image = UIImage(named: "station_price")
             cell.addSubview(imagePrc)
             
             var lblPrice = UILabel(frame: CGRectMake(135, CGFloat(lblTime.frame.height + 5 + lblTime.frame.origin.y), 180, textHeight(strPrice!, width: 180, size: 14)))
@@ -151,24 +133,34 @@ class StationFacilities: UIViewController, UITableViewDelegate, NSObjectProtocol
             lblPrice.text = strPrice
             cell.addSubview(lblPrice)
             
+            var imageAddress: UIImageView = UIImageView(frame: CGRectMake(112, CGFloat(lblPrice.frame.height +  3 + lblPrice.frame.origin.y), 20, 20))
+            imageAddress.image = UIImage(named: "station_address")
+            cell.addSubview(imageAddress)
+            
             var strAddress = facilities![indexPath.row].item(STAT03_COME_INSI_LOCA_CH) as String
-            var lblAddress = UILabel(frame: CGRectMake(135, CGFloat(lblPrice.frame.height + 8 + lblPrice.frame.origin.y), 180, textHeight(strAddress, width: 180, size: 14)))
+            var lblAddress = UILabel(frame: CGRectMake(135, CGFloat(lblPrice.frame.height + 5 + lblPrice.frame.origin.y), 180, 18))
             lblAddress.font = UIFont.systemFontOfSize(14)
             lblAddress.adjustsFontSizeToFitWidth = true
-            lblAddress.numberOfLines = 0
+            lblAddress.numberOfLines = 1
             lblAddress.text = strAddress
             cell.addSubview(lblAddress)
         } else {
+            
+            var imageAddress: UIImageView = UIImageView(frame: CGRectMake(112, CGFloat(lblTime.frame.height + 3 + lblTime.frame.origin.y), 20, 20))
+            imageAddress.image = UIImage(named: "station_address")
+            cell.addSubview(imageAddress)
+
+            
             var strAddress = facilities![indexPath.row].item(STAT03_COME_INSI_LOCA_CH) as String
-            var lblAddress = UILabel(frame: CGRectMake(135, CGFloat(lblTime.frame.height + 5 + lblTime.frame.origin.y), 180, textHeight(strAddress, width: 180, size: 14)))
+            var lblAddress = UILabel(frame: CGRectMake(135, CGFloat(lblTime.frame.height + 5 + lblTime.frame.origin.y), 180, 18))
             lblAddress.font = UIFont.systemFontOfSize(14)
             lblAddress.adjustsFontSizeToFitWidth = true
-            lblAddress.numberOfLines = 0
+            lblAddress.numberOfLines = 1
             lblAddress.text = strAddress
             cell.addSubview(lblAddress)
         }
         
-        var lblLine = UILabel(frame: CGRectMake(0, 114, 320, 14))
+        var lblLine = UILabel(frame: CGRectMake(0, 114, 320, 1))
         lblLine.backgroundColor = UIColor.lightGrayColor()
         cell.addSubview(lblLine)
         

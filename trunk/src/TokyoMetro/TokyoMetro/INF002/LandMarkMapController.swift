@@ -28,6 +28,7 @@ class LandMarkMapController: UIViewController, MKMapViewDelegate, UIActionSheetD
     
     var landMarkLocation:CLLocation?
     
+    var statId:String?
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -49,10 +50,10 @@ class LandMarkMapController: UIViewController, MKMapViewDelegate, UIActionSheetD
 
         var span: MKCoordinateSpan = MKCoordinateSpanMake(0.01, 0.01)
         
-        var statLat:Double = ("\(landMark!.item(MSTT04_LANDMARK_LMAK_LAT))" as NSString).doubleValue
-        var statLon:Double = ("\(landMark!.item(MSTT04_LANDMARK_LMAK_LON))" as NSString).doubleValue
-        
         if(landMarkLocation == nil){
+            var statLat:Double = ("\(landMark!.item(MSTT04_LANDMARK_LMAK_LAT))" as NSString).doubleValue
+            var statLon:Double = ("\(landMark!.item(MSTT04_LANDMARK_LMAK_LON))" as NSString).doubleValue
+
             landMarkLocation = CLLocation(latitude: statLon, longitude: statLat)
         }
         
@@ -61,24 +62,32 @@ class LandMarkMapController: UIViewController, MKMapViewDelegate, UIActionSheetD
         // 获取最近的10个站点
         stations = StationListController.selectStationTable(landMarkLocation!)
         
-        // 显示距离最近的10个地铁站
-        for(var i=0;i<stations!.count;i++){
-            var key = stations![i] as MstT02StationTable
-            var statLat:AnyObject? = key.item(MSTT02_STAT_LAT)
-            var statLon:AnyObject? = key.item(MSTT02_STAT_LON)
-            var annotation = MKPointAnnotation()
-            annotation.coordinate = CLLocationCoordinate2D(latitude:statLat as CLLocationDegrees, longitude:statLon as CLLocationDegrees)
-            annotation.title = "\(key.item(MSTT02_STAT_ID))".station()
-            mkMap.addAnnotation(annotation)
-            var region : MKCoordinateRegion = MKCoordinateRegionMake(annotation.coordinate, span)
-            mkMap.setRegion(region, animated:true)
-        }
+        
         
         // NSInvalidArgumentException 'Invalid Coordinate +139.77180400, +35.68542600'
         // MKMapView定位到当前位置
         var coordinateOnEarth = landMarkLocation!.coordinate
         var annotation = MKPointAnnotation()
-        annotation.title = "\(landMark!.item(MSTT04_LANDMARK_LMAK_NAME_EXT1))"
+        
+        if(landMark != nil){
+            // 显示距离最近的10个地铁站
+            for(var i=0;i<stations!.count;i++){
+                var key = stations![i] as MstT02StationTable
+                var statLat:AnyObject? = key.item(MSTT02_STAT_LAT)
+                var statLon:AnyObject? = key.item(MSTT02_STAT_LON)
+                var annotation = MKPointAnnotation()
+                annotation.coordinate = CLLocationCoordinate2D(latitude:statLat as CLLocationDegrees, longitude:statLon as CLLocationDegrees)
+                annotation.title = "\(key.item(MSTT02_STAT_ID))".station()
+                mkMap.addAnnotation(annotation)
+                var region : MKCoordinateRegion = MKCoordinateRegionMake(annotation.coordinate, span)
+                mkMap.setRegion(region, animated:true)
+            }
+            
+            annotation.title = "\(landMark!.item(MSTT04_LANDMARK_LMAK_NAME_EXT1))"
+        } else if(statId != nil) {
+            annotation.title = statId!.station()
+        }
+        
         annotation.coordinate = coordinateOnEarth
         
         mkMap.setCenterCoordinate(coordinateOnEarth, animated:true)
@@ -114,23 +123,31 @@ class LandMarkMapController: UIViewController, MKMapViewDelegate, UIActionSheetD
             }
             var pinView:MKPinAnnotationView?
             
-            pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "\(landMark!.item(MSTT04_LANDMARK_LMAK_NAME_EXT1))")
             // 4'3'5
             var img = UIImage(named: "INF00204.png")
-            landMarkType = "\(landMark!.item(MSTT04_LANDMARK_LMAK_TYPE))"
-            switch landMarkType{
-            case "景点":
-                img = UIImage(named: "INF00204.png")
-            case "美食":
-                img = UIImage(named: "INF00203.png")
-            case "购物":
-                img = UIImage(named: "INF00205.png")
-            default:
-                println("nothing")
-            }
-            if(annotation.title != "\(landMark!.item(MSTT04_LANDMARK_LMAK_NAME_EXT1))"){
+            
+            if(landMark != nil){
+                pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "\(landMark!.item(MSTT04_LANDMARK_LMAK_NAME_EXT1))")
+                landMarkType = "\(landMark!.item(MSTT04_LANDMARK_LMAK_TYPE))"
+                switch landMarkType{
+                case "景点":
+                    img = UIImage(named: "INF00204.png")
+                case "美食":
+                    img = UIImage(named: "INF00203.png")
+                case "购物":
+                    img = UIImage(named: "INF00205.png")
+                default:
+                    println("nothing")
+                }
+                if(annotation.title != "\(landMark!.item(MSTT04_LANDMARK_LMAK_NAME_EXT1))"){
+                    img = UIImage(named: "STA00301.png")
+                }
+            }else if(statId != nil){
+                pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: statId!.station())
+                landMarkType = statId!.station()
                 img = UIImage(named: "STA00301.png")
             }
+            
             pinView!.pinColor = .Red
             pinView!.image = img
             pinView!.canShowCallout = true

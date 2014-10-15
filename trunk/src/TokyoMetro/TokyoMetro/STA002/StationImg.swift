@@ -32,7 +32,7 @@ class StationImg: UIViewController, UIScrollViewDelegate {
         scroll.minimumZoomScale = 1.0
         scroll.maximumZoomScale = 3.0
         
-        scroll.zoomScale = 2.0
+        scroll.zoomScale = 1.0
         
         progress = UIActivityIndicatorView()
         progress.frame = CGRectMake(140, 264, 40, 40)

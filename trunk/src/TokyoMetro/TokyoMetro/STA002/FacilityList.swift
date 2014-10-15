@@ -75,9 +75,9 @@ class FacilityList: UIViewController,UITableViewDelegate,UITableViewDataSource {
             facilityArr.addObject(facilityArr4)
         }
         
-        if (facilityArr5.count > 0) {
-            facilityArr.addObject(facilityArr5)
-        }
+//        if (facilityArr5.count > 0) {
+//            facilityArr.addObject(facilityArr5)
+//        }
 
     }
     

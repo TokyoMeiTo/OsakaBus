@@ -18,7 +18,7 @@
 #define INFT03_RESCURE_READ_FLAG        @"READ_FLAG"
 #define INFT03_RESCURE_READ_TIME        @"READ_TIME"
 #define INFT03_RESCURE_FAVO_FLAG        @"FAVO_FLAG"
-#define INFT03_RESCURE_FAVO_TIME        @"FACO_TIME"
+#define INFT03_RESCURE_FAVO_TIME        @"FAVO_TIME"
 
 @interface InfT03RescureTable : ODBDataTable{
 }

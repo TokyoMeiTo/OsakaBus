@@ -14,16 +14,10 @@ class HelpContentList: UIViewController, UITableViewDataSource, UITableViewDeleg
     
     var rescType: String = "1"
     
-    var titleArr = ["游览", "购物", "饮食", "住宿"]
-
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        if (rescType == "1") {
-            self.title = "旅行求助"
-        } else {
-            self.title = "站内求助"
-        }
+        
+        self.title = "求助一览"
         
         odbRescure()
     }
@@ -35,56 +29,54 @@ class HelpContentList: UIViewController, UITableViewDataSource, UITableViewDeleg
     func odbRescure() {
     
         var table: InfT03RescureTable = InfT03RescureTable()
-        var rows:NSArray!
-        if (rescType == "1") {
-            table.rescType = "游览"
-            rows = table.selectLike()
-            rescArr.addObject(rows)
-            
-            table.rescType = "购物"
-            rows = table.selectLike()
-            rescArr.addObject(rows)
-            
-            table.rescType = "饮食"
-            rows = table.selectLike()
-            rescArr.addObject(rows)
-            
-            table.rescType = "住宿"
-            rows = table.selectLike()
-            rescArr.addObject(rows)
-            
-        } else {
-            table.rescType = "站内求助"
-            rows = table.selectLike()
-            rescArr.addObject(rows)
+        
+        var typeRows = table.excuteQuery("select *, ROWID, COUNT(RESC_TYPE) from INFT03_RESCURE where 1=1 group by RESC_TYPE")
+        
+        for key in typeRows {
+            key as InfT03RescureTable
+            var rescType: String! = key.item(INFT03_RESCURE_RESC_TYPE) as String
+            table.rescType = rescType
+            var rows = table.selectAll()
+            rescArr.addObject([rescType, rows])
         }
     }
     
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return rescArr[section].count
+        return rescArr[section][1].count
     }
     
-    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if (rescType == "1") {
-            return titleArr[section]
-        } else {
-            return "站内求助"
-        }
+    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        var view = UIView()
+        view.frame = CGRectMake(0, 0, 320, 30)
+        view.backgroundColor = UIColor(red: 103/255, green: 188/255, blue: 228/255, alpha: 1)
+        var title = UILabel()
+        title.frame = CGRectMake(15, 0, 250, 30)
+        title.text = rescArr[section][0] as? String
+        title.textColor = UIColor.whiteColor()
+        title.font = UIFont.boldSystemFontOfSize(17)
+        
+        view.addSubview(title)
+        
+        var image:UIImageView = UIImageView(frame: CGRectMake(273, 3, 32, 23))
+        image.image = UIImage(named: "arrow_down")
+        view.addSubview(image)
+        
+        return view
+    }
+    
+    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 30
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        if (rescType == "1") {
-            return titleArr.count
-        } else {
-            return 1
-        }
+         return rescArr.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("HelpContentListCell", forIndexPath: indexPath) as UITableViewCell
         
-        var map: InfT03RescureTable = rescArr[indexPath.section][indexPath.row] as InfT03RescureTable
+        var map: InfT03RescureTable = rescArr[indexPath.section][1][indexPath.row] as InfT03RescureTable
         
         var view = cell.viewWithTag(201) as UIView!
         
@@ -122,17 +114,21 @@ class HelpContentList: UIViewController, UITableViewDataSource, UITableViewDeleg
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         
-        var map: InfT03RescureTable = rescArr[indexPath.section][indexPath.row] as InfT03RescureTable
+        var map: InfT03RescureTable = rescArr[indexPath.section][1][indexPath.row] as InfT03RescureTable
         var cnString = map.item(INFT03_RESCURE_RESC_CONTENT_CN) as String
 //        var jpString = map.item(INFT03_RESCURE_RESC_CONTENT_JP) as String
         
-        return CGFloat(textHeight(cnString) + 20)
+        if (textHeight(cnString) + 20 > 43) {
+            return CGFloat(textHeight(cnString) + 20)
+        } else {
+            return 43
+        }
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         var helpContentDetail: HelpContentDetail = self.storyboard?.instantiateViewControllerWithIdentifier("HelpContentDetail") as HelpContentDetail
         
-        var map: InfT03RescureTable = rescArr[indexPath.section][indexPath.row] as InfT03RescureTable
+        var map: InfT03RescureTable = rescArr[indexPath.section][1][indexPath.row] as InfT03RescureTable
         helpContentDetail.chTtile = map.item(INFT03_RESCURE_RESC_CONTENT_CN) as String
         helpContentDetail.jpTtile = map.item(INFT03_RESCURE_RESC_CONTENT_JP) as String
         self.navigationController?.pushViewController(helpContentDetail, animated: true)
