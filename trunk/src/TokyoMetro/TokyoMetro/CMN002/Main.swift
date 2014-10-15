@@ -9,7 +9,7 @@
 import UIKit
 
 class Main: UIViewController,UIScrollViewDelegate {
-//    
+    //
     @IBOutlet weak var mMenuView: UIView!
     @IBOutlet weak var mBodyView: UIView!
     @IBOutlet weak var mBtnToSearchRoute: UIBarButtonItem!
@@ -17,19 +17,18 @@ class Main: UIViewController,UIScrollViewDelegate {
     @IBOutlet weak var mImgLineGraph: UIImageView!
     @IBOutlet weak var mStationInfoLayerView: UIView!
     @IBOutlet weak var mMainWrapper:UIView!
-    
     @IBOutlet weak var mPopupStationView: UIView!
-    
     @IBOutlet weak var mPopupStationNameJP: UILabel!
     @IBOutlet weak var mPopupStationName: UILabel!
     @IBOutlet weak var mPopupBtnStart: UIButton!
     @IBOutlet weak var mPopupBtnEnd: UIButton!
     @IBOutlet weak var mPopupBtnMore: UIButton!
+    @IBOutlet weak var mPopupBtnShoping: UIButton!
+    @IBOutlet weak var mPopupBtnFood: UIButton!
+    @IBOutlet weak var mPopupBtnTravle: UIButton!
     @IBOutlet weak var mPopupViewSetImage: UIView!
-    
     @IBOutlet weak var mBtnImgAdd: UIButton!
     @IBOutlet weak var mBtnImgDec: UIButton!
-    
     @IBOutlet weak var mUpButton: UIButton!
     
     // 判断是否要显示底部menu
@@ -38,8 +37,7 @@ class Main: UIViewController,UIScrollViewDelegate {
     var mScreenSize: CGSize!
     // 设为起点的车站id
     var mCuttentStationID : String = ""
-    
-    
+
     // 记录点击点的坐标
     var locatPoint : CGPoint = CGPoint()
     // 记录设置的起点车站id
@@ -60,7 +58,6 @@ class Main: UIViewController,UIScrollViewDelegate {
     var stationGrideFromY:CGFloat = 0.0
     var stationGrideToX:CGFloat = 0.0
     var stationGrideToY:CGFloat = 0.0
-    
     
     // 设置为起点的背景色
     var tagStartmViewShade  = 1
@@ -83,8 +80,6 @@ class Main: UIViewController,UIScrollViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        mImgLineGraph.image = UIImage(named: "MetroCH".getLineGraphImagePath())
-        
         let folder = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String
         let path = folder.stringByAppendingPathComponent("TokyoMetroCache")
         var fileExists = NSFileManager().fileExistsAtPath(path)
@@ -98,19 +93,25 @@ class Main: UIViewController,UIScrollViewDelegate {
         
         // ScreenSize
         self.mScreenSize = UIScreen.mainScreen().bounds.size
-
-        // ScrollView、
-        self.mScrollView.minimumZoomScale = 0.5
-        self.mScrollView.maximumZoomScale = 5
-        self.mScrollView.zoomScale = 1.0
+        
+        // ScrollView
+        self.mScrollView.minimumZoomScale = self.mScrollView.frame.size.height / self.mMainWrapper.frame.size.height
+        self.mScrollView.maximumZoomScale = self.mMainWrapper.frame.size.width / self.mScrollView.frame.size.width
+        self.mScrollView.zoomScale = self.mScrollView.minimumZoomScale
         self.mScrollView.contentSize = self.mMainWrapper.frame.size
-
+        
+        // 初始ScrollView位置
+        var offertoPointInit : CGPoint = CGPoint()
+        offertoPointInit.x = 150
+        offertoPointInit.y = 10
+        self.mScrollView.setContentOffset(offertoPointInit, animated: false)
+        
+        
         self.mStationInfoLayerView.hidden = false
         self.mStationInfoLayerView.alpha = 0.5
-
-        self.mPopupStationView.hidden = true
         self.mPopupStationView.backgroundColor = UIColor(patternImage: "main_pop".getImage())
         self.mPopupStationView.layer.cornerRadius = 4
+        self.mPopupStationView.hidden = true
         
         //
         mPopupBtnStart.addTarget(self, action: POPUPVIEWBTNACTION, forControlEvents: UIControlEvents.TouchUpInside)
@@ -134,9 +135,13 @@ class Main: UIViewController,UIScrollViewDelegate {
         mMainWrapper.addGestureRecognizer(mySingleTapGesture)
         
     }
-
+    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
+        mImgLineGraph.image = UIImage(named: "MetroCH".getLineGraphImagePath())
+        
+        self.mPopupStationView.hidden = true
         mIsMenuShow = false
         mMenuView.frame = CGRectMake(0, mScreenSize.height - 75, mScreenSize.width, 75)
         mBodyView.hidden = true
@@ -154,35 +159,34 @@ class Main: UIViewController,UIScrollViewDelegate {
     
     // 双击之后真个scrollView放大
     func doubleTapAction(myTapGesture :UITapGestureRecognizer) {
-        var offsetX:CGFloat = (mScrollView.bounds.size.width >
+        var doubleOffsetX:CGFloat = (mScrollView.bounds.size.width >
             mScrollView.contentSize.width) ? (mScrollView.bounds.size.width - mScrollView.contentSize.width)/2 : 0.0
-        var offsetY:CGFloat = (mScrollView.bounds.size.height >
+        var doubleOffsetY:CGFloat = (mScrollView.bounds.size.height >
             mScrollView.contentSize.height) ? (mScrollView.bounds.size.height - mScrollView.contentSize.height)/2 : 0.0
         
-        self.mMainWrapper.center = CGPointMake(mScrollView.contentSize.width * 0.5 + offsetX , mScrollView.contentSize.height * 0.5 + offsetY)
-
+        self.mMainWrapper.center = CGPointMake(mScrollView.contentSize.width * 0.5 + doubleOffsetX , mScrollView.contentSize.height * 0.5 + doubleOffsetY)
+        
         UIView.animateWithDuration(0.3, animations: { () -> Void in
             self.mScrollView.zoomScale = (self.mScrollView.zoomScale + 1)
         })
     }
     
     // 控制图片放大和缩小
-     @IBAction func ControllImage(sender:UIButton) {
-        var offsetX:CGFloat = (mScrollView.bounds.size.width >
+    @IBAction func ControllImage(sender:UIButton) {
+        var btnOffsetX:CGFloat = (mScrollView.bounds.size.width >
             mScrollView.contentSize.width) ? (mScrollView.bounds.size.width - mScrollView.contentSize.width)/2 : 0.0
-        var offsetY:CGFloat = (mScrollView.bounds.size.height >
+        var btnOffsetY:CGFloat = (mScrollView.bounds.size.height >
             mScrollView.contentSize.height) ? (mScrollView.bounds.size.height - mScrollView.contentSize.height)/2 : 0.0
         
-        self.mMainWrapper.center = CGPointMake(mScrollView.contentSize.width * 0.5 + offsetX , mScrollView.contentSize.height * 0.5 + offsetY)
-
+        self.mMainWrapper.center = CGPointMake(mScrollView.contentSize.width * 0.5 + btnOffsetX , mScrollView.contentSize.height * 0.5 + btnOffsetY)
+        
         switch (sender) {
         case self.mBtnImgAdd:
             if (self.mScrollView.zoomScale < 4) {
                 UIView.animateWithDuration(0.3, animations: { () -> Void in
-                   self.mScrollView.zoomScale = (self.mScrollView.zoomScale + 1)
+                    self.mScrollView.zoomScale = (self.mScrollView.zoomScale + 1)
                 })
             }
-            
         case self.mBtnImgDec:
             
             if (self.mScrollView.zoomScale > 0.5) {
@@ -191,24 +195,23 @@ class Main: UIViewController,UIScrollViewDelegate {
                 })
             }
         default:
-                self.mScrollView.zoomScale = self.mScrollView.zoomScale
-
+            self.mScrollView.zoomScale = self.mScrollView.zoomScale
+            
         }
     }
     
-    /** 
-     *   展示和收起底部menu菜单
-     */
+    /**
+    *   展示和收起底部menu菜单
+    */
     @IBAction func showMenu() {
         var image: UIImage!
         if (mIsMenuShow) {
             mIsMenuShow = false
             image = UIImage(named: "helf_up_btn")
-//            self.mUpButton.setBackgroundImage(image, forState: UIControlState.Normal)
+            //            self.mUpButton.setBackgroundImage(image, forState: UIControlState.Normal)
             UIView.animateWithDuration(0.5, animations: { () -> Void in
                 self.mMenuView.frame = CGRectMake(0, self.mScreenSize.height - 75, self.mScreenSize.width, 75)
             })
-
             // 隐藏遮罩
             mBodyView.hidden = true
             mBtnImgAdd.enabled = true
@@ -217,7 +220,7 @@ class Main: UIViewController,UIScrollViewDelegate {
         } else {
             mIsMenuShow = true
             image = UIImage(named: "helf_down_btn")
-//            self.mUpButton.setBackgroundImage(image, forState: UIControlState.Normal)
+            //            self.mUpButton.setBackgroundImage(image, forState: UIControlState.Normal)
             UIView.animateWithDuration(0.5, animations: { () -> Void in
                 self.mMenuView.frame = CGRectMake(0, self.mScreenSize.height - 250, self.mScreenSize.width, 250)
             })
@@ -291,23 +294,20 @@ class Main: UIViewController,UIScrollViewDelegate {
     
     // 根据点击的像素点从db中获取车站id
     func singleTapAction(sender:UITapGestureRecognizer) {
-
+        
         var touchedPoint:CGPoint = sender.locationInView(self.mMainWrapper)
         
         // 获取点击点的像素坐标
         var touchX :CGFloat = touchedPoint.x
         var touchY :CGFloat = touchedPoint.y
-
-        locatPoint.x = touchX
-        locatPoint.y = touchY
         
         var stationData:CMN002StationData! = cmn002Model.findTouchedStation(touchX, touchY: touchY)
         //画面显示
         
         if (stationData != nil) {
+            // 设定全局变量
             self.mPopupStationName.text = stationData.statNameExt1 as String
             self.mPopupStationNameJP.text = stationData.statName as String
-            // 设定全局变量
             self.mCuttentStationID = stationData.statId as String
             self.selectStationNameJP  = stationData.statName as String
             self.selectStationMetroID = stationData.statNameMetroId as String
@@ -316,29 +316,10 @@ class Main: UIViewController,UIScrollViewDelegate {
             self.stationGrideFromY = stationData.statFromY / 2
             self.stationGrideToX = stationData.statToX / 2
             self.stationGrideToY = stationData.statToY / 2
+            locatPoint.x = (stationGrideFromX + stationGrideToX) / 2
+            locatPoint.y = stationGrideFromY
             
-            println("车站四个点   \(stationGrideFromX),    \(stationGrideFromY),      \(stationGrideToX),\(stationGrideToY)      ")
-            
-            println("陈展ID     \(self.mCuttentStationID)    ")
-            
-            // 显示弹框上站点的所有线路图标
-            var mFindeStationLines:NSMutableArray = cmn002Model.findStationLines(stationData)
-            var view = mPopupViewSetImage.viewWithTag(202) as UIView!
-            if (view != nil) {
-                view.removeFromSuperview()
-            }
-            var mPopupLineView = UIView()
-            mPopupLineView.frame = CGRectMake(0, 0, 160, 25)
-            mPopupLineView.tag = 202
-            
-            for (var i = 0; i < mFindeStationLines.count; i++) {
-                var mlinesLineImg: UIImageView = UIImageView()
-                mlinesLineImg.frame = CGRectMake(CGFloat(130 - i * 20), 0, 25, 25)
-                mlinesLineImg.image = (mFindeStationLines[i] as String).getLineImage()
-                mPopupLineView.addSubview(mlinesLineImg)
-            }
-            mPopupViewSetImage.addSubview(mPopupLineView)
-            
+            popStaionViewLinesImg(stationData)
             
             // 将scroll大小固定，设置弹出气泡信息
             self.mScrollView.zoomScale = 1
@@ -346,13 +327,41 @@ class Main: UIViewController,UIScrollViewDelegate {
             offertoPoint.x = touchX - (mScreenSize.width / 2)
             offertoPoint.y = -64 + touchY - (mScreenSize.height / 2)
             self.mScrollView.setContentOffset(offertoPoint, animated: true)
-            self.mPopupStationView.frame = CGRectMake(locatPoint.x - 100, locatPoint.y - 200, 200, 160)
-
-            self.mPopupStationView.hidden = false
+            var ptX1:CGFloat=(locatPoint.x * mScrollView.zoomScale - mScrollView.contentOffset.x ) - mPopupStationView.frame.size.width / 2
+            var ptY1:CGFloat=(locatPoint.y * mScrollView.zoomScale - mScrollView.contentOffset.y) - mPopupStationView.frame.size.height / 2
+            var height1:CGFloat=mPopupStationView.frame.size.height
+            var width1:CGFloat=mPopupStationView.frame.size.width
+            mPopupStationView.frame = CGRectMake(ptX1, ptY1, width1, height1)
+            mPopupStationView.hidden = false
             
             addUITag()
+        } else {
+            mPopupStationView.hidden = true
         }
     }
+    
+    // 显示弹框上站点的所有线路图标
+    func popStaionViewLinesImg(stationData:CMN002StationData) {
+        
+        // 显示弹框上站点的所有线路图标
+        var mFindeStationLines:NSMutableArray = cmn002Model.findStationLines(stationData)
+        var view = mPopupViewSetImage.viewWithTag(202) as UIView!
+        if (view != nil) {
+            view.removeFromSuperview()
+        }
+        var mPopupLineView = UIView()
+        mPopupLineView.frame = CGRectMake(0, 0, 160, 25)
+        mPopupLineView.tag = 202
+        
+        for (var i = 0; i < mFindeStationLines.count; i++) {
+            var mlinesLineImg: UIImageView = UIImageView()
+            mlinesLineImg.frame = CGRectMake(CGFloat(190 - i * 20), 0, 25, 25)
+            mlinesLineImg.image = (mFindeStationLines[i] as String).getLineImage()
+            mPopupLineView.addSubview(mlinesLineImg)
+        }
+        mPopupViewSetImage.addSubview(mPopupLineView)
+    }
+    
     
     // 点击弹框中的设置起点和终点， 记录当前的数据， 完成后跳转页面
     func setStation(sender:UIButton) {
@@ -367,7 +376,7 @@ class Main: UIViewController,UIScrollViewDelegate {
             if (setStationEndId != "") {
                 popToRouteSearchResult()
             }
-
+            
             
         case mPopupBtnEnd:
             self.setStationEndId = self.mCuttentStationID
@@ -387,7 +396,7 @@ class Main: UIViewController,UIScrollViewDelegate {
             stationDetail.cellJPName = self.selectStationNameJP
             stationDetail.cellJPNameKana = self.selectStationNameKana
             self.navigationController?.pushViewController(stationDetail, animated:true)
-
+            
         default:
             mPopupStationView.hidden = false
         }
@@ -396,9 +405,9 @@ class Main: UIViewController,UIScrollViewDelegate {
     
     // 携带起点和终点车站id 跳转到路线搜索结果页面
     @IBAction func popToRouteSearchResult() {
-
+        
         var routeSearch : RouteSearch = self.storyboard?.instantiateViewControllerWithIdentifier("RouteSearch") as RouteSearch
-
+        
         routeSearch.startStationText = self.setStationStartId
         routeSearch.endStationText = self.setStationEndId
         
@@ -407,7 +416,7 @@ class Main: UIViewController,UIScrollViewDelegate {
     
     // 根据选中的车站的左上角坐标 ，在选中的地方添加半透明遮罩
     func addUStartITag() {
-
+        
         if self.tagStartmViewShade == 2 {
             mViewShade.removeFromSuperview()
         }
@@ -425,7 +434,7 @@ class Main: UIViewController,UIScrollViewDelegate {
     
     // 根据选中的车站的左上角坐标 ，在选中的地方添加半透明遮罩
     func addUEndITag() {
-
+        
         if self.tagEndmViewShade == 2 {
             mViewShade.removeFromSuperview()
         }
@@ -436,7 +445,6 @@ class Main: UIViewController,UIScrollViewDelegate {
         mViewEndShade.alpha = 0.5
         
         mViewEndShade.frame = CGRectMake(stationGrideFromX - 5, stationGrideFromY - 5, stationGrideToX -  stationGrideFromX + 10, stationGrideToY -  stationGrideFromY + 10)
-
         self.mImgLineGraph.addSubview(mViewEndShade)
         self.tagEndmViewShade = 2
     }
@@ -444,7 +452,7 @@ class Main: UIViewController,UIScrollViewDelegate {
     
     // 根据选中的车站的左上角坐标 ，在选中的地方添加半透明遮罩
     func addUITag() {
-
+        
         if self.tagmViewShade == 2 {
             mViewShade.removeFromSuperview()
         }
@@ -457,7 +465,38 @@ class Main: UIViewController,UIScrollViewDelegate {
         mViewShade.frame = CGRectMake(stationGrideFromX - 5, stationGrideFromY - 5, stationGrideToX -  stationGrideFromX + 10, stationGrideToY -  stationGrideFromY + 10)
         
         self.mImgLineGraph.addSubview(mViewShade)
-        self.tagmViewShade = 2        
+        self.tagmViewShade = 2
     }
     
+    // scroll移动是也不断设置弹窗位置
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        if mPopupStationView.hidden == false
+        {
+            getPopStationViewLocate(scrollView)
+        }
+    }
+    
+    // scroll放大和缩小后是也不断设置弹窗位置
+    func scrollViewDidZoom(scrollView: UIScrollView) {
+        if mPopupStationView.hidden == false
+        {
+            getPopStationViewLocate(scrollView)
+        }
+    }
+
+    func rectAfterZoomed() -> CGRect{
+        var ptX:CGFloat=(locatPoint.x * mScrollView.zoomScale - mScrollView.contentOffset.x ) - mPopupStationView.frame.size.width / 2
+        var ptY:CGFloat=(locatPoint.y * mScrollView.zoomScale - mScrollView.contentOffset.y) - mPopupStationView.frame.size.height / 2
+        var height:CGFloat=mPopupStationView.frame.size.height
+        var width:CGFloat=mPopupStationView.frame.size.width
+        return CGRectMake(ptX,ptY,width,height)
+    }
+    // 获取弹窗消息的位置
+    func getPopStationViewLocate(scrollView: UIScrollView) {
+        
+        var mpopViewSizeWidth:CGFloat = mPopupStationView.frame.size.width
+        var mpopViewSizeHeigh:CGFloat = mPopupStationView.frame.size.height
+        
+        mPopupStationView.frame = CGRectMake((locatPoint.x * scrollView.zoomScale - scrollView.contentOffset.x ) - mpopViewSizeWidth / 2, (locatPoint.y * scrollView.zoomScale - scrollView.contentOffset.y) - mpopViewSizeHeigh, mpopViewSizeWidth, mpopViewSizeHeigh)
+    }
 }
