@@ -337,53 +337,57 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
             return
         }
         
+        var tableUsrT01Del:UsrT01ArrivalAlarmTable = UsrT01ArrivalAlarmTable()
+        tableUsrT01Del.deleteAll()
+        
         for(var i=0;i<routeDetails!.count;i++){
             var routeDetail:LinT05RouteDetailTable = routeDetails![i]
             var costTime:Int = ("\(routeDetail.item(LINT05_ROUTE_DETAIL_MOVE_TIME))" as NSString).integerValue
             if(i == 0){
+//                var alarms:Array<UsrT01ArrivalAlarmTable>? = selectArrivalAlarmTable()
+//                if(alarms!.count > 0){
+//                    var alarm:UsrT01ArrivalAlarmTable? = alarms![alarms!.count - NUM_1]
+//                    if(alarm!.item(USRT01_ARRIVAL_ALARM_CANCEL_FLAG) == nil || alarm!.item(USRT01_ARRIVAL_ALARM_CANCEL_FLAG).integerValue == 1){
+//                        tableUsrT01!.arriAlamId = "\(alarm!.item(USRT01_ARRIVAL_ALARM_ARRI_ALAM_ID).integerValue + 1)"
+//                        tableUsrT01!.costTime = "\(costTime)"
+//                        //tableUsrT01!.
+//                        tableUsrT01!.insert()
+//                    }else{
+//                        tableUsrT01!.costTime = "\(costTime)"
+//                        if(tableUsrT01!.update()){
+//                            var controllers:AnyObject? = self.navigationController!.viewControllers
+//                            if(controllers!.count > 1){
+//                                var lastController:RemindListController = controllers![controllers!.count - 2] as RemindListController
+//                                lastController.viewDidLoad()
+//                            }
+//                            self.navigationController!.popViewControllerAnimated(true)
+//                        }else{
+//                            self.navigationController!.popViewControllerAnimated(true)
+//                        }
+//                        tableUsrT01!.costTime = "\(costTime)"
+//                        tableUsrT01!.arriAlamId = "1"
+//                        tableUsrT01!.insert()
+//                    }
+//                }else{
+                
+                tableUsrT01!.costTime = "\(costTime)"
+                tableUsrT01!.arriAlamId = "1"
+                tableUsrT01!.insert()
+//                }
+            }else{
                 var alarms:Array<UsrT01ArrivalAlarmTable>? = selectArrivalAlarmTable()
-                if(alarms!.count > 0){
-                    var alarm:UsrT01ArrivalAlarmTable? = alarms![alarms!.count - NUM_1]
-                    if(alarm!.item(USRT01_ARRIVAL_ALARM_CANCEL_FLAG) == nil || alarm!.item(USRT01_ARRIVAL_ALARM_CANCEL_FLAG).integerValue == 1){
-                        tableUsrT01!.arriAlamId = "\(alarm!.item(USRT01_ARRIVAL_ALARM_ARRI_ALAM_ID).integerValue + 1)"
-                        tableUsrT01!.costTime = "\(costTime)"
-                        if(tableUsrT01!.insert()){
-                            var controllers:AnyObject? = self.navigationController!.viewControllers
-                            if(controllers!.count > 1){
-                                var lastController:RemindListController = controllers![controllers!.count - 2] as RemindListController
-                                lastController.viewDidLoad()
-                            }
-                            self.navigationController!.popViewControllerAnimated(true)
-                        }else{
-                            self.navigationController!.popViewControllerAnimated(true)
-                        }
-                    }else{
-                        tableUsrT01!.costTime = "\(costTime)"
-                        if(tableUsrT01!.update()){
-                            var controllers:AnyObject? = self.navigationController!.viewControllers
-                            if(controllers!.count > 1){
-                                var lastController:RemindListController = controllers![controllers!.count - 2] as RemindListController
-                                lastController.viewDidLoad()
-                            }
-                            self.navigationController!.popViewControllerAnimated(true)
-                        }else{
-                            self.navigationController!.popViewControllerAnimated(true)
-                        }
-                    }
-                }else{
-                    tableUsrT01!.costTime = "\(costTime)"
-                    tableUsrT01!.arriAlamId = "1"
-                    if(tableUsrT01!.insert()){
-                        var controllers:AnyObject? = self.navigationController!.viewControllers
-                        if(controllers!.count > 1){
-                            var lastController:RemindListController = controllers![controllers!.count - 2] as RemindListController
-                            lastController.viewDidLoad()
-                        }
-                        self.navigationController!.popViewControllerAnimated(true)
-                    }else{
-                        self.navigationController!.popViewControllerAnimated(true)
-                    }
+                var alarm:UsrT01ArrivalAlarmTable? = alarms![alarms!.count - NUM_1]
+                tableUsrT01!.arriAlamId = "\(alarm!.item(USRT01_ARRIVAL_ALARM_ARRI_ALAM_ID).integerValue + 1)"
+                tableUsrT01!.costTime = "\(costTime)"
+                tableUsrT01!.insert()
+            }
+            if( i == routeDetails!.count - 1){
+                var controllers:AnyObject? = self.navigationController!.viewControllers
+                if(controllers!.count > 1){
+                    var lastController:RemindListController = controllers![controllers!.count - 2] as RemindListController
+                    lastController.viewDidLoad()
                 }
+                self.navigationController!.popViewControllerAnimated(true)
             }
         }
     }

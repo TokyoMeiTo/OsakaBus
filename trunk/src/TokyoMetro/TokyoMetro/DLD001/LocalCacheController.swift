@@ -30,6 +30,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
     var downloading:Bool = false
     var UIloading:Bool = false
     var loadProgress:String? = ""
+    var tipText:String = "本应用中将用到一定的缓存图片,点击'开始下载'按钮, 将下载功能所需图片等数据,如不下载可能会影响到本应用的使用。"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -95,7 +96,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
      * 下载压缩文件
      */
     func downloadCompressFile(uri: String){
-        var request = NSURLRequest(URL: NSURL(string: uri))
+        var request = NSURLRequest(URL: NSURL(string: uri), cachePolicy: NSURLRequestCachePolicy.ReloadRevalidatingCacheData, timeoutInterval:  (30 * 60) * 24)
         
         let session = AFHTTPSessionManager()
         
@@ -108,6 +109,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
         let unzipPath = folder.stringByAppendingPathComponent(filePath)
         // 删除文件
         fileManager.removeItemAtPath(unzipPath, error: nil)
+        
         var downloadTask = session.downloadTaskWithRequest(request, progress: &progress, destination: {(file, response) in self.pathUrl},
             completionHandler:
             {
@@ -225,6 +227,21 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
         return path
     }
     
+    func calLblHeight(text:String, font:UIFont, constrainedToSize size:CGSize) -> CGSize {
+        var textSize:CGSize?
+        if CGSizeEqualToSize(size, CGSizeZero) {
+            let attributes = NSDictionary(object: font, forKey: NSFontAttributeName)
+            textSize = text.sizeWithAttributes(attributes)
+        } else {
+            let option = NSStringDrawingOptions.UsesLineFragmentOrigin
+            let attributes = NSDictionary(object: font, forKey: NSFontAttributeName)
+            let stringRect = text.boundingRectWithSize(size, options: option, attributes: attributes, context: nil)
+            textSize = stringRect.size
+        }
+        return textSize!
+    }
+    
+    
     // MARK: - Segues
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
@@ -237,25 +254,27 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         var lastUIHeader:UIView? = tableView.viewWithTag(110)
-        if(lastUIHeader != nil){
-            lastUIHeader!.removeFromSuperview()
-        }
+//        if(lastUIHeader != nil){
+//            lastUIHeader!.removeFromSuperview()
+//        }
         
-        var UIHeader:UIView = UIView(frame: CGRect(x:0,y:0,width:tableView.frame.width,height:80))
-        UIHeader.tag = 110
-        switch classType{
-        case 0:
+        var uiHeader:UIView = UIView(frame: CGRect(x:0,y:0,width:tableView.frame.width,height:80))
+        uiHeader.tag = 110
+        
+        if(classType == 0){
             switch section{
             case 1:
-                var lblText = UILabel(frame: CGRect(x:15,y:5,width:tableView.frame.width - 30,height:80))
-                lblText.numberOfLines = 0
-                lblText.lineBreakMode = NSLineBreakMode.ByCharWrapping
-                lblText.textColor = UIColor.lightGrayColor()
-                lblText.font = UIFont.systemFontOfSize(14)
-                lblText.text = "本应用中将用到一定的缓存图片,点击'开始下载'按钮, 将下载功能所需图片等数据,如不下载可能会影响到本应用的使用。"
-                lblText.textAlignment = NSTextAlignment.Left
-                UIHeader.addSubview(lblText)
-                return UIHeader
+                var lblTip = UILabel(frame: CGRect(x:15,y:5,width:tableView.frame.width - 30,height:80))
+                lblTip.numberOfLines = 0
+                lblTip.lineBreakMode = NSLineBreakMode.ByCharWrapping
+                lblTip.backgroundColor = UIColor.clearColor()
+                lblTip.font = UIFont.systemFontOfSize(14)
+                lblTip.textColor = UIColor.blackColor()
+                lblTip.text = tipText
+                lblTip.textAlignment = NSTextAlignment.Left
+                uiHeader.addSubview(lblTip)
+                
+                return uiHeader
             case 2:
                 if(downloading){
                     var lblProgressTemp = UILabel(frame: CGRect(x:0,y:5,width:tableView.frame.width/2,height:80))
@@ -264,7 +283,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
                     lblProgressTemp.textColor = UIColor.blackColor()
                     lblProgressTemp.text = "正在下载:"
                     lblProgressTemp.textAlignment = NSTextAlignment.Right
-                    UIHeader.addSubview(lblProgressTemp)
+                    uiHeader.addSubview(lblProgressTemp)
                 }else{
                     if(updateComplete || loadProgress != ""){
                         var lblProgressTemp = UILabel(frame: CGRect(x:0,y:5,width:tableView.frame.width/2,height:80))
@@ -273,7 +292,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
                         lblProgressTemp.textColor = UIColor.blackColor()
                         lblProgressTemp.text = "下载"
                         lblProgressTemp.textAlignment = NSTextAlignment.Right
-                        UIHeader.addSubview(lblProgressTemp)
+                        uiHeader.addSubview(lblProgressTemp)
                     }
                 }
                 var lblMobileSize = UILabel(frame: CGRect(x:tableView.frame.width/2,y:5,width:tableView.frame.width/2,height:80))
@@ -282,23 +301,25 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
                 lblMobileSize.textColor = UIColor.blackColor()
                 lblMobileSize.text = loadProgress
                 lblMobileSize.textAlignment = NSTextAlignment.Left
-                UIHeader.addSubview(lblMobileSize)
-                return UIHeader
+                uiHeader.addSubview(lblMobileSize)
+                return uiHeader
             default:
-                return UIHeader
+                return uiHeader
             }
-        default:
+        }else{
             switch section{
             case 1:
-                var lblText = UILabel(frame: CGRect(x:15,y:5,width:tableView.frame.width - 30,height:80))
-                lblText.numberOfLines = 0
-                lblText.lineBreakMode = NSLineBreakMode.ByCharWrapping
-                lblText.textColor = UIColor.lightGrayColor()
-                lblText.font = UIFont.systemFontOfSize(14)
-                lblText.text = "本应用的地标功能中将用到一定的缓存图片,点击'下载数据'或'重新下载'按钮, 将下载功能所需图片等数据,如不下载可能会影响到本应用的使用。"
-                lblText.textAlignment = NSTextAlignment.Left
-                UIHeader.addSubview(lblText)
-                return UIHeader
+                var lblTip = UILabel(frame: CGRect(x:15,y:5,width:tableView.frame.width - 30,height:80))
+                lblTip.numberOfLines = 0
+                lblTip.lineBreakMode = NSLineBreakMode.ByCharWrapping
+                lblTip.backgroundColor = UIColor.clearColor()
+                lblTip.font = UIFont.systemFontOfSize(14)
+                lblTip.textColor = UIColor.blackColor()
+                lblTip.text = tipText
+                lblTip.textAlignment = NSTextAlignment.Left
+                uiHeader.addSubview(lblTip)
+                
+                return uiHeader
             case 2:
                 if(downloading){
                     var lblProgressTemp = UILabel(frame: CGRect(x:0,y:5,width:tableView.frame.width/2,height:80))
@@ -307,7 +328,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
                     lblProgressTemp.textColor = UIColor.blackColor()
                     lblProgressTemp.text = "正在下载:"
                     lblProgressTemp.textAlignment = NSTextAlignment.Right
-                    UIHeader.addSubview(lblProgressTemp)
+                    uiHeader.addSubview(lblProgressTemp)
                 }else{
                     if(updateComplete || loadProgress != ""){
                         var lblProgressTemp = UILabel(frame: CGRect(x:0,y:5,width:tableView.frame.width/2,height:80))
@@ -316,7 +337,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
                         lblProgressTemp.textColor = UIColor.blackColor()
                         lblProgressTemp.text = "下载"
                         lblProgressTemp.textAlignment = NSTextAlignment.Right
-                        UIHeader.addSubview(lblProgressTemp)
+                        uiHeader.addSubview(lblProgressTemp)
                     }
                 }
                 var lblMobileSize = UILabel(frame: CGRect(x:tableView.frame.width/2,y:5,width:tableView.frame.width/2,height:80))
@@ -325,21 +346,17 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
                 lblMobileSize.textColor = UIColor.blackColor()
                 lblMobileSize.text = loadProgress
                 lblMobileSize.textAlignment = NSTextAlignment.Left
-                UIHeader.addSubview(lblMobileSize)
-                return UIHeader
+                uiHeader.addSubview(lblMobileSize)
+                return uiHeader
             default:
-                return UIHeader
+                return uiHeader
             }
         }
     }
     
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         switch section{
-        case 0:
-            return 0
-        case 1:
-            return 90
-        case 2:
+        case 1,2:
             return 90
         default:
             return 0
@@ -358,8 +375,10 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
         switch indexPath.section{
         case 0:
             return 135
+        case 1:
+            return 250/4
         default:
-            return 40
+            return 43
         }
     }
     
@@ -403,7 +422,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
             case 1:
                 if(!updateComplete){
                     var btnDownload:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-                    btnDownload.frame = CGRect(x:(tableView.frame.width - 250)/2,y:5,width:250,height:250/4)
+                    btnDownload.frame = CGRect(x:(tableView.frame.width - 250)/2,y:0,width:250,height:250/4)
                     var imgDownload = UIImage(named: "DLD00101.png")
                     btnDownload.setBackgroundImage(imgDownload, forState: UIControlState.Normal)
                     btnDownload.tag = 101
@@ -413,7 +432,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
                     cell.addSubview(btnDownload)
                 }else{
                     var btnUse:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-                    btnUse.frame = CGRect(x:(tableView.frame.width - 250)/2,y:5,width:250,height:250/4)
+                    btnUse.frame = CGRect(x:(tableView.frame.width - 250)/2,y:0,width:250,height:250/4)
                     var imgUse = UIImage(named: "DLD00102.png")
                     btnUse.setBackgroundImage(imgUse, forState: UIControlState.Normal)
                     btnUse.tag = 102
@@ -460,7 +479,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
                 cell.addSubview(lblMobileSize)
             case 1:
                 var btnDownload:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-                btnDownload.frame = CGRect(x:(tableView.frame.width - 250)/2,y:5,width:250,height: 250/4)
+                btnDownload.frame = CGRect(x:(tableView.frame.width - 250)/2,y:0,width:250,height: 250/4)
                 var imgDownload = UIImage(named: "DLD00101.png")
                 btnDownload.setBackgroundImage(imgDownload, forState: UIControlState.Normal)
                 //btnDownload.setTitle("重新下载", forState: UIControlState.Normal)
