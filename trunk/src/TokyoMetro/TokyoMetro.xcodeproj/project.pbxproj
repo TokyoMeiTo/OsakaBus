@@ -81,7 +81,6 @@
 		A184391919EAB58F00E11778 /* ComercialInsideDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = A184391819EAB58F00E11778 /* ComercialInsideDetail.swift */; };
 		A184391C19EAB71900E11778 /* StaT03ComercialInsideTable.m in Sources */ = {isa = PBXBuildFile; fileRef = A184391B19EAB71900E11778 /* StaT03ComercialInsideTable.m */; };
 		A184391E19EABE1900E11778 /* StationFacilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = A184391D19EABE1900E11778 /* StationFacilities.swift */; };
-		A18474FD19E4E19200D2DD7B /* INF002Dao.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18474FC19E4E19200D2DD7B /* INF002Dao.swift */; };
 		A18474FF19E4E1D100D2DD7B /* Sta003Dao.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18474FE19E4E1D100D2DD7B /* Sta003Dao.swift */; };
 		A184750219E4FB2400D2DD7B /* MstV01StationGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = A184750119E4FB2400D2DD7B /* MstV01StationGroup.m */; };
 		A1A02C3019D7F317001C7D73 /* String+Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1A02C2F19D7F317001C7D73 /* String+Item.swift */; };
@@ -311,7 +310,6 @@
 		A184391A19EAB71900E11778 /* StaT03ComercialInsideTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StaT03ComercialInsideTable.h; sourceTree = "<group>"; };
 		A184391B19EAB71900E11778 /* StaT03ComercialInsideTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StaT03ComercialInsideTable.m; sourceTree = "<group>"; };
 		A184391D19EABE1900E11778 /* StationFacilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StationFacilities.swift; sourceTree = "<group>"; };
-		A18474FC19E4E19200D2DD7B /* INF002Dao.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = INF002Dao.swift; sourceTree = "<group>"; };
 		A18474FE19E4E1D100D2DD7B /* Sta003Dao.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sta003Dao.swift; sourceTree = "<group>"; };
 		A184750019E4FB2400D2DD7B /* MstV01StationGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MstV01StationGroup.h; sourceTree = "<group>"; };
 		A184750119E4FB2400D2DD7B /* MstV01StationGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MstV01StationGroup.m; sourceTree = "<group>"; };
@@ -896,7 +894,6 @@
 			isa = PBXGroup;
 			children = (
 				A17EDA7019E8B74800D58386 /* INF002FavDao.swift */,
-				A18474FC19E4E19200D2DD7B /* INF002Dao.swift */,
 				A1ECD45719D2D41F00D5A0E2 /* LandMarkDetailController.swift */,
 				A1ECD45819D2D41F00D5A0E2 /* LandMarkListController.swift */,
 				A1ECD45919D2D41F00D5A0E2 /* LandMarkMapController.swift */,
@@ -1269,7 +1266,6 @@
 				3B2420E319B5AD1500DAE392 /* OWINSocketRequest.m in Sources */,
 				A1F1FC8A19E96E74004A59C9 /* AFURLConnectionOperation.m in Sources */,
 				A17CE0C419D8FC3700A27092 /* UITouchableImageView.m in Sources */,
-				A18474FD19E4E19200D2DD7B /* INF002Dao.swift in Sources */,
 				A1831B2119DA54C5002639DB /* MstT04LandMarkTable.m in Sources */,
 				A1ECD47F19D2D41F00D5A0E2 /* InfT04StatKnowledgeTable.m in Sources */,
 				A1ECD49919D2D41F00D5A0E2 /* FacilityList.swift in Sources */,
