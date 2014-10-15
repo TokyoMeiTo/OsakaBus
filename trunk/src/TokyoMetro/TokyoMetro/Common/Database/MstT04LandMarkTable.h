@@ -25,6 +25,10 @@
 #define MSTT04_LANDMARK_LINE_ID             @"LINE_ID"
 #define MSTT04_LANDMARK_STAT_ID             @"STAT_ID"
 #define MSTT04_LANDMARK_STAT_EXIT_ID        @"STAT_EXIT_ID"
+#define MSTT04_LANDMARK_PREF                @"LMAK_PREF"
+#define MSTT04_LANDMARK_WARD                @"LMAK_WARD"
+#define MSTT04_LANDMARK_RANK                @"LMAK_RANK"
+#define MSTT04_LANDMARK_MICI_RANK           @"LMAK_MICI_RANK"
 #define MSTT04_LANDMARK_LMAK_AVAL_TIME      @"LMAK_AVAL_TIME"
 #define MSTT04_LANDMARK_LMAK_TICL_PRIC      @"LMAK_TICT_PRIC"
 #define MSTT04_LANDMARK_LMAK_ADDR           @"LMAK_ADDR"
@@ -65,6 +69,10 @@
 @property(copy,nonatomic) NSString* lineId;
 @property(copy,nonatomic) NSString* statId;
 @property(copy,nonatomic) NSString* statExitId;
+@property(copy,nonatomic) NSString* lmakPref;
+@property(copy,nonatomic) NSString* lmakWard;
+@property(copy,nonatomic) NSString* lmakRank;
+@property(copy,nonatomic) NSString* lmakMiciRank;
 @property(copy,nonatomic) NSString* lmakAvalTime;
 @property(copy,nonatomic) NSString* lmakTictPric;
 @property(copy,nonatomic) NSString* lmakAddr;

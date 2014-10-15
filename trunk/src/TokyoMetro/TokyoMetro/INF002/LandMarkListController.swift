@@ -43,7 +43,9 @@ class LandMarkListController: UIViewController, UITableViewDelegate, NSObjectPro
             println("nothing")
         }
         
-        landMarks = selectLandMarkTable(landMarkType)
+        if(landMarks == nil){
+            landMarks = selectLandMarkTable(landMarkType)
+        }
         
         tbList.delegate = self
         tbList.dataSource = self
@@ -64,7 +66,9 @@ class LandMarkListController: UIViewController, UITableViewDelegate, NSObjectPro
     }
     
     override func viewWillAppear(animated: Bool) {
-        landMarks = selectLandMarkTable(landMarkType)
+        if(landMarks == nil){
+            landMarks = selectLandMarkTable(landMarkType)
+        }
         tbList.reloadData()
     }
     
@@ -78,6 +82,7 @@ class LandMarkListController: UIViewController, UITableViewDelegate, NSObjectPro
             var landMarkSearchController = self.storyboard!.instantiateViewControllerWithIdentifier("landmarksearch") as LandMarkSearchController
             landMarkSearchController.fromLat = self.fromLat
             landMarkSearchController.fromLon = self.fromLon
+            landMarkSearchController.landMarkType = self.landMarkType
             self.navigationController!.pushViewController(landMarkSearchController, animated:true)
         default:
             println("nothing")
@@ -105,7 +110,8 @@ class LandMarkListController: UIViewController, UITableViewDelegate, NSObjectPro
      * 从DB查询地标信息
      */
     func selectLandMarkTable(type:Int) -> Array<MstT04LandMarkTable>{
-        var daoINF002 = INF002Dao()
+        //var daoINF002 = INF002Dao()
+        var mstT04Table:MstT04LandMarkTable = MstT04LandMarkTable()
         var landMarkTypeStr:String = ""
         switch type{
         case 0:
@@ -118,7 +124,7 @@ class LandMarkListController: UIViewController, UITableViewDelegate, NSObjectPro
             println("nothing")
         }
         
-        landMarks = daoINF002.queryLandMarks(landMarkTypeStr) as? Array<MstT04LandMarkTable>
+        landMarks = mstT04Table.queryLandMarks(landMarkTypeStr) as? Array<MstT04LandMarkTable>
         return landMarks!
     }
     
@@ -172,18 +178,26 @@ class LandMarkListController: UIViewController, UITableViewDelegate, NSObjectPro
         imageViewLandMark.image = imgLandMark
         cell.addSubview(imageViewLandMark)
         
-        var lblTemp = UILabel(frame: CGRect(x:0,y:135,width:tableView.frame.width,height:35))
+        var lblTemp = UILabel(frame: CGRect(x:0,y:140,width:tableView.frame.width,height:30))
         lblTemp.alpha = 0.4
         lblTemp.backgroundColor = UIColor.blackColor()
         cell.addSubview(lblTemp)
         
-        var lblLandMark = UILabel(frame: CGRect(x:15,y:130,width:tableView.frame.width,height:40))
+        var lblLandMark = UILabel(frame: CGRect(x:15,y:135,width:tableView.frame.width,height:40))
         lblLandMark.backgroundColor = UIColor.clearColor()
         lblLandMark.font = UIFont.boldSystemFontOfSize(16)
         lblLandMark.textColor = UIColor.whiteColor()
         lblLandMark.text = "\(landMarks![indexPath.row].item(MSTT04_LANDMARK_LMAK_NAME_EXT1))"
         lblLandMark.textAlignment = NSTextAlignment.Left
         cell.addSubview(lblLandMark)
+        
+        var lblLandMarkWard = UILabel(frame: CGRect(x:tableView.frame.width - 70,y:10,width:70,height:40))
+        lblLandMarkWard.backgroundColor = UIColor.clearColor()
+        lblLandMarkWard.font = UIFont.boldSystemFontOfSize(16)
+        lblLandMarkWard.textColor = UIColor.whiteColor()
+        lblLandMarkWard.text = "\(landMarks![indexPath.row].item(MSTT04_LANDMARK_WARD))".specialWard()
+        lblLandMarkWard.textAlignment = NSTextAlignment.Left
+        cell.addSubview(lblLandMarkWard)
         
         var btnFav:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
         btnFav.frame = CGRect(x:15,y:10,width:40,height:40)
@@ -201,6 +215,30 @@ class LandMarkListController: UIViewController, UITableViewDelegate, NSObjectPro
         
 //        btnFav.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
         cell.addSubview(btnFav)
+        
+        if(landMarks![indexPath.row].item(MSTT04_LANDMARK_MICI_RANK) != nil && "\(landMarks![indexPath.row].item(MSTT04_LANDMARK_MICI_RANK))" != ""){
+            lblTemp.frame = CGRect(x:0,y:125,width:tableView.frame.width,height:45)
+//            var lblMiCi = UILabel(frame: CGRect(x:15,y:120,width:100,height:40))
+//            lblMiCi.backgroundColor = UIColor.clearColor()
+//            lblMiCi.font = UIFont.boldSystemFontOfSize(13)
+//            lblMiCi.textColor = UIColor.whiteColor()
+//            lblMiCi.text = "米其林星级： "
+//            lblMiCi.textAlignment = NSTextAlignment.Left
+//            cell.addSubview(lblMiCi)
+            for(var i=0;i<("\(landMarks![indexPath.row].item(MSTT04_LANDMARK_MICI_RANK))" as NSString).integerValue; i++){
+                var xFloat:CGFloat = 15//100
+                
+                for(var j=0;j<i;j++){
+                    xFloat = xFloat + 20
+                }
+                
+                var imageViewStar = UIImageView(frame: CGRectMake(xFloat, 130, 15, 15))
+                var imageStar = UIImage(named: "INF00209.png")
+                imageViewStar.image = imageStar
+                cell.addSubview(imageViewStar)
+            }
+        }
+        cell.selectionStyle = UITableViewCellSelectionStyle.None
         return cell
     }
     

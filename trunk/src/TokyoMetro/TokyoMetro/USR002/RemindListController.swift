@@ -379,12 +379,13 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
         dispatch_async(dispatch_get_main_queue()) { () -> Void in
             self.showTime(times)
             if(time == self.NUM_0){
-                self.pushNotification("您到达了银座",min: self.NUM_NEGATIVE_1)
+                self.pushNotification("您到达了" + "\(self.alarm!.item(USRT01_ARRIVAL_ALARM_STAT_TO_ID))".station(),min: self.NUM_NEGATIVE_1)
                 self.alarm!.cancelFlag = "1"
                 self.alarm!.cancelTime = RemindDetailController.convertDate2LocalTime(NSDate.date())
                 self.alarm!.update()
                 self.btnStart.enabled = false
                 self.btnCancel.enabled = false
+                self.arriveStation()
             }else{
                 var costTime:Int = self.alarm!.item(USRT01_ARRIVAL_ALARM_COST_TIME).integerValue
                 if(time % 60 == 0){

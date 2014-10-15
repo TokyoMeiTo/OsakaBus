@@ -21,14 +21,21 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
     /* landMarksType */
     var landMarksSubType:Array<String>?
     /* landMarksRange */
-    var landMarksRange:Array<String> = ["1000米以内","500米以内","100米以内"]
+    var landMarksRange:Array<String> = ["1000米以内","500米以内","100米以内","全部"]
     var pickerViewIsOpen = false
 
     var landMarkType:Int = 0
-    var landMarkSpecialWard:String = "01"
+    var landMarkSpecialWard:String? = ""
     var landMarkRange:Int = 100000
-    var landMarkStatId:String = "2800101"
+    var landMarkStatId:String? = ""
+    // 美食
+    var landMarkSubType:String = ""
+    var landMarkPrice:Int = 0
+    var landMarkMiciRank:String = ""
+    var landMarkRank:String = ""
     
+    var landMarkShowStatId:String = "2800101"
+    var landMarkShowSpecialWard:String = "01"
     /* 起点軽度 */
     var fromLat = 35.672737//31.23312372 // 天地科技广场1号楼
     /* 起点緯度 */
@@ -37,8 +44,9 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        var inf002Dao:INF002Dao = INF002Dao()
-        var subTypeTemp:NSArray = inf002Dao.querySubType()
+        var mstT04Table:MstT04LandMarkTable = MstT04LandMarkTable()
+        //var inf002Dao:INF002Dao = INF002Dao()
+        var subTypeTemp:NSArray = mstT04Table.querySubType()
 
         loadItems()
         
@@ -61,11 +69,33 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
         // Dispose of any resources that can be recreated.
     }
     
+    override func viewWillAppear(animated: Bool) {
+        loadItems()
+        tbList.reloadData()
+    }
+    
     func loadItems(){
-        items = NSMutableArray.array()
-        items.addObject(["站点：",[landMarkStatId]])
-        items.addObject(["区域：",[landMarkSpecialWard,""]])
-        items.addObject(["距离：",landMarksRange])
+        if(landMarkStatId != ""){
+            landMarkShowStatId = landMarkStatId!
+        }
+        switch landMarkType{
+        case 1:
+            items = NSMutableArray.array()
+            items.addObject(["站点：",[landMarkShowStatId.station(), "全部"]])
+            items.addObject(["区域：",[landMarkShowSpecialWard.specialWard(),"","全部"]])
+            items.addObject(["距离：",landMarksRange])
+            items.addObject(["菜系：",["日式","中式","西式","全部"]])
+             var priceStr:String = "日元及以上"
+            items.addObject(["预算价格：",["5000" + priceStr,"1000" + priceStr,"1000日元以下","全部"]])
+            items.addObject(["是否米其林星级：", ["米其林星级1","米其林星级2","米其林星级3","全部"]])
+            var PointStr:String = "分及以上"
+            items.addObject(["评分：",["2" + PointStr,"3" + PointStr,"4" + PointStr,"5" + PointStr,"全部"]])
+        default:
+            items = NSMutableArray.array()
+            items.addObject(["站点：",[landMarkShowStatId.station(), "全部"]])
+            items.addObject(["区域：",[landMarkShowSpecialWard.specialWard(), "", "全部"]])
+            items.addObject(["距离：",landMarksRange])
+        }
     }
     
     /**
@@ -77,17 +107,15 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
         case self.navigationItem.leftBarButtonItem!:
             var controllers:AnyObject? = self.navigationController!.viewControllers
             var lastController:LandMarkListController = controllers![controllers!.count - 2] as LandMarkListController
-            var inf002Dao:INF002Dao = INF002Dao()
+            var mstT04Table:MstT04LandMarkTable = MstT04LandMarkTable()
+            //var inf002Dao:INF002Dao = INF002Dao()
             switch landMarkType{
             case 0:
-                lastController.landMarks = inf002Dao.queryLandMarksFilter("景点",lon: fromLon,
-                    lat: fromLat, distance: landMarkRange) as? Array<MstT04LandMarkTable>
+                lastController.landMarks = mstT04Table.queryLandMarksFilter("景点",lon: 0, lat: 0, distance: 0, sataId: landMarkStatId!, specialWard: landMarkSpecialWard!) as? Array<MstT04LandMarkTable>
             case 1:
-                lastController.landMarks = inf002Dao.queryLandMarksFilter("美食",lon: fromLon,
-                    lat: fromLat, distance: landMarkRange) as? Array<MstT04LandMarkTable>
+                lastController.landMarks = mstT04Table.queryLandMarksFilter("美食",lon: 0, lat: 0, distance: 0, sataId: landMarkStatId!, specialWard: landMarkSpecialWard!, subType:landMarkSubType, price:0, miciRank:landMarkMiciRank, rank:landMarkRank) as? Array<MstT04LandMarkTable>
             case 2:
-                lastController.landMarks = inf002Dao.queryLandMarksFilter("购物",lon: fromLon,
-                    lat: fromLat, distance: landMarkRange) as? Array<MstT04LandMarkTable>
+                lastController.landMarks = mstT04Table.queryLandMarksFilter("购物",lon: 0, lat: 0, distance: 0, sataId: landMarkStatId!, specialWard: landMarkSpecialWard!) as? Array<MstT04LandMarkTable>
             default:
                 println("nothing")
             }
@@ -113,18 +141,29 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
     func tableView(tableView: UITableView, didSelectRowAtIndexPath: NSIndexPath){
         switch didSelectRowAtIndexPath.section{
         case 0:
-            var searchStationList = self.storyboard!.instantiateViewControllerWithIdentifier("SearchStationList") as SearchStationList
-            searchStationList.classType = "landMarkSearchController"
-            self.navigationController!.pushViewController(searchStationList, animated:true)
-            
-        case 1:
-            if(pickerViewIsOpen){
-                pickerViewIsOpen = false
-            }else{
-                pickerViewIsOpen = true
+            if(didSelectRowAtIndexPath.row == 0){
+                var searchStationList = self.storyboard!.instantiateViewControllerWithIdentifier("SearchStationList") as SearchStationList
+                searchStationList.classType = "landMarkSearchController"
+                self.navigationController!.pushViewController(searchStationList, animated:true)
+            }else if(didSelectRowAtIndexPath.row == 1){
+                landMarkStatId = ""
+                tableView.cellForRowAtIndexPath(didSelectRowAtIndexPath)!.accessoryType =
+                    UITableViewCellAccessoryType.Checkmark
             }
-            var indexPath = NSIndexPath(forRow: 1, inSection: didSelectRowAtIndexPath.section)
-            tbList.reloadRowsAtIndexPaths([didSelectRowAtIndexPath,indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
+        case 1:
+            if(didSelectRowAtIndexPath.row == 0){
+                if(pickerViewIsOpen){
+                    pickerViewIsOpen = false
+                }else{
+                    pickerViewIsOpen = true
+                }
+                var indexPath = NSIndexPath(forRow: 1, inSection: didSelectRowAtIndexPath.section)
+                tbList.reloadRowsAtIndexPaths([didSelectRowAtIndexPath,indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
+            }else if(didSelectRowAtIndexPath.row == 2){
+                landMarkSpecialWard = ""
+                tableView.cellForRowAtIndexPath(didSelectRowAtIndexPath)!.accessoryType =
+                    UITableViewCellAccessoryType.Checkmark
+            }
             
         case 2:
             switch didSelectRowAtIndexPath.row{
@@ -146,7 +185,89 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
             }
             tableView.cellForRowAtIndexPath(didSelectRowAtIndexPath)!.accessoryType =
                 UITableViewCellAccessoryType.Checkmark
-            
+        case 3:
+            switch didSelectRowAtIndexPath.row{
+            case 0:
+                landMarkSubType = "日式"
+            case 1:
+                landMarkSubType = "中式"
+            case 2:
+                landMarkSubType = "西式"
+            default:
+                landMarkSubType = ""
+            }
+            for(var i=0; i < items[didSelectRowAtIndexPath.section][1].count;i++){
+                var indexPath = NSIndexPath(forRow: i, inSection: 2)
+                var cell = tableView.cellForRowAtIndexPath(indexPath)
+                if(cell != nil){
+                    cell!.accessoryType = UITableViewCellAccessoryType.None
+                }
+            }
+            tableView.cellForRowAtIndexPath(didSelectRowAtIndexPath)!.accessoryType =
+                UITableViewCellAccessoryType.Checkmark
+        case 4:
+            switch didSelectRowAtIndexPath.row{
+            case 0:
+                landMarkPrice = 5000
+            case 1:
+                landMarkPrice = 1000
+            case 2:
+                landMarkPrice = 500
+            default:
+                landMarkPrice = 0
+            }
+            for(var i=0; i < items[didSelectRowAtIndexPath.section][1].count;i++){
+                var indexPath = NSIndexPath(forRow: i, inSection: 2)
+                var cell = tableView.cellForRowAtIndexPath(indexPath)
+                if(cell != nil){
+                    cell!.accessoryType = UITableViewCellAccessoryType.None
+                }
+            }
+            tableView.cellForRowAtIndexPath(didSelectRowAtIndexPath)!.accessoryType =
+                UITableViewCellAccessoryType.Checkmark
+        case 5:
+            switch didSelectRowAtIndexPath.row{
+            case 0:
+                landMarkMiciRank = "1"
+            case 1:
+                landMarkMiciRank = "2"
+            case 2:
+                landMarkMiciRank = "3"
+            default:
+                landMarkMiciRank = "0"
+            }
+            for(var i=0; i < items[didSelectRowAtIndexPath.section][1].count;i++){
+                var indexPath = NSIndexPath(forRow: i, inSection: 2)
+                var cell = tableView.cellForRowAtIndexPath(indexPath)
+                if(cell != nil){
+                    cell!.accessoryType = UITableViewCellAccessoryType.None
+                }
+            }
+            tableView.cellForRowAtIndexPath(didSelectRowAtIndexPath)!.accessoryType =
+                UITableViewCellAccessoryType.Checkmark
+        case 6:
+            switch didSelectRowAtIndexPath.row{
+            case 0:
+                landMarkMiciRank = "2"
+            case 1:
+                landMarkMiciRank = "3"
+            case 2:
+                landMarkMiciRank = "4"
+            case 3:
+                landMarkMiciRank = "5"
+            default:
+                landMarkMiciRank = "1"
+            }
+            for(var i=0; i < items[didSelectRowAtIndexPath.section][1].count;i++){
+                var indexPath = NSIndexPath(forRow: i, inSection: 2)
+                var cell = tableView.cellForRowAtIndexPath(indexPath)
+                if(cell != nil){
+                    cell!.accessoryType = UITableViewCellAccessoryType.None
+                }
+            }
+            tableView.cellForRowAtIndexPath(didSelectRowAtIndexPath)!.accessoryType =
+                UITableViewCellAccessoryType.Checkmark
+
         default:
             println("nothing")
         }
@@ -189,14 +310,19 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
         
         switch indexPath.section{
         case 0:
-            cell.textLabel!.text = (items[indexPath.section][1][indexPath.row] as? String)?.station()
-            
+            cell.textLabel!.text = items[indexPath.section][1][indexPath.row] as? String
+
+            if(indexPath.row == 1 && landMarkStatId == ""){
+                cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+            }
         case 1:
-            cell.textLabel!.text = (items[indexPath.section][1][indexPath.row] as String).specialWard()
+            cell.textLabel!.text = items[indexPath.section][1][indexPath.row] as? String
             if(indexPath.row == 1){
                 if(pickerViewIsOpen){
                     cell.addSubview(pickerSpecialWard)
                 }
+            }else if(indexPath.row == 2 && landMarkSpecialWard == ""){
+                cell.accessoryType = UITableViewCellAccessoryType.Checkmark
             }
             
         case 2:
@@ -206,9 +332,41 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
             }else{
                 cell.accessoryType = UITableViewCellAccessoryType.None
             }
-            
+//        case 3:
+//            cell.textLabel!.text = items[indexPath.section][1][indexPath.row] as? String
+//            if(indexPath.row == 0){
+//                cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+//            }else{
+//                cell.accessoryType = UITableViewCellAccessoryType.None
+//            }
+//        case 4:
+//            cell.textLabel!.text = items[indexPath.section][1][indexPath.row] as? String
+//            if(indexPath.row == 0){
+//                cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+//            }else{
+//                cell.accessoryType = UITableViewCellAccessoryType.None
+//            }
+//        case 5:
+//            cell.textLabel!.text = items[indexPath.section][1][indexPath.row] as? String
+//            if(indexPath.row == 0){
+//                cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+//            }else{
+//                cell.accessoryType = UITableViewCellAccessoryType.None
+//            }
+//        case 6:
+//            cell.textLabel!.text = items[indexPath.section][1][indexPath.row] as? String
+//            if(indexPath.row == 0){
+//                cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+//            }else{
+//                cell.accessoryType = UITableViewCellAccessoryType.None
+//            }
         default:
-            println("nothing")
+            cell.textLabel!.text = items[indexPath.section][1][indexPath.row] as? String
+            if(indexPath.row == 0){
+                cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+            }else{
+                cell.accessoryType = UITableViewCellAccessoryType.None
+            }
         }
         return cell
     }
@@ -244,12 +402,17 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int){
         if(row < 9){
             landMarkSpecialWard = "0\(row + 1)"
+            landMarkShowSpecialWard = "0\(row + 1)"
         }else{
             landMarkSpecialWard = "\(row + 1)"
+            landMarkShowSpecialWard = "0\(row + 1)"
         }
         loadItems()
-        var indexPath = NSIndexPath(forRow: 0, inSection: 1)
+        var indexPathSpecialWard = NSIndexPath(forRow: 0, inSection: 1)
         //tbList.reloadData()
-        tbList.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.None)
+        tbList.reloadRowsAtIndexPaths([indexPathSpecialWard], withRowAnimation: UITableViewRowAnimation.None)
+        var indexPathAll = NSIndexPath(forRow: 2, inSection: 1)
+        //tbList.reloadData()
+        tbList.reloadRowsAtIndexPaths([indexPathAll], withRowAnimation: UITableViewRowAnimation.None)
     }
 }
