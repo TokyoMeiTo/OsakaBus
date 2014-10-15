@@ -64,6 +64,7 @@
 		A15CA4A919D57BDD00716A00 /* StaT04FacilityTable.m in Sources */ = {isa = PBXBuildFile; fileRef = A15CA4A019D57BDD00716A00 /* StaT04FacilityTable.m */; };
 		A15CA4AA19D57BDD00716A00 /* UsrT03FavoriteTable.m in Sources */ = {isa = PBXBuildFile; fileRef = A15CA4A219D57BDD00716A00 /* UsrT03FavoriteTable.m */; };
 		A15CA4B419D57BF400716A00 /* String+Encrypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15CA4AF19D57BF400716A00 /* String+Encrypto.swift */; };
+		A1629E6419EE98E800DC54B1 /* INF002Dao+mstT04LandMarkTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1629E6319EE98E800DC54B1 /* INF002Dao+mstT04LandMarkTable.swift */; };
 		A17CE0C419D8FC3700A27092 /* UITouchableImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = A17CE0C119D8FC3700A27092 /* UITouchableImageView.m */; };
 		A17CE0C519D8FC3700A27092 /* UITouchableView.m in Sources */ = {isa = PBXBuildFile; fileRef = A17CE0C319D8FC3700A27092 /* UITouchableView.m */; };
 		A17CE0C719D8FF9E00A27092 /* AppServers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17CE0C619D8FF9E00A27092 /* AppServers.swift */; };
@@ -288,6 +289,7 @@
 		A15CA4A119D57BDD00716A00 /* UsrT03FavoriteTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UsrT03FavoriteTable.h; sourceTree = "<group>"; };
 		A15CA4A219D57BDD00716A00 /* UsrT03FavoriteTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UsrT03FavoriteTable.m; sourceTree = "<group>"; };
 		A15CA4AF19D57BF400716A00 /* String+Encrypto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Encrypto.swift"; sourceTree = "<group>"; };
+		A1629E6319EE98E800DC54B1 /* INF002Dao+mstT04LandMarkTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "INF002Dao+mstT04LandMarkTable.swift"; sourceTree = "<group>"; };
 		A17CE0C019D8FC3700A27092 /* UITouchableImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITouchableImageView.h; sourceTree = "<group>"; };
 		A17CE0C119D8FC3700A27092 /* UITouchableImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UITouchableImageView.m; sourceTree = "<group>"; };
 		A17CE0C219D8FC3700A27092 /* UITouchableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITouchableView.h; sourceTree = "<group>"; };
@@ -897,6 +899,7 @@
 				A1ECD45719D2D41F00D5A0E2 /* LandMarkDetailController.swift */,
 				A1ECD45819D2D41F00D5A0E2 /* LandMarkListController.swift */,
 				A1ECD45919D2D41F00D5A0E2 /* LandMarkMapController.swift */,
+				A1629E6319EE98E800DC54B1 /* INF002Dao+mstT04LandMarkTable.swift */,
 				A1ECD45A19D2D41F00D5A0E2 /* LandMarkSearchController.swift */,
 			);
 			path = INF002;
@@ -1283,6 +1286,7 @@
 				A17EDA7119E8B74800D58386 /* INF002FavDao.swift in Sources */,
 				A17CE0CD19D9017200A27092 /* String+CString.swift in Sources */,
 				A17CE0CC19D9017200A27092 /* Data+Encrypto.swift in Sources */,
+				A1629E6419EE98E800DC54B1 /* INF002Dao+mstT04LandMarkTable.swift in Sources */,
 				3B2420DD19B5AD1500DAE392 /* NSString+Datetime.m in Sources */,
 				A1ECD48519D2D41F00D5A0E2 /* MstT03LineStationTable.m in Sources */,
 				3B2420E019B5AD1500DAE392 /* ONTSModel.m in Sources */,
