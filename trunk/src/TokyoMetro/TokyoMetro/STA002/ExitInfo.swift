@@ -58,29 +58,19 @@ class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource {
 //    }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        if (segment.selectedSegmentIndex == 0) {
-//            return arrList[section][1].count
-//        } else {
-            return rows.count
-//        }
+
+        return rows.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-//        if (segment.selectedSegmentIndex == 0) {
-//            let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("ExitInfoCell", forIndexPath: indexPath) as UITableViewCell
-//            
-//            cell.textLabel!.text = arrList[indexPath.section][1][indexPath.row] as? String
-//            
-//            return cell
-//        } else {
-            let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("StationExit", forIndexPath: indexPath) as UITableViewCell
+
+        let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("StationExit", forIndexPath: indexPath) as UITableViewCell
             
-            var map = rows[indexPath.row] as StaT01StationExitTable
+        var map = rows[indexPath.row] as StaT01StationExitTable
             cell.textLabel!.text = map.item(STAT01_STAT_EXIT_NAME) as? String
             
-            return cell
-//        }
+        return cell
         
     }
     

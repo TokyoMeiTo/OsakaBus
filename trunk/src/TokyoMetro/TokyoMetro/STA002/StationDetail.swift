@@ -47,8 +47,14 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
     var group_id = ""
     // 站点statId、statSeq、lineId数组
     var statSeqArr: NSArray = NSArray.array()
+    
+    // 景点、购物、美食数组
+    var landMarkArr: NSArray = NSArray.array()
     // 其他链接
     var selectList = ["车站时刻表", "车站结构图", "站内商业设施", "车站设施"]
+    
+    // 其他链接
+    var landMarkTitleList = ["INF002_11".localizedString(), "INF002_09".localizedString(), "PUBLIC_09".localizedString()]
     
     var depaTimeArr: NSMutableArray = NSMutableArray.array()
     
@@ -81,6 +87,14 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
         addStationSelect()
         // 检索该站是否已收藏
         odbCollectStation()
+
+    }
+    
+    
+    func odbLandMark(type: String) {
+        
+        var mstT04Table:MstT04LandMarkTable = MstT04LandMarkTable()
+        landMarkArr = mstT04Table.queryLandMarkByStatId(group_id, lmakType: type)
 
     }
     
@@ -237,7 +251,7 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
         table.statId = group_id
         var rows = table.selectAll()
         if (rows.count > 0) {
-            var sureBtn: UIAlertView = UIAlertView(title: "", message: "该站已收藏！", delegate: self, cancelButtonTitle: "确定")
+            var sureBtn: UIAlertView = UIAlertView(title: "", message: "STA002_06".localizedString(), delegate: self, cancelButtonTitle: "PUBLIC_06".localizedString())
             
             sureBtn.show()
         } else {
@@ -255,12 +269,12 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
             table.ext4 = ""
             table.ext5 = ""
             if (table.insert()) {
-                var sureBtn: UIAlertView = UIAlertView(title: "", message: "收藏成功！", delegate: self, cancelButtonTitle: "确定")
+                var sureBtn: UIAlertView = UIAlertView(title: "", message: "CMN003_21".localizedString(), delegate: self, cancelButtonTitle: "PUBLIC_06".localizedString())
                 
                 sureBtn.show()
                 imgCollect.image = UIImage(named: "station_collect_icon")
             } else {
-                var sureBtn: UIAlertView = UIAlertView(title: "", message: "收藏失败！", delegate: self, cancelButtonTitle: "确定")
+                var sureBtn: UIAlertView = UIAlertView(title: "", message: "CMN003_20".localizedString(), delegate: self, cancelButtonTitle: "PUBLIC_06".localizedString())
                 
                 sureBtn.show()
             }
@@ -373,15 +387,6 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
     }
     
     
-    @IBAction func cellectSubway() {
-        
-        var sureBtn: UIAlertView = UIAlertView(title: "", message: "你确定要收藏吗？", delegate: self, cancelButtonTitle: "取消", otherButtonTitles: "确定")
-        
-        sureBtn.show()
-        
-        
-    }
-    
     @IBAction func pushStationMap() {
     
         var stationMap: StationImg = self.storyboard?.instantiateViewControllerWithIdentifier("StationImg") as StationImg
@@ -482,7 +487,7 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
             
             var open1: UILabel = UILabel()
             open1.frame = CGRectMake(25, 0, 155, 35)
-            open1.text = "开往\(array[1].station())："
+            open1.text = "STA002_10".localizedString() + "\(array[1].station())："
             open1.font = UIFont.boldSystemFontOfSize(18)
             open1.adjustsFontSizeToFitWidth = true
             time1.addSubview(open1)
@@ -502,15 +507,14 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
     
     func addStationSelect() {
 
-        var table = UITableView()
-        table.frame = CGRectMake(0, CGFloat(220 + depaTimeArr.count * 35 + 15), 320, CGFloat(46 * selectList.count))
+        var table = UITableView(frame: CGRectMake(0, CGFloat(220 + depaTimeArr.count * 35 + 15), 320, CGFloat(44 * (selectList.count + landMarkTitleList.count) + 30)), style: UITableViewStyle.Plain)
         table.delegate = self
         table.dataSource = self
         table.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0)
 
         self.scrollView.addSubview(table)
         
-        scrollView.contentSize = CGSizeMake(320, table.frame.origin.y + CGFloat(46 * selectList.count))
+        scrollView.contentSize = CGSizeMake(320, table.frame.origin.y + table.frame.height)
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -519,44 +523,119 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
         cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
         cell.selectionStyle = UITableViewCellSelectionStyle.None
         
-        var image = UIImageView()
-        var imageName = "station-link-" + (indexPath.row + 1).description
-        image.frame = CGRectMake(15, 8, 30, 30)
-        image.image = UIImage(named: imageName)
-        
-        cell.addSubview(image)
-        
-        var content = UILabel()
-        content.frame = CGRectMake(55, 0, 200, 46)
-        content.text = selectList[indexPath.row]
-        content.font = UIFont.systemFontOfSize(20)
-        
-        cell.addSubview(content)
+        if (indexPath.section == 0) {
+            var image = UIImageView()
+            var imageName = "station-link-" + (indexPath.row + 1).description
+            image.frame = CGRectMake(15, 6, 30, 30)
+            image.image = UIImage(named: imageName)
+            
+            cell.addSubview(image)
+            
+            var content = UILabel()
+            content.frame = CGRectMake(55, 0, 200, 44)
+            content.text = selectList[indexPath.row]
+            content.font = UIFont.systemFontOfSize(20)
+            
+            cell.addSubview(content)
+        } else {
+            var image = UIImageView()
+            var imageName = "station-link-" + (indexPath.row + 1).description
+            image.frame = CGRectMake(15, 6, 30, 30)
+            image.image = UIImage(named: imageName)
+            
+            cell.addSubview(image)
+            
+            var content = UILabel()
+            content.frame = CGRectMake(55, 0, 200, 44)
+            content.text = landMarkTitleList[indexPath.row]
+            content.font = UIFont.systemFontOfSize(20)
+            
+            cell.addSubview(content)
+        }
         
         return cell
     }
     
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 2
+    }
+    
+    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if (section == 0) {
+            return 0
+        } else {
+            return 30
+        }
+    }
+    
+    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if (section == 0) {
+            return nil
+        } else {
+            var view = UIView(frame: CGRectMake(0, 0, 320, 30))
+            view.backgroundColor = UIColor(red: 239/255, green: 239/255, blue: 239/255, alpha: 1)
+            var lblTitle = UILabel(frame: CGRectMake(15, 0, 305, 30))
+            lblTitle.text = "周边信息"
+            view.addSubview(lblTitle)
+            return view
+        }
+        
+    }
+
+    
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 46
+        return 44
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return selectList.count
+        if (section == 0) {
+            return selectList.count
+        } else {
+            return landMarkTitleList.count
+        }
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        switch (indexPath.row) {
-        case 0:
-            showTime()
-        case 1:
-            pushStationMap()
-        case 2:
-            showComercialInside()
-        case 3:
-            showFacility()
-        default:
-            pushStationMap()
+        if (indexPath.section == 0) {
+            switch (indexPath.row) {
+            case 0:
+                showTime()
+            case 1:
+                pushStationMap()
+            case 2:
+                showComercialInside()
+            case 3:
+                showFacility()
+            default:
+                pushStationMap()
+            }
+        } else{
+            showLnadMarkList(indexPath.row)
         }
+    }
+    
+    func showLnadMarkList(index: Int) {
+        var landMark: LandMarkListController = self.storyboard?.instantiateViewControllerWithIdentifier("landmarklist") as LandMarkListController
+        
+        if (index == 0) {
+            odbLandMark("景点")
+            landMark.title = "INF002_11".localizedString()
+        } else if (index == 1) {
+            odbLandMark("美食")
+            landMark.title = "INF002_09".localizedString()
+        } else {
+            odbLandMark("购物")
+            landMark.title = "PUBLIC_09".localizedString()
+        }
+        
+        var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = backButton
+        
+        landMark.landMarks = landMarkArr as? Array<MstT04LandMarkTable>
+        
+        self.navigationController?.pushViewController(landMark, animated: true)
+
+
     }
     
     func showComercialInside() {

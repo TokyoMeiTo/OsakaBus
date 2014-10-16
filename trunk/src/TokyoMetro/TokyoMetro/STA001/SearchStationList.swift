@@ -141,7 +141,7 @@ class SearchStationList: UIViewController, UITableViewDelegate, UITableViewDataS
     }
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "\(stationArr.count)条检索结果"
+        return "\(stationArr.count)" + "STA001_01".localizedString()
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -206,12 +206,10 @@ class SearchStationList: UIViewController, UITableViewDelegate, UITableViewDataS
     }
     
     func searchBarShouldBeginEditing(searchBar: UISearchBar) -> Bool {
-        println("开始输入")
         return true
     }
     
     func searchBarShouldEndEditing(searchBar: UISearchBar) -> Bool {
-        println("输入结束")
         return true
     }
 

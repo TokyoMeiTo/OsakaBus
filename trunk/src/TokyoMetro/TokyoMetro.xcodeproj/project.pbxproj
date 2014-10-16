@@ -66,6 +66,7 @@
 		A15CA4B419D57BF400716A00 /* String+Encrypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15CA4AF19D57BF400716A00 /* String+Encrypto.swift */; };
 		A1629E6419EE98E800DC54B1 /* INF002Dao+mstT04LandMarkTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1629E6319EE98E800DC54B1 /* INF002Dao+mstT04LandMarkTable.swift */; };
 		A1629E6619EEA43B00DC54B1 /* Cmn003Dao.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1629E6519EEA43B00DC54B1 /* Cmn003Dao.swift */; };
+		A17BB67519EF86970084DE74 /* HelpIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17BB67419EF86970084DE74 /* HelpIcon.swift */; };
 		A17CE0C419D8FC3700A27092 /* UITouchableImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = A17CE0C119D8FC3700A27092 /* UITouchableImageView.m */; };
 		A17CE0C519D8FC3700A27092 /* UITouchableView.m in Sources */ = {isa = PBXBuildFile; fileRef = A17CE0C319D8FC3700A27092 /* UITouchableView.m */; };
 		A17CE0C719D8FF9E00A27092 /* AppServers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17CE0C619D8FF9E00A27092 /* AppServers.swift */; };
@@ -295,6 +296,7 @@
 		A15CA4AF19D57BF400716A00 /* String+Encrypto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Encrypto.swift"; sourceTree = "<group>"; };
 		A1629E6319EE98E800DC54B1 /* INF002Dao+mstT04LandMarkTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "INF002Dao+mstT04LandMarkTable.swift"; sourceTree = "<group>"; };
 		A1629E6519EEA43B00DC54B1 /* Cmn003Dao.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cmn003Dao.swift; sourceTree = "<group>"; };
+		A17BB67419EF86970084DE74 /* HelpIcon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpIcon.swift; sourceTree = "<group>"; };
 		A17CE0C019D8FC3700A27092 /* UITouchableImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITouchableImageView.h; sourceTree = "<group>"; };
 		A17CE0C119D8FC3700A27092 /* UITouchableImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UITouchableImageView.m; sourceTree = "<group>"; };
 		A17CE0C219D8FC3700A27092 /* UITouchableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITouchableView.h; sourceTree = "<group>"; };
@@ -486,15 +488,16 @@
 		3B241FF119B5A5CF00DAE392 /* TokyoMetro */ = {
 			isa = PBXGroup;
 			children = (
-				A158ACF619E957F800E63C03 /* INF005 */,
 				A17EDA7519E8C0FE00D58386 /* DLD001 */,
 				A1ECD42F19D2D41F00D5A0E2 /* CMN001 */,
 				A1ECD43019D2D41F00D5A0E2 /* CMN002 */,
 				A1ECD43219D2D41F00D5A0E2 /* CMN003 */,
 				A1ECD43519D2D41F00D5A0E2 /* CMN009 */,
+				A1ECD45219D2D41F00D5A0E2 /* INF001 */,
 				A1ECD45619D2D41F00D5A0E2 /* INF002 */,
 				A1ECD45B19D2D41F00D5A0E2 /* INF003 */,
 				A1ECD45E19D2D41F00D5A0E2 /* INF004 */,
+				A158ACF619E957F800E63C03 /* INF005 */,
 				A1ECD46319D2D41F00D5A0E2 /* LIN001 */,
 				A1ECD46519D2D41F00D5A0E2 /* LIN002 */,
 				A1ECD46719D2D41F00D5A0E2 /* STA001 */,
@@ -783,6 +786,7 @@
 			children = (
 				A1FDB38B19E8283C00083F9D /* CMN002DAO+mnT03StationGridTable.swift */,
 				A1FDB38C19E8283C00083F9D /* CMN002Model.swift */,
+				A17BB67419EF86970084DE74 /* HelpIcon.swift */,
 				A1FDB38D19E8283C00083F9D /* CMN002StationData.swift */,
 				A1ECD43119D2D41F00D5A0E2 /* Main.swift */,
 			);
@@ -894,8 +898,7 @@
 				A1ECD45419D2D41F00D5A0E2 /* FunFind.swift */,
 				A1ECD45519D2D41F00D5A0E2 /* ShopDetial.swift */,
 			);
-			name = INF001;
-			path = ../INF001;
+			path = INF001;
 			sourceTree = "<group>";
 		};
 		A1ECD45619D2D41F00D5A0E2 /* INF002 */ = {
@@ -950,7 +953,6 @@
 		A1ECD46719D2D41F00D5A0E2 /* STA001 */ = {
 			isa = PBXGroup;
 			children = (
-				A1ECD45219D2D41F00D5A0E2 /* INF001 */,
 				A1ECD46819D2D41F00D5A0E2 /* SearchStationList.swift */,
 			);
 			path = STA001;
@@ -1234,6 +1236,7 @@
 				A17EDAB119E8CD4200D58386 /* HelpContentDetail.swift in Sources */,
 				A1F1FC8E19E96E74004A59C9 /* AFNetworkActivityIndicatorManager.m in Sources */,
 				A15CA4A819D57BDD00716A00 /* StaT01StationExitTable.m in Sources */,
+				A17BB67519EF86970084DE74 /* HelpIcon.swift in Sources */,
 				A1ECD4A219D2D41F00D5A0E2 /* RemindListController.swift in Sources */,
 				A1EE754319D445490064BC90 /* RouteSearch.swift in Sources */,
 				A1F1FC9819E96E74004A59C9 /* unzip.c in Sources */,

@@ -23,7 +23,7 @@ class StationImg: UIViewController, UIScrollViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.title = "站内结构图"
+        self.title = "STA002_11".localizedString()
         
         size = UIScreen.mainScreen().bounds.size
         

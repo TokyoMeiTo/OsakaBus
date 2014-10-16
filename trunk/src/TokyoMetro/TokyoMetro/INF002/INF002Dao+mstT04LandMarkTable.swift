@@ -120,4 +120,18 @@ extension MstT04LandMarkTable {
         
         return self.excuteQuery( queryFiter, withArgumentsInArray: arr);
     }
+    
+    
+    func queryLandMarkByStatId(statId: String, lmakType: String) -> NSArray {
+        var queryFiter = "select * , ROWID from MSTT04_LANDMARK where STAT_ID = ? AND LMAK_ID in (select min(LMAK_ID) from MSTT04_LANDMARK group by LMAK_NAME_EXT1) AND IMAG_ID1 IS NOT NULL"
+        
+        var arr:NSMutableArray = NSMutableArray.array();
+        arr.addObject(statId);
+        if (!lmakType.isEmpty) {
+            arr.addObject(lmakType);
+            queryFiter = queryFiter + " AND LMAK_TYPE = ?"
+        }
+        
+        return self.excuteQuery(queryFiter, withArgumentsInArray: arr);
+    }
 }

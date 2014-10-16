@@ -111,10 +111,9 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         btnExchange.addTarget(self, action: EXCHANGEACTION, forControlEvents: UIControlEvents.TouchUpInside)
         stationStart.addTarget(self, action: FOUCSCHANGETO1, forControlEvents: UIControlEvents.AllEditingEvents)
         stationEnd.addTarget(self, action: FOUCSCHANGETO2, forControlEvents: UIControlEvents.AllEditingEvents)
-         // btnSearchRoute.addTarget(self, action: SEARCHWAYACTION, forControlEvents: UIControlEvents.TouchUpInside)
         btnCollectionStation.addTarget(self, action: COLLECTEDSTATION, forControlEvents: UIControlEvents.TouchUpInside)
         
-        testView.frame = CGRectMake(320, 568, 320, 44)
+        testView.frame = CGRectMake(320, 568, 320, 33)
         testView.backgroundColor = UIColor.whiteColor()
         mTipView()
         self.view.addSubview(testView)
@@ -226,7 +225,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
                 resultCelllblStationTip1.font = UIFont.systemFontOfSize(17)
                 resultCelllblStationTip1.tag = 2001
                 if (routeDetial.count - 2 > 0) {
-                     resultCelllblStationTip1.text = "EXCHANGE_TYPE_1".localizedString() + (routeDetial.count - 2).description + " " + "CMN003_23".localizedString()
+                     resultCelllblStationTip1.text = "EXCHANGE_TYPE_1".localizedString() + (routeDetial.count - 2).description + " " + "次"
                 } else {
                     resultCelllblStationTip1.hidden = true
                 }
@@ -757,13 +756,13 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         
         var locationTest : CLLocation = CLLocation(latitude: testLocation.coordinate.latitude, longitude: testLocation.coordinate.longitude)
         // 获取最近的10个站点
-        var stations : Array<MstT02StationTable> = selectStationTable(locationTest)
+        var nearlyStations : Array<MstT02StationTable> = selectStationTable(locationTest)
 
         // 显示唯10条
-        for nearlystationId in stations{
+        for nearlystationId in nearlyStations{
             var mMst02tableNearlyStation = MstT02StationTable()
             
-            mMst02tableNearlyStation.statGroupId = nearlystationId.statGroupId as String
+            mMst02tableNearlyStation.statId = nearlystationId.statId as String
             
             var mst02StationID:NSArray = mMst02tableNearlyStation.selectAll()
             
@@ -774,8 +773,6 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
                 var stationName:AnyObject = key.item(MSTT02_STAT_NAME_EXT1)
                 var statGroupId = key.item(MSTT02_STAT_GROUP_ID) as String
                 var stationNameKanatemp = key.item(MSTT02_STAT_NAME_KANA) as String
-                
-                
                 var statSeqArr = mst02table.excuteQuery("select LINE_ID from MSTT02_STATION where 1 = 1 and STAT_GROUP_ID = \(statGroupId)")
                 self.allOflineImageItems.addObject(statSeqArr)
                 self.allOfStationItemsJP.addObject(stationNameJP)
@@ -785,7 +782,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             
         }
         tbView.reloadData()
-        self.lblTip.text = "PUBLIC_11".localizedString()
+        self.lblTip.text = "最近站点"
         showTipBtn("0")
     }
     
@@ -831,26 +828,29 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
     
     func mTipView(){
         
-        var btnCollectRoute: UIButton = UIButton(frame: CGRectMake(0, 0, 160, 44))
-        btnCollectRoute.setTitle("CMN003_26".localizedString(), forState: UIControlState.Normal)
+        var vline: UIView = UIButton(frame: CGRectMake(0, 1, 320, 1))
+        vline.backgroundColor = UIColor.lightGrayColor()
+        self.testView.addSubview(vline)
+        
+        var btnCollectRoute: UIButton = UIButton(frame: CGRectMake(0, 3, 160, 33))
+        btnCollectRoute.setTitle("路线", forState: UIControlState.Normal)
         btnCollectRoute.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
         btnCollectRoute.addTarget(self, action: "isCollectionRoute", forControlEvents: UIControlEvents.TouchUpInside)
         self.testView.addSubview(btnCollectRoute)
         
-        var btnSetAlarm: UIButton = UIButton(frame: CGRectMake(160, 0, 160, 44))
-        btnSetAlarm.setTitle("CMN003_25".localizedString(), forState: UIControlState.Normal)
+        var btnSetAlarm: UIButton = UIButton(frame: CGRectMake(160, 3, 160, 33))
+        btnSetAlarm.setTitle("提醒", forState: UIControlState.Normal)
         btnSetAlarm.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
-        btnSetAlarm.addTarget(self, action: "isPopToAlarm", forControlEvents: UIControlEvents.TouchUpInside)
+        btnSetAlarm.addTarget(self, action: "isPopToAlarm ", forControlEvents: UIControlEvents.TouchUpInside)
         self.testView.addSubview(btnSetAlarm)
         
-        var btnCollectRouteImg: UIImageView = UIImageView(frame: CGRectMake(20, 11, 22, 22))
-        btnCollectRouteImg.image = "route_alarm".getImage()
+        var btnCollectRouteImg: UIImageView = UIImageView(frame: CGRectMake(30, 8, 22, 22))
+        btnCollectRouteImg.image = "route_collection".getImage()
         self.testView.addSubview(btnCollectRouteImg)
         
-        var btnSetAlarmImg: UIImageView = UIImageView(frame: CGRectMake(180, 11, 22, 22))
-        btnSetAlarmImg.image = "route_collection".getImage()
+        var btnSetAlarmImg: UIImageView = UIImageView(frame: CGRectMake(190, 8, 22, 22))
+        btnSetAlarmImg.image = "route_alarm".getImage()
         self.testView.addSubview(btnSetAlarmImg)
-
     }
     
     func textFieldDidBeginEditing(textField: UITextField) {

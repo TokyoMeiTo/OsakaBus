@@ -134,6 +134,10 @@ class Main: UIViewController,UIScrollViewDelegate {
         mySingleTapGesture.numberOfTouchesRequired = 1
         mMainWrapper.addGestureRecognizer(mySingleTapGesture)
         
+        // 禁止button同时点击
+        mBtnImgAdd.exclusiveTouch = true
+        mBtnImgDec.exclusiveTouch = true
+        
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -144,9 +148,11 @@ class Main: UIViewController,UIScrollViewDelegate {
         self.mPopupStationView.hidden = true
         mIsMenuShow = false
         mMenuView.frame = CGRectMake(0, mScreenSize.height - 75, mScreenSize.width, 75)
-        mBodyView.hidden = true
+        
         mBodyView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.4)
+        mBodyView.hidden = true
     }
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -186,18 +192,27 @@ class Main: UIViewController,UIScrollViewDelegate {
                 UIView.animateWithDuration(0.3, animations: { () -> Void in
                     self.mScrollView.zoomScale = (self.mScrollView.zoomScale + 1)
                 })
+                self.mBtnImgAdd.enabled = true
+            } else {
+                self.mBtnImgAdd.enabled = false
             }
+            self.mBtnImgDec.enabled = true
         case self.mBtnImgDec:
             
             if (self.mScrollView.zoomScale > 0.5) {
                 UIView.animateWithDuration(0.3, animations: { () -> Void in
                     self.mScrollView.zoomScale = (self.mScrollView.zoomScale - 1)
                 })
+                self.mBtnImgDec.enabled = true
+            } else {
+                self.mBtnImgDec.enabled = false
             }
+            self.mBtnImgAdd.enabled = true
         default:
             self.mScrollView.zoomScale = self.mScrollView.zoomScale
             
         }
+
     }
     
     /**
@@ -240,7 +255,7 @@ class Main: UIViewController,UIScrollViewDelegate {
         } else if (sender.tag == 503) {
             stationLine.segmentIndex = 1
         }
-        
+                
         var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
         self.navigationItem.backBarButtonItem = backButton
         self.navigationController?.pushViewController(stationLine, animated: true)
@@ -329,6 +344,13 @@ class Main: UIViewController,UIScrollViewDelegate {
         var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
         self.navigationItem.backBarButtonItem = backButton
         self.navigationController?.pushViewController(remindListController, animated: true)
+    }
+    
+    @IBAction func showHelpIcon() {
+        var helpIcon: HelpIcon = self.storyboard?.instantiateViewControllerWithIdentifier("HelpIcon") as HelpIcon
+        var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = backButton
+        self.navigationController?.pushViewController(helpIcon, animated: true)
     }
     
 

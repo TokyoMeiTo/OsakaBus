@@ -28,6 +28,11 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
     /* 地标一览 */
     var landMarks: NSMutableArray = NSMutableArray.array()
     
+    /* 地标rowId*/
+    var landMarkRwoIdArr: NSMutableArray = NSMutableArray.array()
+    // 存放地标id
+    var landMarkIdStr: String = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -104,7 +109,7 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     }
     
-    
+    // 删除站点
     func removeSubway(index: Int) -> Bool {
         var table = UsrT03FavoriteTable()
         var map: UsrT03FavoriteTable = stationArr[index] as UsrT03FavoriteTable
@@ -113,6 +118,7 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
         return table.delete()
     }
     
+    // 删除路线
     func removeRute(index: Int) -> Bool {
         var table = UsrT03FavoriteTable()
 //        var map: UsrT03FavoriteTable = ruteArr[index] as UsrT03FavoriteTable
@@ -121,15 +127,17 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
         return table.delete()
     }
     
-    
-    /**
-    * 从DB查询地标信息
-    */
-    func selectLandMarkTable(type:Int){
-        //var daoINF002 = INF002Dao()
-        var mstT04Table:MstT04LandMarkTable = MstT04LandMarkTable()
+    // 删除地标
+    func removeLandMark(index: Int) -> Bool {
+        var table = UsrT03FavoriteTable()
+        table.rowid = landMarkRwoIdArr[index] as String
         
-        landMarks = NSMutableArray.array()
+        return table.delete()
+    }
+    
+    
+    func selectLandMarkId(type: Int) {
+        
         var landMarkTypeStr:String = ""
         switch type{
         case 2:
@@ -142,14 +150,57 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
             println("nothing")
         }
         
-        var rows = mstT04Table.queryLandMarks(landMarkTypeStr)
-        
+        var table = UsrT03FavoriteTable()
+        table.favoType = "03"
+        table.ext3 = landMarkTypeStr
+        var rows: NSArray = table.selectAll()
         for key in rows {
-            key as MstT04LandMarkTable
-            landMarks.addObject(key)
+            key as UsrT03FavoriteTable
+            landMarkRwoIdArr.addObject(key.rowid)
+            if (landMarkIdStr == "") {
+                landMarkIdStr = key.item(USRT03_LMAK_ID) as String
+            } else {
+                landMarkIdStr = landMarkIdStr + "," + (key.item(USRT03_LMAK_ID) as String)
+            }
+        }
+        
+        landMarks = NSMutableArray.array()
+        if (rows.count > 0) {
+            selectLandMarkTable(type)
+        } else {
+            self.table.reloadData()
+        }
+    }
+    
+    /**
+    * 从DB查询地标信息
+    */
+    func selectLandMarkTable(type:Int){
+        //var daoINF002 = INF002Dao()
+        var mstT04Table:MstT04LandMarkTable = MstT04LandMarkTable()
+        
+        var landMarkTypeStr:String = ""
+        switch type{
+        case 2:
+            landMarkTypeStr = "景点"
+        case 3:
+            landMarkTypeStr = "美食"
+        case 4:
+            landMarkTypeStr = "购物"
+        default:
+            println("nothing")
+        }
+        if (landMarkIdStr != "") {
+            var rows = mstT04Table.excuteQuery("select *, ROWID from MSTT04_LANDMARK where LMAK_TYPE = \(landMarkTypeStr) and LMAK_ID in (\(landMarkIdStr)) and IMAG_ID1 IS NOT NULL")
+            
+            for key in rows {
+                key as MstT04LandMarkTable
+                landMarks.addObject(key)
+            }
         }
         
         table.reloadData()
+        
     }
     
     
@@ -158,7 +209,7 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
         if (sender.selectedSegmentIndex == 0 || sender.selectedSegmentIndex == 1) {
             table.reloadData()
         } else {
-            selectLandMarkTable(sender.selectedSegmentIndex)
+            selectLandMarkId(sender.selectedSegmentIndex)
         }
     }
     
@@ -189,7 +240,7 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
             var landMarkDetailController = self.storyboard!.instantiateViewControllerWithIdentifier("landmarkdetail") as LandMarkDetailController
             switch segment.selectedSegmentIndex {
             case 2:
-                landMarkDetailController.title = "热门景点"
+                landMarkDetailController.title = "景点"
             case 3:
                 landMarkDetailController.title = "美食"
             case 4:
