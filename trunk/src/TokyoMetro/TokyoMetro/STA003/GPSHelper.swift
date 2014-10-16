@@ -88,7 +88,7 @@ class GPSHelper: UIViewController, CLLocationManagerDelegate{
      *    Invoked when an error has occurred. Error types are defined in "CLError.h".
      */
     func locationManager(manager: CLLocationManager!, didFailWithError error: NSError!){
-        println("GPS错误:" + error.code.description)
+        println("STA003_01".localizedString() + error.code.description)
         delegate!.locationUpdateComplete(currentLocation)
     }
     

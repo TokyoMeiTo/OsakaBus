@@ -17,7 +17,6 @@ class USR002Dao:LinT01TrainScheduleTrainTable {
         self.firstTrainFlag = trainFlag
         self.scheType = scheType
         var depaTime:String = "\((self.select() as LinT01TrainScheduleTrainTable).item(LINT01_TRAIN_SCHEDULE_DEPA_TIME))"
-        self.reset()
         return depaTime
     }
 }

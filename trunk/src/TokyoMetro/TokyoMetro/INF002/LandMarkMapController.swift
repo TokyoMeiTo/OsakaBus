@@ -54,7 +54,7 @@ class LandMarkMapController: UIViewController, MKMapViewDelegate, UIActionSheetD
             var statLat:Double = ("\(landMark!.item(MSTT04_LANDMARK_LMAK_LAT))" as NSString).doubleValue
             var statLon:Double = ("\(landMark!.item(MSTT04_LANDMARK_LMAK_LON))" as NSString).doubleValue
 
-            landMarkLocation = CLLocation(latitude: statLon, longitude: statLat)
+            landMarkLocation = CLLocation(latitude: statLat, longitude: statLon)
         }
         
         //var statLocation = CLLocation(latitude: fromLat, longitude: fromLon)

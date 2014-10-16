@@ -17,6 +17,7 @@
 @synthesize lineToId;
 //@synthesize lineToNameLocl;
 @synthesize statToId;
+@synthesize traiDirt;
 //@synthesize statToNameLocl;
 @synthesize beepFlag;
 @synthesize voleFlag;
@@ -39,6 +40,7 @@
                                                 USRT01_ARRIVAL_ALARM_LINE_TO_ID,
 //                                                USRT01_ARRIVAL_ALARM_LINE_TO_NAME_LOCL,
                                                 USRT01_ARRIVAL_ALARM_STAT_TO_ID,
+                                                USRT01_ARRIVAL_ALARM_TRAI_DIRT,
 //                                                USRT01_ARRIVAL_ALARM_STAT_TO_NAME_LOCL,
                                                 USRT01_ARRIVAL_ALARM_BEEP_FLAG,
                                                 USRT01_ARRIVAL_ALARM_VOLE_FLAG,
@@ -53,6 +55,7 @@
 //                                                    ODB_DATATYPE_TEXT,
                                                     ODB_DATATYPE_TEXT,
 //                                                    ODB_DATATYPE_TEXT,
+                                                    ODB_DATATYPE_TEXT,
                                                     ODB_DATATYPE_TEXT,
 //                                                    ODB_DATATYPE_TEXT,
                                                     ODB_DATATYPE_TEXT,
@@ -87,6 +90,8 @@
 //    }
     else if ([item isEqualToString:USRT01_ARRIVAL_ALARM_LINE_TO_ID]){
         self.lineToId = value;
+    }else if ([item isEqualToString:USRT01_ARRIVAL_ALARM_TRAI_DIRT]){
+        self.traiDirt = value;
     }
 //    else if ([item isEqualToString:USRT01_ARRIVAL_ALARM_LINE_TO_NAME_LOCL]){
 //        self.lineToNameLocl = value;
@@ -141,6 +146,8 @@
 //    }
     else if ([item isEqualToString:USRT01_ARRIVAL_ALARM_STAT_TO_ID]){
         return self.statToId;
+    }else if ([item isEqualToString:USRT01_ARRIVAL_ALARM_TRAI_DIRT]){
+        return self.traiDirt;
     }
 //    else if ([item isEqualToString:USRT01_ARRIVAL_ALARM_STAT_TO_NAME_LOCL]){
 //        return self.statToNameLocl;

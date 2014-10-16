@@ -34,11 +34,11 @@ class LandMarkListController: UIViewController, UITableViewDelegate, NSObjectPro
         // Do any additional setup after loading the view, typically from a nib.
         switch landMarkType{
         case 0:
-            self.title = "热门景点"
+            self.title = "INF002_08".localizedString()
         case 1:
-            self.title = "美食"
+            self.title = "INF002_09".localizedString()
         case 2:
-            self.title = "购物"
+            self.title = "PUBLIC_09".localizedString()
         default:
             println("nothing")
         }
@@ -115,11 +115,11 @@ class LandMarkListController: UIViewController, UITableViewDelegate, NSObjectPro
         var landMarkTypeStr:String = ""
         switch type{
         case 0:
-            landMarkTypeStr = "景点"
+            landMarkTypeStr = "INF002_11".localizedString()
         case 1:
-            landMarkTypeStr = "美食"
+            landMarkTypeStr = "INF002_09".localizedString()
         case 2:
-            landMarkTypeStr = "购物"
+            landMarkTypeStr = "PUBLIC_09".localizedString()
         default:
             println("nothing")
         }
@@ -191,12 +191,12 @@ class LandMarkListController: UIViewController, UITableViewDelegate, NSObjectPro
         lblLandMark.textAlignment = NSTextAlignment.Left
         cell.addSubview(lblLandMark)
         
-        var lblLandMarkWard = UILabel(frame: CGRect(x:tableView.frame.width - 70,y:10,width:70,height:40))
+        var lblLandMarkWard = UILabel(frame: CGRect(x:tableView.frame.width - 85,y:10,width:70,height:40))
         lblLandMarkWard.backgroundColor = UIColor.clearColor()
         lblLandMarkWard.font = UIFont.boldSystemFontOfSize(16)
         lblLandMarkWard.textColor = UIColor.whiteColor()
         lblLandMarkWard.text = "\(landMarks![indexPath.row].item(MSTT04_LANDMARK_WARD))".specialWard()
-        lblLandMarkWard.textAlignment = NSTextAlignment.Left
+        lblLandMarkWard.textAlignment = NSTextAlignment.Right
         cell.addSubview(lblLandMarkWard)
         
         var btnFav:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
@@ -215,17 +215,11 @@ class LandMarkListController: UIViewController, UITableViewDelegate, NSObjectPro
         
 //        btnFav.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
         cell.addSubview(btnFav)
-        
-        if(landMarks![indexPath.row].item(MSTT04_LANDMARK_MICI_RANK) != nil && "\(landMarks![indexPath.row].item(MSTT04_LANDMARK_MICI_RANK))" != ""){
+//        if(landMarks![indexPath.row].item(MSTT04_LANDMARK_RANK) != nil && "\(landMarks![indexPath.row].item(MSTT04_LANDMARK_RANK))" != ""){
+        if(true){
             lblTemp.frame = CGRect(x:0,y:125,width:tableView.frame.width,height:45)
-//            var lblMiCi = UILabel(frame: CGRect(x:15,y:120,width:100,height:40))
-//            lblMiCi.backgroundColor = UIColor.clearColor()
-//            lblMiCi.font = UIFont.boldSystemFontOfSize(13)
-//            lblMiCi.textColor = UIColor.whiteColor()
-//            lblMiCi.text = "米其林星级： "
-//            lblMiCi.textAlignment = NSTextAlignment.Left
-//            cell.addSubview(lblMiCi)
-            for(var i=0;i<("\(landMarks![indexPath.row].item(MSTT04_LANDMARK_MICI_RANK))" as NSString).integerValue; i++){
+//            ("\(landMarks![indexPath.row].item(MSTT04_LANDMARK_MICI_RANK))" as NSString).integerValue
+            for(var i=0;i < 4; i++){
                 var xFloat:CGFloat = 15//100
                 
                 for(var j=0;j<i;j++){
@@ -234,6 +228,21 @@ class LandMarkListController: UIViewController, UITableViewDelegate, NSObjectPro
                 
                 var imageViewStar = UIImageView(frame: CGRectMake(xFloat, 130, 15, 15))
                 var imageStar = UIImage(named: "INF00209.png")
+                imageViewStar.image = imageStar
+                cell.addSubview(imageViewStar)
+            }
+        }
+        
+        if(landMarks![indexPath.row].item(MSTT04_LANDMARK_MICI_RANK) != nil && "\(landMarks![indexPath.row].item(MSTT04_LANDMARK_MICI_RANK))" != ""){
+            for(var i=0;i<("\(landMarks![indexPath.row].item(MSTT04_LANDMARK_MICI_RANK))" as NSString).integerValue; i++){
+                var xFloat:CGFloat = 60//100
+                
+                for(var j=0;j<i;j++){
+                    xFloat = xFloat + 20
+                }
+                
+                var imageViewStar = UIImageView(frame: CGRectMake(xFloat, 20, 20, 20))
+                var imageStar = UIImage(named: "INF00211.png")
                 imageViewStar.image = imageStar
                 cell.addSubview(imageViewStar)
             }

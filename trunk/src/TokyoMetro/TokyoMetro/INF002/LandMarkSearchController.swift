@@ -21,7 +21,7 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
     /* landMarksType */
     var landMarksSubType:Array<String>?
     /* landMarksRange */
-    var landMarksRange:Array<String> = ["1000米以内","500米以内","100米以内","全部"]
+    var landMarksRange:Array<String> = ["INF002_15".localizedString(),"INF002_16".localizedString(),"INF002_17".localizedString(),"全部"]
     var pickerViewIsOpen = false
 
     var landMarkType:Int = 0
@@ -81,9 +81,9 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
         switch landMarkType{
         case 1:
             items = NSMutableArray.array()
-            items.addObject(["站点：",[landMarkShowStatId.station(), "全部"]])
-            items.addObject(["区域：",[landMarkShowSpecialWard.specialWard(),"","全部"]])
-            items.addObject(["距离：",landMarksRange])
+            items.addObject(["PUBLIC_03".localizedString(),[landMarkShowStatId.station(), "全部"]])
+            items.addObject(["INF002_13".localizedString(),[landMarkShowSpecialWard.specialWard(),"","全部"]])
+            items.addObject(["INF002_14".localizedString(),landMarksRange])
             items.addObject(["菜系：",["日式","中式","西式","全部"]])
              var priceStr:String = "日元及以上"
             items.addObject(["预算价格：",["5000" + priceStr,"1000" + priceStr,"1000日元以下","全部"]])
@@ -92,9 +92,9 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
             items.addObject(["评分：",["2" + PointStr,"3" + PointStr,"4" + PointStr,"5" + PointStr,"全部"]])
         default:
             items = NSMutableArray.array()
-            items.addObject(["站点：",[landMarkShowStatId.station(), "全部"]])
-            items.addObject(["区域：",[landMarkShowSpecialWard.specialWard(), "", "全部"]])
-            items.addObject(["距离：",landMarksRange])
+            items.addObject(["PUBLIC_03".localizedString(),[landMarkShowStatId.station(), "全部"]])
+            items.addObject(["INF002_13".localizedString(),[landMarkShowSpecialWard.specialWard(), "", "全部"]])
+            items.addObject(["INF002_14".localizedString(),landMarksRange])
         }
     }
     
@@ -197,7 +197,7 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
                 landMarkSubType = ""
             }
             for(var i=0; i < items[didSelectRowAtIndexPath.section][1].count;i++){
-                var indexPath = NSIndexPath(forRow: i, inSection: 2)
+                var indexPath = NSIndexPath(forRow: i, inSection: 3)
                 var cell = tableView.cellForRowAtIndexPath(indexPath)
                 if(cell != nil){
                     cell!.accessoryType = UITableViewCellAccessoryType.None
@@ -217,7 +217,7 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
                 landMarkPrice = 0
             }
             for(var i=0; i < items[didSelectRowAtIndexPath.section][1].count;i++){
-                var indexPath = NSIndexPath(forRow: i, inSection: 2)
+                var indexPath = NSIndexPath(forRow: i, inSection: 4)
                 var cell = tableView.cellForRowAtIndexPath(indexPath)
                 if(cell != nil){
                     cell!.accessoryType = UITableViewCellAccessoryType.None
@@ -237,7 +237,7 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
                 landMarkMiciRank = "0"
             }
             for(var i=0; i < items[didSelectRowAtIndexPath.section][1].count;i++){
-                var indexPath = NSIndexPath(forRow: i, inSection: 2)
+                var indexPath = NSIndexPath(forRow: i, inSection: 5)
                 var cell = tableView.cellForRowAtIndexPath(indexPath)
                 if(cell != nil){
                     cell!.accessoryType = UITableViewCellAccessoryType.None
@@ -259,7 +259,7 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
                 landMarkMiciRank = "1"
             }
             for(var i=0; i < items[didSelectRowAtIndexPath.section][1].count;i++){
-                var indexPath = NSIndexPath(forRow: i, inSection: 2)
+                var indexPath = NSIndexPath(forRow: i, inSection: 6)
                 var cell = tableView.cellForRowAtIndexPath(indexPath)
                 if(cell != nil){
                     cell!.accessoryType = UITableViewCellAccessoryType.None
@@ -327,7 +327,7 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
             
         case 2:
             cell.textLabel!.text = items[indexPath.section][1][indexPath.row] as? String
-            if(indexPath.row == 0){
+            if(indexPath.row == 3){
                 cell.accessoryType = UITableViewCellAccessoryType.Checkmark
             }else{
                 cell.accessoryType = UITableViewCellAccessoryType.None
@@ -353,16 +353,16 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
 //            }else{
 //                cell.accessoryType = UITableViewCellAccessoryType.None
 //            }
-//        case 6:
-//            cell.textLabel!.text = items[indexPath.section][1][indexPath.row] as? String
-//            if(indexPath.row == 0){
-//                cell.accessoryType = UITableViewCellAccessoryType.Checkmark
-//            }else{
-//                cell.accessoryType = UITableViewCellAccessoryType.None
-//            }
+        case 6:
+            cell.textLabel!.text = items[indexPath.section][1][indexPath.row] as? String
+            if(indexPath.row == 4){
+                cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+            }else{
+                cell.accessoryType = UITableViewCellAccessoryType.None
+            }
         default:
             cell.textLabel!.text = items[indexPath.section][1][indexPath.row] as? String
-            if(indexPath.row == 0){
+            if(indexPath.row == 3){
                 cell.accessoryType = UITableViewCellAccessoryType.Checkmark
             }else{
                 cell.accessoryType = UITableViewCellAccessoryType.None

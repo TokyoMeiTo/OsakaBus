@@ -30,7 +30,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
     var downloading:Bool = false
     var UIloading:Bool = false
     var loadProgress:String? = ""
-    var tipText:String = "本应用中将用到一定的缓存图片,点击'开始下载'按钮, 将下载功能所需图片等数据,如不下载可能会影响到本应用的使用。"
+    var tipText:String = "DLD001_08".localizedString()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -127,7 +127,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
                     // 在子线程中更新UI
                     dispatch_async(dispatch_get_main_queue()) { () -> Void in
                         self.downloading = false
-                        self.loadProgress = "失败"
+                        self.loadProgress = "DLD001_04".localizedString()
                         self.tbList.reloadData()
                     }
                 }
@@ -195,18 +195,18 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
             var result = unzip.UnzipFileTo(unzipPath, overWrite:true);
             if(result){
                 println("解压成功")
-                loadProgress = "完成"
+                loadProgress = "DLD001_06".localizedString()
                 updateComplete = true
                 tbList.reloadData()
             }else{
                 println("解压失败")
-                loadProgress = "失败"
+                loadProgress = "DLD001_04".localizedString()
                 tbList.reloadData()
             }
             unzip.UnzipCloseFile()
         }else{
             println("解压失败")
-            loadProgress = "失败"
+            loadProgress = "DLD001_04".localizedString()
             tbList.reloadData()
         }
         downloading = false
@@ -281,7 +281,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
                     lblProgressTemp.backgroundColor = UIColor.clearColor()
                     lblProgressTemp.font = UIFont.systemFontOfSize(16)
                     lblProgressTemp.textColor = UIColor.blackColor()
-                    lblProgressTemp.text = "正在下载:"
+                    lblProgressTemp.text = "DLD001_09".localizedString()
                     lblProgressTemp.textAlignment = NSTextAlignment.Right
                     uiHeader.addSubview(lblProgressTemp)
                 }else{
@@ -290,7 +290,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
                         lblProgressTemp.backgroundColor = UIColor.clearColor()
                         lblProgressTemp.font = UIFont.systemFontOfSize(16)
                         lblProgressTemp.textColor = UIColor.blackColor()
-                        lblProgressTemp.text = "下载"
+                        lblProgressTemp.text = "DLD001_10".localizedString()
                         lblProgressTemp.textAlignment = NSTextAlignment.Right
                         uiHeader.addSubview(lblProgressTemp)
                     }
@@ -326,7 +326,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
                     lblProgressTemp.backgroundColor = UIColor.clearColor()
                     lblProgressTemp.font = UIFont.systemFontOfSize(16)
                     lblProgressTemp.textColor = UIColor.blackColor()
-                    lblProgressTemp.text = "正在下载:"
+                    lblProgressTemp.text = "DLD001_09".localizedString()
                     lblProgressTemp.textAlignment = NSTextAlignment.Right
                     uiHeader.addSubview(lblProgressTemp)
                 }else{
@@ -335,7 +335,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
                         lblProgressTemp.backgroundColor = UIColor.clearColor()
                         lblProgressTemp.font = UIFont.systemFontOfSize(16)
                         lblProgressTemp.textColor = UIColor.blackColor()
-                        lblProgressTemp.text = "下载"
+                        lblProgressTemp.text = "DLD001_10".localizedString()
                         lblProgressTemp.textAlignment = NSTextAlignment.Right
                         uiHeader.addSubview(lblProgressTemp)
                     }
@@ -408,7 +408,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
                 lblCacheSize.backgroundColor = UIColor.clearColor()
                 lblCacheSize.font = UIFont.systemFontOfSize(15)
                 lblCacheSize.textColor = UIColor.blackColor()
-                lblCacheSize.text = "缓存大小: 10M"
+                lblCacheSize.text = "缓存大小: 83593KB"
                 lblCacheSize.textAlignment = NSTextAlignment.Left
                 cell.addSubview(lblCacheSize)
                 

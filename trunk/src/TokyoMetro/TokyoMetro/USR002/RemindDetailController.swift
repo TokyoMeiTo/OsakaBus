@@ -39,9 +39,11 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
     /* UsrT02TrainAlarmTable 参数 */
     var tableUsrT02: UsrT02TrainAlarmTable?
     /* 提醒方式 */
-    var remindsMethod:Array<String> = ["铃声","震动"]
+    var remindsMethod:Array<String> = ["USR002_01".localizedString(),"USR002_02".localizedString()]
     /* 提醒时间 */
-    var remindsTime:Array<String> = ["到站前1分钟","到站前2分钟","到站前3分钟","到站前4分钟","到站前5分钟"]
+    var remindsTimeArrive:Array<String> = ["USR002_03".localizedString(),"USR002_04".localizedString(),"USR002_05".localizedString(),"USR002_06".localizedString(),"USR002_07".localizedString()]
+    /* 提醒时间 */
+    var remindsTime:Array<String> = ["USR002_03".localizedString(),"USR002_04".localizedString(),"USR002_05".localizedString(),"USR002_06".localizedString(),"USR002_07".localizedString()]
     /* line */
     var line:String = "東西線"
     /* station */
@@ -83,23 +85,23 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
     /* 线路数量 */
     let LINE_COUNT:UInt = 9
     /* 添加 */
-    let ADD = "添加"
+    let ADD = "USR002_08".localizedString()
     /* 编辑 */
-    let EDIT = "编辑"
+    let EDIT = "USR002_09".localizedString()
     /* 编辑 */
     let PICKERVIEW_STRING = "pickerview"
     /* 确定删除本条提醒？ */
-    let MSG_0001 = "确定删除本条提醒？"
+    let MSG_0001 = "USR002_10".localizedString()
     /* 通知 */
-    let MSG_0002 = "通知"
+    let MSG_0002 = "USR002_18".localizedString()
     /* 确定 */
-    let MSG_0003 = "确定"
+    let MSG_0003 = "USR002_20".localizedString()
     /* 取消 */
-    let MSG_0004 = "取消"
+    let MSG_0004 = "USR002_21".localizedString()
     /* 确定添加本条提醒？ */
-    let MSG_0005 = "确定添加本条提醒？"
+    let MSG_0005 = "USR002_10".localizedString()
     /* 确定添加本条提醒？ */
-    let MSG_0006 = "对不起，无效的线路,请重新选择"
+    let MSG_0006 = "USR002_11".localizedString()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -150,6 +152,22 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
         }
     }
     
+    func initArriveAlarm(usrT01Table:UsrT01ArrivalAlarmTable){
+        usrT01Table.lineFromId = "28001"
+        usrT01Table.statFromId = "2800101"
+        usrT01Table.lineToId = "28001"
+        usrT01Table.statToId = "2800101"
+        usrT01Table.traiDirt = "2800119"
+        usrT01Table.beepFlag = "1"
+        usrT01Table.voleFlag = "0"
+        usrT01Table.costTime = "0"
+        usrT01Table.alarmTime = "0"
+        usrT01Table.saveTime = RemindDetailController.convertDate2LocalTime(NSDate.date())
+        usrT01Table.onboardTime = "000000000000"
+        usrT01Table.cancelFlag = "0"
+        usrT01Table.cancelTime = "00000000000000"
+    }
+    
     /**
      * 编辑到站提醒
      */
@@ -158,22 +176,7 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
         
         if(tableUsrT01 == nil){
             tableUsrT01 = UsrT01ArrivalAlarmTable()
-            tableUsrT01!.lineFromId = "28001"
-//            tableUsrT01!.lineFromNameLocl = "銀座線"
-            tableUsrT01!.statFromId = "2800101"
-//            tableUsrT01!.statFromNameLocl = "浅草"
-            tableUsrT01!.lineToId = "28001"
-//            tableUsrT01!.lineToNameLocl = "銀座線"
-            tableUsrT01!.statToId = "2800101"
-//            tableUsrT01!.statToNameLocl = "浅草"
-            tableUsrT01!.beepFlag = "1"
-            tableUsrT01!.voleFlag = "0"
-            tableUsrT01!.costTime = "0"
-            tableUsrT01!.alarmTime = "0"
-            tableUsrT01!.saveTime = RemindDetailController.convertDate2LocalTime(NSDate.date())
-            tableUsrT01!.onboardTime = "000000000000"
-            tableUsrT01!.cancelFlag = "0"
-            tableUsrT01!.cancelTime = "00000000000000"
+            initArriveAlarm(tableUsrT01!)
         }
         
         if(isSearsh && pickerViewSection == 0){
@@ -254,15 +257,14 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
             tableUsrT02 = UsrT02TrainAlarmTable()
             tableUsrT02!.lineId = "28001"
             tableUsrT02!.statId = "2800101"
-            tableUsrT02!.firstTime = "05:30"
-            tableUsrT02!.lastTime = "23:10"
-            tableUsrT02!.firstFlag = "1"
-            tableUsrT02!.lastFlag = "1"
+            tableUsrT02!.alamType = "9"
+            tableUsrT02!.alamTime = "2310"
+            tableUsrT02!.alamFlag = "1"
+            tableUsrT02!.traiDirt = "2800119"
             tableUsrT02!.beepFlag = "1"
             tableUsrT02!.voleFlag = "0"
             tableUsrT02!.alarmTime = "0"
             tableUsrT02!.saveTime = "00000000000000"
-            tableUsrT02!.traiDirt = "2800119"
         }
         
         if(isSearsh){
@@ -337,12 +339,11 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
             return
         }
         
-        var tableUsrT01Del:UsrT01ArrivalAlarmTable = UsrT01ArrivalAlarmTable()
-        tableUsrT01Del.deleteAll()
+        deleteAlarm()
         
         for(var i=0;i<routeDetails!.count;i++){
             var routeDetail:LinT05RouteDetailTable = routeDetails![i]
-            var costTime:Int = ("\(routeDetail.item(LINT05_ROUTE_DETAIL_MOVE_TIME))" as NSString).integerValue
+            var costTime:Int = ("\(routeDetail.item(LINT05_ROUTE_DETAIL_MOVE_TIME))" as NSString).integerValue * 60
             if(i == 0){
 //                var alarms:Array<UsrT01ArrivalAlarmTable>? = selectArrivalAlarmTable()
 //                if(alarms!.count > 0){
@@ -369,26 +370,60 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
 //                        tableUsrT01!.insert()
 //                    }
 //                }else{
-                
                 tableUsrT01!.costTime = "\(costTime)"
                 tableUsrT01!.arriAlamId = "1"
-                tableUsrT01!.insert()
+                if(routeDetails!.count > 2){
+                    tableUsrT01!.statToId = routeDetails![i+1].exchStatId
+                    tableUsrT01!.lineToId = routeDetails![i].exchLineId
+                    tableUsrT01!.insert()
+                }else{
+                    tableUsrT01!.insert()
+                    var controllers:AnyObject? = self.navigationController!.viewControllers
+                    if(controllers!.count > 1){
+                        var lastController:RemindListController = controllers![controllers!.count - 2] as RemindListController
+                        lastController.viewDidLoad()
+                    }
+                    self.navigationController!.popViewControllerAnimated(true)
+                }
+                
 //                }
-            }else{
+            }else if(i == routeDetails!.count - 2 && routeDetails!.count > 1){
                 var alarms:Array<UsrT01ArrivalAlarmTable>? = selectArrivalAlarmTable()
                 var alarm:UsrT01ArrivalAlarmTable? = alarms![alarms!.count - NUM_1]
-                tableUsrT01!.arriAlamId = "\(alarm!.item(USRT01_ARRIVAL_ALARM_ARRI_ALAM_ID).integerValue + 1)"
-                tableUsrT01!.costTime = "\(costTime)"
-                tableUsrT01!.insert()
-            }
-            if( i == routeDetails!.count - 1){
+                var tableUsrT01Arrive:UsrT01ArrivalAlarmTable = UsrT01ArrivalAlarmTable()
+                
+                initArriveAlarm(tableUsrT01Arrive)
+                
+                tableUsrT01Arrive.arriAlamId = "\(alarm!.item(USRT01_ARRIVAL_ALARM_ARRI_ALAM_ID).integerValue + 1)"
+                tableUsrT01Arrive.lineFromId = routeDetails![i-1].exchLineId
+                tableUsrT01Arrive.statFromId = routeDetails![i].exchStatId
+                tableUsrT01Arrive.lineToId = routeDetails![i].exchLineId
+                tableUsrT01Arrive.statToId = tableUsrT01!.statToId
+                tableUsrT01Arrive.costTime = "\(costTime)"
+                tableUsrT01Arrive.insert()
+
                 var controllers:AnyObject? = self.navigationController!.viewControllers
                 if(controllers!.count > 1){
                     var lastController:RemindListController = controllers![controllers!.count - 2] as RemindListController
                     lastController.viewDidLoad()
                 }
                 self.navigationController!.popViewControllerAnimated(true)
+            }else if(i < routeDetails!.count - 1){
+                var alarms:Array<UsrT01ArrivalAlarmTable>? = selectArrivalAlarmTable()
+                var alarm:UsrT01ArrivalAlarmTable? = alarms![alarms!.count - NUM_1]
+                var tableUsrT01Exch:UsrT01ArrivalAlarmTable = UsrT01ArrivalAlarmTable()
+                
+                initArriveAlarm(tableUsrT01Exch)
+                
+                tableUsrT01Exch.arriAlamId = "\(alarm!.item(USRT01_ARRIVAL_ALARM_ARRI_ALAM_ID).integerValue + 1)"
+                tableUsrT01Exch.lineFromId = routeDetails![i-1].exchLineId
+                tableUsrT01Exch.statFromId = routeDetails![i].exchStatId
+                tableUsrT01Exch.lineToId = routeDetails![i].exchLineId
+                tableUsrT01Exch.statToId = routeDetails![i+1].exchStatId
+                tableUsrT01Exch.costTime = "\(costTime)"
+                tableUsrT01Exch.insert()
             }
+            
         }
     }
     
@@ -398,9 +433,7 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
     func saveLastMetro(){
         var trainAlarms:Array<UsrT02TrainAlarmTable>? = selectTrainAlarmTable()
         var usr002Dao:USR002Dao = USR002Dao()
-        tableUsrT02!.lastTime = usr002Dao.queryDepaTime(tableUsrT02!.lineId, statId: "\((selectStationTableOne(tableUsrT02!.statId) as MstT02StationTable).item(MSTT02_STAT_GROUP_ID))", destId: tableUsrT02!.traiDirt, trainFlag: "9", scheType: "1")
-        var usr002Dao1:USR002Dao = USR002Dao()
-        tableUsrT02!.firstTime = usr002Dao1.queryDepaTime(tableUsrT02!.lineId, statId: "\((selectStationTableOne(tableUsrT02!.statId) as MstT02StationTable).item(MSTT02_STAT_GROUP_ID))", destId: tableUsrT02!.traiDirt, trainFlag: "1", scheType: "1")
+        tableUsrT02!.alamTime = usr002Dao.queryDepaTime(tableUsrT02!.lineId, statId: "\((selectStationTableOne(tableUsrT02!.statId) as MstT02StationTable).item(MSTT02_STAT_GROUP_ID))", destId: tableUsrT02!.traiDirt, trainFlag: tableUsrT02!.alamType, scheType: "1")
         
         if(trainAlarms!.count > 0){
             if((tableUsrT02!.rowid) == nil || (tableUsrT02!.rowid) == ""){
@@ -450,10 +483,10 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
      */
     func loadArriveStationItems(){
         items = NSMutableArray.array()
-        items.addObject(["到达站点：",[station,""]])
-        items.addObject(["上车站点：",[fromStation,""]])
-        items.addObject(["提醒方式：",remindsMethod])
-        items.addObject(["提醒时间：",remindsTime])
+        items.addObject(["USR002_12".localizedString(),[station,""]])
+        items.addObject(["USR002_13".localizedString(),[fromStation,""]])
+        items.addObject(["USR002_14".localizedString(),remindsMethod])
+        items.addObject(["USR002_15".localizedString(),remindsTimeArrive])
     }
     
     /**
@@ -461,11 +494,15 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
      */
     func loadLastMetroItems(){
         items = NSMutableArray.array()
-        items.addObject(["站点：",[station,""]])
+        items.addObject(["提醒站点：",[station,""]])
         items.addObject(["方向：",[stationDirt0 + "方向",stationDirt1 + "方向"]])
-        items.addObject(["早末班车：",["早班车", "末班车"]])
-        items.addObject(["提醒方式：",remindsMethod])
-        items.addObject(["提醒时间：",remindsTime])
+        items.addObject(["早末班车：",["USR002_26".localizedString(), "USR002_27".localizedString()]])
+        items.addObject(["USR002_16".localizedString(),remindsMethod])
+        items.addObject(["USR002_17".localizedString(),remindsTime])
+    }
+    
+    func isNilStat(lintTable05: LinT05RouteDetailTable) -> Bool{
+        return lintTable05.item(LINT05_ROUTE_DETAIL_EXCH_STAT_ID) == nil || lintTable05.item(LINT05_ROUTE_DETAIL_EXCH_DEST_ID) == nil || "\(lintTable05.item(LINT05_ROUTE_DETAIL_EXCH_STAT_ID))" == "" || "\(lintTable05.item(LINT05_ROUTE_DETAIL_EXCH_DEST_ID))" == ""
     }
     
     /**
@@ -525,6 +562,14 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
         return arrivalAlarms
     }
 
+    func deleteAlarm(){
+         var tableUsrT01 = UsrT01ArrivalAlarmTable()
+        var arrivalAlarms:Array<UsrT01ArrivalAlarmTable> = tableUsrT01.selectAll() as Array<UsrT01ArrivalAlarmTable>
+        for arrivalAlarm in arrivalAlarms{
+            arrivalAlarm.delete()
+        }
+    }
+    
     /**
      * 从DB查询末班车信息
      */
@@ -758,11 +803,9 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
                 }
             }else if(didSelectRowAtIndexPath.section == 2){
                 if(didSelectRowAtIndexPath.row == 0){
-                    tableUsrT02!.firstFlag = "1"
-                    tableUsrT02!.lastFlag = "0"
+                    tableUsrT02!.alamType = "1"
                 }else{
-                    tableUsrT02!.firstFlag = "0"
-                    tableUsrT02!.lastFlag = "1"
+                    tableUsrT02!.alamType = "9"
                 }
             }
         }
@@ -878,9 +921,9 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
             }else if((indexPath.section == 1) && indexPath.row == stationDirtFlag){
                 cell.accessoryType = UITableViewCellAccessoryType.Checkmark
             }else if((indexPath.section == 2)){
-                if(indexPath.row == 0 && tableUsrT02?.firstFlag == "1"){
+                if(indexPath.row == 0 && tableUsrT02?.alamType == "1"){
                     cell.accessoryType = UITableViewCellAccessoryType.Checkmark
-                }else if(indexPath.row == 1 && tableUsrT02?.lastFlag == "1"){
+                }else if(indexPath.row == 1 && tableUsrT02?.alamType == "9"){
                     cell.accessoryType = UITableViewCellAccessoryType.Checkmark
                 }
             }else{
@@ -973,10 +1016,8 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
                 traiDirt1 = "\(stationsDirt[1].item(MSTT02_STAT_ID))"
                 if(segIndex == NUM_0){
                     tableUsrT01!.lineToId = lines[row].lineId
-//                    tableUsrT01!.lineToNameLocl = lines[row].lineName
                     
                     tableUsrT01!.statToId = stations[NUM_0].statId
-//                    tableUsrT01!.statToNameLocl = stations[NUM_0].statName
                 }else if(segIndex == NUM_1){
                     tableUsrT02!.lineId = lines[row].lineId
                     tableUsrT02!.statId = stations[NUM_0].statId
@@ -986,7 +1027,6 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
                     station = "\(stations[row].statName)"
                     if(segIndex == NUM_0){
                         tableUsrT01!.statToId = stations[row].statId
-//                        tableUsrT01!.statToNameLocl = stations[row].statName
                     }else if(segIndex == NUM_1){
                         tableUsrT02!.statId = stations[row].statId
                     }
@@ -997,19 +1037,16 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
                 // 线路
                 line = lines[row].lineId.line()
                 tableUsrT01!.lineFromId = lines[row].lineId
-//                tableUsrT01!.lineFromNameLocl = lines[row].lineName
                 // 站点
                 fromStations = selectStationTable(lines[row].lineId)
                 pickerView.reloadComponent(NUM_1)
                 pickerView.selectRow(NUM_0, inComponent: NUM_1, animated: true)
                 fromStation = "\(fromStations[NUM_0].statName)"
                 tableUsrT01!.statFromId = stations[NUM_0].statId
-//                tableUsrT01!.statFromNameLocl = stations[NUM_0].statName
             }else{
                 if(row < fromStations.count){
                     fromStation = "\(fromStations[row].statId)".station()
                     tableUsrT01!.statFromId = stations[row].statId
-//                    tableUsrT01!.statFromNameLocl = stations[row].statName
                 }
             }
         }

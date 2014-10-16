@@ -18,6 +18,7 @@
 #define USRT01_ARRIVAL_ALARM_LINE_TO_ID             @"LINE_TO_ID"
 //#define USRT01_ARRIVAL_ALARM_LINE_TO_NAME_LOCL      @"LINE_TO_NAME_LOCL"
 #define USRT01_ARRIVAL_ALARM_STAT_TO_ID             @"STAT_TO_ID"
+#define USRT01_ARRIVAL_ALARM_TRAI_DIRT              @"TRAI_DIRT"
 //#define USRT01_ARRIVAL_ALARM_STAT_TO_NAME_LOCL      @"STAT_TO_NAME_LOCL"
 #define USRT01_ARRIVAL_ALARM_BEEP_FLAG              @"BEEP_FLAG"
 #define USRT01_ARRIVAL_ALARM_VOLE_FLAG              @"VOLE_FLAG"
@@ -40,6 +41,7 @@
 @property(copy,nonatomic)NSString* lineToId;
 //@property(copy,nonatomic)NSString* lineToNameLocl;
 @property(copy,nonatomic)NSString* statToId;
+@property(copy,nonatomic)NSString* traiDirt;
 //@property(copy,nonatomic)NSString* statToNameLocl;
 @property(copy,nonatomic)NSString* beepFlag;
 @property(copy,nonatomic)NSString* voleFlag;

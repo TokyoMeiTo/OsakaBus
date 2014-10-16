@@ -19,4 +19,8 @@ class INF002FavDao:UsrT03FavoriteTable {
     func insertFav(tableUsrT03: UsrT03FavoriteTable){
         tableUsrT03.insert()
     }
+    
+    func deleteFav(tableUsrT03: UsrT03FavoriteTable){
+        tableUsrT03.delete()
+    }
 }

@@ -13,12 +13,15 @@
 @synthesize lineId;
 //@synthesize lineNameLocl;
 @synthesize statId;
+@synthesize alamType;
+@synthesize alamTime;
+@synthesize alamFlag;
 //@synthesize statNameLocl;
-@synthesize firstTime;
-@synthesize lastTime;
+//@synthesize firstTime;
+//@synthesize lastTime;
 @synthesize traiDirt;
-@synthesize firstFlag;
-@synthesize lastFlag;
+//@synthesize firstFlag;
+//@synthesize lastFlag;
 @synthesize beepFlag;
 @synthesize voleFlag;
 @synthesize alarmTime;
@@ -34,11 +37,14 @@
 //                                                USRT02_TRAIN_ALARM_LINE_NAME_LOCL,
                                                 USRT02_TRAIN_ALARM_STAT_ID,
 //                                                USRT02_TRAIN_ALARM_STAT_NAME_LOCL,
-                                                USRT02_TRAIN_ALARM_FIRST_TIME,
-                                                USRT02_TRAIN_ALARM_LAST_TIME,
+//                                                USRT02_TRAIN_ALARM_FIRST_TIME,
+//                                                USRT02_TRAIN_ALARM_LAST_TIME,
+                                                USRT02_TRAIN_ALARM_ALAM_TYPE,
+                                                USRT02_TRAIN_ALARM_ALAM_TIME,
+                                                USRT02_TRAIN_ALARM_ALAM_FLAG,
                                                 USRT02_TRAIN_ALARM_TRAI_DIRT,
-                                                USRT02_TRAIN_ALARM_FIRST_FLAG,
-                                                USRT02_TRAIN_ALARM_LAST_FLAG,
+//                                                USRT02_TRAIN_ALARM_FIRST_FLAG,
+//                                                USRT02_TRAIN_ALARM_LAST_FLAG,
                                                 USRT02_TRAIN_ALARM_BEEP_FLAG,
                                                 USRT02_TRAIN_ALARM_VOLE_FLAG,
                                                 USRT02_TRAIN_ALARM_ALARM_TIME,
@@ -48,7 +54,7 @@
 //                                                    ODB_DATATYPE_TEXT,
                                                     ODB_DATATYPE_TEXT,
 //                                                    ODB_DATATYPE_TEXT,
-                                                    ODB_DATATYPE_TEXT,
+//                                                    ODB_DATATYPE_TEXT,
                                                     ODB_DATATYPE_TEXT,
                                                     ODB_DATATYPE_TEXT,
                                                     ODB_DATATYPE_TEXT,
@@ -73,21 +79,30 @@
 //    }
     else if([item isEqualToString:USRT02_TRAIN_ALARM_STAT_ID]){
         self.statId = value;
+    }else if([item isEqualToString:USRT02_TRAIN_ALARM_ALAM_TYPE]){
+        self.alamType = value;
+    }else if([item isEqualToString:USRT02_TRAIN_ALARM_ALAM_TIME]){
+        self.alamTime = value;
     }
 //    else if([item isEqualToString:USRT02_TRAIN_ALARM_STAT_NAME_LOCL]){
 //        self.statNameLocl = value;
 //    }
-    else if([item isEqualToString:USRT02_TRAIN_ALARM_FIRST_TIME]){
-        self.firstTime = value;
-    }else if([item isEqualToString:USRT02_TRAIN_ALARM_LAST_TIME]){
-        self.lastTime = value;
-    }else if ([item isEqualToString:USRT02_TRAIN_ALARM_TRAI_DIRT]){
+//    else if([item isEqualToString:USRT02_TRAIN_ALARM_FIRST_TIME]){
+//        self.firstTime = value;
+//    }else if([item isEqualToString:USRT02_TRAIN_ALARM_LAST_TIME]){
+//        self.lastTime = value;
+//    }
+    else if ([item isEqualToString:USRT02_TRAIN_ALARM_TRAI_DIRT]){
         self.traiDirt = value;
-    }else if([item isEqualToString:USRT02_TRAIN_ALARM_FIRST_FLAG]){
-        self.firstFlag = value;
-    }else if([item isEqualToString:USRT02_TRAIN_ALARM_LAST_FLAG]){
-        self.lastFlag = value;
-    }else if ([item isEqualToString:USRT02_TRAIN_ALARM_BEEP_FLAG]){
+    }else if([item isEqualToString:USRT02_TRAIN_ALARM_ALAM_FLAG]){
+        self.alamFlag = value;
+    }
+//    else if([item isEqualToString:USRT02_TRAIN_ALARM_FIRST_FLAG]){
+//        self.firstFlag = value;
+//    }else if([item isEqualToString:USRT02_TRAIN_ALARM_LAST_FLAG]){
+//        self.lastFlag = value;
+//    }
+    else if ([item isEqualToString:USRT02_TRAIN_ALARM_BEEP_FLAG]){
         self.beepFlag = value;
     }else if([item isEqualToString:USRT02_TRAIN_ALARM_VOLE_FLAG]){
         self.voleFlag = value;
@@ -111,21 +126,30 @@
 //    }
     else if([item isEqualToString:USRT02_TRAIN_ALARM_STAT_ID]){
         return self.statId;
+    }else if([item isEqualToString:USRT02_TRAIN_ALARM_ALAM_TYPE]){
+        return self.alamType;
+    }else if([item isEqualToString:USRT02_TRAIN_ALARM_ALAM_TIME]){
+        return self.alamTime;
     }
 //    else if([item isEqualToString:USRT02_TRAIN_ALARM_STAT_NAME_LOCL]){
 //        return self.statNameLocl;
 //    }
-    else if([item isEqualToString:USRT02_TRAIN_ALARM_FIRST_TIME]){
-        return self.firstTime;
-    }else if([item isEqualToString:USRT02_TRAIN_ALARM_LAST_TIME]){
-        return self.lastTime;
-    }else if([item isEqualToString:USRT02_TRAIN_ALARM_TRAI_DIRT]){
+//    else if([item isEqualToString:USRT02_TRAIN_ALARM_FIRST_TIME]){
+//        return self.firstTime;
+//    }else if([item isEqualToString:USRT02_TRAIN_ALARM_LAST_TIME]){
+//        return self.lastTime;
+//    }
+    else if([item isEqualToString:USRT02_TRAIN_ALARM_TRAI_DIRT]){
         return self.traiDirt;
-    }else if([item isEqualToString:USRT02_TRAIN_ALARM_FIRST_FLAG]){
-        return self.firstFlag;
-    }else if([item isEqualToString:USRT02_TRAIN_ALARM_LAST_FLAG]){
-        return self.lastFlag;
-    }else if ([item isEqualToString:USRT02_TRAIN_ALARM_BEEP_FLAG]){
+    }else if([item isEqualToString:USRT02_TRAIN_ALARM_ALAM_FLAG]){
+        return self.alamFlag;
+    }
+//    else if([item isEqualToString:USRT02_TRAIN_ALARM_FIRST_FLAG]){
+//        return self.firstFlag;
+//    }else if([item isEqualToString:USRT02_TRAIN_ALARM_LAST_FLAG]){
+//        return self.lastFlag;
+//    }
+    else if ([item isEqualToString:USRT02_TRAIN_ALARM_BEEP_FLAG]){
         return self.beepFlag;
     }else if([item isEqualToString:USRT02_TRAIN_ALARM_VOLE_FLAG]){
         return self.voleFlag;

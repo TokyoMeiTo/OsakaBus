@@ -51,20 +51,20 @@ class StationListController: UIViewController, GPSDelegate{
     /* 起点緯度 */
     let fromLon = 139.768898//121.38368547 // 天地科技广场1号楼
     /* 当前位置 */
-    let LOCATION_STRING = "当前位置"
+    let LOCATION_STRING = "STA003_02".localizedString()
     /* 确定删除本条提醒？ */
-    let MSG_0001 = "重新定位？"
+    let MSG_0001 = "STA003_03".localizedString()
     /* 通知 */
-    let MSG_0002 = "通知"
+    let MSG_0002 = "PUBLIC_08".localizedString()
     /* 确定 */
-    let MSG_0003 = "确定"
+    let MSG_0003 = "PUBLIC_06".localizedString()
     /* 取消 */
-    let MSG_0004 = "取消"
+    let MSG_0004 = "PUBLIC_07".localizedString()
     
     /* 最近站点信息 */
     var stations:Array<MstT02StationTable>?
     /* 当前位置信息 */
-    var locationTest:CLLocation?
+    var location:CLLocation?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -85,6 +85,8 @@ class StationListController: UIViewController, GPSDelegate{
         self.navigationItem.rightBarButtonItem = nil
         tbList.hidden = true
         mkMap.hidden = true
+        sgmMain.setTitle("附近站点", forSegmentAtIndex: 0)
+        sgmMain.setTitle("我的位置", forSegmentAtIndex: 1)
         sgmMain.selectedSegmentIndex = NUM_0
         sgmMain.addTarget(self, action: "segmentChanged:", forControlEvents: UIControlEvents.ValueChanged)
         // 定位按钮点击事件
@@ -114,7 +116,7 @@ class StationListController: UIViewController, GPSDelegate{
             initList(stations!)
         }else if(sgmMain.selectedSegmentIndex == NUM_1){
             // 在地图上显示最近站点
-            initMap(locationTest!,stations: stations!)
+            initMap(location!,stations: stations!)
         }else{
         }
     }
@@ -224,18 +226,24 @@ class StationListController: UIViewController, GPSDelegate{
         // 获得UISegmentedControl索引位置
         if(sgmMain.selectedSegmentIndex == NUM_0){
             // 在地图上显示最近站点
-            sgmMain.selectedSegmentIndex = NUM_1
-            initMap(locationTest!,stations: stations!)
-            var key = stations![didSelectRowAtIndexPath.row] as MstT02StationTable
-            var statLat:AnyObject? = key.item(MSTT02_STAT_LAT)
-            var statLon:AnyObject? = key.item(MSTT02_STAT_LON)
-            var statNm:AnyObject? = key.item(MSTT02_STAT_NAME)
-            var annotation = MKPointAnnotation()
-            annotation.coordinate = CLLocationCoordinate2D(latitude:statLat as CLLocationDegrees, longitude:statLon as CLLocationDegrees)
-            annotation.title = statNm as String
-            mkMap.addAnnotation(annotation)
-            
-            mkMap.selectAnnotation(annotation, animated: true)
+//            sgmMain.selectedSegmentIndex = NUM_1
+//            initMap(locationTest!,stations: stations!)
+//            var key = stations![didSelectRowAtIndexPath.row] as MstT02StationTable
+//            var statLat:AnyObject? = key.item(MSTT02_STAT_LAT)
+//            var statLon:AnyObject? = key.item(MSTT02_STAT_LON)
+//            var statNm:AnyObject? = key.item(MSTT02_STAT_NAME)
+//            var annotation = MKPointAnnotation()
+//            annotation.coordinate = CLLocationCoordinate2D(latitude:statLat as CLLocationDegrees, longitude:statLon as CLLocationDegrees)
+//            annotation.title = statNm as String
+//            mkMap.addAnnotation(annotation)
+//            
+//            mkMap.selectAnnotation(annotation, animated: true)
+            var controllers:AnyObject? = self.navigationController!.viewControllers
+            if(controllers!.count > 1){
+                var main:Main = controllers![controllers!.count - 2] as Main
+                main.stationIdFromStationList = "\(stations![didSelectRowAtIndexPath.row].item(MSTT02_STAT_ID))"
+            }
+            self.navigationController!.popViewControllerAnimated(true)
         }else{
         }
     }
@@ -244,16 +252,16 @@ class StationListController: UIViewController, GPSDelegate{
      * 位置定位完成
      */
     func locationUpdateComplete(location: CLLocation){
-        locationTest = location//CLLocation(latitude: fromLat, longitude: fromLon)
+        self.location = location//CLLocation(latitude: fromLat, longitude: fromLon)
         // 获取最近的3个站点
-        stations = StationListController.selectStationTable(locationTest!)
+        stations = StationListController.selectStationTable(location)
         // 获得UISegmentedControl索引位置
         if(sgmMain.selectedSegmentIndex == NUM_0){
             // 显示最近站点列表
             initList(stations!)
         }else if(sgmMain.selectedSegmentIndex == NUM_1){
             // 在地图上显示最近站点
-            initMap(locationTest!,stations: stations!)
+            initMap(location,stations: stations!)
         }else{
         }
         ActivityIndicatorController.disMiss(gaiLoading)
@@ -290,6 +298,16 @@ class StationListController: UIViewController, GPSDelegate{
     class func calcDistance(fromLocation: CLLocation, statLocation: CLLocation) -> CDouble{
         var distance:CLLocationDistance = statLocation.distanceFromLocation(fromLocation)
         return distance
+    }
+
+    /**
+     * 0.0KM
+     */
+    class func convertDistance(distance: CDouble) -> String{
+        let DIDTANCE:String = "\(distance / 1000)"
+        
+        var dotIndex = DIDTANCE.indexOf(".")
+        return "\(DIDTANCE.right(dotIndex + 2))" + "KM"
     }
 
 }
@@ -365,6 +383,19 @@ class ListController: UITableViewController {
         lblDetail.textAlignment = NSTextAlignment.Left
         cell.addSubview(lblDetail)
         
+        // calcDistance(fromLocation: location, statLocation: CLLocation)
+        var statLat:Double = ("\(tableMstT02.item(MSTT02_STAT_LAT))" as NSString).doubleValue
+        var statLon:Double = ("\(tableMstT02.item(MSTT02_STAT_LON))" as NSString).doubleValue
+        var locationStat:CLLocation = CLLocation(latitude: statLat, longitude: statLon)
+        
+        var lblDistance = UILabel(frame: CGRect(x:tableView.frame.width - 90,y:25,width:tableView.frame.width - 30,height:25))
+        lblDistance.font = UIFont.systemFontOfSize(14)
+        lblDistance.textColor = UIColor.lightGrayColor()
+        sender! as StationListController
+        lblDistance.text = StationListController.convertDistance(StationListController.calcDistance(sender!.location, statLocation: locationStat))
+        lblDistance.textAlignment = NSTextAlignment.Left
+        cell.addSubview(lblDistance)
+        
         var imageViewLine = UIImageView(frame: CGRectMake(tableView.frame.width - 55, 12.5, 30, 30))
         imageViewLine.image = lineImage("\(tableMstT02.item(MSTT02_LINE_ID))")
         cell.addSubview(imageViewLine)
@@ -389,8 +420,6 @@ class ListController: UITableViewController {
     func lineImage(lineNum: String) -> UIImage {
         return lineNum.getLineImage()
     }
-
-
 }
 
 /**
@@ -413,9 +442,9 @@ class MapController: UIViewController, MKMapViewDelegate, UIActionSheetDelegate{
     var lineColor = [UIColor.blueColor(), UIColor.yellowColor(), UIColor.redColor(), UIColor.greenColor()]
     
     /* 当前位置 */
-    let LOCATION_STRING = "当前位置"
+    let LOCATION_STRING = "STA003_02".localizedString()
     /* 站点名称 */
-    let STATION_NAME_STRING = "站点名称"
+    let STATION_NAME_STRING = "STA003_04".localizedString()
     /* 100 */
     let NUM_100 = 100
     /* 0 */
