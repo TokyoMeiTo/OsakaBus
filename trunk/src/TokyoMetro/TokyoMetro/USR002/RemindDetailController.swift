@@ -75,6 +75,9 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
     /* 选择的线路站点id */
     var selectStationId:String?
     
+    var routeStatTable01:MstT02StationTable?
+    var routeStatTable02:MstT02StationTable?
+    
     /* 0 */
     let NUM_0 = 0
     /* 1 */
@@ -185,6 +188,11 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
         }else if(isSearsh && pickerViewSection == 1){
             tableUsrT01!.lineFromId = selectLineId
             tableUsrT01!.statFromId = selectStationId
+        }
+        
+        if(fromRoute()){
+            tableUsrT01!.statFromId = "\(routeStatTable01!.item(MSTT02_STAT_ID))"
+            tableUsrT01!.statToId = "\(routeStatTable02!.item(MSTT02_STAT_ID))"
         }
         
         if(tableUsrT01!.item(USRT01_ARRIVAL_ALARM_STAT_TO_ID) != nil){
@@ -345,31 +353,6 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
             var routeDetail:LinT05RouteDetailTable = routeDetails![i]
             var costTime:Int = ("\(routeDetail.item(LINT05_ROUTE_DETAIL_MOVE_TIME))" as NSString).integerValue * 60
             if(i == 0){
-//                var alarms:Array<UsrT01ArrivalAlarmTable>? = selectArrivalAlarmTable()
-//                if(alarms!.count > 0){
-//                    var alarm:UsrT01ArrivalAlarmTable? = alarms![alarms!.count - NUM_1]
-//                    if(alarm!.item(USRT01_ARRIVAL_ALARM_CANCEL_FLAG) == nil || alarm!.item(USRT01_ARRIVAL_ALARM_CANCEL_FLAG).integerValue == 1){
-//                        tableUsrT01!.arriAlamId = "\(alarm!.item(USRT01_ARRIVAL_ALARM_ARRI_ALAM_ID).integerValue + 1)"
-//                        tableUsrT01!.costTime = "\(costTime)"
-//                        //tableUsrT01!.
-//                        tableUsrT01!.insert()
-//                    }else{
-//                        tableUsrT01!.costTime = "\(costTime)"
-//                        if(tableUsrT01!.update()){
-//                            var controllers:AnyObject? = self.navigationController!.viewControllers
-//                            if(controllers!.count > 1){
-//                                var lastController:RemindListController = controllers![controllers!.count - 2] as RemindListController
-//                                lastController.viewDidLoad()
-//                            }
-//                            self.navigationController!.popViewControllerAnimated(true)
-//                        }else{
-//                            self.navigationController!.popViewControllerAnimated(true)
-//                        }
-//                        tableUsrT01!.costTime = "\(costTime)"
-//                        tableUsrT01!.arriAlamId = "1"
-//                        tableUsrT01!.insert()
-//                    }
-//                }else{
                 tableUsrT01!.costTime = "\(costTime)"
                 tableUsrT01!.arriAlamId = "1"
                 if(routeDetails!.count > 2){
@@ -385,8 +368,6 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
                     }
                     self.navigationController!.popViewControllerAnimated(true)
                 }
-                
-//                }
             }else if(i == routeDetails!.count - 2 && routeDetails!.count > 1){
                 var alarms:Array<UsrT01ArrivalAlarmTable>? = selectArrivalAlarmTable()
                 var alarm:UsrT01ArrivalAlarmTable? = alarms![alarms!.count - NUM_1]
@@ -499,6 +480,13 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
         items.addObject(["早末班车：",["USR002_26".localizedString(), "USR002_27".localizedString()]])
         items.addObject(["USR002_16".localizedString(),remindsMethod])
         items.addObject(["USR002_17".localizedString(),remindsTime])
+    }
+    
+    /**
+    * 从线路选择画面过来
+    */
+    func fromRoute() -> Bool{
+        return routeStatTable01 != nil && routeStatTable02 != nil
     }
     
     func isNilStat(lintTable05: LinT05RouteDetailTable) -> Bool{
