@@ -73,9 +73,9 @@ class StationLine: UIViewController, UITableViewDataSource, UITableViewDelegate 
     
     func odbStation(){
         var table = MstT02StationTable()
-        var rows: NSArray = table.excuteQuery("select *,count(distinct STAT_NAME_EXT1) from MSTT02_STATION where 1 = 1 and STAT_ID like '280%' group by STAT_NAME_EXT1")
+        var rows: NSArray = table.excuteQuery("select *, ROWID, count(distinct STAT_NAME_EXT1) from MSTT02_STATION where 1 = 1 and STAT_ID like '280%' group by STAT_NAME_EXT1")
         
-        var allRows: NSArray = table.excuteQuery("select * from MSTT02_STATION where 1 = 1 and STAT_ID like '280%'")
+        var allRows: NSArray = table.excuteQuery("select *, ROWID from MSTT02_STATION where 1 = 1 and STAT_ID like '280%'")
         
         for key in rows {
             
@@ -228,6 +228,9 @@ class StationLine: UIViewController, UITableViewDataSource, UITableViewDelegate 
             lineList.line_id = map.item(MSTT01_LINE_ID) as String
             lineList.line_name = (map.item(MSTT01_LINE_ID) as String).line()
             
+            var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+            self.navigationItem.backBarButtonItem = backButton
+            
             self.navigationController?.pushViewController(lineList, animated: true)
         } else {
             var detail: StationDetail = self.storyboard?.instantiateViewControllerWithIdentifier("StationDetail") as StationDetail
@@ -238,6 +241,9 @@ class StationLine: UIViewController, UITableViewDataSource, UITableViewDelegate 
             detail.cellJPNameKana = map.item(MSTT02_STAT_NAME_KANA) as String
             detail.stat_id = map.item(MSTT02_STAT_ID) as String
             detail.statMetroId = map.item(MSTT02_STAT_METRO_ID) as String
+            
+            var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+            self.navigationItem.backBarButtonItem = backButton
 
             self.navigationController?.pushViewController(detail, animated: true)
         }

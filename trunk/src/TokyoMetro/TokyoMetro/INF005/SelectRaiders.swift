@@ -52,6 +52,9 @@ class SelectRaiders: UIViewController {
         detail.url = url
         detail.isOpenPDF = false
         detail.txtTitle = txtTitle
+        
+        var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = backButton
         self.navigationController?.pushViewController(detail, animated: true)
     }
     
@@ -74,6 +77,9 @@ class SelectRaiders: UIViewController {
         detail.url = pdfUrl
         detail.isOpenPDF = true
         detail.txtTitle = txtTitle
+        
+        var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = backButton
         self.navigationController?.pushViewController(detail, animated: true)
     }
     

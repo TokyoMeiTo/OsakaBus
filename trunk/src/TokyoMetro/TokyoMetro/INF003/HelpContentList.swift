@@ -131,6 +131,9 @@ class HelpContentList: UIViewController, UITableViewDataSource, UITableViewDeleg
         var map: InfT03RescureTable = rescArr[indexPath.section][1][indexPath.row] as InfT03RescureTable
         helpContentDetail.chTtile = map.item(INFT03_RESCURE_RESC_CONTENT_CN) as String
         helpContentDetail.jpTtile = map.item(INFT03_RESCURE_RESC_CONTENT_JP) as String
+        
+        var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = backButton
         self.navigationController?.pushViewController(helpContentDetail, animated: true)
     }
     

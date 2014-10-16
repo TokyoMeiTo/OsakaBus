@@ -587,7 +587,7 @@
         <!--Add Subway-->
         <scene sceneID="85I-yr-vNB">
             <objects>
-                <viewController id="BI7-LI-qmB" customClass="AddSubway" customModule="TokyoMetro" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AddSubway" id="BI7-LI-qmB" customClass="AddSubway" customModule="TokyoMetro" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="719-nY-j3x"/>
                         <viewControllerLayoutGuide type="bottom" id="3dz-XN-GoJ"/>
@@ -610,7 +610,7 @@
                                 </connections>
                             </segmentedControl>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="99q-QS-3Qs">
-                                <rect key="frame" x="0.0" y="105" width="320" height="568"/>
+                                <rect key="frame" x="0.0" y="105" width="320" height="463"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="CollectCell" rowHeight="55" id="OyD-uo-1el">
@@ -662,19 +662,11 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="HistoryCell" id="IHT-2N-It0">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="LnadMarkCell" id="IHT-2N-It0">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="IHT-2N-It0" id="zYj-40-dpA">
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" tag="401" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FyI-ki-Buh">
-                                                    <rect key="frame" x="15" y="0.0" width="200" height="43"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </prototypes>
@@ -688,7 +680,7 @@
                         <constraints>
                             <constraint firstItem="99q-QS-3Qs" firstAttribute="leading" secondItem="lT1-1w-5w7" secondAttribute="leading" id="TBX-27-q0f"/>
                             <constraint firstAttribute="trailing" secondItem="99q-QS-3Qs" secondAttribute="trailing" id="Tzr-7y-e0z"/>
-                            <constraint firstAttribute="bottom" secondItem="99q-QS-3Qs" secondAttribute="bottom" constant="-105" id="duU-A9-1qo"/>
+                            <constraint firstAttribute="bottom" secondItem="99q-QS-3Qs" secondAttribute="bottom" id="duU-A9-1qo"/>
                             <constraint firstItem="99q-QS-3Qs" firstAttribute="top" secondItem="lT1-1w-5w7" secondAttribute="top" constant="105" id="jj6-Nf-pnd"/>
                         </constraints>
                     </view>
@@ -1914,7 +1906,7 @@ lable</string>
         <!--Station List Controller-->
         <scene sceneID="MH0-3u-Sbt">
             <objects>
-                <viewController id="u2V-0d-JHC" customClass="StationListController" customModule="TokyoMetro" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="StationListController" id="u2V-0d-JHC" customClass="StationListController" customModule="TokyoMetro" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="wOh-QZ-caB"/>
                         <viewControllerLayoutGuide type="bottom" id="IQO-Pi-Ucu"/>
@@ -2041,7 +2033,7 @@ lable</string>
         <!--Select Raiders-->
         <scene sceneID="FV9-2W-BPj">
             <objects>
-                <viewController id="Ui5-Ek-69k" customClass="SelectRaiders" customModule="TokyoMetro" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SelectRaiders" id="Ui5-Ek-69k" customClass="SelectRaiders" customModule="TokyoMetro" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="6TH-NT-2ys"/>
                         <viewControllerLayoutGuide type="bottom" id="Td7-aR-HDZ"/>
@@ -2509,7 +2501,7 @@ lable</string>
         <!--设定-->
         <scene sceneID="aiu-Lf-lxv">
             <objects>
-                <viewController id="QAg-q9-LZD" customClass="Setting" customModule="TokyoMetro" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Setting" id="QAg-q9-LZD" customClass="Setting" customModule="TokyoMetro" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="LLb-6I-EoP"/>
                         <viewControllerLayoutGuide type="bottom" id="qW8-ba-Dek"/>
@@ -3356,7 +3348,7 @@ lable</string>
                                                     <action selector="showStationLine:" destination="Ehs-82-3fY" eventType="touchUpInside" id="Mge-T9-X3K"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5tQ-z6-Dvw">
+                                            <button opaque="NO" tag="504" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5tQ-z6-Dvw">
                                                 <rect key="frame" x="240" y="3" width="80" height="40"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="40" id="xC7-vN-WA9"/>
@@ -3365,8 +3357,11 @@ lable</string>
                                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="showRemindListController" destination="Ehs-82-3fY" eventType="touchUpInside" id="PoK-4L-Cts"/>
+                                                </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PR0-q5-T2a">
+                                            <button opaque="NO" tag="501" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PR0-q5-T2a">
                                                 <rect key="frame" x="0.0" y="3" width="80" height="40"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="40" id="8PL-ky-Cwz"/>
@@ -3375,6 +3370,9 @@ lable</string>
                                                 <state key="normal" backgroundImage="menu_01">
                                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="showStationListController" destination="Ehs-82-3fY" eventType="touchUpInside" id="F4N-xe-sOm"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -3484,6 +3482,9 @@ lable</string>
                                                 <state key="normal">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="showSetting" destination="Ehs-82-3fY" eventType="touchUpInside" id="Anu-hh-S4Y"/>
+                                                </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="设定" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kDo-ia-S4m">
                                                 <rect key="frame" x="160" y="148" width="79" height="21"/>
@@ -3501,6 +3502,9 @@ lable</string>
                                                 <state key="normal">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="showSelectRaiders" destination="Ehs-82-3fY" eventType="touchUpInside" id="NsW-57-xdf"/>
+                                                </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="攻略" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mlL-A6-fqU">
                                                 <rect key="frame" x="240" y="58" width="80" height="21"/>
@@ -3596,7 +3600,11 @@ lable</string>
                                 <action selector="popToRouteSearchResult" destination="Ehs-82-3fY" id="i61-IA-kyG"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" image="collect-01" style="plain" id="XcZ-Am-d6o"/>
+                        <barButtonItem key="rightBarButtonItem" image="collect-01" style="plain" id="XcZ-Am-d6o">
+                            <connections>
+                                <action selector="rightTopButtonClick" destination="Ehs-82-3fY" id="N1l-g2-3sj"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="mBodyView" destination="LSs-fR-1iv" id="GtG-A8-suA"/>
@@ -3679,7 +3687,7 @@ lable</string>
         <image name="tablecell_lineicon_f" width="44" height="44"/>
         <image name="tablecell_lineicon_g" width="44" height="44"/>
         <image name="tablecell_lineicon_h" width="44" height="44"/>
-        <image name="tablecell_lineicon_m" width="44" height="44"/>
+        <image name="tablecell_lineicon_m" width="34" height="33"/>
         <image name="tablecell_lineicon_n" width="44" height="44"/>
         <image name="tablecell_lineicon_t" width="44" height="44"/>
         <image name="tablecell_lineicon_y" width="44" height="44"/>

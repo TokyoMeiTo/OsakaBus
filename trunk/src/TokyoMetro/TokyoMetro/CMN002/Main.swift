@@ -240,27 +240,29 @@ class Main: UIViewController,UIScrollViewDelegate {
         } else if (sender.tag == 503) {
             stationLine.segmentIndex = 1
         }
+        
+        var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = backButton
         self.navigationController?.pushViewController(stationLine, animated: true)
     }
     
     @IBAction func showStationTips() {
         var tipsList: TipsContentList = self.storyboard?.instantiateViewControllerWithIdentifier("TipsContentList") as TipsContentList
         
-        tipsList.tipsType = "2"
+        var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = backButton
         self.navigationController?.pushViewController(tipsList, animated: true)
     }
     
-    @IBAction func showTips() {
-        var tipsList: TipsContentList = self.storyboard?.instantiateViewControllerWithIdentifier("TipsContentList") as TipsContentList
-        
-        tipsList.tipsType = "1"
-        self.navigationController?.pushViewController(tipsList, animated: true)
-    }
+
     
     @IBAction func showLandMark() {
         var landMarkListController: LandMarkListController = self.storyboard?.instantiateViewControllerWithIdentifier("landmarklist") as LandMarkListController
         
         landMarkListController.landMarkType = 0
+        
+        var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = backButton
         self.navigationController?.pushViewController(landMarkListController, animated: true)
     }
     
@@ -268,6 +270,9 @@ class Main: UIViewController,UIScrollViewDelegate {
         var landMarkListController: LandMarkListController = self.storyboard?.instantiateViewControllerWithIdentifier("landmarklist") as LandMarkListController
         
         landMarkListController.landMarkType = 1
+        
+        var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = backButton
         self.navigationController?.pushViewController(landMarkListController, animated: true)
     }
     
@@ -275,22 +280,58 @@ class Main: UIViewController,UIScrollViewDelegate {
         var landMarkListController: LandMarkListController = self.storyboard?.instantiateViewControllerWithIdentifier("landmarklist") as LandMarkListController
         
         landMarkListController.landMarkType = 2
+        
+        var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = backButton
         self.navigationController?.pushViewController(landMarkListController, animated: true)
     }
     
-    @IBAction func showHelpContent() {
-        var helpContentList: HelpContentList = self.storyboard?.instantiateViewControllerWithIdentifier("HelpContentList") as HelpContentList
-        
-        helpContentList.rescType = "1"
-        self.navigationController?.pushViewController(helpContentList, animated: true)
-    }
     
     @IBAction func showStationHelpContent() {
         var helpContentList: HelpContentList = self.storyboard?.instantiateViewControllerWithIdentifier("HelpContentList") as HelpContentList
         
-        helpContentList.rescType = "2"
+        var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = backButton
         self.navigationController?.pushViewController(helpContentList, animated: true)
     }
+    
+    
+    @IBAction func rightTopButtonClick() {
+        var addSubway: AddSubway = self.storyboard?.instantiateViewControllerWithIdentifier("AddSubway") as AddSubway
+        var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = backButton
+        self.navigationController?.pushViewController(addSubway, animated: true)
+    }
+    
+    @IBAction func showSetting() {
+        var setting: Setting = self.storyboard?.instantiateViewControllerWithIdentifier("Setting") as Setting
+        var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = backButton
+        self.navigationController?.pushViewController(setting, animated: true)
+    }
+    
+    @IBAction func showSelectRaiders() {
+        var selectRaiders: SelectRaiders = self.storyboard?.instantiateViewControllerWithIdentifier("SelectRaiders") as SelectRaiders
+        var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = backButton
+        self.navigationController?.pushViewController(selectRaiders, animated: true)
+    }
+    
+    @IBAction func showStationListController() {
+        var stationListController: StationListController = self.storyboard?.instantiateViewControllerWithIdentifier("StationListController") as StationListController
+        var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = backButton
+        self.navigationController?.pushViewController(stationListController, animated: true)
+    }
+    
+    @IBAction func showRemindListController() {
+        var remindListController: RemindListController = self.storyboard?.instantiateViewControllerWithIdentifier("RemindListController") as RemindListController
+        var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = backButton
+        self.navigationController?.pushViewController(remindListController, animated: true)
+    }
+    
+
     
     // 根据点击的像素点从db中获取车站id
     func singleTapAction(sender:UITapGestureRecognizer) {
@@ -395,6 +436,10 @@ class Main: UIViewController,UIScrollViewDelegate {
             stationDetail.statMetroId = self.selectStationMetroID
             stationDetail.cellJPName = self.selectStationNameJP
             stationDetail.cellJPNameKana = self.selectStationNameKana
+            
+            var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+            self.navigationItem.backBarButtonItem = backButton
+            
             self.navigationController?.pushViewController(stationDetail, animated:true)
             
         default:
@@ -410,6 +455,9 @@ class Main: UIViewController,UIScrollViewDelegate {
         
         routeSearch.startStationText = self.setStationStartId
         routeSearch.endStationText = self.setStationEndId
+        
+        var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = backButton
         
         self.navigationController?.pushViewController(routeSearch, animated:true)
     }

@@ -170,6 +170,8 @@ class SearchStationList: UIViewController, UITableViewDelegate, UITableViewDataS
             detail.stat_id = map.item(MSTT02_STAT_ID) as String
             detail.statMetroId = map.item(MSTT02_STAT_METRO_ID) as String
             
+            var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+            self.navigationItem.backBarButtonItem = backButton
             
             self.navigationController?.pushViewController(detail, animated: true)
         }

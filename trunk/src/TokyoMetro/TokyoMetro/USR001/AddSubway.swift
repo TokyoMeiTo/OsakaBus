@@ -13,9 +13,6 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet var table: UITableView!
     @IBOutlet var segment: UISegmentedControl!
     
-    
-    var historyArr = [String]()
-    
     var stationArr: NSMutableArray = NSMutableArray.array()
     // 换乘线路
     var changeLineArr: NSMutableArray = NSMutableArray.array()
@@ -28,9 +25,13 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var ruteRowIdArr: NSMutableArray = NSMutableArray.array()
     
+    /* 地标一览 */
+    var landMarks: NSMutableArray = NSMutableArray.array()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.title = "收藏"
         odbRoute()
         odbStation()
     }
@@ -121,10 +122,44 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     
+    /**
+    * 从DB查询地标信息
+    */
+    func selectLandMarkTable(type:Int){
+        //var daoINF002 = INF002Dao()
+        var mstT04Table:MstT04LandMarkTable = MstT04LandMarkTable()
+        
+        landMarks = NSMutableArray.array()
+        var landMarkTypeStr:String = ""
+        switch type{
+        case 2:
+            landMarkTypeStr = "景点"
+        case 3:
+            landMarkTypeStr = "美食"
+        case 4:
+            landMarkTypeStr = "购物"
+        default:
+            println("nothing")
+        }
+        
+        var rows = mstT04Table.queryLandMarks(landMarkTypeStr)
+        
+        for key in rows {
+            key as MstT04LandMarkTable
+            landMarks.addObject(key)
+        }
+        
+        table.reloadData()
+    }
+    
+    
     @IBAction func segmentChangedLinster(sender: UISegmentedControl) {
     
-        table.reloadData()
-        
+        if (sender.selectedSegmentIndex == 0 || sender.selectedSegmentIndex == 1) {
+            table.reloadData()
+        } else {
+            selectLandMarkTable(sender.selectedSegmentIndex)
+        }
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -136,6 +171,9 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
             detail.cellJPNameKana = detailArr[indexPath.row][1] as String
             detail.stat_id = map.item(USRT03_STAT_ID) as String
             
+            var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+            self.navigationItem.backBarButtonItem = backButton
+            
             self.navigationController?.pushViewController(detail, animated: true)
         } else if (segment.selectedSegmentIndex == 1) {
             var routeSearch: RouteSearch = self.storyboard?.instantiateViewControllerWithIdentifier("RouteSearch") as RouteSearch
@@ -143,7 +181,29 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
             var key = ruteArr[indexPath.row] as LinT04RouteTable
             routeSearch.startStationText = key.item(LINT04_ROUTE_START_STAT_ID) as String
             routeSearch.endStationText = key.item(LINT04_ROUTE_TERM_STAT_ID) as String
+            
+            var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+            self.navigationItem.backBarButtonItem = backButton
             self.navigationController?.pushViewController(routeSearch, animated: true)
+        } else {
+            var landMarkDetailController = self.storyboard!.instantiateViewControllerWithIdentifier("landmarkdetail") as LandMarkDetailController
+            switch segment.selectedSegmentIndex {
+            case 2:
+                landMarkDetailController.title = "热门景点"
+            case 3:
+                landMarkDetailController.title = "美食"
+            case 4:
+                landMarkDetailController.title = "购物"
+            default:
+                println("nothing")
+            }
+            
+            landMarkDetailController.landMark = landMarks[indexPath.row] as? MstT04LandMarkTable
+            
+            var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+            self.navigationItem.backBarButtonItem = backButton
+            self.navigationController!.pushViewController(landMarkDetailController, animated:true)
+
         }
     }
     
@@ -156,7 +216,7 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
             return ruteArr.count
         } else {
         
-            return historyArr.count
+            return landMarks.count
         }
         
     }
@@ -213,13 +273,77 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
             return cell
         } else {
         
-            let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("HistoryCell", forIndexPath: indexPath) as UITableViewCell
+            var cell = tableView.dequeueReusableCellWithIdentifier("LnadMarkCell", forIndexPath: indexPath) as UITableViewCell
+            for subview in cell.subviews{
+                subview.removeFromSuperview()
+            }
             
-            var historyStation =  cell.viewWithTag(401) as UILabel
+            var key = landMarks[indexPath.row] as MstT04LandMarkTable
+            // cell显示内容
+            var imgLandMark = UIImage(named: LocalCacheController.readFile("\(key.item(MSTT04_LANDMARK_IMAG_ID1))"))
+            if("\(key.item(MSTT04_LANDMARK_LMAK_NAME_EXT1))" == "皇居"){
+                imgLandMark = UIImage(named: LocalCacheController.readFile("\(key.item(MSTT04_LANDMARK_IMAG_ID2))"))
+            }
+            var imageViewLandMark = UIImageView(frame: CGRectMake(0, 0, tableView.frame.width, 170))
+            imageViewLandMark.image = imgLandMark
+            cell.addSubview(imageViewLandMark)
             
-            historyStation.text = historyArr[indexPath.row]
+            var lblTemp = UILabel(frame: CGRect(x:0,y:140,width:tableView.frame.width,height:30))
+            lblTemp.alpha = 0.4
+            lblTemp.backgroundColor = UIColor.blackColor()
+            cell.addSubview(lblTemp)
             
+            var lblLandMark = UILabel(frame: CGRect(x:15,y:135,width:tableView.frame.width,height:40))
+            lblLandMark.backgroundColor = UIColor.clearColor()
+            lblLandMark.font = UIFont.boldSystemFontOfSize(16)
+            lblLandMark.textColor = UIColor.whiteColor()
+            lblLandMark.text = "\(key.item(MSTT04_LANDMARK_LMAK_NAME_EXT1))"
+            lblLandMark.textAlignment = NSTextAlignment.Left
+            cell.addSubview(lblLandMark)
+            
+            var lblLandMarkWard = UILabel(frame: CGRect(x:tableView.frame.width - 70,y:10,width:70,height:40))
+            lblLandMarkWard.backgroundColor = UIColor.clearColor()
+            lblLandMarkWard.font = UIFont.boldSystemFontOfSize(16)
+            lblLandMarkWard.textColor = UIColor.whiteColor()
+            lblLandMarkWard.text = "\(key.item(MSTT04_LANDMARK_WARD))".specialWard()
+            lblLandMarkWard.textAlignment = NSTextAlignment.Left
+            cell.addSubview(lblLandMarkWard)
+            
+            var btnFav:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
+            btnFav.frame = CGRect(x:15,y:10,width:40,height:40)
+            
+            var tableUsrT03:INF002FavDao = INF002FavDao()
+            var lmkFav:UsrT03FavoriteTable? = tableUsrT03.queryFav("\(key.item(MSTT04_LANDMARK_LMAK_ID))")
+            
+            var imgFav = UIImage(named: "INF00202.png")
+            if(lmkFav!.rowid != nil && lmkFav!.rowid != ""){
+                imgFav = UIImage(named: "INF00206.png")
+            }
+            
+            btnFav.setBackgroundImage(imgFav, forState: UIControlState.Normal)
+            btnFav.tag = 101
+
+            cell.addSubview(btnFav)
+            
+            if(key.item(MSTT04_LANDMARK_MICI_RANK) != nil && "\(key.item(MSTT04_LANDMARK_MICI_RANK))" != ""){
+                lblTemp.frame = CGRect(x:0,y:125,width:tableView.frame.width,height:45)
+
+                for(var i=0;i<("\(key.item(MSTT04_LANDMARK_MICI_RANK))" as NSString).integerValue; i++){
+                    var xFloat:CGFloat = 15//100
+                    
+                    for(var j=0;j<i;j++){
+                        xFloat = xFloat + 20
+                    }
+                    
+                    var imageViewStar = UIImageView(frame: CGRectMake(xFloat, 130, 15, 15))
+                    var imageStar = UIImage(named: "INF00209.png")
+                    imageViewStar.image = imageStar
+                    cell.addSubview(imageViewStar)
+                }
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyle.None
             return cell
+
         }
     }
     
@@ -231,7 +355,7 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
         } else if (segment.selectedSegmentIndex == 1) {
             return 55
         } else {
-            return 43
+            return 170
         }
         
     }
@@ -263,7 +387,7 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
                     }
                 } else {
                 
-                    historyArr.removeAtIndex(indexPath.row)
+                    landMarks.removeObjectAtIndex(indexPath.row)
                     table.reloadData()
                 }
                 
@@ -276,9 +400,5 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
         return true
     }
     
-//    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-//        
-//        tableView.deselectRowAtIndexPath(indexPath, animated: true)
-//    }
 
 }

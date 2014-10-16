@@ -124,6 +124,9 @@ class TipsContentList: UIViewController,UITableViewDelegate,UITableViewDataSourc
         tipsDetail.cellTitle = map.item(INFT02_TIPS_TITLE)as String
         tipsDetail.tips_id = map.item(INFT02_TIPS_ID) as String
         
+        var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = backButton
+        
         self.navigationController?.pushViewController(tipsDetail, animated: true)
     }
 

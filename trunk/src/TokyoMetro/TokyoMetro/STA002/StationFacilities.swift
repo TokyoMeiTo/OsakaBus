@@ -46,6 +46,9 @@ class StationFacilities: UIViewController, UITableViewDelegate, NSObjectProtocol
         case self.navigationItem.rightBarButtonItem!:
             var landMarkSearchController = self.storyboard!.instantiateViewControllerWithIdentifier("landmarksearch") as LandMarkSearchController
             
+            var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+            self.navigationItem.backBarButtonItem = backButton
+            
             self.navigationController!.pushViewController(landMarkSearchController, animated:true)
         default:
             println("nothing")

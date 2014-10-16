@@ -61,6 +61,9 @@ class Setting : UIViewController, UITableViewDelegate, UITableViewDataSource, OA
         case 0:
             var localCacheController : LocalCacheController = self.storyboard?.instantiateViewControllerWithIdentifier("localcache") as LocalCacheController
             localCacheController.classType = 1
+            
+            var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+            self.navigationItem.backBarButtonItem = backButton
             self.navigationController?.pushViewController(localCacheController, animated:true)
         case 1:
             webLinkAction("评价", webSite:"http://www.baidu.com")
@@ -69,7 +72,10 @@ class Setting : UIViewController, UITableViewDelegate, UITableViewDataSource, OA
         default:
         
             var appservers : LocalCacheController = self.storyboard?.instantiateViewControllerWithIdentifier("localcache") as LocalCacheController
-        self.navigationController?.pushViewController(appservers, animated:true)
+            
+            var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+            self.navigationItem.backBarButtonItem = backButton
+            self.navigationController?.pushViewController(appservers, animated:true)
 
         }
         
@@ -98,11 +104,17 @@ class Setting : UIViewController, UITableViewDelegate, UITableViewDataSource, OA
     // 设定页面下角跳转
     func btnLinkAction(sender:UIButton) {
         var appservers : AppServerse = self.storyboard?.instantiateViewControllerWithIdentifier("appServerse") as AppServerse
+        
+        var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = backButton
         self.navigationController?.pushViewController(appservers, animated:true)
         switch (sender) {
             
         case self.mBtnAppServer:
             var appservers : AppServerse = self.storyboard?.instantiateViewControllerWithIdentifier("appServerse") as AppServerse
+            
+            var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+            self.navigationItem.backBarButtonItem = backButton
             
             self.navigationController?.pushViewController(appservers, animated:true)
         case self.mBtnOfficeWebSite:
@@ -122,6 +134,9 @@ class Setting : UIViewController, UITableViewDelegate, UITableViewDataSource, OA
         
         linkWebSite.linkWebTitle = pageTitle
         linkWebSite.linkWebSite = webSite
+        
+        var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = backButton
         
         self.navigationController?.pushViewController(linkWebSite, animated:true)
     }
