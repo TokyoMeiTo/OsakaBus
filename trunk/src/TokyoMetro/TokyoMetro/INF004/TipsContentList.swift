@@ -19,7 +19,7 @@ class TipsContentList: UIViewController,UITableViewDelegate,UITableViewDataSourc
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.title = "贴士标题"
+        self.title = "INF004_01".localizedString()
         
     }
     

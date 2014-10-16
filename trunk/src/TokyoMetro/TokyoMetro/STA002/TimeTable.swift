@@ -180,12 +180,10 @@ class TimeTable: UIViewController,UITableViewDelegate,UITableViewDataSource {
         if (dirtStationArr.count > 0) {
             segment.removeAllSegments()
             for (var i = 0; i < dirtStationArr.count; i++) {
-                segment.insertSegmentWithTitle(dirtStationArr[i].station(), atIndex: i, animated: false)
-//                segment.setTitle(dirtStationArr[i].station(), forSegmentAtIndex: i)
-            }
-            
-            segment.selectedSegmentIndex = 0
+                segment.insertSegmentWithTitle(dirtStationArr[i].station() + "方向", atIndex: i, animated: false)
 
+            }
+            segment.selectedSegmentIndex = 0
         }
         
     }

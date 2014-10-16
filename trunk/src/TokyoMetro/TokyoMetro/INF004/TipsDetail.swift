@@ -25,7 +25,7 @@ class TipsDetail: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.title = "贴士详细"
+        self.title = "INF004_04".localizedString()
         qTitle.text = cellTitle
         
         odbTips()
@@ -72,7 +72,7 @@ class TipsDetail: UIViewController {
         var table = InfT02TipsTable()
         
         if (favoFlag == "1") {
-            var sureBtn: UIAlertView = UIAlertView(title: "", message: "该贴士已收藏！", delegate: self, cancelButtonTitle: "确定")
+            var sureBtn: UIAlertView = UIAlertView(title: "", message: "该贴士已收藏！", delegate: self, cancelButtonTitle: "PUBLIC_06".localizedString())
             
             sureBtn.show()
             
@@ -82,11 +82,11 @@ class TipsDetail: UIViewController {
         var time:String = NSDate().description.dateWithFormat("yyyy-MM-dd HH:mm:ss +0000", target: "yyyyMMddHHmmss")
         
         if (table.excuteUpdate("update INFT02_TIPS set FAVO_FLAG = '1',FAVO_TIME = \(time) where ROWID = \(rowId)")) {
-            var sureBtn: UIAlertView = UIAlertView(title: "", message: "收藏成功！", delegate: self, cancelButtonTitle: "确定")
+            var sureBtn: UIAlertView = UIAlertView(title: "", message: "收藏成功！", delegate: self, cancelButtonTitle: "PUBLIC_06".localizedString())
             
             sureBtn.show()
         } else {
-            var sureBtn: UIAlertView = UIAlertView(title: "", message: "收藏失败！", delegate: self, cancelButtonTitle: "确定")
+            var sureBtn: UIAlertView = UIAlertView(title: "", message: "收藏失败！", delegate: self, cancelButtonTitle: "PUBLIC_06".localizedString())
             
             sureBtn.show()
         }

@@ -33,6 +33,8 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
     // 存放地标id
     var landMarkIdStr: String = ""
     
+    var selectIndexPath: NSIndexPath?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -44,6 +46,13 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        if (selectIndexPath != nil) {
+            table.deselectRowAtIndexPath(selectIndexPath!, animated: true)
+        }
     }
     
     
@@ -214,6 +223,8 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
+        selectIndexPath = indexPath
         if (segment.selectedSegmentIndex == 0) {
             var detail: StationDetail = self.storyboard?.instantiateViewControllerWithIdentifier("StationDetail") as StationDetail
             
@@ -317,9 +328,9 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
             var openStation =  cell.viewWithTag(301) as UILabel
             var closeStation =  cell.viewWithTag(302) as UILabel
             
-            openStation.text = "起点：" + (key.item(LINT04_ROUTE_START_STAT_ID) as String).station()
+            openStation.text = "PUBLIC_01".localizedString() + "：" + (key.item(LINT04_ROUTE_START_STAT_ID) as String).station()
             
-            closeStation.text = "终点：" + (key.item(LINT04_ROUTE_TERM_STAT_ID) as String).station()
+            closeStation.text = "PUBLIC_02".localizedString() + "：" + (key.item(LINT04_ROUTE_TERM_STAT_ID) as String).station()
             
             return cell
         } else {
@@ -411,10 +422,10 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
     }
     
-   override func setEditing(editing: Bool, animated: Bool) {
-        super.setEditing(editing, animated: animated)
-        table.setEditing(editing, animated: animated)
-    }
+//   override func setEditing(editing: Bool, animated: Bool) {
+//        super.setEditing(editing, animated: animated)
+//        table.setEditing(editing, animated: animated)
+//    }
     
    func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath!) -> UITableViewCellEditingStyle {
          return UITableViewCellEditingStyle.Delete
@@ -437,9 +448,10 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
                         table.reloadData()
                     }
                 } else {
-                
-                    landMarks.removeObjectAtIndex(indexPath.row)
-                    table.reloadData()
+                    if (removeLandMark(indexPath.row)) {
+                        landMarks.removeObjectAtIndex(indexPath.row)
+                        table.reloadData()
+                    }
                 }
                 
             }

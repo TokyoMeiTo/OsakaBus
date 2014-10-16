@@ -73,6 +73,8 @@ class Main: UIViewController,UIScrollViewDelegate {
     var mViewStartShade : UIView = UIView()
     var mViewEndShade : UIView = UIView()
     var mViewShade : UIView = UIView()
+    // 存放全局变量
+    var appDelegate: AppDelegate!
     
     var cmn002Model:CMN002Model = CMN002Model();
     
@@ -147,10 +149,18 @@ class Main: UIViewController,UIScrollViewDelegate {
         
         self.mPopupStationView.hidden = true
         mIsMenuShow = false
+        
+
+        self.mUpButton.hidden = false
         mMenuView.frame = CGRectMake(0, mScreenSize.height - 75, mScreenSize.width, 75)
         
         mBodyView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.4)
         mBodyView.hidden = true
+        
+        appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+        
+        println(appDelegate.isShow)
+        
     }
     
     
@@ -218,15 +228,18 @@ class Main: UIViewController,UIScrollViewDelegate {
     /**
     *   展示和收起底部menu菜单
     */
-    @IBAction func showMenu() {
+    @IBAction func showMenu(sender: UIButton) {
         var image: UIImage!
-        if (mIsMenuShow) {
+        if (sender.tag == 601) {
             mIsMenuShow = false
-            image = UIImage(named: "helf_up_btn")
-            //            self.mUpButton.setBackgroundImage(image, forState: UIControlState.Normal)
+            self.mUpButton.hidden = false
             UIView.animateWithDuration(0.5, animations: { () -> Void in
                 self.mMenuView.frame = CGRectMake(0, self.mScreenSize.height - 75, self.mScreenSize.width, 75)
+                
             })
+            
+//            self.mUpButton.setBackgroundImage(image, forState: UIControlState.Normal)
+//            self.mUpButton.setBackgroundImage(image, forState: UIControlState.Highlighted)
             // 隐藏遮罩
             mBodyView.hidden = true
             mBtnImgAdd.enabled = true
@@ -235,10 +248,14 @@ class Main: UIViewController,UIScrollViewDelegate {
         } else {
             mIsMenuShow = true
             image = UIImage(named: "helf_down_btn")
-            //            self.mUpButton.setBackgroundImage(image, forState: UIControlState.Normal)
+
+            self.mUpButton.hidden = true
             UIView.animateWithDuration(0.5, animations: { () -> Void in
                 self.mMenuView.frame = CGRectMake(0, self.mScreenSize.height - 250, self.mScreenSize.width, 250)
             })
+            
+//            self.mUpButton.setBackgroundImage(image, forState: UIControlState.Normal)
+//            self.mUpButton.setBackgroundImage(image, forState: UIControlState.Highlighted)
             // 显示遮罩
             mBodyView.hidden = false
             mBtnImgAdd.enabled = false

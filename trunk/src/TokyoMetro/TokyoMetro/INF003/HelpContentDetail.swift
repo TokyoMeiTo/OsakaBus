@@ -21,7 +21,7 @@ class HelpContentDetail: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.title = "求助内容"
+        self.title = "INF003_06".localizedString()
         questionCHTitle.text = chTtile
         questionJPTitle.text = jpTtile
     }

@@ -51,7 +51,7 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
     // 景点、购物、美食数组
     var landMarkArr: NSArray = NSArray.array()
     // 其他链接
-    var selectList = ["车站时刻表", "车站结构图", "站内商业设施", "车站设施"]
+    var selectList = ["车站时刻表", "车站结构图","车站便利设施", "车站商业设施"]
     
     // 其他链接
     var landMarkTitleList = ["INF002_11".localizedString(), "INF002_09".localizedString(), "PUBLIC_09".localizedString()]
@@ -96,6 +96,14 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
         var mstT04Table:MstT04LandMarkTable = MstT04LandMarkTable()
         landMarkArr = mstT04Table.queryLandMarkByStatId(group_id, lmakType: type)
 
+    }
+    
+    func odbLandMark() -> NSArray{
+        
+        var mstT04Table:MstT04LandMarkTable = MstT04LandMarkTable()
+        var rows = mstT04Table.queryLandMarkByStatId(group_id, lmakType: "")
+        
+        return rows
     }
     
     
@@ -351,13 +359,20 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
     
     @IBAction func showStationExit() {
     
-        var stationExit: ExitInfo = self.storyboard?.instantiateViewControllerWithIdentifier("stationExit") as ExitInfo
+//        var stationExit: ExitInfo = self.storyboard?.instantiateViewControllerWithIdentifier("stationExit") as ExitInfo
+//        
+//        stationExit.statId = group_id
+//        var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+//        self.navigationItem.backBarButtonItem = backButton
+//        
+//        self.navigationController?.pushViewController(stationExit, animated: true)
+        var exitInfo: ExitInfo = self.storyboard?.instantiateViewControllerWithIdentifier("ExitInfo") as ExitInfo
         
-        stationExit.statId = group_id
-        var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
-        self.navigationItem.backBarButtonItem = backButton
+        var rowArr = odbLandMark()
+        exitInfo.statId = group_id
+        exitInfo.landMarkArr = rowArr
         
-        self.navigationController?.pushViewController(stationExit, animated: true)
+        self.navigationController?.pushViewController(exitInfo, animated: true)
     }
     
     
@@ -603,9 +618,9 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
             case 1:
                 pushStationMap()
             case 2:
-                showComercialInside()
-            case 3:
                 showFacility()
+            case 3:
+                showComercialInside()
             default:
                 pushStationMap()
             }
@@ -635,7 +650,16 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
         
         self.navigationController?.pushViewController(landMark, animated: true)
 
-
+    }
+    
+    func showExitInfo() {
+        var exitInfo: ExitInfo = self.storyboard?.instantiateViewControllerWithIdentifier("ExitInfo") as ExitInfo
+        
+        var rowArr = odbLandMark()
+        
+        exitInfo.landMarkArr = rowArr
+        
+        self.navigationController?.pushViewController(exitInfo, animated: true)
     }
     
     func showComercialInside() {
