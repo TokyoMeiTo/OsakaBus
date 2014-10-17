@@ -239,10 +239,10 @@ class StationListController: UIViewController, GPSDelegate{
 //            
 //            mkMap.selectAnnotation(annotation, animated: true)
             var controllers:AnyObject? = self.navigationController!.viewControllers
-            if(controllers!.count > 1){
-                var main:Main = controllers![controllers!.count - 2] as Main
-                main.stationIdFromStationList = "\(stations![didSelectRowAtIndexPath.row].item(MSTT02_STAT_ID))"
-            }
+//            if(controllers!.count > 1){
+//                var main:Main = controllers![controllers!.count - 2] as Main
+//                main.stationIdFromStationList = "\(stations![didSelectRowAtIndexPath.row].item(MSTT02_STAT_ID))"
+//            }
             self.navigationController!.popViewControllerAnimated(true)
         }else{
         }

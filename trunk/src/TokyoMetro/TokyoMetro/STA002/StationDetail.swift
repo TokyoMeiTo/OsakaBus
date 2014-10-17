@@ -554,8 +554,8 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
             cell.addSubview(content)
         } else {
             var image = UIImageView()
-            var imageName = "station-link-" + (indexPath.row + 1).description
-            image.frame = CGRectMake(15, 6, 30, 30)
+            var imageName = "station_link2_" + (indexPath.row + 1).description
+            image.frame = CGRectMake(15, 8, 30, 30)
             image.image = UIImage(named: imageName)
             
             cell.addSubview(image)

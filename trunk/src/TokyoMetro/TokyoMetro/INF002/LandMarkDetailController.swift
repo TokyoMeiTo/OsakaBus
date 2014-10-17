@@ -88,12 +88,13 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, NSObjectP
             }else{
                 var lmkFavAdd:UsrT03FavoriteTable = UsrT03FavoriteTable()
                 lmkFavAdd.lmakId = "\(landMark!.item(MSTT04_LANDMARK_LMAK_ID))"
-                lmkFavAdd.favoType = "3"
+                lmkFavAdd.favoType = "03"
                 lmkFavAdd.favoTime = RemindDetailController.convertDate2LocalTime(NSDate.date())
                 lmkFavAdd.lineId = "\(landMark!.item(MSTT04_LANDMARK_LINE_ID))"
                 lmkFavAdd.statId = "\(landMark!.item(MSTT04_LANDMARK_STAT_ID))"
                 lmkFavAdd.statExitId = "0"
                 lmkFavAdd.ruteId = "0"
+                lmkFavAdd.ext4 = "\(landMark!.item(MSTT04_LANDMARK_LMAK_TYPE))"
                 if(lmkFavAdd.insert()){
                     tbList.reloadData()
                 }

@@ -120,7 +120,7 @@ class FacilityList: UIViewController,UITableViewDelegate,UITableViewDataSource {
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         var view = UIView()
         view.frame = CGRectMake(0, 0, 320, 36)
-        view.backgroundColor = UIColor(red: 103/255, green: 188/255, blue: 228/255, alpha: 1)
+        view.backgroundColor = UIColor(red: 230/255, green: 230/255, blue: 230/255, alpha: 1)
         
         var key = facilityArr[section][0] as StaT04FacilityTable
         var faciType = key.item(STAT04_FACI_TYPE) as String

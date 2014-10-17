@@ -161,7 +161,7 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         var table = UsrT03FavoriteTable()
         table.favoType = "03"
-        table.ext3 = landMarkTypeStr
+        table.ext4 = landMarkTypeStr
         var rows: NSArray = table.selectAll()
         for key in rows {
             key as UsrT03FavoriteTable
@@ -200,7 +200,7 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
             println("nothing")
         }
         if (landMarkIdStr != "") {
-            var rows = mstT04Table.excuteQuery("select *, ROWID from MSTT04_LANDMARK where LMAK_TYPE = \(landMarkTypeStr) and LMAK_ID in (\(landMarkIdStr)) and IMAG_ID1 IS NOT NULL")
+            var rows = mstT04Table.excuteQuery("select *, ROWID from MSTT04_LANDMARK where LMAK_TYPE = '\(landMarkTypeStr)' and LMAK_ID in (\(landMarkIdStr)) and IMAG_ID1 IS NOT NULL")
             
             for key in rows {
                 key as MstT04LandMarkTable
