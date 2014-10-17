@@ -31,3 +31,5 @@ DerivedData
 .DS_Store
 
 *.pbxproj
+
+*.db
