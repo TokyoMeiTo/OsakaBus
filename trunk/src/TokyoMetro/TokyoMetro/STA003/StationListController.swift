@@ -374,9 +374,9 @@ class ListController: UITableViewController {
         lblStation.textAlignment = NSTextAlignment.Left
         cell.addSubview(lblStation)
         
-        var lblDetail = UILabel(frame: CGRect(x:15,y:25,width:tableView.frame.width - 30,height:25))
-        lblDetail.font = UIFont.systemFontOfSize(14)
-        lblDetail.textColor = UIColor.lightGrayColor()
+        var lblDetail = UILabel(frame: CGRect(x:15,y:30,width:tableView.frame.width - 30,height:25))
+        lblDetail.font = UIFont.systemFontOfSize(13)
+        lblDetail.textColor = UIColor.darkGrayColor()
         lblDetail.text = "\(tableMstT02.item(MSTT02_STAT_NAME))" + "(\(tableMstT02.item(MSTT02_STAT_NAME_KANA)))"
         lblDetail.textAlignment = NSTextAlignment.Left
         cell.addSubview(lblDetail)
@@ -386,12 +386,12 @@ class ListController: UITableViewController {
         var statLon:Double = ("\(tableMstT02.item(MSTT02_STAT_LON))" as NSString).doubleValue
         var locationStat:CLLocation = CLLocation(latitude: statLat, longitude: statLon)
         
-        var lblDistance = UILabel(frame: CGRect(x:tableView.frame.width - 100,y:15,width:tableView.frame.width - 30,height:25))
-        lblDistance.font = UIFont.systemFontOfSize(14)
-        lblDistance.textColor = UIColor.lightGrayColor()
+        var lblDistance = UILabel(frame: CGRect(x:15,y:15,width:tableView.frame.width - 75,height:25))
+        lblDistance.font = UIFont.systemFontOfSize(13)
+        lblDistance.textColor = UIColor.darkGrayColor()
         sender! as StationListController
         lblDistance.text = StationListController.convertDistance(StationListController.calcDistance(sender!.location, statLocation: locationStat))
-        lblDistance.textAlignment = NSTextAlignment.Left
+        lblDistance.textAlignment = NSTextAlignment.Right
         cell.addSubview(lblDistance)
         
         var imageViewLine = UIImageView(frame: CGRectMake(tableView.frame.width - 55, 12.5, 30, 30))

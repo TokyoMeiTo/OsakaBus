@@ -27,7 +27,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
 
     var classType:Int = 0
     
-    let uri:String = "http://osakabus.sinaapp.com/Resource.zip"//"http://www.okasan.net/Resource.zip"
+    let uri:String = "http://www.okasan.net/Resource.zip"//"http://osakabus.sinaapp.com/Resource.zip"
     let filePath:String = "Resource.zip"
     let unZipPath:String = "TokyoMetroCache"
     
@@ -60,7 +60,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
         lblProgress.hidden = true
         lblCacheVersion.text = "缓存版本: 1.0"
         lblCacheSize.text = "缓存大小: 83593KB"
-        lblMoibleSize.text = "剩余容量: 10.3G"
+        lblMoibleSize.text = "剩余容量: " + "\(LocalCacheController.getMemorySize())GB"
         lblTip.text = tipText
         lblTip.numberOfLines = 0
         lblTip.lineBreakMode = NSLineBreakMode.ByCharWrapping
@@ -293,6 +293,20 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
             file = fopen(path, "")
         }
         return path
+    }
+    
+    class func getMemorySize() -> String {
+        let folder = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String
+        var fileManager:NSFileManager = NSFileManager.defaultManager()
+        var fileSysAttributes:NSDictionary = fileManager.attributesOfFileSystemForPath(folder, error: nil)!
+        var freeSpace: AnyObject? = fileSysAttributes.objectForKey(NSFileSystemFreeSize as AnyObject)
+        var totalSpace: AnyObject? = fileSysAttributes.objectForKey(NSFileSystemSize as AnyObject)
+        
+        var formatter:NSNumberFormatter = NSNumberFormatter()
+        formatter.formatterBehavior = NSNumberFormatterBehavior.Behavior10_4
+        formatter.positiveFormat = "0.00;"
+        
+        return formatter.stringFromNumber(("\(freeSpace!)" as NSString).doubleValue/1024.0/1024.0/1024.0)
     }
     
     func calLblHeight(text:String, font:UIFont, constrainedToSize size:CGSize) -> CGSize {

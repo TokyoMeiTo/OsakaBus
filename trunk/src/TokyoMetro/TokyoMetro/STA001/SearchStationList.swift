@@ -19,6 +19,7 @@ class SearchStationList: UIViewController, UITableViewDelegate, UITableViewDataS
     var classType = ""
     
     var focusNumber = ""
+    var routeSearch:RouteSearch?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -146,16 +147,16 @@ class SearchStationList: UIViewController, UITableViewDelegate, UITableViewDataS
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if (classType == "routeSearch") {
-            var routeSearch: RouteSearch = self.navigationController!.viewControllers[self.navigationController!.viewControllers.count - 2] as RouteSearch
+//            var routeSearch: RouteSearch = self.navigationController!.viewControllers[self.navigationController!.viewControllers.count - 2] as RouteSearch
             
             var map: MstT02StationTable = stationArr[indexPath.row] as MstT02StationTable
-            if (focusNumber == "1") {
-                routeSearch.startStationText = map.item(MSTT02_STAT_GROUP_ID) as String
-            } else {
-                routeSearch.endStationText = map.item(MSTT02_STAT_GROUP_ID) as String
-            }
-            
-            self.navigationController?.popToViewController(routeSearch, animated: true)
+//            if (focusNumber == "1") {
+//                routeSearch.startStationText = map.item(MSTT02_STAT_GROUP_ID) as String
+//            } else {
+//                routeSearch.endStationText = map.item(MSTT02_STAT_GROUP_ID) as String
+//            }
+            self.dismissViewControllerAnimated(true, completion: nil)
+//            self.navigationController?.popToViewController(routeSearch, animated: true)
         } else if (classType == "landMarkSearchController") {
             var landMarkSearchController: LandMarkSearchController? = self.navigationController!.viewControllers[self.navigationController!.viewControllers.count - 2] as? LandMarkSearchController
             var mstT02StationTable: MstT02StationTable = stationArr[indexPath.row] as MstT02StationTable

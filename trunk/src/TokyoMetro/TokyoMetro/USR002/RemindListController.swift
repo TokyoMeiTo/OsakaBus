@@ -634,7 +634,7 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
     }
     
     func tableView(tableView: UITableView!, titleForHeaderInSection section: Int) -> String! {
-        return items[section][0] as String
+        return nil//items[section][0] as String
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -653,27 +653,40 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
             }
         }
         
-        var lblMetroType = UILabel(frame: CGRect(x:15,y:50,width:230,height:30))
+        var lblMetroType = UILabel(frame: CGRect(x:15,y:20,width:230,height:30))
         lblMetroType.font = UIFont.systemFontOfSize(14)
         lblMetroType.textColor = UIColor.lightGrayColor()
         lblMetroType.text = items[indexPath.section][2][0] as? String
         lblMetroType.textAlignment = NSTextAlignment.Left
         cell.addSubview(lblMetroType)
         
-        var lblLastMetroTime = UILabel(frame: CGRect(x:0,y:0,width:230,height:50))
+        var lblLastMetroTime = UILabel(frame: CGRect(x:45,y:0,width:230,height:50))
         lblLastMetroTime.tag = 101
-        lblLastMetroTime.font = UIFont(name: "Helvetica Neue", size: 40)//.boldSystemFontOfSize(22)
+        var fontStyle:UIFont = UIFont.preferredFontForTextStyle("UltraLight")
+        //fontStyle.fontName = "Helvetica Neue"
+        var userFont:UIFontDescriptor = UIFontDescriptor.preferredFontDescriptorWithTextStyle("UltraLight")
+        var userFontSize:CGFloat = userFont.pointSize
+        var font:UIFont = UIFont(descriptor: userFont.fontDescriptorWithFamily("Helvetica Neue"), size: 65)//UIFont(name: "Helvetica Neue", size: userFontSize)
+        
+        lblLastMetroTime.font = font//UIFont(name: "Helvetica Neue", size: 65)
         lblLastMetroTime.text = items[indexPath.section][3][indexPath.row] as? String
         lblLastMetroTime.textAlignment = NSTextAlignment.Left
         cell.addSubview(lblLastMetroTime)
         
-        var lblLastMetroDirt = UILabel(frame: CGRect(x:80,y:50,width:230,height:30))
+        var lblLastMetroDirt = UILabel(frame: CGRect(x:200,y:50,width:105,height:30))
         lblLastMetroDirt.tag = 101
         lblLastMetroDirt.font = UIFont.systemFontOfSize(14)
         lblLastMetroDirt.textColor = UIColor.lightGrayColor()
         lblLastMetroDirt.text = items[indexPath.section][1][indexPath.row] as? String
-        lblLastMetroDirt.textAlignment = NSTextAlignment.Left
+        lblLastMetroDirt.textAlignment = NSTextAlignment.Right
         cell.addSubview(lblLastMetroDirt)
+
+        var lblStatInfo = UILabel(frame: CGRect(x:15,y:50,width:230,height:30))
+        lblStatInfo.font = UIFont.systemFontOfSize(14)
+        lblStatInfo.textColor = UIColor.lightGrayColor()
+        lblStatInfo.text = items[indexPath.section][0] as? String
+        lblStatInfo.textAlignment = NSTextAlignment.Left
+        cell.addSubview(lblStatInfo)
         
         var switchAralm = UISwitch(frame: CGRect(x:255,y:20,width:60,height:30))
         switchAralm.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.ValueChanged)

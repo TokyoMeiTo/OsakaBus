@@ -587,15 +587,22 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
     // 弹出对话框，判断是否要跳转到StationList页面
     @IBAction func isPopToStationList() {
         setSationIdCache()
+//        var searchAllStation : SearchStationList = self.storyboard?.instantiateViewControllerWithIdentifier("SearchStationList") as SearchStationList
+//        searchAllStation.focusNumber = self.focusNumber
+//        searchAllStation.classType = "routeSearch"
+//        self.navigationController?.pushViewController(searchAllStation, animated:true)
         var searchAllStation : SearchStationList = self.storyboard?.instantiateViewControllerWithIdentifier("SearchStationList") as SearchStationList
         searchAllStation.focusNumber = self.focusNumber
         searchAllStation.classType = "routeSearch"
-        self.navigationController?.pushViewController(searchAllStation, animated:true)
+        searchAllStation.routeSearch = self
         
-    
+        var nav:UINavigationController = UINavigationController(rootViewController: searchAllStation)
+        nav.modalPresentationStyle = UIModalPresentationStyle.FormSheet
+        nav.navigationBar.tintColor = UIColor.blueColor()
         
-        
-        
+        self.navigationController!.presentViewController(nav, animated: true, completion: nil)
+        //        nav.view.superview!.frame = CGRectMake(0, 0, 320, 568)
+        //        nav.view.superview!.center = self.view.center
 
          // self.navigationController!.presentViewController(searchAllStation, animated: true, completion: nil)
          //  self.navigationController!.presentViewController(localCacheController, animated: true, completion: nil)
