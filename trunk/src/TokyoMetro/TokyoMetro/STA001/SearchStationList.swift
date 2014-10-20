@@ -18,6 +18,8 @@ class SearchStationList: UIViewController, UITableViewDelegate, UITableViewDataS
     // 区分前一画面参数
     var classType = ""
     
+    var routeSearch:RouteSearch?
+    
     var focusNumber = ""
     var routeSearch:RouteSearch?
     
@@ -149,14 +151,29 @@ class SearchStationList: UIViewController, UITableViewDelegate, UITableViewDataS
         if (classType == "routeSearch") {
 //            var routeSearch: RouteSearch = self.navigationController!.viewControllers[self.navigationController!.viewControllers.count - 2] as RouteSearch
             
-            var map: MstT02StationTable = stationArr[indexPath.row] as MstT02StationTable
+            //var map: MstT02StationTable = stationArr[indexPath.row] as MstT02StationTable
 //            if (focusNumber == "1") {
 //                routeSearch.startStationText = map.item(MSTT02_STAT_GROUP_ID) as String
 //            } else {
 //                routeSearch.endStationText = map.item(MSTT02_STAT_GROUP_ID) as String
 //            }
-            self.dismissViewControllerAnimated(true, completion: nil)
+           // self.dismissViewControllerAnimated(true, completion: nil)
 //            self.navigationController?.popToViewController(routeSearch, animated: true)
+            
+            var map: MstT02StationTable = stationArr[indexPath.row] as MstT02StationTable
+            if (focusNumber == "1") {
+                routeSearch!.startStationText = map.item(MSTT02_STAT_GROUP_ID) as String
+            } else {
+                routeSearch!.endStationText = map.item(MSTT02_STAT_GROUP_ID) as String
+            }
+            
+            self.dismissViewControllerAnimated(true, completion: nil)
+            
+            
+            
+            
+            
+            
         } else if (classType == "landMarkSearchController") {
             var landMarkSearchController: LandMarkSearchController? = self.navigationController!.viewControllers[self.navigationController!.viewControllers.count - 2] as? LandMarkSearchController
             var mstT02StationTable: MstT02StationTable = stationArr[indexPath.row] as MstT02StationTable

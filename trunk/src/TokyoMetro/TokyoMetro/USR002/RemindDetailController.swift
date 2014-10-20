@@ -425,6 +425,10 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
                     var lastController:RemindListController = controllers![controllers!.count - 2] as RemindListController
                     lastController.viewDidLoad()
                 }
+                
+                var appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+                appDelegate.isShow = true
+                
                 self.navigationController!.popViewControllerAnimated(true)
             }else if(i < routeDetails!.count - 1){
                 var alarms:Array<UsrT01ArrivalAlarmTable>? = selectArrivalAlarmTable()

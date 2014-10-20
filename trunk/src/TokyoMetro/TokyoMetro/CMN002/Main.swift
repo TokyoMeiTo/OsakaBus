@@ -31,6 +31,8 @@ class Main: UIViewController,UIScrollViewDelegate {
     @IBOutlet weak var mBtnImgDec: UIButton!
     @IBOutlet weak var mUpButton: UIButton!
     
+    @IBOutlet weak var mMenuBtn04: UIButton!
+    
     // 判断是否要显示底部menu
     var mIsMenuShow = false
     // 屏幕尺寸
@@ -174,7 +176,11 @@ class Main: UIViewController,UIScrollViewDelegate {
         }
         // showPopViewByStationId("2801004")
         
-        
+        if (appDelegate.isShow == true) {
+            mMenuBtn04.setBackgroundImage(UIImage(named: "menu_04_blue"), forState: UIControlState.Normal)
+        } else {
+            mMenuBtn04.setBackgroundImage(UIImage(named: "menu_04"), forState: UIControlState.Normal)
+        }
     }
     
     

@@ -38,6 +38,12 @@ class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource, MK
     var statId: String = ""
     
     var arrList: NSMutableArray = NSMutableArray.array()
+    
+    var locatonArr:Array<CLLocation> = Array<CLLocation>()
+    
+    var stationLength: String = ""
+    
+    var index: Int = -1
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -107,33 +113,37 @@ class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource, MK
         
 //        if(landMark != nil){
             // 显示距离最近的10个地铁站
-            for(var i=0; i < rows.count; i++){
-                var key = rows[i] as StaT01StationExitTable
-                var statLat:AnyObject? = key.item(STAT01_STAT_EXIT_LAT)
-                var statLon:AnyObject? = key.item(STAT01_STAT_EXIT_LON)
-                var annotation = MKPointAnnotation()
-                annotation.coordinate = CLLocationCoordinate2D(latitude:statLon as CLLocationDegrees, longitude:statLat as CLLocationDegrees)
-                annotation.title = "\(key.item(STAT01_STAT_EXIT_ID))".stationExit()
-                mkMap.addAnnotation(annotation)
-                var region : MKCoordinateRegion = MKCoordinateRegionMake(annotation.coordinate, span)
-                mkMap.setRegion(region, animated:true)
-            }
+//            for(var i=0; i < rows.count; i++){
+//                var key = rows[i] as StaT01StationExitTable
+//                var statLat:AnyObject? = key.item(STAT01_STAT_EXIT_LAT)
+//                var statLon:AnyObject? = key.item(STAT01_STAT_EXIT_LON)
+//                var annotation = MKPointAnnotation()
+//                annotation.coordinate = CLLocationCoordinate2D(latitude:statLon as CLLocationDegrees, longitude:statLat as CLLocationDegrees)
+//                annotation.title = "\(key.item(STAT01_STAT_EXIT_ID))".stationExit()
+//                mkMap.addAnnotation(annotation)
+//                var region : MKCoordinateRegion = MKCoordinateRegionMake(annotation.coordinate, span)
+//                mkMap.setRegion(region, animated:true)
+//            }
         
-//        for(var i=0; i < landMarkArr.count; i++){
-//            var key = landMarkArr[i] as MstT04LandMarkTable
-//            var statLat:AnyObject? = key.item(MSTT04_LANDMARK_LMAK_LAT)
-//            var statLon:AnyObject? = key.item(MSTT04_LANDMARK_LMAK_LON)
-//            var annotation = MKPointAnnotation()
+        for(var i=0; i < landMarkArr.count; i++){
+            var key = landMarkArr[i] as MstT04LandMarkTable
+            var statLat:AnyObject? = key.item(MSTT04_LANDMARK_LMAK_LAT)
+            var statLon:AnyObject? = key.item(MSTT04_LANDMARK_LMAK_LON)
+            
+            println("\(statLat)")
+            println("\(statLon)")
+            var annotation = MKPointAnnotation()
 //            annotation.coordinate = CLLocationCoordinate2D(latitude:statLat as CLLocationDegrees, longitude:statLon as CLLocationDegrees)
-//            annotation.title = "\(key.item(MSTT04_LANDMARK_LMAK_NAME_EXT1))"
-//            mkMap.addAnnotation(annotation)
-//            var region : MKCoordinateRegion = MKCoordinateRegionMake(annotation.coordinate, span)
-//            mkMap.setRegion(region, animated:true)
-//        }
+            annotation.coordinate = CLLocation(latitude: (statLat as NSString).doubleValue, longitude: (statLon as NSString).doubleValue).coordinate
+            annotation.title = "\(key.item(MSTT04_LANDMARK_LMAK_NAME_EXT1))"
+            annotation.subtitle = "\(key.item(MSTT04_LANDMARK_LMAK_TYPE))"
+            mkMap.addAnnotation(annotation)
+            var region : MKCoordinateRegion = MKCoordinateRegionMake(annotation.coordinate, span)
+            mkMap.setRegion(region, animated:true)
+        }
 
         
-//            annotation.title = "\(statId.station())"
-//        }
+        annotation.title = "\(statId.station())"
         
         annotation.coordinate = coordinateOnEarth
         
@@ -156,27 +166,26 @@ class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource, MK
             // 4'3'5
             var img = UIImage(named: "INF00204.png")
             
-//            if(landMark != nil){
-//                pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "\(landMark!.item(MSTT04_LANDMARK_LMAK_NAME_EXT1))")
-//                landMarkType = "\(landMark!.item(MSTT04_LANDMARK_LMAK_TYPE))"
-//                switch landMarkType{
-//                case "景点":
-//                    img = UIImage(named: "INF00204.png")
-//                case "美食":
-//                    img = UIImage(named: "INF00203.png")
-//                case "购物":
-//                    img = UIImage(named: "INF00205.png")
-//                default:
-//                    println("nothing")
-//                }
-//                if(annotation.title != "\(landMark!.item(MSTT04_LANDMARK_LMAK_NAME_EXT1))"){
-//                    img = UIImage(named: "STA00301.png")
-//                }
-//            }else if(statId != nil){
+            
+            var mapTitle: String! = annotation.title
+            if (mapTitle == statId.station() && annotation.subtitle != nil) {
                 pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: statId.station())
-//                landMarkType = statId!.station()
-//                img = UIImage(named: "STA00301.png")
-//            }
+                img = UIImage(named: "STA00301.png")
+            } else {
+                pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: annotation.title!)
+                
+                switch (annotation.subtitle! as String) {
+                case "景点":
+                    img = UIImage(named: "INF00204.png")
+                case "美食":
+                    img = UIImage(named: "INF00203.png")
+                case "购物":
+                    img = UIImage(named: "INF00205.png")
+                default:
+                    println("nothing")
+                }
+
+            }
             
             pinView!.pinColor = .Red
             pinView!.image = img
@@ -196,17 +205,126 @@ class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource, MK
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
 
-        let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("StationExit", forIndexPath: indexPath) as UITableViewCell
+        let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("ExitInfoCell", forIndexPath: indexPath) as UITableViewCell
             
         var map = rows[indexPath.row] as StaT01StationExitTable
-            cell.textLabel!.text = map.item(STAT01_STAT_EXIT_NAME) as? String
-            
+        (cell.viewWithTag(301) as UILabel).text = map.item(STAT01_STAT_EXIT_NAME) as? String
+        if (index == indexPath.row && stationLength != "") {
+            (cell.viewWithTag(302) as UILabel).text = stationLength + " 米"
+        } else {
+            (cell.viewWithTag(302) as UILabel).text = ""
+        }
+        
         return cell
         
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 44
+    }
+    
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return "出口信息"
+    }
+    
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
+        var key = rows[indexPath.row] as StaT01StationExitTable
+        
+//        var statLat: Double = ("\(key.item(STAT01_STAT_EXIT_LAT))" as NSString).doubleValue
+//        var statLon: Double = ("\(key.item(STAT01_STAT_EXIT_LON))" as NSString).doubleValue
+//        var location: CLLocation = CLLocation(latitude: statLat, longitude: statLon)
+        if (locatonArr.count > 0) {
+            locatonArr[0] = landMarkLocation!
+            if (locatonArr.count == 2) {
+                stationLength = "\(Int(calcDistance(locatonArr[0], statLocation: locatonArr[1])))"
+                drawLineWithLocationArray(locatonArr)
+                exitTable.reloadData()
+            }
+        } else {
+            locatonArr.append(landMarkLocation!)
+        }
+        index = indexPath.row
+    }
+    
+    
+    func mapView(mapView: MKMapView!, didSelectAnnotationView view: MKAnnotationView!){
+        if(view.annotation.subtitle == nil){
+            return
+        }
+        if(locatonArr.count > 0 && locatonArr.count < 2) {
+//            var locations:Array<CLLocation> = Array<CLLocation>()
+//            locations.append(location!)
+            locatonArr.append(CLLocation(latitude: view.annotation.coordinate.latitude, longitude: view.annotation.coordinate.longitude))
+
+            stationLength = "\(Int(calcDistance(locatonArr[0], statLocation: locatonArr[1])))"
+            drawLineWithLocationArray(locatonArr)
+            exitTable.reloadData()
+        } else if (locatonArr.count == 2) {
+            locatonArr[1] = CLLocation(latitude: view.annotation.coordinate.latitude, longitude: view.annotation.coordinate.longitude)
+            
+            stationLength = "\(Int(calcDistance(locatonArr[0], statLocation: locatonArr[1])))"
+            drawLineWithLocationArray(locatonArr)
+            exitTable.reloadData()
+        }
+    }
+    
+    /**
+    * 根据Location 画路线
+    */
+    func drawLineWithLocationArray(locations: Array<CLLocation>){
+//        routeIndex = 0
+        if(mkMap == nil){
+            return
+        }
+        var fromMKPlace: MKPlacemark = MKPlacemark(coordinate: locations[0].coordinate, addressDictionary:  nil)
+        var toMKPlace: MKPlacemark = MKPlacemark(coordinate: locations[1].coordinate, addressDictionary:  nil)
+        var fromItem: MKMapItem = MKMapItem(placemark: fromMKPlace)
+        var toItem: MKMapItem = MKMapItem(placemark: toMKPlace)
+        findDirections(fromItem, to: toItem)
+    }
+    
+    func findDirections(from: MKMapItem, to: MKMapItem){
+        if(self.mkMap?.overlays != nil && self.mkMap?.overlays.count > 0){
+            self.mkMap?.removeOverlays(self.mkMap?.overlays)
+        }
+        var request = MKDirectionsRequest()
+        request.setSource(from)
+        request.setDestination(to)
+        request.transportType = MKDirectionsTransportType.Walking
+        request.requestsAlternateRoutes = true
+        var directions = MKDirections(request: request)
+        directions.calculateDirectionsWithCompletionHandler { (response: MKDirectionsResponse!,error: NSError!) -> Void in
+            if (error != nil) {
+                println("drawLineWithLocationArray:" + error.description)
+            }
+            else {
+                for(var i=0;i<response.routes.count;i++){
+                    if(i > 4){
+                        break
+                    }
+                    var route: MKRoute = response.routes[i] as MKRoute
+                    self.mkMap?.addOverlay(route.polyline)
+                }
+            }
+        }
+    }
+    
+    
+    func mapView(mapView: MKMapView!, rendererForOverlay overlay: MKOverlay!) -> MKOverlayRenderer!{
+        var renderer: MKPolylineRenderer = MKPolylineRenderer(overlay: overlay)
+        renderer.lineWidth = 3.0
+
+        return renderer
+    }
+    
+    /**
+    * 计算两点之间距离
+    */
+    func calcDistance(fromLocation: CLLocation, statLocation: CLLocation) -> CDouble{
+        var distance:CLLocationDistance = statLocation.distanceFromLocation(fromLocation)
+        return distance
     }
     
 }
