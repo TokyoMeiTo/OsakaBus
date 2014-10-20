@@ -14,6 +14,10 @@ class RaidersDetail: UIViewController,UIWebViewDelegate {
     var isOpenPDF: Bool = false
     var txtTitle = ""
     
+    var request: NSURLRequest!
+    
+    var progress: UIActivityIndicatorView!
+    
     @IBOutlet weak var webView: UIWebView!
     
     override func viewDidLoad() {
@@ -26,10 +30,27 @@ class RaidersDetail: UIViewController,UIWebViewDelegate {
         } else {
             urlPath = NSURL.URLWithString(url)
         }
-        var request: NSURLRequest = NSURLRequest(URL: urlPath)
+        
+        request = NSURLRequest(URL: urlPath)
+        
+        progress = UIActivityIndicatorView()
+        progress.frame = CGRectMake(140, 264, 40, 40)
+        
+        progress.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+        progress.hidesWhenStopped = true
+        
+        self.view.addSubview(progress)
+        
+        progress.startAnimating()
         
         webView.loadRequest(request)
+
     }
+
+    func webViewDidFinishLoad(webView: UIWebView) {
+        progress.stopAnimating()
+    }
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

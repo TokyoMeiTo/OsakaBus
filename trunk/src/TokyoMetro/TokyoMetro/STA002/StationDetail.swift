@@ -371,6 +371,12 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
         var rowArr = odbLandMark()
         exitInfo.statId = group_id
         exitInfo.landMarkArr = rowArr
+        if (statSeqArr.count > 0) {
+            var key: MstT02StationTable = statSeqArr[0] as MstT02StationTable
+            var statLat: Double = ("\(key.item(MSTT02_STAT_LAT))" as NSString).doubleValue
+            var statLon: Double = ("\(key.item(MSTT02_STAT_LON))" as NSString).doubleValue
+            exitInfo.landMarkLocation = CLLocation(latitude: statLat, longitude: statLon)            
+        }
         
         self.navigationController?.pushViewController(exitInfo, animated: true)
     }
@@ -452,7 +458,7 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
             var map = statSeqArr[i] as MstT02StationTable
             var lineImage: UIImageView = UIImageView()
             lineImage.frame = CGRectMake(CGFloat(20 + i * 35), 85, 30, 30)
-            lineImage.image = (map.item(MSTT02_STAT_ID) as String).getStationIconImage()
+            lineImage.image = (map.item(MSTT02_STAT_ID) as String).getLineStatImage()
             
             self.scrollView.addSubview(lineImage)
         }

@@ -11,6 +11,7 @@ import Foundation
 class INF002FavDao:UsrT03FavoriteTable {
     
     func queryFav(lmkId:String) -> UsrT03FavoriteTable {
+        self.favoType = "03"
         self.lmakId = lmkId
         var lmkFav:UsrT03FavoriteTable? = self.select() as? UsrT03FavoriteTable
         return lmkFav!;

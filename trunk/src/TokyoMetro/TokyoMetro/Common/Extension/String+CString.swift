@@ -83,9 +83,9 @@ extension String {
         return image
     }
     
-    func getLineStatImage(type: String) -> UIImage {
+    func getStationIconImage(type: String) -> UIImage {
         
-        var image = UIImage(named: "line_stat_\(self)\(type)")
+        var image = UIImage(named: "station_icon_\(self)\(type)")
         return image
     }
     

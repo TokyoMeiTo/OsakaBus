@@ -139,7 +139,8 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
     // 删除地标
     func removeLandMark(index: Int) -> Bool {
         var table = UsrT03FavoriteTable()
-        table.rowid = landMarkRwoIdArr[index] as String
+        var key = landMarkRwoIdArr[index] as UsrT03FavoriteTable
+        table.rowid = key.rowid
         
         return table.delete()
     }
@@ -148,6 +149,7 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
     func selectLandMarkId(type: Int) {
         
         var landMarkTypeStr:String = ""
+        landMarkIdStr = ""
         switch type{
         case 2:
             landMarkTypeStr = "景点"
@@ -159,13 +161,14 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
             println("nothing")
         }
         
+        landMarkRwoIdArr = NSMutableArray.array()
+        
         var table = UsrT03FavoriteTable()
-        table.favoType = "03"
-        table.ext4 = landMarkTypeStr
-        var rows: NSArray = table.selectAll()
+
+        var rows: NSArray = table.excuteQuery("select *, ROWID, count(LMAK_ID) from USRT03_FAVORITE where FAVO_TYPE = '03' and EXT4 = '\(landMarkTypeStr)' group by LMAK_ID")
         for key in rows {
             key as UsrT03FavoriteTable
-            landMarkRwoIdArr.addObject(key.rowid)
+            landMarkRwoIdArr.addObject(key)
             if (landMarkIdStr == "") {
                 landMarkIdStr = key.item(USRT03_LMAK_ID) as String
             } else {
@@ -209,7 +212,6 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
         
         table.reloadData()
-        
     }
     
     

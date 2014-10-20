@@ -177,15 +177,15 @@ class LineStationList: UIViewController, UITableViewDelegate, UITableViewDataSou
         
         if (isReverse) {
             
-            image = lineNum.getLineStatImage("d")
+            image = lineNum.getStationIconImage("d")
             println(image.size.height)
             if (image.size.height > 0) {
             
             } else {
-                image = lineNum.getLineStatImage()
+                image = lineNum.getStationIconImage()
             }
         } else {
-            image = lineNum.getLineStatImage()
+            image = lineNum.getStationIconImage()
         }
         return image
     }

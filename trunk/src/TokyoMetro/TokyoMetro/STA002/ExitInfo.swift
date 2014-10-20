@@ -101,7 +101,8 @@ class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource, MK
         
         // NSInvalidArgumentException 'Invalid Coordinate +139.77180400, +35.68542600'
         // MKMapView定位到当前位置
-//        var coordinateOnEarth = landMarkLocation!.coordinate
+        
+        var coordinateOnEarth = landMarkLocation!.coordinate
         var annotation = MKPointAnnotation()
         
 //        if(landMark != nil){
@@ -112,7 +113,7 @@ class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource, MK
                 var statLon:AnyObject? = key.item(STAT01_STAT_EXIT_LON)
                 var annotation = MKPointAnnotation()
                 annotation.coordinate = CLLocationCoordinate2D(latitude:statLon as CLLocationDegrees, longitude:statLat as CLLocationDegrees)
-                annotation.title = "\(key.item(STAT01_STAT_EXIT_ID))".exitType()
+                annotation.title = "\(key.item(STAT01_STAT_EXIT_ID))".stationExit()
                 mkMap.addAnnotation(annotation)
                 var region : MKCoordinateRegion = MKCoordinateRegionMake(annotation.coordinate, span)
                 mkMap.setRegion(region, animated:true)
@@ -123,7 +124,7 @@ class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource, MK
 //            var statLat:AnyObject? = key.item(MSTT04_LANDMARK_LMAK_LAT)
 //            var statLon:AnyObject? = key.item(MSTT04_LANDMARK_LMAK_LON)
 //            var annotation = MKPointAnnotation()
-//            annotation.coordinate = CLLocationCoordinate2D(latitude:statLon as CLLocationDegrees, longitude:statLat as CLLocationDegrees)
+//            annotation.coordinate = CLLocationCoordinate2D(latitude:statLat as CLLocationDegrees, longitude:statLon as CLLocationDegrees)
 //            annotation.title = "\(key.item(MSTT04_LANDMARK_LMAK_NAME_EXT1))"
 //            mkMap.addAnnotation(annotation)
 //            var region : MKCoordinateRegion = MKCoordinateRegionMake(annotation.coordinate, span)
@@ -131,17 +132,17 @@ class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource, MK
 //        }
 
         
-//            annotation.title = "\(landMark!.item(MSTT04_LANDMARK_LMAK_NAME_EXT1))"
+//            annotation.title = "\(statId.station())"
 //        }
         
-//        annotation.coordinate = coordinateOnEarth
+        annotation.coordinate = coordinateOnEarth
         
-//        mkMap.setCenterCoordinate(coordinateOnEarth, animated:true)
+        mkMap.setCenterCoordinate(coordinateOnEarth, animated:true)
         
         mkMap.addAnnotation(annotation)
         
-//        var region : MKCoordinateRegion = MKCoordinateRegionMake(coordinateOnEarth, span)
-//        mkMap.setRegion(region, animated:true)
+        var region : MKCoordinateRegion = MKCoordinateRegionMake(coordinateOnEarth, span)
+        mkMap.setRegion(region, animated:true)
     }
 
     func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) ->

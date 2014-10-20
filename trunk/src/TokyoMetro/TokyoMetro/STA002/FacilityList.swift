@@ -126,13 +126,13 @@ class FacilityList: UIViewController,UITableViewDelegate,UITableViewDataSource {
         var faciType = key.item(STAT04_FACI_TYPE) as String
         
         var image = UIImageView()
-        if (faciType == "1") {
+        if (faciType == "3") {
             image.frame = CGRectMake(15, 4, 28, 28)
             image.image = UIImage(named: "escalator_wheelchair")
         } else if (faciType == "2") {
             image.frame = CGRectMake(15, 4, 28, 28)
             image.image = UIImage(named: "escalator")
-        }  else if (faciType == "3") {
+        }  else if (faciType == "1") {
             image.frame = CGRectMake(15, 4, 28, 28)
             if (segment.selectedSegmentIndex == 0) {
                 image.image = UIImage(named: "out_lift")
