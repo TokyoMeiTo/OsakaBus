@@ -42,9 +42,9 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, NSObjectP
         
         intitValue()
         
-        // 返回按钮点击事件
-        var backButton:UIBarButtonItem = UIBarButtonItem(title: "返回", style: UIBarButtonItemStyle.Plain, target:self, action: "buttonAction:")
-        self.navigationItem.leftBarButtonItem = backButton
+//        // 返回按钮点击事件
+//        var backButton:UIBarButtonItem = UIBarButtonItem(title: "返回", style: UIBarButtonItemStyle.Plain, target:self, action: "buttonAction:")
+//        self.navigationItem.leftBarButtonItem = backButton
         
         imgContainer.contentSize = CGSizeMake(1600, 200)
         imgContainer.pagingEnabled = true
@@ -88,12 +88,13 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, NSObjectP
             }else{
                 var lmkFavAdd:UsrT03FavoriteTable = UsrT03FavoriteTable()
                 lmkFavAdd.lmakId = "\(landMark!.item(MSTT04_LANDMARK_LMAK_ID))"
-                lmkFavAdd.favoType = "03"
+                lmkFavAdd.favoType = "3"
                 lmkFavAdd.favoTime = RemindDetailController.convertDate2LocalTime(NSDate.date())
                 lmkFavAdd.lineId = "\(landMark!.item(MSTT04_LANDMARK_LINE_ID))"
                 lmkFavAdd.statId = "\(landMark!.item(MSTT04_LANDMARK_STAT_ID))"
                 lmkFavAdd.statExitId = "0"
                 lmkFavAdd.ruteId = "0"
+                lmkFavAdd.statExitId = "0"
                 lmkFavAdd.ext4 = "\(landMark!.item(MSTT04_LANDMARK_LMAK_TYPE))"
                 if(lmkFavAdd.insert()){
                     tbList.reloadData()
@@ -105,13 +106,6 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, NSObjectP
             landMarkMapController.title = "\(landMark!.item(MSTT04_LANDMARK_LMAK_NAME_EXT1))"
             landMarkMapController.landMark = landMark!
             self.navigationController!.pushViewController(landMarkMapController, animated:true)
-        case self.navigationItem.leftBarButtonItem!.tag:
-            var controllers:AnyObject? = self.navigationController!.viewControllers
-            if(controllers!.count > 1){
-                var lastController:LandMarkListController = controllers![controllers!.count - 2] as LandMarkListController
-                lastController.viewDidLoad()
-            }
-            self.navigationController!.popViewControllerAnimated(true)
         case 103:
             var stationDetail = self.storyboard!.instantiateViewControllerWithIdentifier("landmarkmap") as StationDetail
             

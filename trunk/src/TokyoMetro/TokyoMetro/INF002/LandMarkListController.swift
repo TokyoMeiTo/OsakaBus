@@ -28,6 +28,7 @@ class LandMarkListController: UIViewController, UITableViewDelegate, NSObjectPro
     var landMarkType:Int = 0
     
     let BTN_SEARCH_TAG:Int = 110
+    let BTN_FAV_TAG:Int = 101
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,9 +44,9 @@ class LandMarkListController: UIViewController, UITableViewDelegate, NSObjectPro
             println("nothing")
         }
         
-        if(landMarks == nil){
-            landMarks = selectLandMarkTable(landMarkType)
-        }
+//        if(landMarks == nil){
+//            landMarks = selectLandMarkTable(landMarkType)
+//        }
         
         tbList.delegate = self
         tbList.dataSource = self
@@ -53,7 +54,7 @@ class LandMarkListController: UIViewController, UITableViewDelegate, NSObjectPro
         // 查询按钮点击事件
         var searchButtonTemp:UIButton? = UIButton.buttonWithType(UIButtonType.System) as? UIButton
         searchButtonTemp!.frame = CGRect(x:0,y:0,width:25,height:25)
-        var imgLandMark = UIImage(named: "INF00207")
+        var imgLandMark = UIImage(named: "INF00212")
         searchButtonTemp!.setBackgroundImage(imgLandMark, forState: UIControlState.Normal)
         searchButtonTemp!.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
         searchButtonTemp!.tag = BTN_SEARCH_TAG
@@ -83,7 +84,33 @@ class LandMarkListController: UIViewController, UITableViewDelegate, NSObjectPro
             landMarkSearchController.fromLat = self.fromLat
             landMarkSearchController.fromLon = self.fromLon
             landMarkSearchController.landMarkType = self.landMarkType
+            
+            var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+            self.navigationItem.backBarButtonItem = backButton
+
             self.navigationController!.pushViewController(landMarkSearchController, animated:true)
+        case BTN_FAV_TAG:
+            var tableUsrT03:INF002FavDao = INF002FavDao()
+//            var lmkFav:UsrT03FavoriteTable? = tableUsrT03.queryFav("\(landMarks!.item(MSTT04_LANDMARK_LMAK_ID))")
+//            //
+//            if(lmkFav!.rowid != nil && lmkFav!.rowid != ""){
+//                lmkFav!.delete()
+//                tbList.reloadData()
+//            }else{
+//                var lmkFavAdd:UsrT03FavoriteTable = UsrT03FavoriteTable()
+//                lmkFavAdd.lmakId = "\(landMark!.item(MSTT04_LANDMARK_LMAK_ID))"
+//                lmkFavAdd.favoType = "3"
+//                lmkFavAdd.favoTime = RemindDetailController.convertDate2LocalTime(NSDate.date())
+//                lmkFavAdd.lineId = "\(landMark!.item(MSTT04_LANDMARK_LINE_ID))"
+//                lmkFavAdd.statId = "\(landMark!.item(MSTT04_LANDMARK_STAT_ID))"
+//                lmkFavAdd.statExitId = "0"
+//                lmkFavAdd.ruteId = "0"
+//                lmkFavAdd.statExitId = "0"
+//                lmkFavAdd.ext4 = "\(landMark!.item(MSTT04_LANDMARK_LMAK_TYPE))"
+//                if(lmkFavAdd.insert()){
+//                    tbList.reloadData()
+//                }
+//            }
         default:
             println("nothing")
         }
@@ -153,6 +180,9 @@ class LandMarkListController: UIViewController, UITableViewDelegate, NSObjectPro
         }
         
         landMarkDetailController.landMark = landMarks![didSelectRowAtIndexPath.row]
+        var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = backButton
+
         self.navigationController!.pushViewController(landMarkDetailController, animated:true)
     }
     
@@ -211,10 +241,11 @@ class LandMarkListController: UIViewController, UITableViewDelegate, NSObjectPro
         }
         
         btnFav.setBackgroundImage(imgFav, forState: UIControlState.Normal)
-        btnFav.tag = 101
+        btnFav.tag = BTN_FAV_TAG
         
-//        btnFav.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
+        btnFav.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
         cell.addSubview(btnFav)
+        
 //        if(landMarks![indexPath.row].item(MSTT04_LANDMARK_RANK) != nil && "\(landMarks![indexPath.row].item(MSTT04_LANDMARK_RANK))" != ""){
         if(true){
             lblTemp.frame = CGRect(x:0,y:125,width:tableView.frame.width,height:45)

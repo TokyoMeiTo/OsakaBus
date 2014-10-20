@@ -11,11 +11,23 @@ import UIKit
 
 class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProtocol, UIScrollViewDelegate, UITableViewDataSource{
     /* 缓存信息 */
-    @IBOutlet weak var tbList: UITableView!
+    @IBOutlet weak var imgMain: UIImageView!
+    /* 缓存信息 */
+    @IBOutlet weak var btnDownload: UIButton!
+    /* 缓存信息 */
+    @IBOutlet weak var lblCacheVersion: UILabel!
+    /* 缓存信息 */
+    @IBOutlet weak var lblCacheSize: UILabel!
+    /* 缓存信息 */
+    @IBOutlet weak var lblMoibleSize: UILabel!
+    /* 缓存信息 */
+    @IBOutlet weak var lblTip: UILabel!
+    /* 缓存信息 */
+    @IBOutlet weak var lblProgress: UILabel!
 
     var classType:Int = 0
     
-    let uri:String = "http://osakabus.sinaapp.com/Resource.zip"//"http://qd.baidupcs.com/file/8793004b8eb196a2d8a990cf3bd6e9d6?fid=2047242392-250528-1530314747&time=1413163152&sign=FDTAXER-DCb740ccc5511e5e8fedcff06b081203-9bNODLPOIQYbOQ1%2BBNElSK6xxyw%3D&to=qb&fm=Qin,B,U,nc&newver=1&newfm=1&flow_ver=3&expires=8h&rt=sh&r=531068060&mlogid=1869520282&vuk=-&vbdid=3152997201&fn=maxuqu%20-%20%E5%89%AF%E6%9C%AC%20-%20%E5%89%AF%E6%9C%AC%20%282%29.zip"
+    let uri:String = "http://192.168.1.84/Resource.zip" // "http://osakabus.sinaapp.com/Resource.zip"//
     let filePath:String = "Resource.zip"
     let unZipPath:String = "TokyoMetroCache"
     
@@ -45,17 +57,22 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
     func intitValue(){
         self.title = "离线数据管理"
         self.navigationItem.rightBarButtonItem = nil
+        lblProgress.hidden = true
+        lblCacheVersion.text = "缓存版本: 1.0"
+        lblCacheSize.text = "缓存大小: 83593KB"
+        lblMoibleSize.text = "剩余容量: 10.3G"
+        lblTip.text = tipText
+        lblTip.numberOfLines = 0
+        lblTip.lineBreakMode = NSLineBreakMode.ByCharWrapping
+        
         switch classType{
         case 0:
             self.navigationItem.setHidesBackButton(true, animated: false)
         default:
             println("nothing")
         }
-        loadItems()
-        tbList.delegate = self
-        tbList.dataSource = self
-        tbList.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell")
-        tbList.reloadData()
+        btnDownload.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
+        showDownloadBtn()
     }
     
     func loadItems(){
@@ -87,11 +104,47 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
             self.dismissViewControllerAnimated(true, completion: nil)
         case 103:
             self.dismissViewControllerAnimated(true, completion: nil)
+        case btnDownload.tag:
+            switch classType{
+            case 0:
+                if(!downloading && !updateComplete){
+                    downloadCompressFile(uri)
+                }else if(!downloading && updateComplete){
+                    self.dismissViewControllerAnimated(true, completion: nil)
+                }
+            default:
+                if(!downloading){
+                    downloadCompressFile(uri)
+                }
+            }
         default:
             println("nothing")
         }
     }
     
+    func showProgress(){
+        lblProgress.hidden = false
+    }
+    
+    func dimisProgress(){
+        lblProgress.hidden = true
+    }
+    
+    func showDownloadBtn(){
+        btnDownload.setBackgroundImage(UIImage(named: "DLD00101.png"), forState: UIControlState.Normal)
+        btnDownload.enabled = true
+    }
+    
+    func showUseBtn(){
+        btnDownload.setBackgroundImage(UIImage(named: "DLD00102.png"), forState: UIControlState.Normal)
+        btnDownload.enabled = true
+    }
+    
+    func hideDownloadBtn(){
+        btnDownload.setBackgroundImage(UIImage(named: "DLD00105.png"), forState: UIControlState.Normal)
+        btnDownload.enabled = false
+    }
+
     /**
      * 下载压缩文件
      */
@@ -117,8 +170,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
                 if(error == nil){
                     println("下载成功解压文件")
 //                    dispatch_async(dispatch_get_main_queue()) { () -> Void in
-//                        self.loadProgress = "100.00 %"
-//                        self.tbList.reloadData()
+//                        self.lblProgress.text = "下载成功解压文件..."
 //                    }
                     self.unzipFile()
                 }else{
@@ -128,11 +180,14 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
                     dispatch_async(dispatch_get_main_queue()) { () -> Void in
                         self.downloading = false
                         self.loadProgress = "DLD001_04".localizedString()
-                        self.tbList.reloadData()
+                        self.lblProgress.text = "下载失败"
+                        self.btnDownload.setBackgroundImage(UIImage(named: "DLD00101.png"), forState: UIControlState.Normal)
                     }
                 }
         })
         downloadTask.resume()
+        
+        hideDownloadBtn()
         
         // 设置这个progress的唯一标示符
         progress?.setUserInfoObject("DO SOME", forKey: "11111")
@@ -151,9 +206,11 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
             if(countElements("\(progress.fractionCompleted)") > 5 && progress.fractionCompleted > 0.0001){
                 // 在子线程中更新UI
                 dispatch_sync(dispatch_get_main_queue()) { () -> Void in
+                    self.showProgress()
                     var progressTemp = "\(progress.fractionCompleted * 100)".left(5)
-                    self.loadProgress = " " + progressTemp + " %"
-                    self.tbList.reloadData()
+                    self.loadProgress = "正在下载: " + progressTemp + " %"
+                    //self.tbList.reloadData()
+                    self.lblProgress.text = self.loadProgress
                 }
             }
         }
@@ -197,17 +254,23 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
                 println("解压成功")
                 loadProgress = "DLD001_06".localizedString()
                 updateComplete = true
-                tbList.reloadData()
+                self.lblProgress.text = "下载成功"
+                if(classType == 0){
+                    showUseBtn()
+                }else{
+                    showDownloadBtn()
+                }
             }else{
                 println("解压失败")
                 loadProgress = "DLD001_04".localizedString()
-                tbList.reloadData()
+                self.lblProgress.text = "下载失败"
+                showDownloadBtn()
             }
             unzip.UnzipCloseFile()
         }else{
             println("解压失败")
             loadProgress = "DLD001_04".localizedString()
-            tbList.reloadData()
+            self.lblProgress.text = "下载失败"
         }
         downloading = false
     }

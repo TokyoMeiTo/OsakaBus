@@ -157,6 +157,7 @@ class StationListController: UIViewController, GPSDelegate{
         tbList.hidden = true
         mkMap.hidden = false
         mapController.MKmap = mkMap
+        mapController.statListController = self
         mkMap.delegate = mapController
         // 设置地图显示类型
         mkMap.mapType = MKMapType.Standard
@@ -239,10 +240,10 @@ class StationListController: UIViewController, GPSDelegate{
 //            
 //            mkMap.selectAnnotation(annotation, animated: true)
             var controllers:AnyObject? = self.navigationController!.viewControllers
-//            if(controllers!.count > 1){
-//                var main:Main = controllers![controllers!.count - 2] as Main
-//                main.stationIdFromStationList = "\(stations![didSelectRowAtIndexPath.row].item(MSTT02_STAT_ID))"
-//            }
+            if(controllers!.count > 1){
+                var main:Main = controllers![controllers!.count - 2] as Main
+                main.stationIdFromStationList = "\(stations![didSelectRowAtIndexPath.row].item(MSTT02_STAT_ID))"
+            }
             self.navigationController!.popViewControllerAnimated(true)
         }else{
         }
@@ -307,7 +308,7 @@ class StationListController: UIViewController, GPSDelegate{
         let DIDTANCE:String = "\(distance / 1000)"
         
         var dotIndex = DIDTANCE.indexOf(".")
-        return "\(DIDTANCE.right(dotIndex + 2))" + "KM"
+        return "\(DIDTANCE.left(dotIndex + 2))" + "KM"
     }
 
 }
@@ -333,10 +334,7 @@ class ListController: UITableViewController {
     
     // MARK: - Segues
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        //            if segue.identifier == "showDetail" {
-        //                let indexPath = self.tableView.indexPathForSelectedRow()
-        //                (segue.destinationViewController as DetailViewController).detailItem = indexPath
-        //            }
+
     }
     
     // MARK: - Table View
@@ -388,7 +386,7 @@ class ListController: UITableViewController {
         var statLon:Double = ("\(tableMstT02.item(MSTT02_STAT_LON))" as NSString).doubleValue
         var locationStat:CLLocation = CLLocation(latitude: statLat, longitude: statLon)
         
-        var lblDistance = UILabel(frame: CGRect(x:tableView.frame.width - 90,y:25,width:tableView.frame.width - 30,height:25))
+        var lblDistance = UILabel(frame: CGRect(x:tableView.frame.width - 100,y:15,width:tableView.frame.width - 30,height:25))
         lblDistance.font = UIFont.systemFontOfSize(14)
         lblDistance.textColor = UIColor.lightGrayColor()
         sender! as StationListController
@@ -435,6 +433,8 @@ class MapController: UIViewController, MKMapViewDelegate, UIActionSheetDelegate{
     var stations:Array<MstT02StationTable>?
     /* 当前位置 */
     var location:CLLocation?
+    
+    var statListController:StationListController?
     
     /* 路线索引 */
     var routeIndex:Int = 0
@@ -515,22 +515,25 @@ class MapController: UIViewController, MKMapViewDelegate, UIActionSheetDelegate{
             var alertView = UIAlertView()
             alertView.title = STATION_NAME_STRING
             var statNm:String = ""
-            switch sender.tag - NUM_100{
-            case NUM_0:
-                var key = stations![NUM_0] as MstT02StationTable
-                statNm = key.item(MSTT02_STAT_NAME) as String
-            case NUM_1:
-                var key = stations![NUM_1] as MstT02StationTable
-                statNm = key.item(MSTT02_STAT_NAME) as String
-            case NUM_2:
-                var key = stations![NUM_2] as MstT02StationTable
-                statNm = key.item(MSTT02_STAT_NAME) as String
-            default:
-                println("nothing")
+//            switch sender.tag - NUM_100{
+//            case NUM_0:
+//                var key = stations![NUM_0] as MstT02StationTable
+//                statNm = key.item(MSTT02_STAT_NAME) as String
+//            case NUM_1:
+//                var key = stations![NUM_1] as MstT02StationTable
+//                statNm = key.item(MSTT02_STAT_NAME) as String
+//            case NUM_2:
+//                var key = stations![NUM_2] as MstT02StationTable
+//                statNm = key.item(MSTT02_STAT_NAME) as String
+//            default:
+//                println("nothing")
+//            }
+            var controllers:AnyObject? = statListController!.navigationController!.viewControllers
+            if(controllers!.count > 1){
+                var main:Main = controllers![controllers!.count - 2] as Main
+                main.stationIdFromStationList = "\(stations![sender.tag - NUM_100].item(MSTT02_STAT_ID))"
             }
-            alertView.message = statNm
-            alertView.addButtonWithTitle("OK")
-            alertView.show()
+            statListController!.navigationController!.popViewControllerAnimated(true)
         }
     }
     

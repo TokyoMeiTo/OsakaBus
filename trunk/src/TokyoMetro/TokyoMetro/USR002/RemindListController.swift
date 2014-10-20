@@ -35,6 +35,10 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
     /* 到达站点信息 */
     @IBOutlet weak var lblArriveStation: UILabel!
     
+    var lblStart = UILabel(frame: CGRect(x:15,y:210,width:290,height: 35))
+    
+    var lblEnd = UILabel(frame: CGRect(x:15,y:210,width:290,height: 35))
+    
     /* 0 */
     let NUM_0 = 0
     /* 1 */
@@ -59,6 +63,8 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
     let ARRIVE_STATION_TITLE = "USR002_22".localizedString()
     /* 末班车提醒 */
     let LAST_METRO_TITLE = "USR002_23".localizedString()
+    /* 末班车提醒 */
+    let SAVE_BUTTON_TAG:Int = 200201
     
     /* 到站提醒当前条目 */
     var alarm:UsrT01ArrivalAlarmTable?
@@ -153,6 +159,8 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
     func arriveStation(){
         self.navigationItem.rightBarButtonItem = nil
         tbList.hidden = true
+        lblStart.hidden = false
+        lblEnd.hidden = false
         
         if(fromRoute()){
             sgmMain.hidden = true
@@ -180,8 +188,27 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
                 noAlarm()
                 alarm = nil
             }else{
+                var alarmStart:UsrT01ArrivalAlarmTable?
+                var alarmEnd:UsrT01ArrivalAlarmTable?
+                alarmStart = alarms![0]
+                alarmEnd = alarms![alarms!.count - 1]
                 lblArriveStation.text = "到达" + "\(alarm!.item(USRT01_ARRIVAL_ALARM_STAT_TO_ID))".station() + "还需"
-                lblArriveInfo.text = "\(alarm!.item(USRT01_ARRIVAL_ALARM_LINE_TO_ID))".line()
+                
+                lblStart.backgroundColor = UIColor.clearColor()
+                lblStart.font = UIFont.systemFontOfSize(15)
+                lblStart.textColor = UIColor.blackColor()
+                lblStart.text = "起点：" + "\(alarmStart!.statFromId)".station()
+                lblStart.textAlignment = NSTextAlignment.Left
+                self.view.addSubview(lblStart)
+                
+                lblEnd.backgroundColor = UIColor.clearColor()
+                lblEnd.font = UIFont.systemFontOfSize(15)
+                lblEnd.textColor = UIColor.blackColor()
+                lblEnd.text = "终点：" + "\(alarmEnd!.statToId)".station()
+                lblEnd.textAlignment = NSTextAlignment.Right
+                self.view.addSubview(lblEnd)
+                
+                lblArriveInfo.text = "\(alarm!.item(USRT01_ARRIVAL_ALARM_LINE_TO_ID))".line() + " " + "\(alarm!.item(USRT01_ARRIVAL_ALARM_TRAI_DIRT))".station() + "方向"
                 updateTime(alarm!.item(USRT01_ARRIVAL_ALARM_COST_TIME).integerValue)
                 // 开启线程计时
                 var timerThread = TimerThread.shareInstance()
@@ -210,6 +237,8 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
         let addButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "buttonAction:")
         self.navigationItem.rightBarButtonItem = addButton
         tbList.hidden = false
+        lblStart.hidden = true
+        lblEnd.hidden = true
         // 查询末班车信息
         trainAlarms = selectTrainAlarmTable()
         
@@ -343,6 +372,15 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
             }else{
                 remindDetailController.tableUsrT01 = alarm!
             }
+            // 返回按钮点击事件
+            var bakButtonStyle:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
+            bakButtonStyle.frame = CGRectMake(0, 0, 43, 43)
+            bakButtonStyle.setTitle("PUBLIC_05".localizedString(), forState: UIControlState.Normal)
+            bakButtonStyle.addTarget(remindDetailController.self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
+            
+            var backButton:UIBarButtonItem = UIBarButtonItem(customView: bakButtonStyle)
+            remindDetailController.navigationItem.leftBarButtonItem = backButton
+
             self.navigationController!.pushViewController(remindDetailController, animated:true)
         case self.navigationItem.rightBarButtonItem!:
             var remindDetailController = self.storyboard!.instantiateViewControllerWithIdentifier("reminddetail") as RemindDetailController
@@ -354,6 +392,17 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
                 remindDetailController.segIndex = NUM_1
             }else{
             }
+            
+            // 返回按钮点击事件
+            var bakButtonStyle:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
+            bakButtonStyle.frame = CGRectMake(0, 0, 43, 43)
+            bakButtonStyle.tag = SAVE_BUTTON_TAG
+            bakButtonStyle.setTitle("PUBLIC_05".localizedString(), forState: UIControlState.Normal)
+            bakButtonStyle.addTarget(remindDetailController.self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
+            
+            var backButton:UIBarButtonItem = UIBarButtonItem(customView: bakButtonStyle)
+            remindDetailController.navigationItem.leftBarButtonItem = backButton
+            
             self.navigationController!.pushViewController(remindDetailController, animated:true)
         default:
             println("nothing")
@@ -369,6 +418,8 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
         btnStart.enabled = false
         lblArriveStation.text = ""
         lblArriveInfo.text = "当前没有设置提醒"
+        lblStart.text = ""
+        lblEnd.text = ""
     }
     
     /**
@@ -569,6 +620,16 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
         remindDetailController.title = LAST_METRO_TITLE
         remindDetailController.segIndex = NUM_1
         remindDetailController.tableUsrT02 = trainAlarms![didSelectRowAtIndexPath.section]
+
+        // 返回按钮点击事件
+        var bakButtonStyle:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
+        bakButtonStyle.frame = CGRectMake(0, 0, 43, 43)
+        bakButtonStyle.setTitle("PUBLIC_05".localizedString(), forState: UIControlState.Normal)
+        bakButtonStyle.addTarget(remindDetailController.self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
+        
+        var backButton:UIBarButtonItem = UIBarButtonItem(customView: bakButtonStyle)
+        remindDetailController.navigationItem.leftBarButtonItem = backButton
+
         self.navigationController!.pushViewController(remindDetailController, animated:true)
     }
     
@@ -675,6 +736,7 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
             self.lblMin.text = "00"
             self.lblSec.text = "00"
             noAlarm()
+            deleteAlarm()
             btnEdit.enabled = true
             pushNotification(nil,min: NUM_NEGATIVE_1)
             alarm!.cancelFlag = "1"

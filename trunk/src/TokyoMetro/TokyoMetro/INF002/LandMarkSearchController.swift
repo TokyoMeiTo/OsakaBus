@@ -13,6 +13,8 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
     /* 设置选项 */
     @IBOutlet weak var tbList: UITableView!
     
+    let SAVE_BUTTON_TAG:Int = 200201
+    
     /* 区域UIPickerView */
     var pickerSpecialWard: UIPickerView = UIPickerView()
     
@@ -35,7 +37,7 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
     var landMarkRank:String = ""
     
     var landMarkShowStatId:String = "2800101"
-    var landMarkShowSpecialWard:String = "01"
+    var landMarkShowSpecialWard:String = "全部"
     /* 起点軽度 */
     var fromLat = 35.672737//31.23312372 // 天地科技广场1号楼
     /* 起点緯度 */
@@ -59,10 +61,9 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
         pickerSpecialWard.delegate = self
         
         // 完成按钮点击事件
-        var searchButton:UIBarButtonItem = UIBarButtonItem(title: "返回", style: UIBarButtonItemStyle.Plain, target:self, action: "buttonAction:")
-        self.navigationItem.leftBarButtonItem = searchButton
-        self.navigationItem.setHidesBackButton(true, animated: false)
-        self.navigationItem.rightBarButtonItem = nil
+        var saveButton:UIBarButtonItem = UIBarButtonItem(title: "查找", style: UIBarButtonItemStyle.Bordered, target:self, action: "buttonAction:")
+        self.navigationItem.rightBarButtonItem = saveButton
+        self.navigationItem.rightBarButtonItem!.tag = SAVE_BUTTON_TAG
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -81,19 +82,27 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
         switch landMarkType{
         case 1:
             items = NSMutableArray.array()
-            items.addObject(["PUBLIC_03".localizedString(),[landMarkShowStatId.station(), "全部"]])
-            items.addObject(["INF002_13".localizedString(),[landMarkShowSpecialWard.specialWard(),"","全部"]])
+            items.addObject(["PUBLIC_03".localizedString(),[landMarkShowStatId.station()]])
+            if(landMarkSpecialWard == ""){
+                items.addObject(["INF002_13".localizedString(),["全部",""]])
+            }else{
+                items.addObject(["INF002_13".localizedString(),[landMarkShowSpecialWard.specialWard(),""]])
+            }
             items.addObject(["INF002_14".localizedString(),landMarksRange])
             items.addObject(["菜系：",["日式","中式","西式","全部"]])
-             var priceStr:String = "日元及以上"
+            var priceStr:String = "日元及以上"
             items.addObject(["预算价格：",["5000" + priceStr,"1000" + priceStr,"1000日元以下","全部"]])
             items.addObject(["是否米其林星级：", ["米其林星级1","米其林星级2","米其林星级3","全部"]])
             var PointStr:String = "分及以上"
             items.addObject(["评分：",["2" + PointStr,"3" + PointStr,"4" + PointStr,"5" + PointStr,"全部"]])
         default:
             items = NSMutableArray.array()
-            items.addObject(["PUBLIC_03".localizedString(),[landMarkShowStatId.station(), "全部"]])
-            items.addObject(["INF002_13".localizedString(),[landMarkShowSpecialWard.specialWard(), "", "全部"]])
+            items.addObject(["PUBLIC_03".localizedString(),[landMarkShowStatId.station()]])
+            if(landMarkSpecialWard == ""){
+                items.addObject(["INF002_13".localizedString(),["全部",""]])
+            }else{
+                items.addObject(["INF002_13".localizedString(),[landMarkShowSpecialWard.specialWard(),""]])
+            }
             items.addObject(["INF002_14".localizedString(),landMarksRange])
         }
     }
@@ -103,8 +112,8 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
      * @param sender
      */
     func buttonAction(sender: UIButton){
-        switch sender{
-        case self.navigationItem.leftBarButtonItem!:
+        switch sender.tag{
+        case SAVE_BUTTON_TAG:
             var controllers:AnyObject? = self.navigationController!.viewControllers
             var lastController:LandMarkListController = controllers![controllers!.count - 2] as LandMarkListController
             var mstT04Table:MstT04LandMarkTable = MstT04LandMarkTable()
@@ -400,19 +409,19 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
     }
     
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int){
-        if(row < 9){
-            landMarkSpecialWard = "0\(row + 1)"
-            landMarkShowSpecialWard = "0\(row + 1)"
+        if(row == 0){
+            landMarkSpecialWard = ""
+            landMarkShowSpecialWard = "全部"
+        }else if(row < 9){
+            landMarkSpecialWard = "0\(row)"
+            landMarkShowSpecialWard = "0\(row)"
         }else{
-            landMarkSpecialWard = "\(row + 1)"
-            landMarkShowSpecialWard = "0\(row + 1)"
+            landMarkSpecialWard = "\(row)"
+            landMarkShowSpecialWard = "\(row)"
         }
         loadItems()
         var indexPathSpecialWard = NSIndexPath(forRow: 0, inSection: 1)
         //tbList.reloadData()
         tbList.reloadRowsAtIndexPaths([indexPathSpecialWard], withRowAnimation: UITableViewRowAnimation.None)
-        var indexPathAll = NSIndexPath(forRow: 2, inSection: 1)
-        //tbList.reloadData()
-        tbList.reloadRowsAtIndexPaths([indexPathAll], withRowAnimation: UITableViewRowAnimation.None)
     }
 }

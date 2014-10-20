@@ -68,6 +68,8 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
     var pickerViewHeight:CGFloat = 0
     /* pickerview */
     var pickerViewSection:Int = 0
+    /* 选择的线路站点id */
+    var statToId:String = "2800101"
     /* 上一个页面是否查找站点 */
     var isSearsh:Bool = false
     /* 选择的线路id */
@@ -106,6 +108,10 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
     /* 确定添加本条提醒？ */
     let MSG_0006 = "USR002_11".localizedString()
     
+    let SAVE_BUTTON_TAG:Int = 200201
+    let DELETE_BUTTON_TAG:Int = 200202
+    let BACK_BUTTON_TAG:Int = 200203
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         intitValue()
@@ -122,7 +128,11 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
     func intitValue(){
         self.navigationItem.leftBarButtonItem = nil
         // 返回按钮点击事件
-        var backButton:UIBarButtonItem = UIBarButtonItem(title: "返回", style: UIBarButtonItemStyle.Plain, target:self, action: "buttonAction:")
+        var bakButtonStyle:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
+        bakButtonStyle.frame = CGRectMake(0, 0, 43, 43)
+        bakButtonStyle.setTitle("PUBLIC_05".localizedString(), forState: UIControlState.Normal)
+        bakButtonStyle.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
+        var backButton:UIBarButtonItem =  UIBarButtonItem(customView: bakButtonStyle)
         self.navigationItem.leftBarButtonItem = backButton
         // 查询线路
         lines = selectLineTable()
@@ -139,8 +149,10 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
      * @param sender
      */
     func buttonAction(sender: UIButton){
-        switch sender{
-        case self.navigationItem.leftBarButtonItem!:
+        println(sender.tag)
+        switch sender.tag{
+        case SAVE_BUTTON_TAG:
+            // 保存末班车提醒
             if(segIndex == NUM_0){
                 // 保存到站提醒
                 saveArriveStation()
@@ -148,7 +160,17 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
                 // 保存末班车提醒
                 saveLastMetro()
             }
-        case self.navigationItem.rightBarButtonItem!:
+        case BACK_BUTTON_TAG:
+            self.navigationController!.popViewControllerAnimated(true)
+        case self.navigationItem.leftBarButtonItem!.tag:
+            if(segIndex == NUM_0){
+                // 保存到站提醒
+                saveArriveStation()
+            }else if(segIndex == NUM_1){
+                // 保存末班车提醒
+                saveLastMetro()
+            }
+        case self.navigationItem.rightBarButtonItem!.tag:
             RemindDetailController.showMessage(MSG_0002, msg:MSG_0001,buttons:[MSG_0003, MSG_0004], delegate: self)
         default:
             println("nothing")
@@ -176,6 +198,12 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
      */
     func editArriveStation(){
         self.navigationItem.rightBarButtonItem = nil
+        // 完成按钮点击事件
+        var saveButton:UIBarButtonItem = UIBarButtonItem(title: "保存", style: UIBarButtonItemStyle.Plain, target:self, action: "buttonAction:")
+        self.navigationItem.rightBarButtonItem = saveButton
+        self.navigationItem.rightBarButtonItem!.tag = SAVE_BUTTON_TAG
+        
+        self.navigationItem.leftBarButtonItem = nil
         
         if(tableUsrT01 == nil){
             tableUsrT01 = UsrT01ArrivalAlarmTable()
@@ -256,12 +284,20 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
         // 删除按钮点击事件
         var delButton:UIBarButtonItem! = self.navigationItem.rightBarButtonItem
         if(delButton != nil){
+            delButton.tag = DELETE_BUTTON_TAG
             delButton.target = self
             delButton.action = "buttonAction:"
         }
         
         if(tableUsrT02 == nil){
             self.navigationItem.rightBarButtonItem = nil
+            // 完成按钮点击事件
+            var saveButton:UIBarButtonItem = UIBarButtonItem(title: "保存", style: UIBarButtonItemStyle.Plain, target:self, action: "buttonAction:")
+            self.navigationItem.rightBarButtonItem = saveButton
+            self.navigationItem.rightBarButtonItem!.tag = SAVE_BUTTON_TAG
+
+            self.navigationItem.leftBarButtonItem = nil
+            
             tableUsrT02 = UsrT02TrainAlarmTable()
             tableUsrT02!.lineId = "28001"
             tableUsrT02!.statId = "2800101"
@@ -379,7 +415,8 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
                 tableUsrT01Arrive.lineFromId = routeDetails![i-1].exchLineId
                 tableUsrT01Arrive.statFromId = routeDetails![i].exchStatId
                 tableUsrT01Arrive.lineToId = routeDetails![i].exchLineId
-                tableUsrT01Arrive.statToId = tableUsrT01!.statToId
+                tableUsrT01Arrive.traiDirt = routeDetails![i].exchDestId
+                tableUsrT01Arrive.statToId = statToId
                 tableUsrT01Arrive.costTime = "\(costTime)"
                 tableUsrT01Arrive.insert()
 
@@ -415,7 +452,11 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
         var trainAlarms:Array<UsrT02TrainAlarmTable>? = selectTrainAlarmTable()
         var usr002Dao:USR002Dao = USR002Dao()
         tableUsrT02!.alamTime = usr002Dao.queryDepaTime(tableUsrT02!.lineId, statId: "\((selectStationTableOne(tableUsrT02!.statId) as MstT02StationTable).item(MSTT02_STAT_GROUP_ID))", destId: tableUsrT02!.traiDirt, trainFlag: tableUsrT02!.alamType, scheType: "1")
-        
+        if(tableUsrT02!.alamTime == nil || tableUsrT02!.alamTime == "nil" || tableUsrT02!.alamTime == ""){
+            RemindDetailController.showMessage(MSG_0002, msg:"请重新选择车站",buttons:[MSG_0003], delegate: nil)
+            self.navigationController!.popViewControllerAnimated(true)
+            return
+        }
         if(trainAlarms!.count > 0){
             if((tableUsrT02!.rowid) == nil || (tableUsrT02!.rowid) == ""){
                 tableUsrT02!.traiAlamId = "\(trainAlarms![trainAlarms!.count - 1].item(USRT02_TRAIN_ALARM_TRAI_ALAM_ID).integerValue + 1)"
@@ -1003,8 +1044,8 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
                 traiDirt0 = "\(stationsDirt[0].item(MSTT02_STAT_ID))"
                 traiDirt1 = "\(stationsDirt[1].item(MSTT02_STAT_ID))"
                 if(segIndex == NUM_0){
+                    statToId = stations[NUM_0].statId
                     tableUsrT01!.lineToId = lines[row].lineId
-                    
                     tableUsrT01!.statToId = stations[NUM_0].statId
                 }else if(segIndex == NUM_1){
                     tableUsrT02!.lineId = lines[row].lineId
@@ -1012,8 +1053,9 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
                 }
             }else{
                 if(row < stations.count){
-                    station = "\(stations[row].statName)"
+                    station = "\(stations[row].statId)".station()
                     if(segIndex == NUM_0){
+                        statToId = stations[row].statId
                         tableUsrT01!.statToId = stations[row].statId
                     }else if(segIndex == NUM_1){
                         tableUsrT02!.statId = stations[row].statId
