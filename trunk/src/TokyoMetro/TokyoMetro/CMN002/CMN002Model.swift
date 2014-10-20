@@ -68,4 +68,43 @@ class CMN002Model {
         //找不到的情况下返回空
         return nil;
     }
+    
+    func findTouchedStationStatId(statId:String) -> CMN002StationData? {
+        var mCmnT03Dao:CmnT03StationGridTable = CmnT03StationGridTable()
+        
+        //检索数据库
+        var mStationArray:NSArray? = mCmnT03Dao.findPointByStatId(statId)!
+        
+        //遍历结果
+        for mCmnT03Row in mStationArray!{
+            mCmnT03Row as CmnT03StationGridTable
+            var stationId:String! = mCmnT03Row.statId as String
+            if((stationId) != nil){
+                var mMst02Dao = MstT02StationTable()
+                mMst02Dao.statId = stationId
+                var mMst02DaoRow:MstT02StationTable = mMst02Dao.select() as MstT02StationTable
+                
+                var result:CMN002StationData = CMN002StationData()
+                result.statId = mMst02DaoRow.statId as String
+                result.statGroupId = mMst02DaoRow.statGroupId as String
+                result.statNameExt1 = mMst02DaoRow.statNameExt1 as String
+                result.statName = mMst02DaoRow.statName as String
+                result.statNameMetroId = mMst02DaoRow.statNameMetroId as String
+                result.statNameKana = mMst02DaoRow.statNameKana as String
+                
+                result.statFromX = mCmnT03Row.item(CMNT03_PONT_X_FROM) as CGFloat
+                result.statFromY = mCmnT03Row.item(CMNT03_PONT_Y_FROM) as CGFloat
+                result.statToX = mCmnT03Row.item(CMNT03_PONT_X_TO) as CGFloat
+                result.statToY = mCmnT03Row.item(CMNT03_PONT_Y_TO) as CGFloat
+                
+                
+                return result
+            }
+        }
+        
+        
+        //找不到的情况下返回空
+        return nil;
+    }
+
 }

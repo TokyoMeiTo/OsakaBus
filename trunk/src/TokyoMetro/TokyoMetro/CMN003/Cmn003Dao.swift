@@ -21,4 +21,5 @@ class Cmn003Dao:MstT02StationTable {
         
         return self.excuteQuery( QUERY_MINI_DISTANCE, withArgumentsInArray:arr);
     }
+
 }

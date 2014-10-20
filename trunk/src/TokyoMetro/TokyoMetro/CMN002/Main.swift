@@ -45,6 +45,9 @@ class Main: UIViewController,UIScrollViewDelegate {
     // 记录设置的终点车站id
     var setStationEndId : String = ""
     
+    // 从站点列表页面而来的车站id
+    var stationIdFromStationList : String = ""
+    
     // 显示弹框的车站的车站名 JP
     var selectStationNameJP : String = ""
     // 显示弹框的车站的车站id
@@ -53,6 +56,12 @@ class Main: UIViewController,UIScrollViewDelegate {
     var selectStationMetroID : String = ""
     // 显示弹框的车站的Kana
     var selectStationNameKana: String = ""
+    
+    // 收藏该条线路的group_id
+    var selectStationGroupId = ""
+    
+    // 景点、购物、美食数组
+    var landMarkArr: NSArray = NSArray.array()
     
     var stationGrideFromX:CGFloat = 0.0
     var stationGrideFromY:CGFloat = 0.0
@@ -89,7 +98,6 @@ class Main: UIViewController,UIScrollViewDelegate {
         if(!fileExists){
             var localCacheController = self.storyboard!.instantiateViewControllerWithIdentifier("localcache") as LocalCacheController
             localCacheController.classType = 0
-            
             self.navigationController!.presentViewController(localCacheController, animated: true, completion: nil)
         }
         
@@ -97,8 +105,8 @@ class Main: UIViewController,UIScrollViewDelegate {
         self.mScreenSize = UIScreen.mainScreen().bounds.size
         
         // ScrollView
-        self.mScrollView.minimumZoomScale = self.mScrollView.frame.size.height / self.mMainWrapper.frame.size.height
-        self.mScrollView.maximumZoomScale = self.mMainWrapper.frame.size.width / self.mScrollView.frame.size.width
+        self.mScrollView.minimumZoomScale = 0.5
+        self.mScrollView.maximumZoomScale = 1.5
         self.mScrollView.zoomScale = self.mScrollView.minimumZoomScale
         self.mScrollView.contentSize = self.mMainWrapper.frame.size
         
@@ -114,7 +122,7 @@ class Main: UIViewController,UIScrollViewDelegate {
         self.mPopupStationView.backgroundColor = UIColor(patternImage: "main_pop".getImage())
         self.mPopupStationView.layer.cornerRadius = 4
         self.mPopupStationView.hidden = true
-        
+        self.mPopupStationView.alpha = 0.9
         //
         mPopupBtnStart.addTarget(self, action: POPUPVIEWBTNACTION, forControlEvents: UIControlEvents.TouchUpInside)
         mPopupBtnEnd.addTarget(self, action: POPUPVIEWBTNACTION, forControlEvents: UIControlEvents.TouchUpInside)
@@ -158,8 +166,14 @@ class Main: UIViewController,UIScrollViewDelegate {
         mBodyView.hidden = true
         
         appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+        readStationIdCache()
         
-        println(appDelegate.isShow)
+        // 接受从站点列表中传递过来的站点ID
+        if (stationIdFromStationList != ""){
+            showPopViewByStationId(stationIdFromStationList)
+        }
+        // showPopViewByStationId("2801004")
+        
         
     }
     
@@ -183,7 +197,7 @@ class Main: UIViewController,UIScrollViewDelegate {
         self.mMainWrapper.center = CGPointMake(mScrollView.contentSize.width * 0.5 + doubleOffsetX , mScrollView.contentSize.height * 0.5 + doubleOffsetY)
         
         UIView.animateWithDuration(0.3, animations: { () -> Void in
-            self.mScrollView.zoomScale = (self.mScrollView.zoomScale + 1)
+            self.mScrollView.zoomScale = (self.mScrollView.zoomScale + 0.5)
         })
     }
     
@@ -198,9 +212,9 @@ class Main: UIViewController,UIScrollViewDelegate {
         
         switch (sender) {
         case self.mBtnImgAdd:
-            if (self.mScrollView.zoomScale < 4) {
+            if (self.mScrollView.zoomScale < 1.5) {
                 UIView.animateWithDuration(0.3, animations: { () -> Void in
-                    self.mScrollView.zoomScale = (self.mScrollView.zoomScale + 1)
+                    self.mScrollView.zoomScale = (self.mScrollView.zoomScale + 0.3)
                 })
                 self.mBtnImgAdd.enabled = true
             } else {
@@ -211,7 +225,7 @@ class Main: UIViewController,UIScrollViewDelegate {
             
             if (self.mScrollView.zoomScale > 0.5) {
                 UIView.animateWithDuration(0.3, animations: { () -> Void in
-                    self.mScrollView.zoomScale = (self.mScrollView.zoomScale - 1)
+                    self.mScrollView.zoomScale = (self.mScrollView.zoomScale - 0.3)
                 })
                 self.mBtnImgDec.enabled = true
             } else {
@@ -369,7 +383,7 @@ class Main: UIViewController,UIScrollViewDelegate {
         self.navigationItem.backBarButtonItem = backButton
         self.navigationController?.pushViewController(helpIcon, animated: true)
     }
-    
+
 
     
     // 根据点击的像素点从db中获取车站id
@@ -385,40 +399,99 @@ class Main: UIViewController,UIScrollViewDelegate {
         //画面显示
         
         if (stationData != nil) {
-            // 设定全局变量
-            self.mPopupStationName.text = stationData.statNameExt1 as String
-            self.mPopupStationNameJP.text = stationData.statName as String
-            self.mCuttentStationID = stationData.statId as String
-            self.selectStationNameJP  = stationData.statName as String
-            self.selectStationMetroID = stationData.statNameMetroId as String
-            self.selectStationNameKana = stationData.statNameKana as String
-            self.stationGrideFromX = stationData.statFromX / 2
-            self.stationGrideFromY = stationData.statFromY / 2
-            self.stationGrideToX = stationData.statToX / 2
-            self.stationGrideToY = stationData.statToY / 2
-            locatPoint.x = (stationGrideFromX + stationGrideToX) / 2
-            locatPoint.y = stationGrideFromY
             
+            setPageData(stationData)
             popStaionViewLinesImg(stationData)
+            setPopViewInLineGraph(touchX , PointY : touchY)
+        } else {
+            mPopupStationView.hidden = true
+        }
+    }
+    
+    // 传递站点过来 显示站点位置和弹窗信息
+    func showPopViewByStationId(stationID : String) {
+        
+        var stationDataById:CMN002StationData! = cmn002Model.findTouchedStationStatId(stationID)
+        if (stationDataById != nil){
+            
+            setPageData(stationDataById)
+            popStaionViewLinesImg(stationDataById)
+            // setPopViewInLineGraph((stationDataById.statFromX ) / 2 , PointY : ((stationDataById.statFromY) / 2 - (stationDataById.statToY - stationDataById.statFromY) / 4))
+            
+            
+            
             
             // 将scroll大小固定，设置弹出气泡信息
             self.mScrollView.zoomScale = 1
             var offertoPoint : CGPoint = CGPoint()
-            offertoPoint.x = touchX - (mScreenSize.width / 2)
-            offertoPoint.y = -64 + touchY - (mScreenSize.height / 2)
+            offertoPoint.x = ((stationDataById.statFromX + stationDataById.statToX) / 4) - (mScreenSize.width / 2 )
+            
+            offertoPoint.y = ((stationDataById.statToY + stationDataById.statFromY) / 4) - (mScreenSize.height / 2 )
             self.mScrollView.setContentOffset(offertoPoint, animated: true)
+            
             var ptX1:CGFloat=(locatPoint.x * mScrollView.zoomScale - mScrollView.contentOffset.x ) - mPopupStationView.frame.size.width / 2
-            var ptY1:CGFloat=(locatPoint.y * mScrollView.zoomScale - mScrollView.contentOffset.y) - mPopupStationView.frame.size.height / 2
+            var ptY1:CGFloat=(locatPoint.y * mScrollView.zoomScale - mScrollView.contentOffset.y) - mPopupStationView.frame.size.height
+            
+            
+            println("\(locatPoint.x),\(locatPoint.y )     ?         \(mScrollView.zoomScale),   \(mScrollView.contentOffset.y)")
+            
             var height1:CGFloat=mPopupStationView.frame.size.height
             var width1:CGFloat=mPopupStationView.frame.size.width
             mPopupStationView.frame = CGRectMake(ptX1, ptY1, width1, height1)
             mPopupStationView.hidden = false
             
             addUITag()
-        } else {
-            mPopupStationView.hidden = true
         }
     }
+    
+    // 设定全局变量
+    func setPageData(stationData: CMN002StationData) {
+        
+        self.mPopupStationName.text = stationData.statNameExt1 as String
+        self.mPopupStationNameJP.text = stationData.statName as String + "(" +  stationData.statNameKana as String + ")"
+        
+        self.mCuttentStationID = stationData.statId as String
+        self.selectStationNameJP  = stationData.statName as String
+        self.selectStationMetroID = stationData.statNameMetroId as String
+        self.selectStationNameKana = stationData.statNameKana as String
+        self.stationGrideFromX = stationData.statFromX / 2
+        self.stationGrideFromY = stationData.statFromY / 2
+        self.stationGrideToX = stationData.statToX / 2
+        self.stationGrideToY = stationData.statToY / 2
+        self.selectStationGroupId = stationData.statGroupId as String
+        
+        locatPoint.x = (stationGrideFromX  + stationGrideToX ) / 2
+        locatPoint.y = stationGrideFromY
+        
+    }
+    
+    func setPopViewInLineGraph(PointX : CGFloat, PointY : CGFloat) {
+        
+        
+        // 将scroll大小固定，设置弹出气泡信息
+        self.mScrollView.zoomScale = 1
+        var offertoPoint : CGPoint = CGPoint()
+        offertoPoint.x = PointX - (mScreenSize.width / 2)
+        
+        offertoPoint.y = -64 + PointY - (mScreenSize.height / 2)
+        self.mScrollView.setContentOffset(offertoPoint, animated: true)
+        
+        var ptX1:CGFloat=(locatPoint.x * mScrollView.zoomScale - mScrollView.contentOffset.x ) - mPopupStationView.frame.size.width / 2
+        var ptY1:CGFloat=(locatPoint.y * mScrollView.zoomScale - mScrollView.contentOffset.y) - mPopupStationView.frame.size.height / 2
+        
+        
+        
+        println("\(locatPoint.y)     ?      \(mScrollView.zoomScale)  ?  \(mScrollView.contentOffset.y)")
+        
+        var height1:CGFloat=mPopupStationView.frame.size.height
+        var width1:CGFloat=mPopupStationView.frame.size.width
+        mPopupStationView.frame = CGRectMake(ptX1, ptY1, width1, height1)
+        mPopupStationView.hidden = false
+        
+        addUITag()
+    }
+    
+
     
     // 显示弹框上站点的所有线路图标
     func popStaionViewLinesImg(stationData:CMN002StationData) {
@@ -440,6 +513,30 @@ class Main: UIViewController,UIScrollViewDelegate {
             mPopupLineView.addSubview(mlinesLineImg)
         }
         mPopupViewSetImage.addSubview(mPopupLineView)
+        
+        
+        
+        // 添加相应的地表个数
+         odbLandMark("购物")
+        
+         if (landMarkArr.count > 0 ){
+            mViewShowLandMark(landMarkArr.count, viewTag : 2002)
+        
+         }
+        
+         odbLandMark("景点")
+         if (landMarkArr.count > 0 ){
+            mViewShowLandMark(landMarkArr.count, viewTag : 2003)
+            
+         }
+         odbLandMark("美食")
+         if (landMarkArr.count > 0 ){
+            mViewShowLandMark(landMarkArr.count, viewTag : 2004)
+            
+         }
+        
+        
+        
     }
     
     
@@ -494,6 +591,8 @@ class Main: UIViewController,UIScrollViewDelegate {
         
         routeSearch.startStationText = self.setStationStartId
         routeSearch.endStationText = self.setStationEndId
+        
+        setSationIdCache()
         
         var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
         self.navigationItem.backBarButtonItem = backButton
@@ -585,5 +684,88 @@ class Main: UIViewController,UIScrollViewDelegate {
         var mpopViewSizeHeigh:CGFloat = mPopupStationView.frame.size.height
         
         mPopupStationView.frame = CGRectMake((locatPoint.x * scrollView.zoomScale - scrollView.contentOffset.x ) - mpopViewSizeWidth / 2, (locatPoint.y * scrollView.zoomScale - scrollView.contentOffset.y) - mpopViewSizeHeigh, mpopViewSizeWidth, mpopViewSizeHeigh)
+    }
+
+    // 查询站点的地标信息
+    func odbLandMark(type: String) {
+
+        var mstT04Table:MstT04LandMarkTable = MstT04LandMarkTable()
+         landMarkArr = mstT04Table.queryLandMarkByStatId(self.selectStationGroupId, lmakType: type)
+        
+    }
+    
+    // 跳转到相应地表
+    @IBAction func showLnadMarkList(sender : UIButton) {
+    var landMark: LandMarkListController = self.storyboard?.instantiateViewControllerWithIdentifier("landmarklist") as LandMarkListController
+    
+    if (sender == mPopupBtnTravle) {
+        odbLandMark("景点")
+    landMark.title = "INF002_11".localizedString()
+    } else if (sender == mPopupBtnFood) {
+        odbLandMark("美食")
+    landMark.title = "INF002_09".localizedString()
+    } else {
+        odbLandMark("购物")
+    landMark.title = "PUBLIC_09".localizedString()
+    }
+    
+    var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+    self.navigationItem.backBarButtonItem = backButton
+    
+    landMark.landMarks = landMarkArr as? Array<MstT04LandMarkTable>
+    
+    self.navigationController?.pushViewController(landMark, animated: true)
+    }
+    
+    
+    // 添加地表个数的小lable
+    func mViewShowLandMark(landMarkCount : Int, viewTag : Int) {
+        
+        var mlbl = mPopupStationView.viewWithTag(viewTag) as UILabel!
+        if (mlbl != nil) {
+            mlbl.removeFromSuperview()
+        }
+        
+        var mlblShowCount : UILabel = UILabel()
+        mlblShowCount.tag = viewTag
+        mlblShowCount.text = String(landMarkCount)
+        mlblShowCount.font = UIFont.systemFontOfSize(12)
+        mlblShowCount.textColor = UIColor.whiteColor()
+        mlblShowCount.backgroundColor = UIColor.redColor()
+        mlblShowCount.layer.cornerRadius = 20
+        if (viewTag == 2002) {
+        mlblShowCount.frame = CGRectMake(71,156,8,11)
+        } else if (viewTag == 2003) {
+        mlblShowCount.frame = CGRectMake(141,156,8,11)
+        } else if (viewTag == 2004) {
+        mlblShowCount.frame = CGRectMake(211,156,8,11)
+        }
+        
+        self.mPopupStationView.addSubview(mlblShowCount)
+
+    }
+    
+    // 放置本地数据 记录起点和重点的ID
+    func setSationIdCache() {
+        
+        var accoutDefault : NSUserDefaults = NSUserDefaults()
+        var historyStationdate: NSMutableArray = NSMutableArray.array()
+        historyStationdate.addObject(self.setStationStartId)
+        historyStationdate.addObject(self.setStationEndId)
+        accoutDefault.setObject(historyStationdate, forKey: "historyStationdata")
+        
+    }
+    
+    // 读取本地数据 记录起点和重点的ID
+    func readStationIdCache() {
+        var accoutDefaultRead : NSUserDefaults = NSUserDefaults()
+        
+        println(accoutDefaultRead.objectForKey("historyStationdata")?.description)
+        
+        if accoutDefaultRead.objectForKey("historyStationdata") != nil {
+            var readdate : NSMutableArray = accoutDefaultRead.objectForKey("historyStationdata") as NSMutableArray
+            self.setStationStartId = readdate[0] as String
+            self.setStationEndId = readdate[1] as String
+        }
     }
 }

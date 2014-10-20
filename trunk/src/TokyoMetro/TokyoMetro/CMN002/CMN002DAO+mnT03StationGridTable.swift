@@ -21,4 +21,14 @@ extension CmnT03StationGridTable {
         
         return self.excuteQuery(sqlStr, withArgumentsInArray:argsArr);
     }
+    
+    func findPointByStatId(StationId:String) -> NSArray?{
+        let sqlStr:String = "select * , ROWID from CMNT03_STATION_GRID where STAT_ID = '\(StationId)' "
+        
+        let argsArr:NSMutableArray = NSMutableArray.array()
+        
+        argsArr.addObject(StationId)
+        
+        return self.excuteQuery(sqlStr, withArgumentsInArray:argsArr);
+    }
 }
