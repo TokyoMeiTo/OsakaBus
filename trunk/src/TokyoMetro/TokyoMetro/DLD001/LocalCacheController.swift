@@ -27,7 +27,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
 
     var classType:Int = 0
     
-    let uri:String = "http://192.168.1.84/Resource.zip" // "http://osakabus.sinaapp.com/Resource.zip"//
+    let uri:String = "http://osakabus.sinaapp.com/Resource.zip"//"http://www.okasan.net/Resource.zip"
     let filePath:String = "Resource.zip"
     let unZipPath:String = "TokyoMetroCache"
     
@@ -67,6 +67,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
         
         switch classType{
         case 0:
+            
             self.navigationItem.setHidesBackButton(true, animated: false)
         default:
             println("nothing")
@@ -207,8 +208,12 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
                 // 在子线程中更新UI
                 dispatch_sync(dispatch_get_main_queue()) { () -> Void in
                     self.showProgress()
-                    var progressTemp = "\(progress.fractionCompleted * 100)".left(5)
-                    self.loadProgress = "正在下载: " + progressTemp + " %"
+                    var formatter:NSNumberFormatter = NSNumberFormatter()
+                    formatter.formatterBehavior = NSNumberFormatterBehavior.Behavior10_4
+                    formatter.positiveFormat = "0.00;"
+                    
+                    var progressTemp = formatter.stringFromNumber(progress.fractionCompleted * 100) //"\(progress.fractionCompleted * 100)".left(5)
+                    self.loadProgress = "正在下载: " + "\(progressTemp)" + " %"
                     //self.tbList.reloadData()
                     self.lblProgress.text = self.loadProgress
                 }

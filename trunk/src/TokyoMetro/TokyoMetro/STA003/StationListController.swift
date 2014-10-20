@@ -302,7 +302,7 @@ class StationListController: UIViewController, GPSDelegate{
     }
 
     /**
-     * 0.0KM
+     * 0.00KM
      */
     class func convertDistance(distance: CDouble) -> String{
         let DIDTANCE:String = "\(distance / 1000)"
