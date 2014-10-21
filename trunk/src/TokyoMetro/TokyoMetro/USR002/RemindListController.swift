@@ -103,7 +103,7 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
     }
     
     override func viewDidDisappear(animated: Bool) {
-
+        tbList.reloadData()
     }
     
     override func didReceiveMemoryWarning() {
@@ -603,6 +603,42 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
         app.registerUserNotificationSettings(settings)
         app.scheduleLocalNotification(localNotif)
     }
+
+    /**
+     * 本地推送消息(首末班车提醒)
+     */
+    func pushNotificationLastMetro(Msg: String?, notifyTime:String){
+        
+        var time = convertTrainTime(notifyTime)
+        
+        var fromDate:NSDate = NSDate()
+        
+        var calendar:NSCalendar = NSCalendar(identifier: NSGregorianCalendar)
+        calendar.timeZone = NSTimeZone.systemTimeZone()
+        
+        // 注册推送权限
+        var settings = UIUserNotificationSettings(forTypes: UIUserNotificationType.Alert | UIUserNotificationType.Badge | UIUserNotificationType.Sound, categories: nil)
+        
+        var localNotif:UILocalNotification = UILocalNotification()
+        localNotif.fireDate = NSDate()
+        localNotif.timeZone = NSTimeZone.localTimeZone()
+        localNotif.soundName = UILocalNotificationDefaultSoundName
+        if(Msg != nil){
+            localNotif.alertBody = Msg
+        }
+        
+        // 通知
+        var app = UIApplication.sharedApplication()
+        app.registerUserNotificationSettings(settings)
+        app.scheduleLocalNotification(localNotif)
+    }
+
+//    func calTime(fromDate:NSDate, toDate:NSDate) -> Int{
+//        if(toDate - fromDate < 0){
+//            return -1
+//        }
+//        return toDate - fromDate
+//    }
     
     
     // MARK: - Segues
@@ -652,6 +688,8 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
                 subview.removeFromSuperview()
             }
         }
+        
+        pushNotificationLastMetro("\(items[indexPath.section][0])的\(items[indexPath.section][3][indexPath.row])即将发车", notifyTime:"\(items[indexPath.section][3][indexPath.row])")
         
         var lblMetroType = UILabel(frame: CGRect(x:15,y:20,width:230,height:30))
         lblMetroType.font = UIFont.systemFontOfSize(14)

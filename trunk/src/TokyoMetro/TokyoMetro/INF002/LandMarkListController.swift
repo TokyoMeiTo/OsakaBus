@@ -290,6 +290,14 @@ class LandMarkListController: UIViewController, UITableViewDelegate, NSObjectPro
                 cell.addSubview(imageViewStar)
             }
         }
+        
+        if("\(landMarks![indexPath.row].item(MSTT04_LANDMARK_OLIMPIC_FLAG))" == "1"){
+            
+            var imageViewOlimpic = UIImageView(frame: CGRectMake(80, 20, 30, 30))
+            var imageOlimpic = UIImage(named: "inf00213.png")
+            imageViewOlimpic.image = imageOlimpic
+            cell.addSubview(imageViewOlimpic)
+        }
         cell.selectionStyle = UITableViewCellSelectionStyle.None
         return cell
     }

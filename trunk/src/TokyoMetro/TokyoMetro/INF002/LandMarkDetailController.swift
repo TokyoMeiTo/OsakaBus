@@ -146,6 +146,10 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, NSObjectP
             stationDetail.stat_id = "\(stations![didSelectRowAtIndexPath.row - 10].item(MSTT02_STAT_ID))"
             stationDetail.cellJPName = "\(stations![didSelectRowAtIndexPath.row - 10].item(MSTT02_STAT_NAME))"
             stationDetail.cellJPNameKana = "\(stations![didSelectRowAtIndexPath.row - 10].item(MSTT02_STAT_NAME_KANA))"
+            
+            var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+            self.navigationItem.backBarButtonItem = backButton
+            
             self.navigationController!.pushViewController(stationDetail, animated:true)
         }
     }
@@ -493,9 +497,9 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, NSObjectP
                 lblStation.textAlignment = NSTextAlignment.Left
                 cell.addSubview(lblStation)
                 
-                var lblDetail = UILabel(frame: CGRect(x:15,y:25,width:tableView.frame.width - 30,height:25))
-                lblDetail.font = UIFont.systemFontOfSize(14)
-                lblDetail.textColor = UIColor.lightGrayColor()
+                var lblDetail = UILabel(frame: CGRect(x:15,y:30,width:tableView.frame.width - 30,height:25))
+                lblDetail.font = UIFont.systemFontOfSize(13)
+                lblDetail.textColor = UIColor.darkGrayColor()
                 lblDetail.text = "\(tableMstT02.item(MSTT02_STAT_NAME))" + "(\(tableMstT02.item(MSTT02_STAT_NAME_KANA)))"
                 lblDetail.textAlignment = NSTextAlignment.Left
                 cell.addSubview(lblDetail)

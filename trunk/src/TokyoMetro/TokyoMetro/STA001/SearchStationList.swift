@@ -21,7 +21,6 @@ class SearchStationList: UIViewController, UITableViewDelegate, UITableViewDataS
     var routeSearch:RouteSearch?
     
     var focusNumber = ""
-    var routeSearch:RouteSearch?
     
     override func viewDidLoad() {
         super.viewDidLoad()
