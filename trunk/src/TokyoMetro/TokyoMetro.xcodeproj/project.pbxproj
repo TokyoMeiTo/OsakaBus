@@ -81,7 +81,6 @@
 		A17EDAB119E8CD4200D58386 /* HelpContentDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17EDAB019E8CD4200D58386 /* HelpContentDetail.swift */; };
 		A1831B2119DA54C5002639DB /* MstT04LandMarkTable.m in Sources */ = {isa = PBXBuildFile; fileRef = A1831B2019DA54C5002639DB /* MstT04LandMarkTable.m */; };
 		A184391719EA64C200E11778 /* LinkWebSite.swift in Sources */ = {isa = PBXBuildFile; fileRef = A184391619EA64C200E11778 /* LinkWebSite.swift */; };
-		A184391919EAB58F00E11778 /* ComercialInsideDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = A184391819EAB58F00E11778 /* ComercialInsideDetail.swift */; };
 		A184391C19EAB71900E11778 /* StaT03ComercialInsideTable.m in Sources */ = {isa = PBXBuildFile; fileRef = A184391B19EAB71900E11778 /* StaT03ComercialInsideTable.m */; };
 		A184391E19EABE1900E11778 /* StationFacilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = A184391D19EABE1900E11778 /* StationFacilities.swift */; };
 		A18474FF19E4E1D100D2DD7B /* Sta003Dao.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18474FE19E4E1D100D2DD7B /* Sta003Dao.swift */; };
@@ -109,16 +108,13 @@
 		A1ECD48C19D2D41F00D5A0E2 /* LandMarkListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1ECD45819D2D41F00D5A0E2 /* LandMarkListController.swift */; };
 		A1ECD48D19D2D41F00D5A0E2 /* LandMarkMapController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1ECD45919D2D41F00D5A0E2 /* LandMarkMapController.swift */; };
 		A1ECD48E19D2D41F00D5A0E2 /* LandMarkSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1ECD45A19D2D41F00D5A0E2 /* LandMarkSearchController.swift */; };
-		A1ECD48F19D2D41F00D5A0E2 /* HelpContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1ECD45C19D2D41F00D5A0E2 /* HelpContent.swift */; };
 		A1ECD49019D2D41F00D5A0E2 /* HelpContentList.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1ECD45D19D2D41F00D5A0E2 /* HelpContentList.swift */; };
 		A1ECD49119D2D41F00D5A0E2 /* TipsContentList.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1ECD45F19D2D41F00D5A0E2 /* TipsContentList.swift */; };
 		A1ECD49219D2D41F00D5A0E2 /* TipsDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1ECD46019D2D41F00D5A0E2 /* TipsDetail.swift */; };
-		A1ECD49319D2D41F00D5A0E2 /* TipsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1ECD46119D2D41F00D5A0E2 /* TipsList.swift */; };
 		A1ECD49419D2D41F00D5A0E2 /* StationLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1ECD46419D2D41F00D5A0E2 /* StationLine.swift */; };
 		A1ECD49519D2D41F00D5A0E2 /* LineStationList.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1ECD46619D2D41F00D5A0E2 /* LineStationList.swift */; };
 		A1ECD49619D2D41F00D5A0E2 /* SearchStationList.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1ECD46819D2D41F00D5A0E2 /* SearchStationList.swift */; };
 		A1ECD49719D2D41F00D5A0E2 /* ExitInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1ECD46A19D2D41F00D5A0E2 /* ExitInfo.swift */; };
-		A1ECD49819D2D41F00D5A0E2 /* ExitMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1ECD46B19D2D41F00D5A0E2 /* ExitMap.swift */; };
 		A1ECD49919D2D41F00D5A0E2 /* FacilityList.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1ECD46C19D2D41F00D5A0E2 /* FacilityList.swift */; };
 		A1ECD49A19D2D41F00D5A0E2 /* StationDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1ECD46D19D2D41F00D5A0E2 /* StationDetail.swift */; };
 		A1ECD49B19D2D41F00D5A0E2 /* StationImg.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1ECD46E19D2D41F00D5A0E2 /* StationImg.swift */; };
@@ -315,7 +311,6 @@
 		A1831B1F19DA54C5002639DB /* MstT04LandMarkTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MstT04LandMarkTable.h; sourceTree = "<group>"; };
 		A1831B2019DA54C5002639DB /* MstT04LandMarkTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MstT04LandMarkTable.m; sourceTree = "<group>"; };
 		A184391619EA64C200E11778 /* LinkWebSite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkWebSite.swift; sourceTree = "<group>"; };
-		A184391819EAB58F00E11778 /* ComercialInsideDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComercialInsideDetail.swift; sourceTree = "<group>"; };
 		A184391A19EAB71900E11778 /* StaT03ComercialInsideTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StaT03ComercialInsideTable.h; sourceTree = "<group>"; };
 		A184391B19EAB71900E11778 /* StaT03ComercialInsideTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StaT03ComercialInsideTable.m; sourceTree = "<group>"; };
 		A184391D19EABE1900E11778 /* StationFacilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StationFacilities.swift; sourceTree = "<group>"; };
@@ -356,16 +351,13 @@
 		A1ECD45819D2D41F00D5A0E2 /* LandMarkListController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LandMarkListController.swift; sourceTree = "<group>"; };
 		A1ECD45919D2D41F00D5A0E2 /* LandMarkMapController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LandMarkMapController.swift; sourceTree = "<group>"; };
 		A1ECD45A19D2D41F00D5A0E2 /* LandMarkSearchController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LandMarkSearchController.swift; sourceTree = "<group>"; };
-		A1ECD45C19D2D41F00D5A0E2 /* HelpContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpContent.swift; sourceTree = "<group>"; };
 		A1ECD45D19D2D41F00D5A0E2 /* HelpContentList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpContentList.swift; sourceTree = "<group>"; };
 		A1ECD45F19D2D41F00D5A0E2 /* TipsContentList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TipsContentList.swift; sourceTree = "<group>"; };
 		A1ECD46019D2D41F00D5A0E2 /* TipsDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TipsDetail.swift; sourceTree = "<group>"; };
-		A1ECD46119D2D41F00D5A0E2 /* TipsList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TipsList.swift; sourceTree = "<group>"; };
 		A1ECD46419D2D41F00D5A0E2 /* StationLine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StationLine.swift; sourceTree = "<group>"; };
 		A1ECD46619D2D41F00D5A0E2 /* LineStationList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineStationList.swift; sourceTree = "<group>"; };
 		A1ECD46819D2D41F00D5A0E2 /* SearchStationList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchStationList.swift; sourceTree = "<group>"; };
 		A1ECD46A19D2D41F00D5A0E2 /* ExitInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExitInfo.swift; sourceTree = "<group>"; };
-		A1ECD46B19D2D41F00D5A0E2 /* ExitMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExitMap.swift; sourceTree = "<group>"; };
 		A1ECD46C19D2D41F00D5A0E2 /* FacilityList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacilityList.swift; sourceTree = "<group>"; };
 		A1ECD46D19D2D41F00D5A0E2 /* StationDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StationDetail.swift; sourceTree = "<group>"; };
 		A1ECD46E19D2D41F00D5A0E2 /* StationImg.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StationImg.swift; sourceTree = "<group>"; };
@@ -917,7 +909,6 @@
 		A1ECD45B19D2D41F00D5A0E2 /* INF003 */ = {
 			isa = PBXGroup;
 			children = (
-				A1ECD45C19D2D41F00D5A0E2 /* HelpContent.swift */,
 				A1ECD45D19D2D41F00D5A0E2 /* HelpContentList.swift */,
 				A17EDAB019E8CD4200D58386 /* HelpContentDetail.swift */,
 			);
@@ -929,7 +920,6 @@
 			children = (
 				A1ECD45F19D2D41F00D5A0E2 /* TipsContentList.swift */,
 				A1ECD46019D2D41F00D5A0E2 /* TipsDetail.swift */,
-				A1ECD46119D2D41F00D5A0E2 /* TipsList.swift */,
 			);
 			path = INF004;
 			sourceTree = "<group>";
@@ -963,12 +953,10 @@
 			children = (
 				A184391D19EABE1900E11778 /* StationFacilities.swift */,
 				A1ECD46A19D2D41F00D5A0E2 /* ExitInfo.swift */,
-				A1ECD46B19D2D41F00D5A0E2 /* ExitMap.swift */,
 				A1ECD46C19D2D41F00D5A0E2 /* FacilityList.swift */,
 				A1ECD46D19D2D41F00D5A0E2 /* StationDetail.swift */,
 				A1ECD46E19D2D41F00D5A0E2 /* StationImg.swift */,
 				A1ECD46F19D2D41F00D5A0E2 /* TimeTable.swift */,
-				A184391819EAB58F00E11778 /* ComercialInsideDetail.swift */,
 			);
 			path = STA002;
 			sourceTree = "<group>";
@@ -1273,7 +1261,6 @@
 				A1A02C3019D7F317001C7D73 /* String+Item.swift in Sources */,
 				3B24211019B5B5BC00DAE392 /* FMDatabaseQueue.m in Sources */,
 				A1F1FC8919E96E74004A59C9 /* AFSecurityPolicy.m in Sources */,
-				A1ECD48F19D2D41F00D5A0E2 /* HelpContent.swift in Sources */,
 				3B0AF91719D3BDB000A7DF1E /* String+Convert.swift in Sources */,
 				A15CA4AA19D57BDD00716A00 /* UsrT03FavoriteTable.m in Sources */,
 				3B2420E319B5AD1500DAE392 /* OWINSocketRequest.m in Sources */,
@@ -1304,7 +1291,6 @@
 				3B24209619B5ABFD00DAE392 /* OAPAsyncParser.m in Sources */,
 				3B2420D919B5AD1500DAE392 /* GTMBase64.m in Sources */,
 				3B2420AA19B5ABFD00DAE392 /* ONWHttpRequest.m in Sources */,
-				A1ECD49819D2D41F00D5A0E2 /* ExitMap.swift in Sources */,
 				3B2420DE19B5AD1500DAE392 /* NSString+Decimal.m in Sources */,
 				3B2420A419B5ABFD00DAE392 /* ASIHTTPRequest.m in Sources */,
 				A184391719EA64C200E11778 /* LinkWebSite.swift in Sources */,
@@ -1317,7 +1303,6 @@
 				A1ECD4A019D2D41F00D5A0E2 /* AddSubway.swift in Sources */,
 				A1F1FC9919E96E74004A59C9 /* zip.c in Sources */,
 				3B24210F19B5B5BC00DAE392 /* FMDatabasePool.m in Sources */,
-				A184391919EAB58F00E11778 /* ComercialInsideDetail.swift in Sources */,
 				3B2420A319B5ABFD00DAE392 /* ASIFormDataRequest.m in Sources */,
 				A17EDAAF19E8C0FE00D58386 /* LocalCacheController.swift in Sources */,
 				A15CA4A619D57BDD00716A00 /* LinT05RouteDetailTable.m in Sources */,
@@ -1325,7 +1310,6 @@
 				A1F1FC8D19E96E74004A59C9 /* AFURLSessionManager.m in Sources */,
 				A1ECD48019D2D41F00D5A0E2 /* InfT05LineKnowledgeTable.m in Sources */,
 				3B24211219B5B5BC00DAE392 /* ODBDataBase.m in Sources */,
-				A1ECD49319D2D41F00D5A0E2 /* TipsList.swift in Sources */,
 				3B2420A119B5ABFD00DAE392 /* ASIDataDecompressor.m in Sources */,
 				A1ECD48119D2D41F00D5A0E2 /* LinT04RouteTable.m in Sources */,
 				A1ECD49719D2D41F00D5A0E2 /* ExitInfo.swift in Sources */,

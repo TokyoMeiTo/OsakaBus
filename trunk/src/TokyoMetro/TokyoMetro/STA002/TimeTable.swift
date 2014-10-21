@@ -106,7 +106,7 @@ class TimeTable: UIViewController,UITableViewDelegate,UITableViewDataSource {
     
     func odbDirtStatId() {
         var table = LinT01TrainScheduleTrainTable()
-        var rows = table.excuteQuery("select * from LINT01_TRAIN_SCHEDULE where 1 = 1 and STAT_ID = '\(statId)' and FIRST_TRAIN_FLAG = '1' and SCHE_TYPE = '1'")
+        var rows = table.excuteQuery("select *, ROWID from LINT01_TRAIN_SCHEDULE where 1 = 1 and STAT_ID = '\(statId)' and FIRST_TRAIN_FLAG = '1' and SCHE_TYPE = '1'")
         
         dirtStationArr = [String]()
         for key in rows {

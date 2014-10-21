@@ -348,7 +348,7 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <segments>
                                 <segment title="按路线"/>
-                                <segment title="按站点"/>
+                                <segment title="按车站"/>
                             </segments>
                             <connections>
                                 <action selector="segmentChangedLinster:" destination="fkk-Zu-cba" eventType="valueChanged" id="KRm-3d-paW"/>

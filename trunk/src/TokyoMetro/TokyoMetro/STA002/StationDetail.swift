@@ -51,7 +51,7 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
     // 景点、购物、美食数组
     var landMarkArr: NSArray = NSArray.array()
     // 其他链接
-    var selectList = ["车站时刻表", "车站结构图","车站便利设施", "车站商业设施"]
+    var selectList = ["STA002_02".localizedString(), "STA002_03".localizedString(),"STA002_05".localizedString(), "STA002_04".localizedString()]
     
     // 其他链接
     var landMarkTitleList = ["INF002_11".localizedString(), "INF002_09".localizedString(), "PUBLIC_09".localizedString()]
@@ -701,15 +701,6 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
         self.navigationItem.backBarButtonItem = backButton
         
         self.navigationController?.pushViewController(facilityList, animated: true)
-    }
-    
-    func showExitMap() {
-        var exitMap: ExitMap = self.storyboard?.instantiateViewControllerWithIdentifier("ExitMap") as ExitMap
-        
-        var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
-        self.navigationItem.backBarButtonItem = backButton
-        
-        self.navigationController?.pushViewController(exitMap, animated: true)
     }
 
 

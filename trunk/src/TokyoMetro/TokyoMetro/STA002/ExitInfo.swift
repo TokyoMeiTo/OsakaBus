@@ -29,7 +29,7 @@ class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource, MK
     
     var landMarkArr: NSArray = NSArray.array()
     
-    var landMarkType:String = "景点"
+//    var landMarkType:String = "景点"
     
     var landMarkLocation:CLLocation?
     
@@ -227,6 +227,12 @@ class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource, MK
         return "出口信息"
     }
     
+//    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+//        var view = UIView(frame: CGRectMake(0, 0, 320, 55))
+//        
+//        var lblTarget
+//    }
+//    
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         

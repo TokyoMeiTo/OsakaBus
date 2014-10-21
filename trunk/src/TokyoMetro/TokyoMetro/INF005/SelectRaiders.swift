@@ -40,13 +40,13 @@ class SelectRaiders: UIViewController {
         var txtTitle = ""
         if (sender.tag == 201) {
             url = "http://m.mafengwo.cn/travel-scenic-spot/mafengwo/10222.html"
-            txtTitle = "蚂蜂窝"
+            txtTitle = "INF005_01".localizedString()
         } else if (sender.tag == 202) {
             url = "http://m.ctrip.com/you/place/294"
-            txtTitle = "携程"
+            txtTitle = "INF005_02".localizedString()
         } else {
             url = "http://touch.go.qunar.com/300679?#"
-            txtTitle = "去哪儿"
+            txtTitle = "INF005_03".localizedString()
         }
         
         var detail: RaidersDetail = self.storyboard?.instantiateViewControllerWithIdentifier("RaidersDetail") as RaidersDetail
@@ -65,13 +65,13 @@ class SelectRaiders: UIViewController {
         var txtTitle = ""
         if (sender.tag == 301) {
             pdfUrl = "mayiwo".getStrategyPDFPath()
-            txtTitle = "蚂蜂窝"
+            txtTitle = "INF005_01".localizedString()
         } else if (sender.tag == 302) {
             pdfUrl = "xiecheng".getStrategyPDFPath()
-            txtTitle = "携程"
+            txtTitle = "INF005_02".localizedString()
         } else {
             pdfUrl = "qunaer".getStrategyPDFPath()
-            txtTitle = "去哪儿"
+            txtTitle = "INF005_03".localizedString()
         }
         
         var detail: RaidersDetail = self.storyboard?.instantiateViewControllerWithIdentifier("RaidersDetail") as RaidersDetail

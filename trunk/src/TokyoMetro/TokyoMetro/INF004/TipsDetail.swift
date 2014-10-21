@@ -82,11 +82,11 @@ class TipsDetail: UIViewController {
         var time:String = NSDate().description.dateWithFormat("yyyy-MM-dd HH:mm:ss +0000", target: "yyyyMMddHHmmss")
         
         if (table.excuteUpdate("update INFT02_TIPS set FAVO_FLAG = '1',FAVO_TIME = \(time) where ROWID = \(rowId)")) {
-            var sureBtn: UIAlertView = UIAlertView(title: "", message: "收藏成功！", delegate: self, cancelButtonTitle: "PUBLIC_06".localizedString())
+            var sureBtn: UIAlertView = UIAlertView(title: "", message: "CMN003_21".localizedString(), delegate: self, cancelButtonTitle: "PUBLIC_06".localizedString())
             
             sureBtn.show()
         } else {
-            var sureBtn: UIAlertView = UIAlertView(title: "", message: "收藏失败！", delegate: self, cancelButtonTitle: "PUBLIC_06".localizedString())
+            var sureBtn: UIAlertView = UIAlertView(title: "", message: "CMN003_20".localizedString(), delegate: self, cancelButtonTitle: "PUBLIC_06".localizedString())
             
             sureBtn.show()
         }

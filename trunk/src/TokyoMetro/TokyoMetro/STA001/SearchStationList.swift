@@ -63,7 +63,7 @@ class SearchStationList: UIViewController, UITableViewDelegate, UITableViewDataS
         
         stationArr.removeAllObjects()
         if(name.isEmpty){
-            self.table.reloadData()
+            odbStation()
             return;
         }
         
@@ -196,7 +196,7 @@ class SearchStationList: UIViewController, UITableViewDelegate, UITableViewDataS
     
     
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
-//        searchBar.resignFirstResponder()
+        searchBar.resignFirstResponder()
         self.navigationController?.popViewControllerAnimated(true)
     }
     
