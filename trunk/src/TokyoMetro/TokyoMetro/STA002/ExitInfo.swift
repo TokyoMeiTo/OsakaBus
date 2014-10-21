@@ -12,10 +12,24 @@ import CoreLocation
 
 class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource, MKMapViewDelegate, UIActionSheetDelegate {
 
+    /*******************************************************************************
+    * IBOutlets
+    *******************************************************************************/
     @IBOutlet weak var exitTable: UITableView!
     
     /* 地图MKMapView */
     @IBOutlet weak var mkMap: MKMapView!
+    
+
+    /*******************************************************************************
+    * Public Properties
+    *******************************************************************************/
+    
+    var statId: String = ""
+    
+    /*******************************************************************************
+    * Private Properties
+    *******************************************************************************/
     
     /* 起点軽度   */
     var fromLat:CDouble = 35.683618//31.23312372 // 天地科技广场1号楼
@@ -23,19 +37,17 @@ class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource, MK
     var fromLon:CDouble = 139.766453//121.38368547 // 天地科技广场1号楼
     
     /* 最近站点信息 */
-//    var stations:Array<MstT02StationTable>?
+    //    var stations:Array<MstT02StationTable>?
     /* 地标 */
-//    var landMark:MstT04LandMarkTable?
+    //    var landMark:MstT04LandMarkTable?
     
     var landMarkArr: NSArray = NSArray.array()
     
-//    var landMarkType:String = "景点"
+    //    var landMarkType:String = "景点"
     
     var landMarkLocation:CLLocation?
     
     var rows: NSArray!
-    
-    var statId: String = ""
     
     var arrList: NSMutableArray = NSMutableArray.array()
     
@@ -44,18 +56,158 @@ class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource, MK
     var stationLength: String = ""
     
     var index: Int = -1
+    
+    /*******************************************************************************
+    * Overrides From UIViewController
+    *******************************************************************************/
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.title = "出口一览"
+        self.title = "STA002_01".localizedString()
         odbExitInfo()
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
+    
+    /*******************************************************************************
+    *    Implements Of UITableViewDelegate
+    *******************************************************************************/
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        return rows.count
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
+        
+        let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("ExitInfoCell", forIndexPath: indexPath) as UITableViewCell
+        
+        var map = rows[indexPath.row] as StaT01StationExitTable
+        (cell.viewWithTag(301) as UILabel).text = map.item(STAT01_STAT_EXIT_NAME) as? String
+        if (index == indexPath.row && stationLength != "") {
+            (cell.viewWithTag(302) as UILabel).text = stationLength + " " + "STA002_17".localizedString()
+        } else {
+            (cell.viewWithTag(302) as UILabel).text = ""
+        }
+        
+        return cell
+        
+    }
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 44
+    }
+    
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return "STA002_19".localizedString()
+    }
+    
+    //    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    //        var view = UIView(frame: CGRectMake(0, 0, 320, 55))
+    //
+    //        var lblTarget
+    //    }
+    //
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
+        var key = rows[indexPath.row] as StaT01StationExitTable
+        
+        //        var statLat: Double = ("\(key.item(STAT01_STAT_EXIT_LAT))" as NSString).doubleValue
+        //        var statLon: Double = ("\(key.item(STAT01_STAT_EXIT_LON))" as NSString).doubleValue
+        //        var location: CLLocation = CLLocation(latitude: statLat, longitude: statLon)
+        if (locatonArr.count > 0) {
+            locatonArr[0] = landMarkLocation!
+            if (locatonArr.count == 2) {
+                stationLength = "\(Int(calcDistance(locatonArr[0], statLocation: locatonArr[1])))"
+                drawLineWithLocationArray(locatonArr)
+                exitTable.reloadData()
+            }
+        } else {
+            locatonArr.append(landMarkLocation!)
+        }
+        index = indexPath.row
+    }
+    
+    /*******************************************************************************
+    *    Implements Of MKMapViewDelegate
+    *******************************************************************************/
+    
+    func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) ->
+        MKAnnotationView!{
+            if (annotation is MKUserLocation){
+                //return nil so map view draws "blue dot" for standard user location
+                return nil
+            }
+            var pinView:MKPinAnnotationView?
+            
+            // 4'3'5
+            var img = UIImage(named: "INF00204.png")
+            
+            
+            var mapTitle: String! = annotation.title
+            if (mapTitle == statId.station() && annotation.subtitle != nil) {
+                pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: statId.station())
+                img = UIImage(named: "STA00301.png")
+            } else {
+                pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: annotation.title!)
+                
+                switch (annotation.subtitle! as String) {
+                case "景点":
+                    img = UIImage(named: "INF00204.png")
+                case "美食":
+                    img = UIImage(named: "INF00203.png")
+                case "购物":
+                    img = UIImage(named: "INF00205.png")
+                default:
+                    println("nothing")
+                }
+                
+            }
+            
+            pinView!.pinColor = .Red
+            pinView!.image = img
+            pinView!.canShowCallout = true
+            pinView!.frame = CGRectMake((CGRectMake(0, 0, 185, 162).size.width-16)/2, 56, 30, 35)
+            
+            return pinView!
+    }
 
+    func mapView(mapView: MKMapView!, didSelectAnnotationView view: MKAnnotationView!){
+        if(view.annotation.subtitle == nil){
+            return
+        }
+        if(locatonArr.count > 0 && locatonArr.count < 2) {
+            //            var locations:Array<CLLocation> = Array<CLLocation>()
+            //            locations.append(location!)
+            locatonArr.append(CLLocation(latitude: view.annotation.coordinate.latitude, longitude: view.annotation.coordinate.longitude))
+            
+            stationLength = "\(Int(calcDistance(locatonArr[0], statLocation: locatonArr[1])))"
+            drawLineWithLocationArray(locatonArr)
+            exitTable.reloadData()
+        } else if (locatonArr.count == 2) {
+            locatonArr[1] = CLLocation(latitude: view.annotation.coordinate.latitude, longitude: view.annotation.coordinate.longitude)
+            
+            stationLength = "\(Int(calcDistance(locatonArr[0], statLocation: locatonArr[1])))"
+            drawLineWithLocationArray(locatonArr)
+            exitTable.reloadData()
+        }
+    }
+    
+    func mapView(mapView: MKMapView!, rendererForOverlay overlay: MKOverlay!) -> MKOverlayRenderer!{
+        var renderer: MKPolylineRenderer = MKPolylineRenderer(overlay: overlay)
+        renderer.lineWidth = 3.0
+        
+        return renderer
+    }
+
+    /*******************************************************************************
+    *    Private Methods
+    *******************************************************************************/
     
     func odbExitInfo() {
         var table = StaT01StationExitTable()
@@ -68,7 +220,7 @@ class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource, MK
     /**
     * 到DB中查找最近的站点
     */
-    class func selectStationTable(fromLocation: CLLocation) -> Array<MstT02StationTable>{
+    func selectStationTable(fromLocation: CLLocation) -> Array<MstT02StationTable>{
         var stationsNearest:Array<MstT02StationTable> = Array<MstT02StationTable>()
         
         var dao = Sta003Dao()
@@ -155,126 +307,6 @@ class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource, MK
         mkMap.setRegion(region, animated:true)
     }
 
-    func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) ->
-        MKAnnotationView!{
-            if (annotation is MKUserLocation){
-                //return nil so map view draws "blue dot" for standard user location
-                return nil
-            }
-            var pinView:MKPinAnnotationView?
-            
-            // 4'3'5
-            var img = UIImage(named: "INF00204.png")
-            
-            
-            var mapTitle: String! = annotation.title
-            if (mapTitle == statId.station() && annotation.subtitle != nil) {
-                pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: statId.station())
-                img = UIImage(named: "STA00301.png")
-            } else {
-                pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: annotation.title!)
-                
-                switch (annotation.subtitle! as String) {
-                case "景点":
-                    img = UIImage(named: "INF00204.png")
-                case "美食":
-                    img = UIImage(named: "INF00203.png")
-                case "购物":
-                    img = UIImage(named: "INF00205.png")
-                default:
-                    println("nothing")
-                }
-
-            }
-            
-            pinView!.pinColor = .Red
-            pinView!.image = img
-            pinView!.canShowCallout = true
-            pinView!.frame = CGRectMake((CGRectMake(0, 0, 185, 162).size.width-16)/2, 56, 30, 35)
-            
-            return pinView!
-    }
-
-    
-
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-
-        return rows.count
-    }
-    
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
-
-        let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("ExitInfoCell", forIndexPath: indexPath) as UITableViewCell
-            
-        var map = rows[indexPath.row] as StaT01StationExitTable
-        (cell.viewWithTag(301) as UILabel).text = map.item(STAT01_STAT_EXIT_NAME) as? String
-        if (index == indexPath.row && stationLength != "") {
-            (cell.viewWithTag(302) as UILabel).text = stationLength + " 米"
-        } else {
-            (cell.viewWithTag(302) as UILabel).text = ""
-        }
-        
-        return cell
-        
-    }
-    
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 44
-    }
-    
-    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "出口信息"
-    }
-    
-//    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//        var view = UIView(frame: CGRectMake(0, 0, 320, 55))
-//        
-//        var lblTarget
-//    }
-//    
-    
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
-        var key = rows[indexPath.row] as StaT01StationExitTable
-        
-//        var statLat: Double = ("\(key.item(STAT01_STAT_EXIT_LAT))" as NSString).doubleValue
-//        var statLon: Double = ("\(key.item(STAT01_STAT_EXIT_LON))" as NSString).doubleValue
-//        var location: CLLocation = CLLocation(latitude: statLat, longitude: statLon)
-        if (locatonArr.count > 0) {
-            locatonArr[0] = landMarkLocation!
-            if (locatonArr.count == 2) {
-                stationLength = "\(Int(calcDistance(locatonArr[0], statLocation: locatonArr[1])))"
-                drawLineWithLocationArray(locatonArr)
-                exitTable.reloadData()
-            }
-        } else {
-            locatonArr.append(landMarkLocation!)
-        }
-        index = indexPath.row
-    }
-    
-    
-    func mapView(mapView: MKMapView!, didSelectAnnotationView view: MKAnnotationView!){
-        if(view.annotation.subtitle == nil){
-            return
-        }
-        if(locatonArr.count > 0 && locatonArr.count < 2) {
-//            var locations:Array<CLLocation> = Array<CLLocation>()
-//            locations.append(location!)
-            locatonArr.append(CLLocation(latitude: view.annotation.coordinate.latitude, longitude: view.annotation.coordinate.longitude))
-
-            stationLength = "\(Int(calcDistance(locatonArr[0], statLocation: locatonArr[1])))"
-            drawLineWithLocationArray(locatonArr)
-            exitTable.reloadData()
-        } else if (locatonArr.count == 2) {
-            locatonArr[1] = CLLocation(latitude: view.annotation.coordinate.latitude, longitude: view.annotation.coordinate.longitude)
-            
-            stationLength = "\(Int(calcDistance(locatonArr[0], statLocation: locatonArr[1])))"
-            drawLineWithLocationArray(locatonArr)
-            exitTable.reloadData()
-        }
-    }
     
     /**
     * 根据Location 画路线
@@ -318,12 +350,7 @@ class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource, MK
     }
     
     
-    func mapView(mapView: MKMapView!, rendererForOverlay overlay: MKOverlay!) -> MKOverlayRenderer!{
-        var renderer: MKPolylineRenderer = MKPolylineRenderer(overlay: overlay)
-        renderer.lineWidth = 3.0
 
-        return renderer
-    }
     
     /**
     * 计算两点之间距离

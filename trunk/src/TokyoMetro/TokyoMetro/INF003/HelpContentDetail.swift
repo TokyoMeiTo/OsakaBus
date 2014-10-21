@@ -11,12 +11,23 @@ import UIKit
 
 class HelpContentDetail: UIViewController {
 
+    /*******************************************************************************
+    * IBOutlets
+    *******************************************************************************/
     @IBOutlet weak var questionCHTitle: UILabel!
     @IBOutlet weak var questionJPTitle: UILabel!
     
+    /*******************************************************************************
+    * Public Properties
+    *******************************************************************************/
+    // 中文求助内容
     var chTtile = ""
-    
+    // 日文求助内容
     var jpTtile = ""
+    
+    /*******************************************************************************
+    * Overrides From UIViewController
+    *******************************************************************************/
 
     override func viewDidLoad() {
         super.viewDidLoad()

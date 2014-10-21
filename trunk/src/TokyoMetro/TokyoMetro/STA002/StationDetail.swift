@@ -9,15 +9,24 @@
 import UIKit
 import CoreLocation
 
-class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate, UITableViewDataSource {
+class StationDetail: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    //Our label for displaying var "items/cellName"
+/*******************************************************************************
+* IBOutlets
+*******************************************************************************/
     @IBOutlet weak var cellNameLabel: UILabel!
     @IBOutlet weak var cellJPNmaeLabel: UILabel!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var weSegment: UISegmentedControl!
     @IBOutlet weak var imgCollect: UIImageView!
     
+/*******************************************************************************
+* Global
+*******************************************************************************/
+    
+/*******************************************************************************
+* Public Properties
+*******************************************************************************/
     var cellJPName:String = ""
     var cellJPNameKana:String = ""
     var cellDesc:String = ""
@@ -43,6 +52,10 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
     var statMetroId = ""
     // 查询该条线的线路id
     var stat_id = ""
+    
+/*******************************************************************************
+* Private Properties
+*******************************************************************************/
     // 收藏该条线路的group_id
     var group_id = ""
     // 站点statId、statSeq、lineId数组
@@ -54,19 +67,19 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
     var selectList = ["STA002_02".localizedString(), "STA002_03".localizedString(),"STA002_05".localizedString(), "STA002_04".localizedString()]
     
     // 其他链接
-    var landMarkTitleList = ["INF002_11".localizedString(), "INF002_09".localizedString(), "PUBLIC_09".localizedString()]
+    var landMarkTitleList = ["PUBLIC_12".localizedString(), "PUBLIC_13".localizedString(), "PUBLIC_14".localizedString()]
     
     var depaTimeArr: NSMutableArray = NSMutableArray.array()
     
-    required init(coder aDecoder: NSCoder) {
-        
-        super.init(coder:aDecoder)
-        
-    }
+    var model: Sta002StationDetailModel?
     
+/*******************************************************************************
+* Overrides From UIViewController
+*******************************************************************************/
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        model = Sta002StationDetailModel()
         //车站本地化名
         cellNameLabel.text = stat_id.station()
         //车站日文名
@@ -89,6 +102,237 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
         odbCollectStation()
 
     }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+/*******************************************************************************
+*    Implements Of UITableViewDelegate
+*******************************************************************************/
+
+    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if (section == 0) {
+            return 0
+        } else {
+            return 30
+        }
+    }
+    
+    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if (section == 0) {
+            return nil
+        } else {
+            var view = UIView(frame: CGRectMake(0, 0, 320, 30))
+            view.backgroundColor = UIColor(red: 239/255, green: 239/255, blue: 239/255, alpha: 1)
+            var lblTitle = UILabel(frame: CGRectMake(15, 0, 305, 30))
+            lblTitle.text = "STA002_18".localizedString()
+            view.addSubview(lblTitle)
+            return view
+        }
+        
+    }
+    
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 44
+    }
+    
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if (indexPath.section == 0) {
+            switch (indexPath.row) {
+            case 0:
+                showTime()
+            case 1:
+                pushStationMap()
+            case 2:
+                showFacility()
+            case 3:
+                showComercialInside()
+            default:
+                pushStationMap()
+            }
+        } else{
+            showLnadMarkList(indexPath.row)
+        }
+    }
+
+    
+    
+/*******************************************************************************
+*      Implements Of UITableViewDataSource
+*******************************************************************************/
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell: UITableViewCell = UITableViewCell()
+        cell.backgroundColor = UIColor(red: 245/255, green: 246/255, blue: 248/255, alpha: 1)
+        cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+        cell.selectionStyle = UITableViewCellSelectionStyle.None
+        
+        if (indexPath.section == 0) {
+            var image = UIImageView()
+            var imageName = "station-link-" + (indexPath.row + 1).description
+            image.frame = CGRectMake(15, 6, 30, 30)
+            image.image = UIImage(named: imageName)
+            
+            cell.addSubview(image)
+            
+            var content = UILabel()
+            content.frame = CGRectMake(55, 0, 200, 44)
+            content.text = selectList[indexPath.row]
+            content.font = UIFont.systemFontOfSize(20)
+            
+            cell.addSubview(content)
+        } else {
+            var image = UIImageView()
+            var imageName = "station_link2_" + (indexPath.row + 1).description
+            image.frame = CGRectMake(15, 8, 30, 30)
+            image.image = UIImage(named: imageName)
+            
+            cell.addSubview(image)
+            
+            var content = UILabel()
+            content.frame = CGRectMake(55, 0, 200, 44)
+            content.text = landMarkTitleList[indexPath.row]
+            content.font = UIFont.systemFontOfSize(20)
+            
+            cell.addSubview(content)
+        }
+        
+        return cell
+    }
+    
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 2
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if (section == 0) {
+            return selectList.count
+        } else {
+            return landMarkTitleList.count
+        }
+    }
+    
+    
+/*******************************************************************************
+*      IBActions
+*******************************************************************************/
+    
+    @IBAction func showStationExit() {
+        
+        var exitInfo: ExitInfo = self.storyboard?.instantiateViewControllerWithIdentifier("ExitInfo") as ExitInfo
+        
+        var rowArr = odbLandMark()
+        exitInfo.statId = group_id
+        exitInfo.landMarkArr = rowArr
+        if (statSeqArr.count > 0) {
+            var key: MstT02StationTable = statSeqArr[0] as MstT02StationTable
+            var statLat: Double = ("\(key.item(MSTT02_STAT_LAT))" as NSString).doubleValue
+            var statLon: Double = ("\(key.item(MSTT02_STAT_LON))" as NSString).doubleValue
+            exitInfo.landMarkLocation = CLLocation(latitude: statLat, longitude: statLon)
+        }
+        
+        self.navigationController?.pushViewController(exitInfo, animated: true)
+    }
+    
+    
+    @IBAction func addSubway() {
+        
+        if (model!.collectStation(group_id)) {
+            var sureBtn: UIAlertView = UIAlertView(title: "", message: "CMN003_21".localizedString(), delegate: self, cancelButtonTitle: "PUBLIC_06".localizedString())
+            
+            sureBtn.show()
+            imgCollect.image = UIImage(named: "station_collect_icon")
+        } else {
+            var sureBtn: UIAlertView = UIAlertView(title: "", message: "CMN003_20".localizedString(), delegate: self, cancelButtonTitle: "PUBLIC_06".localizedString())
+            
+            sureBtn.show()
+        }
+    }
+    
+    @IBAction func showLandMarkMap() {
+        
+        var landMarkMap: LandMarkMapController = self.storyboard?.instantiateViewControllerWithIdentifier("landmarkmap") as LandMarkMapController
+        
+        if (statSeqArr.count > 0) {
+            var key: MstT02StationTable = statSeqArr[0] as MstT02StationTable
+            var statLat: Double = ("\(key.item(MSTT02_STAT_LAT))" as NSString).doubleValue
+            var statLon: Double = ("\(key.item(MSTT02_STAT_LON))" as NSString).doubleValue
+            landMarkMap.landMarkLocation = CLLocation(latitude: statLat, longitude: statLon)
+            landMarkMap.statId = group_id
+            
+            landMarkMap.title = "STA002_16".localizedString()
+        }
+        
+        var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = backButton
+        
+        self.navigationController?.pushViewController(landMarkMap, animated: true)
+    }
+    
+    
+    @IBAction func pushStationMap() {
+        
+        var stationMap: StationImg = self.storyboard?.instantiateViewControllerWithIdentifier("StationImg") as StationImg
+        
+        stationMap.stationMapUrl = group_id.getStationInnerMapImagePath()
+        var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = backButton
+        
+        self.navigationController?.pushViewController(stationMap, animated: true)
+    }
+
+    @IBAction func setStartStation() {
+        
+        var routeSearch: RouteSearch = self.storyboard?.instantiateViewControllerWithIdentifier("RouteSearch") as RouteSearch
+        
+        routeSearch.startStationText = group_id
+        var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = backButton
+        
+        self.navigationController?.pushViewController(routeSearch, animated: true)
+    }
+    
+    @IBAction func setEndStation() {
+        
+        var routeSearch: RouteSearch = self.storyboard?.instantiateViewControllerWithIdentifier("RouteSearch") as RouteSearch
+        
+        routeSearch.endStationText = group_id
+        var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = backButton
+        
+        self.navigationController?.pushViewController(routeSearch, animated: true)
+    }
+    
+    @IBAction func weekendSegmentChanged(sender: UISegmentedControl) {
+        
+        if (sender.selectedSegmentIndex == 0) {
+            
+            for (var i = 0; i < depaTimeArr.count; i++) {
+                var array: [String] = depaTimeArr[i][0] as [String]
+                (self.scrollView.viewWithTag(300 + i) as UILabel).text = array[2]
+            }
+        } else if (sender.selectedSegmentIndex == 1) {
+            
+            for (var i = 0; i < depaTimeArr.count; i++) {
+                var array: [String] = depaTimeArr[i][1] as [String]
+                (self.scrollView.viewWithTag(300 + i) as UILabel).text = array[2]
+            }
+        } else {
+            for (var i = 0; i < depaTimeArr.count; i++) {
+                var array: [String] = depaTimeArr[i][2] as [String]
+                (self.scrollView.viewWithTag(300 + i) as UILabel).text = array[2]
+            }
+        }
+    }
+    
+    
+/*******************************************************************************
+*    Private Methods
+*******************************************************************************/
     
     
     func odbLandMark(type: String) {
@@ -123,120 +367,7 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
             statSeqArr = table.excuteQuery("select *, ROWID from MSTT02_STATION where 1 = 1 and STAT_GROUP_ID = \(group_id)")
         }
     }
-    
-    func odbTrainSchedule() {
-        var table = LinT01TrainScheduleTrainTable()
-        // 获取平日时的所有列车各个方向的首末班车时间
-        for (var j = 0; j < statSeqArr.count; j++) {
-            var startTime = ""
-            var endTime = ""
-            var statId = (statSeqArr[j] as MstT02StationTable).item(MSTT02_STAT_ID) as String
-            table.statId = statId
-            table.scheType = "1"
-            table.firstTrainFlag = "1"
-            var rows = table.selectAll()
-            if (rows.count > 0) {
-                for (var i = 0; i < rows.count; i++) {
-                    var key: LinT01TrainScheduleTrainTable = rows[i] as LinT01TrainScheduleTrainTable
-                    cellLine = addString(cellLine, addValue:(key.item(LINT01_TRAIN_SCHEDULE_LINE_ID) as String))
-                    cellClose = addString(cellClose, addValue:(key.item(LINT01_TRAIN_SCHEDULE_DIRT_STAT_ID) as String).station())
-                    startTime = (key.item(LINT01_TRAIN_SCHEDULE_DEPA_TIME) as String).dateWithFormat("HHmm", target: "HH:mm")
-                }
-            }
-            
-            table.reset()
-            table.statId = statId
-            table.scheType = "1"
-            table.firstTrainFlag = "9"
-            var endRows = table.selectAll()
-            if (endRows.count > 0) {
-                for (var i = 0; i < endRows.count; i++) {
-                    var key: LinT01TrainScheduleTrainTable = endRows[i] as LinT01TrainScheduleTrainTable
-                    endTime = (key.item(LINT01_TRAIN_SCHEDULE_DEPA_TIME) as String).dateWithFormat("HHmm", target: "HH:mm")
-                }
-            }
-            
-            cellJapanTime = addString(cellJapanTime, addValue: "\(startTime)/\(endTime)")
 
-        }
-        
-        // 获取周末时的所有列车各个方向的首末班车时间
-        for (var j = 0; j < statSeqArr.count; j++) {
-            var startTime = ""
-            var endTime = ""
-            var statId = (statSeqArr[j] as MstT02StationTable).item(MSTT02_STAT_ID) as String
-            table.statId = statId
-            table.scheType = "2"
-            table.firstTrainFlag = "1"
-            var rows = table.selectAll()
-            if (rows.count > 0) {
-                for (var i = 0; i < rows.count; i++) {
-                    var key: LinT01TrainScheduleTrainTable = rows[i] as LinT01TrainScheduleTrainTable
-                    startTime = (key.item(LINT01_TRAIN_SCHEDULE_DEPA_TIME) as String).dateWithFormat("HHmm", target: "HH:mm")
-                }
-            }
-            
-            table.reset()
-            table.statId = statId
-            table.scheType = "2"
-            table.firstTrainFlag = "9"
-            var endRows = table.selectAll()
-            if (endRows.count > 0) {
-                for (var i = 0; i < endRows.count; i++) {
-                    var key: LinT01TrainScheduleTrainTable = endRows[i] as LinT01TrainScheduleTrainTable
-                    endTime = (key.item(LINT01_TRAIN_SCHEDULE_DEPA_TIME) as String).dateWithFormat("HHmm", target: "HH:mm")
-                }
-            }
-            
-            cellJapanWETime = addString(cellJapanWETime, addValue: "\(startTime)/\(endTime)")
-            
-        }
-        
-        // 获取节假日时的所有列车各个方向的首末班车时间
-        for (var j = 0; j < statSeqArr.count; j++) {
-            var startTime = ""
-            var endTime = ""
-            var statId = (statSeqArr[j] as MstT02StationTable).item(MSTT02_STAT_ID) as String
-            table.statId = statId
-            table.scheType = "3"
-            table.firstTrainFlag = "1"
-            var rows = table.selectAll()
-            if (rows.count > 0) {
-                for (var i = 0; i < rows.count; i++) {
-                    var key: LinT01TrainScheduleTrainTable = rows[i] as LinT01TrainScheduleTrainTable
-                    startTime = (key.item(LINT01_TRAIN_SCHEDULE_DEPA_TIME) as String).dateWithFormat("HHmm", target: "HH:mm")
-                }
-            }
-            
-            table.reset()
-            table.statId = statId
-            table.scheType = "3"
-            table.firstTrainFlag = "9"
-            var endRows = table.selectAll()
-            if (endRows.count > 0) {
-                for (var i = 0; i < endRows.count; i++) {
-                    var key: LinT01TrainScheduleTrainTable = endRows[i] as LinT01TrainScheduleTrainTable
-                    endTime = (key.item(LINT01_TRAIN_SCHEDULE_DEPA_TIME) as String).dateWithFormat("HHmm", target: "HH:mm")
-                }
-            }
-            
-            cellJapanHolidayTime = addString(cellJapanHolidayTime, addValue: "\(startTime)/\(endTime)")
-        }
-    }
-    
-    
-    
-    func addString(value: String, addValue:String) -> String{
-        
-        if (addValue.isEmpty) {
-            return value
-        }
-        if (value.isEmpty) {
-            return addValue
-        } else {
-            return value + "," + addValue
-        }
-    }
     
     func odbCollectStation() {
         var table = UsrT03FavoriteTable()
@@ -249,207 +380,7 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
             imgCollect.image = UIImage(named: "station_uncollect_icon")
         }
     }
-    
-    
-    func collectStation() {
-    
-        var table = UsrT03FavoriteTable()
-        
-        table.favoType = "01"
-        table.statId = group_id
-        var rows = table.selectAll()
-        if (rows.count > 0) {
-            var sureBtn: UIAlertView = UIAlertView(title: "", message: "STA002_06".localizedString(), delegate: self, cancelButtonTitle: "PUBLIC_06".localizedString())
-            
-            sureBtn.show()
-        } else {
-            table.reset()
-            table.favoType = "01"
-            table.favoTime = NSDate().description.dateWithFormat("yyyy-MM-dd HH:mm:ss +0000", target: "yyyyMMddHHmmss")
-            table.lineId = ""
-            table.statId = stat_id
-            table.statExitId = ""
-            table.lmakId = ""
-            table.ruteId = ""
-            table.ext1 = ""
-            table.ext2 = ""
-            table.ext3 = ""
-            table.ext4 = ""
-            table.ext5 = ""
-            if (table.insert()) {
-                var sureBtn: UIAlertView = UIAlertView(title: "", message: "CMN003_21".localizedString(), delegate: self, cancelButtonTitle: "PUBLIC_06".localizedString())
-                
-                sureBtn.show()
-                imgCollect.image = UIImage(named: "station_collect_icon")
-            } else {
-                var sureBtn: UIAlertView = UIAlertView(title: "", message: "CMN003_20".localizedString(), delegate: self, cancelButtonTitle: "PUBLIC_06".localizedString())
-                
-                sureBtn.show()
-            }
-        }
-    }
-    
-    func odbTime(statId: String) {
 
-        var table = LinT01TrainScheduleTrainTable()
-        var rows = table.excuteQuery("select *, ROWID from LINT01_TRAIN_SCHEDULE where 1 = 1 and STAT_ID = '\(statId)' and FIRST_TRAIN_FLAG = '1' and SCHE_TYPE = '1'")
-        
-        
-        for key in rows {
-            key as LinT01TrainScheduleTrainTable
-            var dirtStat: String = key.item(LINT01_TRAIN_SCHEDULE_DIRT_STAT_ID) as String
-            var lineId: String = key.item(LINT01_TRAIN_SCHEDULE_LINE_ID) as String
-
-            var timeTypeArr1 = table.excuteQuery("select *, ROWID from LINT01_TRAIN_SCHEDULE where 1 = 1 and STAT_ID = '\(statId)' and DIRT_STAT_ID = '\(dirtStat)' and SCHE_TYPE = '1' and (FIRST_TRAIN_FLAG = '1' or FIRST_TRAIN_FLAG = '9')")
-            
-            var timeTypeArr2 = table.excuteQuery("select *, ROWID from LINT01_TRAIN_SCHEDULE where 1 = 1 and STAT_ID = '\(statId)' and DIRT_STAT_ID = '\(dirtStat)' and SCHE_TYPE = '2' and (FIRST_TRAIN_FLAG = '1' or FIRST_TRAIN_FLAG = '9')")
-            
-            var timeTypeArr3 = table.excuteQuery("select *, ROWID from LINT01_TRAIN_SCHEDULE where 1 = 1 and STAT_ID = '\(statId)' and DIRT_STAT_ID = '\(dirtStat)' and SCHE_TYPE = '3' and (FIRST_TRAIN_FLAG = '1' or FIRST_TRAIN_FLAG = '9')")
-            
-            
-            var timeArr: NSMutableArray = NSMutableArray.array()
-            timeArr.addObject([lineId, dirtStat, timeFormat(timeTypeArr1)])
-            timeArr.addObject([lineId, dirtStat, timeFormat(timeTypeArr2)])
-            timeArr.addObject([lineId, dirtStat, timeFormat(timeTypeArr3)])
-            
-            println(timeArr[0])
-            depaTimeArr.addObject(timeArr)
-        }
-    }
-    
-    func timeFormat(time: NSArray) -> String{
-        
-        if (time.count < 2){
-            return ""
-        }
-        
-        var startTime: String = ""
-        var endTime: String = ""
-        var strTime: String = ""
-        for key in time {
-            key as LinT01TrainScheduleTrainTable
-            var trainFlag: String = key.item(LINT01_TRAIN_SCHEDULE_FIRST_TRAIN_FLAG) as String
-            
-            if (trainFlag == "1") {
-                startTime = (key.item(LINT01_TRAIN_SCHEDULE_DEPA_TIME) as String).dateWithFormat("HHmm", target: "HH:mm")
-            } else if (trainFlag == "9") {
-                
-                if (strTime == "") {
-                    strTime = key.item(LINT01_TRAIN_SCHEDULE_DEPA_TIME) as String
-                } else {
-                    var string: Int! = strTime.toInt()
-                    if (string < 400) {
-                        string = string + 2400
-                    }
-                    var string2: Int! = (key.item(LINT01_TRAIN_SCHEDULE_DEPA_TIME) as String).toInt()
-                    if (string2 < 400) {
-                        string2 = string2 + 2400
-                    }
-                    
-                    if (string2 > string) {
-                        strTime = key.item(LINT01_TRAIN_SCHEDULE_DEPA_TIME) as String
-                    }
-                }
-            }
-        }
-        endTime = strTime.dateWithFormat("HHmm", target: "HH:mm")
-        return "\(startTime)/\(endTime)"
-    }
-
-    
-    @IBAction func showStationExit() {
-    
-//        var stationExit: ExitInfo = self.storyboard?.instantiateViewControllerWithIdentifier("stationExit") as ExitInfo
-//        
-//        stationExit.statId = group_id
-//        var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
-//        self.navigationItem.backBarButtonItem = backButton
-//        
-//        self.navigationController?.pushViewController(stationExit, animated: true)
-        var exitInfo: ExitInfo = self.storyboard?.instantiateViewControllerWithIdentifier("ExitInfo") as ExitInfo
-        
-        var rowArr = odbLandMark()
-        exitInfo.statId = group_id
-        exitInfo.landMarkArr = rowArr
-        if (statSeqArr.count > 0) {
-            var key: MstT02StationTable = statSeqArr[0] as MstT02StationTable
-            var statLat: Double = ("\(key.item(MSTT02_STAT_LAT))" as NSString).doubleValue
-            var statLon: Double = ("\(key.item(MSTT02_STAT_LON))" as NSString).doubleValue
-            exitInfo.landMarkLocation = CLLocation(latitude: statLat, longitude: statLon)            
-        }
-        
-        self.navigationController?.pushViewController(exitInfo, animated: true)
-    }
-    
-    
-    @IBAction func addSubway() {
-    
-        collectStation()
-    }
-    
-    @IBAction func showLandMarkMap() {
-    
-        var landMarkMap: LandMarkMapController = self.storyboard?.instantiateViewControllerWithIdentifier("landmarkmap") as LandMarkMapController
-        
-        if (statSeqArr.count > 0) {
-            var key: MstT02StationTable = statSeqArr[0] as MstT02StationTable
-            var statLat: Double = ("\(key.item(MSTT02_STAT_LAT))" as NSString).doubleValue
-            var statLon: Double = ("\(key.item(MSTT02_STAT_LON))" as NSString).doubleValue
-            landMarkMap.landMarkLocation = CLLocation(latitude: statLat, longitude: statLon)
-            landMarkMap.statId = group_id
-            
-            landMarkMap.title = "站点地图"
-        }
-        
-        var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
-        self.navigationItem.backBarButtonItem = backButton
-        
-        self.navigationController?.pushViewController(landMarkMap, animated: true)
-    }
-    
-    
-    @IBAction func pushStationMap() {
-    
-        var stationMap: StationImg = self.storyboard?.instantiateViewControllerWithIdentifier("StationImg") as StationImg
-
-        stationMap.stationMapUrl = group_id.getStationInnerMapImagePath()
-        var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
-        self.navigationItem.backBarButtonItem = backButton
-        
-        self.navigationController?.pushViewController(stationMap, animated: true)
-    }
-    
-    
-    func alertView(alertView: UIAlertView!, didDismissWithButtonIndex buttonIndex: Int) {
-        
-        if (buttonIndex == 1) {
-//            var name: String = cellName
-//            var description: String = cellStation
-//            taskMgr.addTask(name, desc: description)
-        }
-    }
-    
-    @IBAction func setStartStation() {
-    
-        var routeSearch: RouteSearch = self.storyboard?.instantiateViewControllerWithIdentifier("RouteSearch") as RouteSearch
-        
-        routeSearch.startStationText = group_id
-        var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
-        self.navigationItem.backBarButtonItem = backButton
-        
-        self.navigationController?.pushViewController(routeSearch, animated: true)
-    }
-    
-    @IBAction func setEndStation() {
-        
-        var routeSearch: RouteSearch = self.storyboard?.instantiateViewControllerWithIdentifier("RouteSearch") as RouteSearch
-        
-        routeSearch.endStationText = group_id
-        var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
-        self.navigationItem.backBarButtonItem = backButton
-        
-        self.navigationController?.pushViewController(routeSearch, animated: true)
-    }
     
     func addLineView() {
         
@@ -465,34 +396,13 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
         
     }
 
-    @IBAction func weekendSegmentChanged(sender: UISegmentedControl) {
-        
-        if (sender.selectedSegmentIndex == 0) {
 
-            for (var i = 0; i < depaTimeArr.count; i++) {
-                var array: [String] = depaTimeArr[i][0] as [String]
-                (self.scrollView.viewWithTag(300 + i) as UILabel).text = array[2]
-            }
-        } else if (sender.selectedSegmentIndex == 1) {
-            
-            for (var i = 0; i < depaTimeArr.count; i++) {
-                var array: [String] = depaTimeArr[i][1] as [String]
-                (self.scrollView.viewWithTag(300 + i) as UILabel).text = array[2]
-            }
-        } else {
-            for (var i = 0; i < depaTimeArr.count; i++) {
-                var array: [String] = depaTimeArr[i][2] as [String]
-                (self.scrollView.viewWithTag(300 + i) as UILabel).text = array[2]
-            }
-        }
-    }
-    
     func addLineTime() {
 
         for key in statSeqArr {
             key as MstT02StationTable
             
-            odbTime(key.item(MSTT02_STAT_ID) as String)
+            depaTimeArr = model!.odbTime((key.item(MSTT02_STAT_ID) as String), array: depaTimeArr)
         }
 
         for (var i = 0; i < depaTimeArr.count; i++) {
@@ -538,115 +448,19 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
         scrollView.contentSize = CGSizeMake(320, table.frame.origin.y + table.frame.height)
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell: UITableViewCell = UITableViewCell()
-        cell.backgroundColor = UIColor(red: 245/255, green: 246/255, blue: 248/255, alpha: 1)
-        cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
-        cell.selectionStyle = UITableViewCellSelectionStyle.None
-        
-        if (indexPath.section == 0) {
-            var image = UIImageView()
-            var imageName = "station-link-" + (indexPath.row + 1).description
-            image.frame = CGRectMake(15, 6, 30, 30)
-            image.image = UIImage(named: imageName)
-            
-            cell.addSubview(image)
-            
-            var content = UILabel()
-            content.frame = CGRectMake(55, 0, 200, 44)
-            content.text = selectList[indexPath.row]
-            content.font = UIFont.systemFontOfSize(20)
-            
-            cell.addSubview(content)
-        } else {
-            var image = UIImageView()
-            var imageName = "station_link2_" + (indexPath.row + 1).description
-            image.frame = CGRectMake(15, 8, 30, 30)
-            image.image = UIImage(named: imageName)
-            
-            cell.addSubview(image)
-            
-            var content = UILabel()
-            content.frame = CGRectMake(55, 0, 200, 44)
-            content.text = landMarkTitleList[indexPath.row]
-            content.font = UIFont.systemFontOfSize(20)
-            
-            cell.addSubview(content)
-        }
-        
-        return cell
-    }
-    
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 2
-    }
-    
-    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if (section == 0) {
-            return 0
-        } else {
-            return 30
-        }
-    }
-    
-    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if (section == 0) {
-            return nil
-        } else {
-            var view = UIView(frame: CGRectMake(0, 0, 320, 30))
-            view.backgroundColor = UIColor(red: 239/255, green: 239/255, blue: 239/255, alpha: 1)
-            var lblTitle = UILabel(frame: CGRectMake(15, 0, 305, 30))
-            lblTitle.text = "周边信息"
-            view.addSubview(lblTitle)
-            return view
-        }
-        
-    }
-
-    
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 44
-    }
-    
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if (section == 0) {
-            return selectList.count
-        } else {
-            return landMarkTitleList.count
-        }
-    }
-    
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if (indexPath.section == 0) {
-            switch (indexPath.row) {
-            case 0:
-                showTime()
-            case 1:
-                pushStationMap()
-            case 2:
-                showFacility()
-            case 3:
-                showComercialInside()
-            default:
-                pushStationMap()
-            }
-        } else{
-            showLnadMarkList(indexPath.row)
-        }
-    }
     
     func showLnadMarkList(index: Int) {
         var landMark: LandMarkListController = self.storyboard?.instantiateViewControllerWithIdentifier("landmarklist") as LandMarkListController
         
         if (index == 0) {
             odbLandMark("景点")
-            landMark.title = "INF002_11".localizedString()
+            landMark.title = "PUBLIC_12".localizedString()
         } else if (index == 1) {
             odbLandMark("美食")
-            landMark.title = "INF002_09".localizedString()
+            landMark.title = "PUBLIC_13".localizedString()
         } else {
             odbLandMark("购物")
-            landMark.title = "PUBLIC_09".localizedString()
+            landMark.title = "PUBLIC_14".localizedString()
         }
         
         var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
@@ -702,11 +516,10 @@ class StationDetail: UIViewController, UIAlertViewDelegate, UITableViewDelegate,
         
         self.navigationController?.pushViewController(facilityList, animated: true)
     }
-
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
+    
+    
+/*******************************************************************************
+*    Unused Codes
+*******************************************************************************/
     
 }

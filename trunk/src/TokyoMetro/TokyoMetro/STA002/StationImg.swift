@@ -10,16 +10,28 @@ import UIKit
 
 class StationImg: UIViewController, UIScrollViewDelegate {
     
-    
+/*******************************************************************************
+* IBOutlets
+*******************************************************************************/
     @IBOutlet var scroll: UIScrollView!
     @IBOutlet var imageView: UIImageView!
     
+/*******************************************************************************
+* Private Properties
+*******************************************************************************/
     var progress: UIActivityIndicatorView!
     
     var size: CGSize!
     
+/*******************************************************************************
+* Public Properties
+*******************************************************************************/
+    
     var stationMapUrl: String = ""
     
+/*******************************************************************************
+* Overrides From UIViewController
+*******************************************************************************/
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -56,6 +68,15 @@ class StationImg: UIViewController, UIScrollViewDelegate {
         progress.stopAnimating()
     }
     
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+/*******************************************************************************
+*    Implements Of UIScrollViewDelegate
+*******************************************************************************/
+    
     func viewForZoomingInScrollView(scrollView: UIScrollView!) -> UIView! {
         
         for view in scrollView.subviews {
@@ -73,10 +94,5 @@ class StationImg: UIViewController, UIScrollViewDelegate {
         var image = UIImage(named: stationMapUrl)
         return image
     }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
+
 }

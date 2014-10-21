@@ -10,18 +10,31 @@ import UIKit
 
 class TipsDetail: UIViewController {
 
-    
+    /*******************************************************************************
+    * IBOutlets
+    *******************************************************************************/
     @IBOutlet weak var qTitle: UILabel!
     @IBOutlet weak var qContent: UITextView!
     
+    /*******************************************************************************
+    * Public Properties
+    *******************************************************************************/
     var cellTitle: String = ""
     var tips_id: String = ""
+    
+    /*******************************************************************************
+    * Private Properties
+    *******************************************************************************/
     var rows: NSArray!
     var rowId: String = ""
     var map: InfT02TipsTable!
     
     var favoFlag: String = ""
     
+    
+    /*******************************************************************************
+    * Overrides From UIViewController
+    *******************************************************************************/
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -47,28 +60,13 @@ class TipsDetail: UIViewController {
     }
     
     
-    func odbTips() {
-        var table = InfT02TipsTable()
-        table.tipsId = tips_id
-        rows = table.selectAll()
-    }
-    
-    // 标记已阅读的贴士
-    func readTips() {
-        var table = InfT02TipsTable()
-        var time:String = NSDate().description.dateWithFormat("yyyy-MM-dd HH:mm:ss +0000", target: "yyyyMMddHHmmss")
-        
-        if (table.excuteUpdate("update INFT02_TIPS set READ_FLAG = '1',READ_TIME = \(time) where ROWID = \(rowId)")) {
-            
-        } else {
-            
-        }
-
-    }
+    /*******************************************************************************
+    *      IBActions
+    *******************************************************************************/
     
     // 收藏贴士
     @IBAction func collectTips() {
-    
+        
         var table = InfT02TipsTable()
         
         if (favoFlag == "1") {
@@ -92,4 +90,28 @@ class TipsDetail: UIViewController {
         }
     }
 
+    /*******************************************************************************
+    *    Private Methods
+    *******************************************************************************/
+    
+    func odbTips() {
+        var table = InfT02TipsTable()
+        table.tipsId = tips_id
+        rows = table.selectAll()
+    }
+    
+    // 标记已阅读的贴士
+    func readTips() {
+        var table = InfT02TipsTable()
+        var time:String = NSDate().description.dateWithFormat("yyyy-MM-dd HH:mm:ss +0000", target: "yyyyMMddHHmmss")
+        
+        if (table.excuteUpdate("update INFT02_TIPS set READ_FLAG = '1',READ_TIME = \(time) where ROWID = \(rowId)")) {
+            
+        } else {
+            
+        }
+
+    }
+    
+    
 }

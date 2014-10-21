@@ -10,13 +10,28 @@ import Foundation
 import UIKit
 
 class StationFacilities: UIViewController, UITableViewDelegate, NSObjectProtocol, UIScrollViewDelegate, UITableViewDataSource{
+    
+    /*******************************************************************************
+    * IBOutlets
+    *******************************************************************************/
     /* UITableView */
     @IBOutlet weak var tbList: UITableView!
     
+    /*******************************************************************************
+    * Private Properties
+    *******************************************************************************/
     /* 设施一览 */
     var facilities:Array<StaT03ComervialInsideTable>?
     
+    /*******************************************************************************
+    * Public Properties
+    *******************************************************************************/
+    
     var statId:String = "2800101"
+    
+    /*******************************************************************************
+    * Overrides From UIViewController
+    *******************************************************************************/
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,59 +52,40 @@ class StationFacilities: UIViewController, UITableViewDelegate, NSObjectProtocol
         // Dispose of any resources that can be recreated.
     }
     
-    /**
-    * ボタン点击事件
-    * @param sender
-    */
-    func buttonAction(sender: UIButton){
-        switch sender{
-        case self.navigationItem.rightBarButtonItem!:
-            var landMarkSearchController = self.storyboard!.instantiateViewControllerWithIdentifier("landmarksearch") as LandMarkSearchController
-            
-            var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
-            self.navigationItem.backBarButtonItem = backButton
-            
-            self.navigationController!.pushViewController(landMarkSearchController, animated:true)
-        default:
-            println("nothing")
+    /*******************************************************************************
+    *    Implements Of UITableViewDelegate
+    *******************************************************************************/
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 115
+    }
+    
+    
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        // Return false if you do not want the specified item to be editable.
+        return false
+    }
+    
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if editingStyle == .Delete {
+            //items.removeObjectAtIndex(indexPath.row)
+            //tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+        } else if editingStyle == .Insert {
+            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
         }
     }
     
-    /**
-    * 从DB查询地标信息
-    */
-    func selectStaT03Table(statId:String) -> Array<StaT03ComervialInsideTable>{
-        var staT03Table:StaT03ComervialInsideTable = StaT03ComervialInsideTable()
-        
-        staT03Table.comeInsiId = statId
-        facilities = staT03Table.selectLike() as? Array<StaT03ComervialInsideTable>
-        return facilities!
-    }
-    
-    
-    // MARK: - Segues
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        
-    }
-    
+    /*******************************************************************************
+    *    Implements Of UITableViewDataSource
+    *******************************************************************************/
     // MARK: - Table View
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath){
-//        var comercialInsideDetail: ComercialInsideDetail = self.storyboard?.instantiateViewControllerWithIdentifier("ComercialInsideDetail") as ComercialInsideDetail
-//        comercialInsideDetail.comeInsiTable = facilities![indexPath.row]
-//        
-//        self.navigationController?.pushViewController(comercialInsideDetail, animated: true)        
-    }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return facilities!.count
-    }
-    
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 115
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -121,7 +117,7 @@ class StationFacilities: UIViewController, UITableViewDelegate, NSObjectProtocol
         lblTime.numberOfLines = 0
         lblTime.text = strTime
         cell.addSubview(lblTime)
-
+        
         var strPrice = facilities![indexPath.row].item(STAT03_COME_INSI_PRICE) as? String
         if (strPrice != nil) {
             
@@ -152,7 +148,7 @@ class StationFacilities: UIViewController, UITableViewDelegate, NSObjectProtocol
             var imageAddress: UIImageView = UIImageView(frame: CGRectMake(112, CGFloat(lblTime.frame.height + 3 + lblTime.frame.origin.y), 20, 20))
             imageAddress.image = UIImage(named: "station_address")
             cell.addSubview(imageAddress)
-
+            
             
             var strAddress = facilities![indexPath.row].item(STAT03_COME_INSI_LOCA_CH) as String
             var lblAddress = UILabel(frame: CGRectMake(135, CGFloat(lblTime.frame.height + 5 + lblTime.frame.origin.y), 180, 18))
@@ -169,19 +165,38 @@ class StationFacilities: UIViewController, UITableViewDelegate, NSObjectProtocol
         
         return cell
     }
+
+    /*******************************************************************************
+    *    Private Methods
+    *******************************************************************************/
     
-    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return false
+    /**
+    * ボタン点击事件
+    * @param sender
+    */
+    func buttonAction(sender: UIButton){
+        switch sender{
+        case self.navigationItem.rightBarButtonItem!:
+            var landMarkSearchController = self.storyboard!.instantiateViewControllerWithIdentifier("landmarksearch") as LandMarkSearchController
+            
+            var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+            self.navigationItem.backBarButtonItem = backButton
+            
+            self.navigationController!.pushViewController(landMarkSearchController, animated:true)
+        default:
+            println("nothing")
+        }
     }
     
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            //items.removeObjectAtIndex(indexPath.row)
-            //tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
-        }
+    /**
+    * 从DB查询地标信息
+    */
+    func selectStaT03Table(statId:String) -> Array<StaT03ComervialInsideTable>{
+        var staT03Table:StaT03ComervialInsideTable = StaT03ComervialInsideTable()
+        
+        staT03Table.comeInsiId = statId
+        facilities = staT03Table.selectLike() as? Array<StaT03ComervialInsideTable>
+        return facilities!
     }
     
     

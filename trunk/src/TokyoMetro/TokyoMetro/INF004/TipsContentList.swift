@@ -10,12 +10,21 @@ import UIKit
 
 class TipsContentList: UIViewController,UITableViewDelegate,UITableViewDataSource {
 
+    /*******************************************************************************
+    * IBOutlets
+    *******************************************************************************/
     @IBOutlet weak var table: UITableView!
     
+    /*******************************************************************************
+    * Private Properties
+    *******************************************************************************/
     var tipsArr: NSMutableArray = NSMutableArray.array()
     
-    var tipsType = ""
+//    var tipsType = ""
     
+    /*******************************************************************************
+    * Overrides From UIViewController
+    *******************************************************************************/
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -34,23 +43,9 @@ class TipsContentList: UIViewController,UITableViewDelegate,UITableViewDataSourc
         super.didReceiveMemoryWarning()
     }
     
-    
-    func odbTips() {
-        var table = InfT02TipsTable()
-
-        var typeRows = table.excuteQuery("select *, ROWID, COUNT(TIPS_TYPE) from INFT02_TIPS where 1=1 group by TIPS_TYPE")
-        
-        tipsArr = NSMutableArray.array()
-        for key in typeRows {
-            key as InfT02TipsTable
-            var tipsType: String! = key.item(INFT02_TIPS_TYPE) as String
-            table.tipsType = tipsType
-            var rows = table.selectAll()
-            tipsArr.addObject([tipsType, rows])
-        }
-
-    }
-    
+    /*******************************************************************************
+    *    Implements Of UITableViewDelegate
+    *******************************************************************************/
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         var view = UIView()
@@ -74,6 +69,29 @@ class TipsContentList: UIViewController,UITableViewDelegate,UITableViewDataSourc
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 30
     }
+
+    func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
+        return 55
+    }
+    
+    func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
+        
+        var tipsDetail: TipsDetail = self.storyboard?.instantiateViewControllerWithIdentifier("TipsDetail") as TipsDetail
+        
+        var map = tipsArr[indexPath.section][1][indexPath.row] as InfT02TipsTable
+        
+        tipsDetail.cellTitle = map.item(INFT02_TIPS_TITLE)as String
+        tipsDetail.tips_id = map.item(INFT02_TIPS_ID) as String
+        
+        var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = backButton
+        
+        self.navigationController?.pushViewController(tipsDetail, animated: true)
+    }
+
+    /*******************************************************************************
+    *      Implements Of UITableViewDataSource
+    *******************************************************************************/
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return tipsArr.count
@@ -108,26 +126,26 @@ class TipsContentList: UIViewController,UITableViewDelegate,UITableViewDataSourc
         
         return cell
     }
+
     
+    /*******************************************************************************
+    *    Private Methods
+    *******************************************************************************/
     
-    func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
-        return 55
-    }
-    
-    
-    func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
+    func odbTips() {
+        var table = InfT02TipsTable()
+
+        var typeRows = table.excuteQuery("select *, ROWID, COUNT(TIPS_TYPE) from INFT02_TIPS where 1=1 group by TIPS_TYPE")
         
-        var tipsDetail: TipsDetail = self.storyboard?.instantiateViewControllerWithIdentifier("TipsDetail") as TipsDetail
-        
-        var map = tipsArr[indexPath.section][1][indexPath.row] as InfT02TipsTable
-        
-        tipsDetail.cellTitle = map.item(INFT02_TIPS_TITLE)as String
-        tipsDetail.tips_id = map.item(INFT02_TIPS_ID) as String
-        
-        var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
-        self.navigationItem.backBarButtonItem = backButton
-        
-        self.navigationController?.pushViewController(tipsDetail, animated: true)
+        tipsArr = NSMutableArray.array()
+        for key in typeRows {
+            key as InfT02TipsTable
+            var tipsType: String! = key.item(INFT02_TIPS_TYPE) as String
+            table.tipsType = tipsType
+            var rows = table.selectAll()
+            tipsArr.addObject([tipsType, rows])
+        }
+
     }
 
 }
