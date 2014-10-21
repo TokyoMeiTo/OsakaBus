@@ -420,16 +420,22 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
                 tableUsrT01Arrive.costTime = "\(costTime)"
                 tableUsrT01Arrive.insert()
 
-                var controllers:AnyObject? = self.navigationController!.viewControllers
-                if(controllers!.count > 1){
-                    var lastController:RemindListController = controllers![controllers!.count - 2] as RemindListController
-                    lastController.viewDidLoad()
-                }
-                
                 var appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
                 appDelegate.isShow = true
                 
-                self.navigationController!.popViewControllerAnimated(true)
+                if(fromRoute()){
+                    var remindListController: RemindListController = self.storyboard?.instantiateViewControllerWithIdentifier("RemindListController") as RemindListController
+                    var backButton = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+                    self.navigationItem.backBarButtonItem = backButton
+                    self.navigationController?.pushViewController(remindListController, animated: true)
+                }else{
+                    var controllers:AnyObject? = self.navigationController!.viewControllers
+                    if(controllers!.count > 1){
+                        var lastController:RemindListController = controllers![controllers!.count - 2] as RemindListController
+                        lastController.viewDidLoad()
+                    }
+                    self.navigationController!.popViewControllerAnimated(true)
+                }
             }else if(i < routeDetails!.count - 1){
                 var alarms:Array<UsrT01ArrivalAlarmTable>? = selectArrivalAlarmTable()
                 var alarm:UsrT01ArrivalAlarmTable? = alarms![alarms!.count - NUM_1]
@@ -826,7 +832,7 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
             }else if(didSelectRowAtIndexPath.section == 4){
                 remindTime = didSelectRowAtIndexPath.row
                 // 提醒时间
-                tableUsrT02!.alarmTime = "\((remindTime + 1) * 60)"
+                tableUsrT02!.alarmTime = "\((remindTime + 1) * 600)"
             }else if(didSelectRowAtIndexPath.section == 1){
                 stationDirtFlag = didSelectRowAtIndexPath.row
                 if(stationDirtFlag == 0){

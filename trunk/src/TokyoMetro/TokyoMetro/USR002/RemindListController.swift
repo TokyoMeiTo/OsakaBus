@@ -8,6 +8,7 @@
 
 import UIKit
 import Foundation
+import AudioToolbox
 
 /**
  * 提醒列表
@@ -209,7 +210,12 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
                 self.view.addSubview(lblEnd)
                 
                 lblArriveInfo.text = "\(alarm!.item(USRT01_ARRIVAL_ALARM_LINE_TO_ID))".line() + " " + "\(alarm!.item(USRT01_ARRIVAL_ALARM_TRAI_DIRT))".station() + "方向"
-                updateTime(alarm!.item(USRT01_ARRIVAL_ALARM_COST_TIME).integerValue)
+                var imageViewBeep = UIImageView(frame: CGRectMake(250, 210, 18, 18))
+                var imgBeep = UIImage(named: "INF00202.png")
+                imageViewBeep.image = imgBeep
+                self.view.addSubview(imageViewBeep)
+                
+                updateTime(alarm!.item(USRT01_ARRIVAL_ALARM_COST_TIME).integerValue - alarm!.item(USRT01_ARRIVAL_ALARM_ALARM_TIME).integerValue)
                 // 开启线程计时
                 var timerThread = TimerThread.shareInstance()
                 timerThread.sender = self
@@ -246,7 +252,7 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
         
         tbList.delegate = self
         tbList.dataSource = self
-        tbList.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+        //tbList.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         tbList.reloadData()
     }
     
@@ -592,6 +598,8 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
         var localNotif:UILocalNotification = UILocalNotification()
         localNotif.fireDate = NSDate()
         localNotif.timeZone = NSTimeZone.localTimeZone()
+        AudioServicesPlaySystemSound(1007 as SystemSoundID)
+//        AudioServicesPlaySystemSound(4095 as SystemSoundID)
         localNotif.soundName = UILocalNotificationDefaultSoundName
         if(Msg != nil){
             localNotif.alertBody = Msg
@@ -608,20 +616,36 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
      * 本地推送消息(首末班车提醒)
      */
     func pushNotificationLastMetro(Msg: String?, notifyTime:String){
-        
-        var time = convertTrainTime(notifyTime)
-        
+        if(countElements(notifyTime) < 4){
+            return
+        }
         var fromDate:NSDate = NSDate()
-        
         var calendar:NSCalendar = NSCalendar(identifier: NSGregorianCalendar)
         calendar.timeZone = NSTimeZone.systemTimeZone()
+        var dateComp:NSDateComponents = calendar.components((NSCalendarUnit.CalendarUnitYear | NSCalendarUnit.CalendarUnitMonth | NSCalendarUnit.CalendarUnitDay | NSCalendarUnit.CalendarUnitHour | NSCalendarUnit.CalendarUnitMinute | NSCalendarUnit.CalendarUnitSecond), fromDate: fromDate)
+        
+        var dateToComp:NSDateComponents = NSDateComponents()
+        dateToComp.setValue(dateComp.year, forComponent: NSCalendarUnit.CalendarUnitYear)
+        dateToComp.setValue(dateComp.month, forComponent: NSCalendarUnit.CalendarUnitMonth)
+        if((notifyTime.left(2) as NSString).integerValue == 0 || (notifyTime.left(2) as NSString).integerValue == 1){
+            dateToComp.setValue(dateComp.day + 1, forComponent: NSCalendarUnit.CalendarUnitDay)
+        }else{
+            dateToComp.setValue(dateComp.day, forComponent: NSCalendarUnit.CalendarUnitDay)
+        }
+        dateToComp.setValue((notifyTime.left(2) as NSString).integerValue, forComponent: NSCalendarUnit.CalendarUnitHour)
+        dateToComp.setValue((notifyTime.right(2) as NSString).integerValue, forComponent: NSCalendarUnit.CalendarUnitMinute)
+        var calendarTo:NSCalendar = NSCalendar(identifier: NSGregorianCalendar)
+        var toDate:NSDate = calendarTo.dateFromComponents(dateToComp)!
+        
         
         // 注册推送权限
         var settings = UIUserNotificationSettings(forTypes: UIUserNotificationType.Alert | UIUserNotificationType.Badge | UIUserNotificationType.Sound, categories: nil)
         
         var localNotif:UILocalNotification = UILocalNotification()
-        localNotif.fireDate = NSDate()
+        localNotif.fireDate = toDate
         localNotif.timeZone = NSTimeZone.localTimeZone()
+        AudioServicesPlaySystemSound(1007 as SystemSoundID)
+//        AudioServicesPlaySystemSound(4095 as SystemSoundID)
         localNotif.soundName = UILocalNotificationDefaultSoundName
         if(Msg != nil){
             localNotif.alertBody = Msg
@@ -633,12 +657,9 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
         app.scheduleLocalNotification(localNotif)
     }
 
-//    func calTime(fromDate:NSDate, toDate:NSDate) -> Int{
-//        if(toDate - fromDate < 0){
-//            return -1
-//        }
-//        return toDate - fromDate
-//    }
+    func calTime(toDate:NSDate) -> NSTimeInterval{
+        return toDate.timeIntervalSinceNow
+    }
     
     
     // MARK: - Segues
@@ -682,7 +703,8 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
+//        var cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
+        var cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "Cell")
         for subview in cell.subviews{
             if(subview.isKindOfClass(UILabel) || (subview.tag as Int) == 102){
                 subview.removeFromSuperview()

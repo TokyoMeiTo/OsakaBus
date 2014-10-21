@@ -48,7 +48,7 @@ extension MstT04LandMarkTable {
     }
     
     func querySubType() ->NSArray {
-        let QUERY_LANDMARK_SUBTYPE = "select * from MSTT04_LANDMARK where  LMAK_ID in (select min(LMAK_ID) from MSTT04_LANDMARK group by LMAK_SUB_TYPE)"
+        let QUERY_LANDMARK_SUBTYPE = "select * , ROWID from MSTT04_LANDMARK where  LMAK_ID in (select min(LMAK_ID) from MSTT04_LANDMARK group by LMAK_SUB_TYPE)"
 
         return self.excuteQuery( QUERY_LANDMARK_SUBTYPE);
     }

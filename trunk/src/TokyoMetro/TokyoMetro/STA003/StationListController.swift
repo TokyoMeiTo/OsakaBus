@@ -122,9 +122,9 @@ class StationListController: UIViewController, GPSDelegate{
     }
     
     /**
-    * ボタン点击事件
-    * @param sender
-    */
+     * ボタン点击事件
+     * @param sender
+     */
     func buttonAction(sender: UIButton){
         switch sender{
         case self.navigationItem.rightBarButtonItem!:
@@ -145,7 +145,7 @@ class StationListController: UIViewController, GPSDelegate{
         listController.sender = self
         tbList.delegate = listController.self
         tbList.dataSource = listController.self
-        tbList.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+        //tbList.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         tbList.reloadData()
     }
     
@@ -358,7 +358,9 @@ class ListController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
+//        var cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
+        var cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "Cell")
+        
         for subview in cell.subviews {
             if(subview.isKindOfClass(UIImageView) || subview.isKindOfClass(UILabel)){
                 subview.removeFromSuperview()
@@ -394,7 +396,7 @@ class ListController: UITableViewController {
         lblDistance.textAlignment = NSTextAlignment.Right
         cell.addSubview(lblDistance)
         
-        var imageViewLine = UIImageView(frame: CGRectMake(tableView.frame.width - 55, 12.5, 30, 30))
+        var imageViewLine = UIImageView(frame: CGRectMake(tableView.frame.width - 55, 12.5, 18, 18))
         imageViewLine.image = lineImage("\(tableMstT02.item(MSTT02_LINE_ID))")
         cell.addSubview(imageViewLine)
         cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator

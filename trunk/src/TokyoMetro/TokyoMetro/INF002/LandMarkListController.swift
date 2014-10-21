@@ -43,9 +43,9 @@ class LandMarkListController: UIViewController, UITableViewDelegate, NSObjectPro
         // Do any additional setup after loading the view, typically from a nib.
         switch landMarkType{
         case 0:
-            self.title = "INF002_08".localizedString()
+            self.title = "INF002_07".localizedString()
         case 1:
-            self.title = "INF002_09".localizedString()
+            self.title = "INF002_08".localizedString()
         case 2:
             self.title = "PUBLIC_09".localizedString()
         default:
@@ -58,7 +58,7 @@ class LandMarkListController: UIViewController, UITableViewDelegate, NSObjectPro
         self.view.backgroundColor = UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
         tbList.delegate = self
         tbList.dataSource = self
-        tbList.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+        //tbList.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         // 查询按钮点击事件
         var searchButtonTemp:UIButton? = UIButton.buttonWithType(UIButtonType.System) as? UIButton
         searchButtonTemp!.frame = CGRect(x:0,y:0,width:25,height:25)
@@ -154,9 +154,9 @@ class LandMarkListController: UIViewController, UITableViewDelegate, NSObjectPro
         var landMarkTypeStr:String = ""
         switch type{
         case 0:
-            landMarkTypeStr = "INF002_11".localizedString()
+            landMarkTypeStr = "PUBLIC_12".localizedString()
         case 1:
-            landMarkTypeStr = "INF002_09".localizedString()
+            landMarkTypeStr = "INF002_08".localizedString()
         case 2:
             landMarkTypeStr = "PUBLIC_09".localizedString()
         default:
@@ -182,11 +182,11 @@ class LandMarkListController: UIViewController, UITableViewDelegate, NSObjectPro
         var landMarkDetailController = self.storyboard!.instantiateViewControllerWithIdentifier("landmarkdetail") as LandMarkDetailController
         switch landMarkType{
         case 0:
-            landMarkDetailController.title = "热门景点"
+            landMarkDetailController.title = "INF002_07".localizedString()
         case 1:
-            landMarkDetailController.title = "美食"
+            landMarkDetailController.title = "INF002_08".localizedString()
         case 2:
-            landMarkDetailController.title = "购物"
+            landMarkDetailController.title = "PUBLIC_09".localizedString()
         default:
             println("nothing")
         }
@@ -207,7 +207,8 @@ class LandMarkListController: UIViewController, UITableViewDelegate, NSObjectPro
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
+//        var cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
+        var cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "Cell")
         for subview in cell.subviews{
             subview.removeFromSuperview()
         }

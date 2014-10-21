@@ -69,7 +69,7 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, NSObjectP
         //var daoINF002 = INF002Dao()
         var mstT04Table:MstT04LandMarkTable = MstT04LandMarkTable()
         stations = mstT04Table.queryLandMarkStations(landMark!)
-        itemCount = stations!.count + 11
+        itemCount = stations!.count + 12
     }
     
     /**
@@ -81,6 +81,7 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, NSObjectP
         case 101:
             var tableUsrT03:INF002FavDao = INF002FavDao()
             var lmkFav:UsrT03FavoriteTable? = tableUsrT03.queryFav("\(landMark!.item(MSTT04_LANDMARK_LMAK_ID))")
+            println(lmkFav!.rowid)
             //
             if(lmkFav!.rowid != nil && lmkFav!.rowid != ""){
                 lmkFav!.delete()
@@ -213,6 +214,11 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, NSObjectP
             var nsStr:NSString = "\(landMark!.item(MSTT04_LANDMARK_LMAK_ADDR))" as String
             var lblSize:CGSize = CGSizeMake(290,2000)
             return calLblHeight(nsStr, font: infoFont, constrainedToSize: lblSize).height + 40
+        case 9:
+            if(landMark!.item(MSTT04_LANDMARK_STAT_EXIT_ID) != nil && "\(landMark!.item(MSTT04_LANDMARK_STAT_EXIT_ID))" != "0"){
+                return 70
+            }
+            return 0
         default:
             if(indexPath.row > 9){
                 return 55
@@ -371,7 +377,7 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, NSObjectP
             if(landMark!.item(MSTT04_LANDMARK_MICI_RANK) != nil && "\(landMark!.item(MSTT04_LANDMARK_MICI_RANK))" != ""){
                 var lblInfoTitle = UILabel(frame: CGRect(x:15,y:10,width:tableView.frame.width - 30,height:30))
                 lblInfoTitle.textColor = UIColor.lightGrayColor()
-                lblInfoTitle.text = "米其林" + "\(landMark!.item(MSTT04_LANDMARK_MICI_RANK))" + "星餐厅"
+                lblInfoTitle.text = "INF002_17".localizedString() + "\(landMark!.item(MSTT04_LANDMARK_MICI_RANK))" + "INF002_18".localizedString()
                 lblInfoTitle.font = UIFont.systemFontOfSize(LABEL_TEXT_SIZE)
                 lblInfoTitle.textAlignment = NSTextAlignment.Left
                 cell.addSubview(lblInfoTitle)
@@ -393,7 +399,7 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, NSObjectP
             if(landMark!.item(MSTT04_LANDMARK_RANK) != nil && "\(landMark!.item(MSTT04_LANDMARK_RANK))" != ""){
                 var lblInfoTitle = UILabel(frame: CGRect(x:15,y:10,width:tableView.frame.width - 30,height:30))
                 lblInfoTitle.textColor = UIColor.lightGrayColor()
-                lblInfoTitle.text = "评分"
+                lblInfoTitle.text = "INF002_10".localizedString()
                 lblInfoTitle.font = UIFont.systemFontOfSize(LABEL_TEXT_SIZE)
                 lblInfoTitle.textAlignment = NSTextAlignment.Left
                 cell.addSubview(lblInfoTitle)
@@ -469,12 +475,32 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, NSObjectP
                 lblADDR.font = UIFont.systemFontOfSize(SMALL_TEXT_SIZE)
                 lblADDR.textAlignment = NSTextAlignment.Left
                 
-                var size:CGSize = CGSizeMake(320,2000)
+                var size:CGSize = CGSizeMake(290,2000)
                 lblADDR.frame.size.height = calLblHeight(lblADDR.text!, font: UIFont.systemFontOfSize(SMALL_TEXT_SIZE), constrainedToSize: size).height
                 
                 cell.addSubview(lblADDR)
             }
         case 9:
+            if(landMark!.item(MSTT04_LANDMARK_STAT_EXIT_ID) != nil && "\(landMark!.item(MSTT04_LANDMARK_STAT_EXIT_ID))" != "0"){
+                var lblInfoTitle = UILabel(frame: CGRect(x:15,y:10,width:tableView.frame.width - 30,height:30))
+                lblInfoTitle.textColor = UIColor.lightGrayColor()
+                lblInfoTitle.text = "出站口"
+                lblInfoTitle.font = UIFont.systemFontOfSize(LABEL_TEXT_SIZE)
+                lblInfoTitle.textAlignment = NSTextAlignment.Left
+                cell.addSubview(lblInfoTitle)
+                
+                var lblExit = UILabel(frame: CGRect(x:15,y:40,width:tableView.frame.width - 30,height:40))
+                lblExit.numberOfLines = 0
+                var indexTemp = "\(landMark!.item(MSTT04_LANDMARK_STAT_EXIT_ID))".rangeOfString("Temp")
+                var exitId:String = "\(landMark!.item(MSTT04_LANDMARK_STAT_EXIT_ID))".substringToIndex(indexTemp!.startIndex)
+                var walkTime:String = "\(landMark!.item(MSTT04_LANDMARK_STAT_EXIT_ID))".substringFromIndex(indexTemp!.endIndex)
+                lblExit.text = exitId.stationExit() + " 步行" + walkTime + "分钟"
+                lblExit.font = UIFont.systemFontOfSize(SMALL_TEXT_SIZE)
+                lblExit.textAlignment = NSTextAlignment.Left
+
+                cell.addSubview(lblExit)
+            }
+        case 10:
             var lblInfoTitle = UILabel(frame: CGRect(x:15,y:10,width:tableView.frame.width - 30,height:30))
             lblInfoTitle.textColor = UIColor.lightGrayColor()
             lblInfoTitle.text = "INF002_07".localizedString()
@@ -485,9 +511,9 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, NSObjectP
             println("nothing")
         }
         
-        if(indexPath.row > 9 && indexPath.row < itemCount - 1){
-            if("\(stations![indexPath.row - 10].item(MSTT02_LINE_ID))" != "nil"){
-                var tableMstT02 = stations![indexPath.row - 10]
+        if(indexPath.row > 10 && indexPath.row < itemCount - 1){
+            if(stations![indexPath.row - 11].item(MSTT02_LINE_ID) != nil && "\(stations![indexPath.row - 11].item(MSTT02_LINE_ID))" != "nil"){
+                var tableMstT02 = stations![indexPath.row - 11]
                 
                 var statNm:String = "\(tableMstT02.item(MSTT02_STAT_ID))".station()
                 

@@ -23,7 +23,7 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
     /* landMarksType */
     var landMarksSubType:Array<String>?
     /* landMarksRange */
-    var landMarksRange:Array<String> = ["INF002_15".localizedString(),"INF002_16".localizedString(),"INF002_17".localizedString(),"全部"]
+    var landMarksRange:Array<String> = ["INF002_15".localizedString(),"INF002_16".localizedString(),"INF002_17".localizedString(),"INF002_19".localizedString()]
     var pickerViewIsOpen = false
 
     var landMarkType:Int = 0
@@ -37,7 +37,7 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
     var landMarkRank:String = ""
     
     var landMarkShowStatId:String = "2800101"
-    var landMarkShowSpecialWard:String = "全部"
+    var landMarkShowSpecialWard:String = "INF002_19".localizedString()
     
     var classType = ""
     
@@ -66,7 +66,7 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
         pickerSpecialWard.delegate = self
         
         // 完成按钮点击事件
-        var saveButton:UIBarButtonItem = UIBarButtonItem(title: "查找", style: UIBarButtonItemStyle.Bordered, target:self, action: "buttonAction:")
+        var saveButton:UIBarButtonItem = UIBarButtonItem(title: "INF002_09".localizedString(), style: UIBarButtonItemStyle.Bordered, target:self, action: "buttonAction:")
         self.navigationItem.rightBarButtonItem = saveButton
         self.navigationItem.rightBarButtonItem!.tag = SAVE_BUTTON_TAG
     }
@@ -88,31 +88,31 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
                 landMarkShowStatId = landMarkStatId!
                 items.addObject(["PUBLIC_03".localizedString(),[landMarkShowStatId.station()]])
             }else{
-                items.addObject(["PUBLIC_03".localizedString(),["全部"]])
+                items.addObject(["PUBLIC_03".localizedString(),["INF002_19".localizedString()]])
             }
             
             if(landMarkSpecialWard == ""){
-                items.addObject(["INF002_13".localizedString(),["全部",""]])
+                items.addObject(["INF002_13".localizedString(),["INF002_19".localizedString(),""]])
             }else{
                 items.addObject(["INF002_13".localizedString(),[landMarkShowSpecialWard.specialWard(),""]])
             }
             items.addObject(["INF002_14".localizedString(),landMarksRange])
-            items.addObject(["菜系：",["日式","中式","西式","全部"]])
-            var priceStr:String = "日元及以上"
-            items.addObject(["预算价格：",["5000" + priceStr,"1000" + priceStr,"1000日元以下","全部"]])
-            items.addObject(["是否米其林星级：", ["米其林星级1","米其林星级2","米其林星级3","全部"]])
+            items.addObject(["INF002_20".localizedString(),["INF002_21".localizedString(),"INF002_22".localizedString(),"INF002_23".localizedString(),"INF002_19".localizedString()]])
+            var priceStr:String = "INF002_24".localizedString()
+            items.addObject(["INF002_25".localizedString(),["5000" + priceStr,"1000" + priceStr,"INF002_26".localizedString(),"INF002_19".localizedString()]])
+            items.addObject(["INF002_27".localizedString(), ["INF002_28".localizedString(),"INF002_29".localizedString(),"INF002_30".localizedString(),"INF002_19".localizedString()]])
             var PointStr:String = "分及以上"
-            items.addObject(["评分：",["2" + PointStr,"3" + PointStr,"4" + PointStr,"5" + PointStr,"全部"]])
+            items.addObject(["INF002_10".localizedString(),["2" + PointStr,"3" + PointStr,"4" + PointStr,"5" + PointStr,"INF002_19".localizedString()]])
         default:
             items = NSMutableArray.array()
             if(landMarkStatId != ""){
                 landMarkShowStatId = landMarkStatId!
                 items.addObject(["PUBLIC_03".localizedString(),[landMarkShowStatId.station()]])
             }else{
-                items.addObject(["PUBLIC_03".localizedString(),["全部"]])
+                items.addObject(["PUBLIC_03".localizedString(),["INF002_19".localizedString()]])
             }
             if(landMarkSpecialWard == ""){
-                items.addObject(["INF002_13".localizedString(),["全部",""]])
+                items.addObject(["INF002_13".localizedString(),["INF002_19".localizedString(),""]])
             }else{
                 items.addObject(["INF002_13".localizedString(),[landMarkShowSpecialWard.specialWard(),""]])
             }
@@ -133,11 +133,11 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
             //var inf002Dao:INF002Dao = INF002Dao()
             switch landMarkType{
             case 0:
-                lastController.landMarks = mstT04Table.queryLandMarksFilter("景点",lon: 0, lat: 0, distance: 0, sataId: landMarkStatId!, specialWard: landMarkSpecialWard!) as? Array<MstT04LandMarkTable>
+                lastController.landMarks = mstT04Table.queryLandMarksFilter("PUBLIC_12".localizedString(),lon: 0, lat: 0, distance: 0, sataId: landMarkStatId!, specialWard: landMarkSpecialWard!) as? Array<MstT04LandMarkTable>
             case 1:
-                lastController.landMarks = mstT04Table.queryLandMarksFilter("美食",lon: 0, lat: 0, distance: 0, sataId: landMarkStatId!, specialWard: landMarkSpecialWard!, subType:landMarkSubType, price:0, miciRank:landMarkMiciRank, rank:landMarkRank) as? Array<MstT04LandMarkTable>
+                lastController.landMarks = mstT04Table.queryLandMarksFilter("INF002_08".localizedString(),lon: 0, lat: 0, distance: 0, sataId: landMarkStatId!, specialWard: landMarkSpecialWard!, subType:landMarkSubType, price:0, miciRank:landMarkMiciRank, rank:landMarkRank) as? Array<MstT04LandMarkTable>
             case 2:
-                lastController.landMarks = mstT04Table.queryLandMarksFilter("购物",lon: 0, lat: 0, distance: 0, sataId: landMarkStatId!, specialWard: landMarkSpecialWard!) as? Array<MstT04LandMarkTable>
+                lastController.landMarks = mstT04Table.queryLandMarksFilter("PUBLIC_09".localizedString(),lon: 0, lat: 0, distance: 0, sataId: landMarkStatId!, specialWard: landMarkSpecialWard!) as? Array<MstT04LandMarkTable>
             default:
                 println("nothing")
             }
@@ -146,7 +146,7 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
             self.navigationController!.popViewControllerAnimated(true)
         case BTN_ALL:
             landMarkStatId = ""
-            landMarkShowStatId = "全部"
+            landMarkShowStatId = "INF002_19".localizedString()
             loadItems()
             tbList.reloadData()
         default:
@@ -219,11 +219,11 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
         case 3:
             switch didSelectRowAtIndexPath.row{
             case 0:
-                landMarkSubType = "日式"
+                landMarkSubType = "INF002_21".localizedString()
             case 1:
-                landMarkSubType = "中式"
+                landMarkSubType = "INF002_22".localizedString()
             case 2:
-                landMarkSubType = "西式"
+                landMarkSubType = "INF002_23".localizedString()
             default:
                 landMarkSubType = ""
             }
@@ -334,7 +334,7 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
         var cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
         cell.accessoryType = UITableViewCellAccessoryType.None
         for subview in cell.subviews{
-            if(subview.isKindOfClass(UIPickerView)){
+            if(subview.isKindOfClass(UIPickerView) || subview.isKindOfClass(UIButton)){
                 subview.removeFromSuperview()
             }
         }
@@ -342,14 +342,16 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
         switch indexPath.section{
         case 0:
             cell.textLabel!.text = items[indexPath.section][1][indexPath.row] as? String
-
-            var btnAll:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-            btnAll.frame = CGRect(x:tableView.frame.size.width - 75,y:0,width:60,height:43)
-            btnAll.setTitle("全部", forState: UIControlState.Normal)
-            btnAll.tag = BTN_ALL
             
-            btnAll.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
-            cell.addSubview(btnAll)
+            if("\(items[indexPath.section][1][indexPath.row])" != "INF002_19".localizedString()){
+                var btnAll:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
+                btnAll.frame = CGRect(x:tableView.frame.size.width - 75,y:0,width:60,height:43)
+                btnAll.setTitle("INF002_19".localizedString(), forState: UIControlState.Normal)
+                btnAll.tag = BTN_ALL
+                
+                btnAll.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
+                cell.addSubview(btnAll)
+            }
             
             if(indexPath.row == 1 && landMarkStatId == ""){
                 cell.accessoryType = UITableViewCellAccessoryType.Checkmark
@@ -441,7 +443,7 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int){
         if(row == 0){
             landMarkSpecialWard = ""
-            landMarkShowSpecialWard = "全部"
+            landMarkShowSpecialWard = "INF002_19".localizedString()
         }else if(row < 9){
             landMarkSpecialWard = "0\(row)"
             landMarkShowSpecialWard = "0\(row)"

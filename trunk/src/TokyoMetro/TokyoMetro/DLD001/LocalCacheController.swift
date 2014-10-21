@@ -55,12 +55,12 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
     }
     
     func intitValue(){
-        self.title = "离线数据管理"
+        self.title = "DLD001_01".localizedString()
         self.navigationItem.rightBarButtonItem = nil
         lblProgress.hidden = true
-        lblCacheVersion.text = "缓存版本: 1.0"
-        lblCacheSize.text = "缓存大小: 83593KB"
-        lblMoibleSize.text = "剩余容量: " + "\(LocalCacheController.getMemorySize())GB"
+        lblCacheVersion.text = "DLD001_12".localizedString()
+        lblCacheSize.text = "DLD001_13".localizedString() + "83593KB"
+        lblMoibleSize.text = "DLD001_14".localizedString() + "\(LocalCacheController.getMemorySize())GB"
         lblTip.text = tipText
         lblTip.numberOfLines = 0
         lblTip.lineBreakMode = NSLineBreakMode.ByCharWrapping
@@ -181,7 +181,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
                     dispatch_async(dispatch_get_main_queue()) { () -> Void in
                         self.downloading = false
                         self.loadProgress = "DLD001_04".localizedString()
-                        self.lblProgress.text = "下载失败"
+                        self.lblProgress.text = "DLD001_03".localizedString()
                         self.btnDownload.setBackgroundImage(UIImage(named: "DLD00101.png"), forState: UIControlState.Normal)
                     }
                 }
@@ -213,7 +213,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
                     formatter.positiveFormat = "0.00;"
                     
                     var progressTemp = formatter.stringFromNumber(progress.fractionCompleted * 100) //"\(progress.fractionCompleted * 100)".left(5)
-                    self.loadProgress = "正在下载: " + "\(progressTemp)" + " %"
+                    self.loadProgress = "DLD001_09".localizedString() + "\(progressTemp)" + " %"
                     //self.tbList.reloadData()
                     self.lblProgress.text = self.loadProgress
                 }
@@ -268,14 +268,14 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
             }else{
                 println("解压失败")
                 loadProgress = "DLD001_04".localizedString()
-                self.lblProgress.text = "下载失败"
+                self.lblProgress.text = "DLD001_03".localizedString()
                 showDownloadBtn()
             }
             unzip.UnzipCloseFile()
         }else{
             println("解压失败")
             loadProgress = "DLD001_04".localizedString()
-            self.lblProgress.text = "下载失败"
+            self.lblProgress.text = "DLD001_03".localizedString()
         }
         downloading = false
     }
