@@ -24,8 +24,16 @@ class LandMarkListController: UIViewController, UITableViewDelegate, NSObjectPro
     let GPShelper:GPSHelper = GPSHelper()
     /* 地标一览 */
     var landMarks:Array<MstT04LandMarkTable>?
-    /* 地标类型 */
+    /* 类型 */
     var landMarkType:Int = 0
+    /* 地区 */
+    var landMarkSpecialWard:String? = ""
+    /* 距离 */
+    var landMarkRange:Int = 100000
+    /* 站点 */
+    var landMarkStatId:String? = ""
+    
+    var classType = ""
     
     let BTN_SEARCH_TAG:Int = 110
     let BTN_FAV_TAG:Int = 101
@@ -47,7 +55,7 @@ class LandMarkListController: UIViewController, UITableViewDelegate, NSObjectPro
 //        if(landMarks == nil){
 //            landMarks = selectLandMarkTable(landMarkType)
 //        }
-        
+        self.view.backgroundColor = UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
         tbList.delegate = self
         tbList.dataSource = self
         tbList.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell")
@@ -84,6 +92,10 @@ class LandMarkListController: UIViewController, UITableViewDelegate, NSObjectPro
             landMarkSearchController.fromLat = self.fromLat
             landMarkSearchController.fromLon = self.fromLon
             landMarkSearchController.landMarkType = self.landMarkType
+            landMarkSearchController.landMarkSpecialWard = self.landMarkSpecialWard
+            landMarkSearchController.landMarkRange = self.landMarkRange
+            landMarkSearchController.landMarkStatId = self.landMarkStatId
+            landMarkSearchController.classType = self.classType
             
             var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
             self.navigationItem.backBarButtonItem = backButton
@@ -151,7 +163,7 @@ class LandMarkListController: UIViewController, UITableViewDelegate, NSObjectPro
             println("nothing")
         }
         
-        landMarks = mstT04Table.queryLandMarks(landMarkTypeStr) as? Array<MstT04LandMarkTable>
+        landMarks = mstT04Table.queryLandMarksFilter(landMarkTypeStr,lon: 0, lat: 0, distance: 0, sataId: landMarkStatId!, specialWard: landMarkSpecialWard!) as? Array<MstT04LandMarkTable>//.queryLandMarks(landMarkTypeStr) as? Array<MstT04LandMarkTable>
         return landMarks!
     }
     

@@ -38,10 +38,15 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
     
     var landMarkShowStatId:String = "2800101"
     var landMarkShowSpecialWard:String = "全部"
+    
+    var classType = ""
+    
     /* 起点軽度 */
     var fromLat = 35.672737//31.23312372 // 天地科技广场1号楼
     /* 起点緯度 */
     var fromLon = 139.768898//121.38368547 // 天地科技广场1号楼
+    
+    let BTN_ALL:Int = 101
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -76,13 +81,16 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
     }
     
     func loadItems(){
-        if(landMarkStatId != ""){
-            landMarkShowStatId = landMarkStatId!
-        }
         switch landMarkType{
         case 1:
             items = NSMutableArray.array()
-            items.addObject(["PUBLIC_03".localizedString(),[landMarkShowStatId.station()]])
+            if(landMarkStatId != ""){
+                landMarkShowStatId = landMarkStatId!
+                items.addObject(["PUBLIC_03".localizedString(),[landMarkShowStatId.station()]])
+            }else{
+                items.addObject(["PUBLIC_03".localizedString(),["全部"]])
+            }
+            
             if(landMarkSpecialWard == ""){
                 items.addObject(["INF002_13".localizedString(),["全部",""]])
             }else{
@@ -97,7 +105,12 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
             items.addObject(["评分：",["2" + PointStr,"3" + PointStr,"4" + PointStr,"5" + PointStr,"全部"]])
         default:
             items = NSMutableArray.array()
-            items.addObject(["PUBLIC_03".localizedString(),[landMarkShowStatId.station()]])
+            if(landMarkStatId != ""){
+                landMarkShowStatId = landMarkStatId!
+                items.addObject(["PUBLIC_03".localizedString(),[landMarkShowStatId.station()]])
+            }else{
+                items.addObject(["PUBLIC_03".localizedString(),["全部"]])
+            }
             if(landMarkSpecialWard == ""){
                 items.addObject(["INF002_13".localizedString(),["全部",""]])
             }else{
@@ -131,6 +144,11 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
             
             lastController.viewDidLoad()
             self.navigationController!.popViewControllerAnimated(true)
+        case BTN_ALL:
+            landMarkStatId = ""
+            landMarkShowStatId = "全部"
+            loadItems()
+            tbList.reloadData()
         default:
             println("nothing")
         }
@@ -153,6 +171,10 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
             if(didSelectRowAtIndexPath.row == 0){
                 var searchStationList = self.storyboard!.instantiateViewControllerWithIdentifier("SearchStationList") as SearchStationList
                 searchStationList.classType = "landMarkSearchController"
+                
+                var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+                self.navigationItem.backBarButtonItem = backButton
+                
                 self.navigationController!.pushViewController(searchStationList, animated:true)
             }else if(didSelectRowAtIndexPath.row == 1){
                 landMarkStatId = ""
@@ -321,6 +343,14 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
         case 0:
             cell.textLabel!.text = items[indexPath.section][1][indexPath.row] as? String
 
+            var btnAll:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
+            btnAll.frame = CGRect(x:tableView.frame.size.width - 75,y:0,width:60,height:43)
+            btnAll.setTitle("全部", forState: UIControlState.Normal)
+            btnAll.tag = BTN_ALL
+            
+            btnAll.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
+            cell.addSubview(btnAll)
+            
             if(indexPath.row == 1 && landMarkStatId == ""){
                 cell.accessoryType = UITableViewCellAccessoryType.Checkmark
             }
