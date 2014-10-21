@@ -523,23 +523,32 @@ class Main: UIViewController,UIScrollViewDelegate {
         
         
         // 添加相应的地表个数
-         odbLandMark("购物")
+         odbLandMark("PUBLIC_09".localizedString())
         
          if (landMarkArr.count > 0 ){
             mViewShowLandMark(landMarkArr.count, viewTag : 2002)
         
-         }
+         } else {
+            mViewShowLandMark(0, viewTag : 2002)
+            
+        }
         
-         odbLandMark("景点")
+         odbLandMark("PUBLIC_12".localizedString())
          if (landMarkArr.count > 0 ){
             mViewShowLandMark(landMarkArr.count, viewTag : 2003)
             
-         }
-         odbLandMark("美食")
+         } else {
+            mViewShowLandMark(0, viewTag : 2003)
+        
+        }
+         odbLandMark("PUBLIC_13".localizedString())
          if (landMarkArr.count > 0 ){
             mViewShowLandMark(landMarkArr.count, viewTag : 2004)
             
-         }
+         } else {
+            mViewShowLandMark(0, viewTag : 2004)
+        
+        }
         
         
         
@@ -705,13 +714,13 @@ class Main: UIViewController,UIScrollViewDelegate {
     var landMark: LandMarkListController = self.storyboard?.instantiateViewControllerWithIdentifier("landmarklist") as LandMarkListController
     
     if (sender == mPopupBtnTravle) {
-        odbLandMark("景点")
+        odbLandMark("PUBLIC_12".localizedString())
     landMark.title = "INF002_11".localizedString()
     } else if (sender == mPopupBtnFood) {
-        odbLandMark("美食")
+        odbLandMark("PUBLIC_13".localizedString())
     landMark.title = "INF002_09".localizedString()
     } else {
-        odbLandMark("购物")
+        odbLandMark("PUBLIC_09".localizedString())
     landMark.title = "PUBLIC_09".localizedString()
     }
     
@@ -726,28 +735,37 @@ class Main: UIViewController,UIScrollViewDelegate {
     
     // 添加地表个数的小lable
     func mViewShowLandMark(landMarkCount : Int, viewTag : Int) {
+        if (landMarkCount == 0){
+            var mlbl = mPopupStationView.viewWithTag(viewTag) as UILabel!
+            if (mlbl != nil) {
+                mlbl.removeFromSuperview()
+            }
+        } else {
+            
+            var mlbl = mPopupStationView.viewWithTag(viewTag) as UILabel!
+            if (mlbl != nil) {
+                mlbl.removeFromSuperview()
+            }
+            
+            var mlblShowCount : UILabel = UILabel()
+            mlblShowCount.tag = viewTag
+            mlblShowCount.text = String(landMarkCount)
+            mlblShowCount.font = UIFont.systemFontOfSize(12)
+            mlblShowCount.textColor = UIColor.whiteColor()
+            mlblShowCount.backgroundColor = UIColor(patternImage: "mpop_point".getImage())
+            if (viewTag == 2002) {
+                mlblShowCount.frame = CGRectMake(71,156,8,11)
+            } else if (viewTag == 2003) {
+                mlblShowCount.frame = CGRectMake(141,156,8,11)
+            } else if (viewTag == 2004) {
+                mlblShowCount.frame = CGRectMake(211,156,8,11)
+            }
+            
+            self.mPopupStationView.addSubview(mlblShowCount)
         
-        var mlbl = mPopupStationView.viewWithTag(viewTag) as UILabel!
-        if (mlbl != nil) {
-            mlbl.removeFromSuperview()
         }
         
-        var mlblShowCount : UILabel = UILabel()
-        mlblShowCount.tag = viewTag
-        mlblShowCount.text = String(landMarkCount)
-        mlblShowCount.font = UIFont.systemFontOfSize(12)
-        mlblShowCount.textColor = UIColor.whiteColor()
-        mlblShowCount.backgroundColor = UIColor.redColor()
-        mlblShowCount.layer.cornerRadius = 20
-        if (viewTag == 2002) {
-        mlblShowCount.frame = CGRectMake(71,156,8,11)
-        } else if (viewTag == 2003) {
-        mlblShowCount.frame = CGRectMake(141,156,8,11)
-        } else if (viewTag == 2004) {
-        mlblShowCount.frame = CGRectMake(211,156,8,11)
-        }
         
-        self.mPopupStationView.addSubview(mlblShowCount)
 
     }
     
