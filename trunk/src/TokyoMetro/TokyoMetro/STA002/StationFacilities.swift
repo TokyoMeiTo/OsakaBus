@@ -60,7 +60,6 @@ class StationFacilities: UIViewController, UITableViewDelegate, NSObjectProtocol
         return 115
     }
     
-    
     func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         // Return false if you do not want the specified item to be editable.
         return false
@@ -68,10 +67,9 @@ class StationFacilities: UIViewController, UITableViewDelegate, NSObjectProtocol
     
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
-            //items.removeObjectAtIndex(indexPath.row)
-            //tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+
         } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
+
         }
     }
     
@@ -82,7 +80,6 @@ class StationFacilities: UIViewController, UITableViewDelegate, NSObjectProtocol
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
-    
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return facilities!.count
@@ -170,23 +167,6 @@ class StationFacilities: UIViewController, UITableViewDelegate, NSObjectProtocol
     *    Private Methods
     *******************************************************************************/
     
-    /**
-    * ボタン点击事件
-    * @param sender
-    */
-    func buttonAction(sender: UIButton){
-        switch sender{
-        case self.navigationItem.rightBarButtonItem!:
-            var landMarkSearchController = self.storyboard!.instantiateViewControllerWithIdentifier("landmarksearch") as LandMarkSearchController
-            
-            var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
-            self.navigationItem.backBarButtonItem = backButton
-            
-            self.navigationController!.pushViewController(landMarkSearchController, animated:true)
-        default:
-            println("nothing")
-        }
-    }
     
     /**
     * 从DB查询地标信息

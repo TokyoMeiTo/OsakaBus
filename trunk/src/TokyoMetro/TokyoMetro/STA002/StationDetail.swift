@@ -53,12 +53,15 @@ class StationDetail: UIViewController, UITableViewDelegate, UITableViewDataSourc
     var statMetroId = ""
     // 查询该条线的线路id
     var stat_id = ""
+    // 收藏该条线路的group_id
+    var group_id = ""
     
 /*******************************************************************************
 * Private Properties
 *******************************************************************************/
-    // 收藏该条线路的group_id
-    var group_id = ""
+    
+    var collectRowid:String?
+    
     // 站点statId、statSeq、lineId数组
     var statSeqArr: NSArray = NSArray.array()
     
@@ -87,10 +90,11 @@ class StationDetail: UIViewController, UITableViewDelegate, UITableViewDataSourc
         cellJPNmaeLabel.text = cellJPName + "（" + cellJPNameKana + "）"
         //标题
         self.title = stat_id.station()
+        
+        collectRowid = ""
         //查询车站信息
         odbStation()
-        //查询时刻表信息
-//        odbTrainSchedule()
+
         // 获取屏幕尺寸
         size = UIScreen.mainScreen().bounds.size
         // 代码添加车站icon
@@ -233,7 +237,7 @@ class StationDetail: UIViewController, UITableViewDelegate, UITableViewDataSourc
         
         var exitInfo: ExitInfo = self.storyboard?.instantiateViewControllerWithIdentifier("ExitInfo") as ExitInfo
         
-        var rowArr = odbLandMark()
+        var rowArr = model!.odbLandMark(group_id)
         exitInfo.statId = group_id
         exitInfo.landMarkArr = rowArr
         if (statSeqArr.count > 0) {
@@ -249,15 +253,25 @@ class StationDetail: UIViewController, UITableViewDelegate, UITableViewDataSourc
     
     @IBAction func addSubway() {
         
-        if (model!.collectStation(group_id)) {
-            var sureBtn: UIAlertView = UIAlertView(title: "", message: "CMN003_21".localizedString(), delegate: self, cancelButtonTitle: "PUBLIC_06".localizedString())
-            
-            sureBtn.show()
-            btnCollect.setBackgroundImage(UIImage(named: "station_collect_yellow"), forState: UIControlState.Normal)
+        if (btnCollect.tag == 401) {
+            if (collectRowid != "") {
+                if (model!.removeStation(collectRowid!)){
+                    btnCollect.setBackgroundImage(UIImage(named: "station_collect"), forState: UIControlState.Normal)
+                    btnCollect.tag = 400
+                }
+            }
         } else {
-            var sureBtn: UIAlertView = UIAlertView(title: "", message: "CMN003_20".localizedString(), delegate: self, cancelButtonTitle: "PUBLIC_06".localizedString())
-            
-            sureBtn.show()
+            if (model!.collectStation(group_id)) {
+                var sureBtn: UIAlertView = UIAlertView(title: "", message: "CMN003_21".localizedString(), delegate: self, cancelButtonTitle: "PUBLIC_06".localizedString())
+                
+                sureBtn.show()
+//                btnCollect.setBackgroundImage(UIImage(named: "station_collect_yellow"), forState: UIControlState.Normal)
+                odbCollectStation()
+            } else {
+                var sureBtn: UIAlertView = UIAlertView(title: "", message: "CMN003_20".localizedString(), delegate: self, cancelButtonTitle: "PUBLIC_06".localizedString())
+                
+                sureBtn.show()
+            }
         }
     }
     
@@ -341,28 +355,10 @@ class StationDetail: UIViewController, UITableViewDelegate, UITableViewDataSourc
 /*******************************************************************************
 *    Private Methods
 *******************************************************************************/
-    
-    
-    func odbLandMark(type: String) {
-        
-        var mstT04Table:MstT04LandMarkTable = MstT04LandMarkTable()
-        landMarkArr = mstT04Table.queryLandMarkByStatId(group_id, lmakType: type)
 
-    }
-    
-    func odbLandMark() -> NSArray{
-        
-        var mstT04Table:MstT04LandMarkTable = MstT04LandMarkTable()
-        var rows = mstT04Table.queryLandMarkByStatId(group_id, lmakType: "")
-        
-        return rows
-    }
-    
     
     func odbStation(){
         var table = MstT02StationTable()
-        // 存储丸之内线m段车站
-        var mStationArr: NSMutableArray = NSMutableArray.array()
         
         table.statId = stat_id
         var rows: NSArray = table.selectAll()
@@ -383,11 +379,12 @@ class StationDetail: UIViewController, UITableViewDelegate, UITableViewDataSourc
         table.statId = group_id
         var rows = table.selectAll()
         if (rows.count > 0) {
-//            imgCollect.image = UIImage(named: "station_collect_icon")
             btnCollect.setBackgroundImage(UIImage(named: "station_collect_yellow"), forState: UIControlState.Normal)
+            btnCollect.tag = 401
+            collectRowid = (rows[0] as UsrT03FavoriteTable).rowid
         } else {
-//            imgCollect.image = UIImage(named: "station_uncollect_icon")
             btnCollect.setBackgroundImage(UIImage(named: "station_collect"), forState: UIControlState.Normal)
+            btnCollect.tag = 400
         }
     }
 
@@ -463,13 +460,13 @@ class StationDetail: UIViewController, UITableViewDelegate, UITableViewDataSourc
         var landMark: LandMarkListController = self.storyboard?.instantiateViewControllerWithIdentifier("landmarklist") as LandMarkListController
         
         if (index == 0) {
-            odbLandMark("景点")
+            landMarkArr = model!.odbLandMark(group_id, type: "景点")
             landMark.title = "PUBLIC_12".localizedString()
         } else if (index == 1) {
-            odbLandMark("美食")
+            landMarkArr = model!.odbLandMark(group_id, type: "美食")
             landMark.title = "PUBLIC_13".localizedString()
         } else {
-            odbLandMark("购物")
+            landMarkArr = model!.odbLandMark(group_id, type: "购物")
             landMark.title = "PUBLIC_14".localizedString()
         }
         
@@ -485,7 +482,7 @@ class StationDetail: UIViewController, UITableViewDelegate, UITableViewDataSourc
     func showExitInfo() {
         var exitInfo: ExitInfo = self.storyboard?.instantiateViewControllerWithIdentifier("ExitInfo") as ExitInfo
         
-        var rowArr = odbLandMark()
+        var rowArr = model!.odbLandMark(group_id)
         
         exitInfo.landMarkArr = rowArr
         

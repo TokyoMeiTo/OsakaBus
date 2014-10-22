@@ -23,7 +23,7 @@ class HelpContentList: UIViewController, UITableViewDataSource, UITableViewDeleg
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.title = "求助一览"
+        self.title = "INF003_01".localizedString()
         
         odbRescure()
     }

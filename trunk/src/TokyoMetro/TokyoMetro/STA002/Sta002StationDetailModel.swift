@@ -92,9 +92,7 @@ class Sta002StationDetailModel {
         table.statId = groupId
         var rows = table.selectAll()
         if (rows.count > 0) {
-//            var sureBtn: UIAlertView = UIAlertView(title: "", message: "STA002_06".localizedString(), delegate: self, cancelButtonTitle: "PUBLIC_06".localizedString())
-//            
-//            sureBtn.show()
+            
         } else {
             table.reset()
             table.favoType = "01"
@@ -121,5 +119,33 @@ class Sta002StationDetailModel {
         return isSuccess
     }
 
+    
+    // 删除站点
+    func removeStation(rowid: String) -> Bool {
+        let table = UsrT03FavoriteTable()
+        table.rowid = rowid
+        
+        let rows = table.selectAll()
+        if (rows.count > 0) {
+            return table.delete()
+        } else {
+            return false
+        }
+    }
+    
+    func odbLandMark(groupId: String) -> NSArray {
+        
+        return odbLandMark(groupId, type: "")
+    }
+    
+    func odbLandMark(groupId: String?, type: String) -> NSArray {
+        
+        if (groupId == nil || groupId == "") {
+            return NSArray.array()
+        }
+        let mstT04Table:MstT04LandMarkTable = MstT04LandMarkTable()
+        
+        return mstT04Table.queryLandMarkByStatId(groupId!, lmakType: type)
+    }
 
 }

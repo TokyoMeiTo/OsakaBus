@@ -54,6 +54,8 @@ class TimeTable: UIViewController,UITableViewDelegate,UITableViewDataSource {
     
     var dirtStationArr: [String] = [String]()
     
+    var model: Sta002TimeTableModel?
+    
 /*******************************************************************************
 * Overrides From UIViewController
 *******************************************************************************/
@@ -62,6 +64,8 @@ class TimeTable: UIViewController,UITableViewDelegate,UITableViewDataSource {
         super.viewDidLoad()
         
         self.title = "STA002_12".localizedString()
+        
+        model = Sta002TimeTableModel()
         
         // ScreenSize
         self.mScreenSize = UIScreen.mainScreen().bounds.size
@@ -126,11 +130,11 @@ class TimeTable: UIViewController,UITableViewDelegate,UITableViewDataSource {
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if (table == tableView) {
             if (weekendSegment.selectedSegmentIndex == 0) {
-                return cellHeight(allTimeArr[0] as NSMutableArray, index: indexPath.row)
+                return model!.cellHeight(allTimeArr[0] as NSMutableArray, index: indexPath.row)
             } else if (weekendSegment.selectedSegmentIndex == 1) {
-                return cellHeight(allTimeArr[1] as NSMutableArray, index: indexPath.row)
+                return model!.cellHeight(allTimeArr[1] as NSMutableArray, index: indexPath.row)
             } else {
-                return cellHeight(allTimeArr[2] as NSMutableArray, index: indexPath.row)
+                return model!.cellHeight(allTimeArr[2] as NSMutableArray, index: indexPath.row)
             }
         } else {
             return 50
@@ -527,10 +531,21 @@ class TimeTable: UIViewController,UITableViewDelegate,UITableViewDataSource {
     
     func odbTime() {
         
-        if (destTimeArr1.count == 3 && destTimeArr2.count == 3 && destTimeArr3.count == 3) {
-            return
-        }
         var index = segment.selectedSegmentIndex
+        // 已有数据，不再进行查询
+        if (index == 0) {
+            if (destTimeArr1.count == 3) {
+                return
+            }
+        } else if (index == 1) {
+            if (destTimeArr1.count == 3 && destTimeArr2.count == 3) {
+                return
+            }
+        }  else if (index == 2) {
+            if (destTimeArr1.count == 3 && destTimeArr2.count == 3 && destTimeArr3.count == 3) {
+                return
+            }
+        }
         var key = lineArr[selectedIndex] as MstT02StationTable
         var statId = key.item(MSTT02_STAT_ID) as String
         
@@ -556,144 +571,20 @@ class TimeTable: UIViewController,UITableViewDelegate,UITableViewDataSource {
         var timeTypeArr3 = table.selectAll()
         
         if (index == 0) {
-            destTimeArr1.addObject(initTimeArr(timeTypeArr1))
-            destTimeArr1.addObject(initTimeArr(timeTypeArr2))
-            destTimeArr1.addObject(initTimeArr(timeTypeArr3))
+            destTimeArr1.addObject(model!.initTimeArr(timeTypeArr1))
+            destTimeArr1.addObject(model!.initTimeArr(timeTypeArr2))
+            destTimeArr1.addObject(model!.initTimeArr(timeTypeArr3))
         } else if (index == 1) {
-            destTimeArr2.addObject(initTimeArr(timeTypeArr1))
-            destTimeArr2.addObject(initTimeArr(timeTypeArr2))
-            destTimeArr2.addObject(initTimeArr(timeTypeArr3))
+            destTimeArr2.addObject(model!.initTimeArr(timeTypeArr1))
+            destTimeArr2.addObject(model!.initTimeArr(timeTypeArr2))
+            destTimeArr2.addObject(model!.initTimeArr(timeTypeArr3))
         } else {
-            destTimeArr3.addObject(initTimeArr(timeTypeArr1))
-            destTimeArr3.addObject(initTimeArr(timeTypeArr2))
-            destTimeArr3.addObject(initTimeArr(timeTypeArr3))
+            destTimeArr3.addObject(model!.initTimeArr(timeTypeArr1))
+            destTimeArr3.addObject(model!.initTimeArr(timeTypeArr2))
+            destTimeArr3.addObject(model!.initTimeArr(timeTypeArr3))
         }
         
         
     }
-    
-    func initTimeArr(data: NSArray) -> NSMutableArray {
-        
-        var timeArr: NSMutableArray = NSMutableArray.array()
-        var arr1: [String] = [String]()
-        var arr2: [String] = [String]()
-        var arr3: [String] = [String]()
-        var arr4: [String] = [String]()
-        var arr5: [String] = [String]()
-        var arr6: [String] = [String]()
-        var arr7: [String] = [String]()
-        var arr8: [String] = [String]()
-        var arr9: [String] = [String]()
-        var arr10: [String] = [String]()
-        var arr11: [String] = [String]()
-        var arr12: [String] = [String]()
-        var arr13: [String] = [String]()
-        var arr14: [String] = [String]()
-        var arr15: [String] = [String]()
-        var arr16: [String] = [String]()
-        var arr17: [String] = [String]()
-        var arr18: [String] = [String]()
-        var arr19: [String] = [String]()
-        var arr20: [String] = [String]()
-
-        
-        for key in data {
-            key as LinT01TrainScheduleTrainTable
-            
-            switch ((key.item(LINT01_TRAIN_SCHEDULE_DEPA_TIME) as String).left(2)) {
-            case "05":
-                arr1.append((key.item(LINT01_TRAIN_SCHEDULE_DEPA_TIME) as String).right(2))
-            case "06":
-                arr2.append((key.item(LINT01_TRAIN_SCHEDULE_DEPA_TIME) as String).right(2))
-            case "07":
-                arr3.append((key.item(LINT01_TRAIN_SCHEDULE_DEPA_TIME) as String).right(2))
-            case "08":
-                arr4.append((key.item(LINT01_TRAIN_SCHEDULE_DEPA_TIME) as String).right(2))
-            case "09":
-                arr5.append((key.item(LINT01_TRAIN_SCHEDULE_DEPA_TIME) as String).right(2))
-            case "10":
-                arr6.append((key.item(LINT01_TRAIN_SCHEDULE_DEPA_TIME) as String).right(2))
-            case "11":
-                arr7.append((key.item(LINT01_TRAIN_SCHEDULE_DEPA_TIME) as String).right(2))
-            case "12":
-                arr8.append((key.item(LINT01_TRAIN_SCHEDULE_DEPA_TIME) as String).right(2))
-            case "13":
-                arr9.append((key.item(LINT01_TRAIN_SCHEDULE_DEPA_TIME) as String).right(2))
-            case "14":
-                arr10.append((key.item(LINT01_TRAIN_SCHEDULE_DEPA_TIME) as String).right(2))
-            case "15":
-                arr11.append((key.item(LINT01_TRAIN_SCHEDULE_DEPA_TIME) as String).right(2))
-            case "16":
-                arr12.append((key.item(LINT01_TRAIN_SCHEDULE_DEPA_TIME) as String).right(2))
-            case "17":
-                arr13.append((key.item(LINT01_TRAIN_SCHEDULE_DEPA_TIME) as String).right(2))
-            case "18":
-                arr14.append((key.item(LINT01_TRAIN_SCHEDULE_DEPA_TIME) as String).right(2))
-            case "19":
-                arr15.append((key.item(LINT01_TRAIN_SCHEDULE_DEPA_TIME) as String).right(2))
-            case "20":
-                arr16.append((key.item(LINT01_TRAIN_SCHEDULE_DEPA_TIME) as String).right(2))
-            case "21":
-                arr17.append((key.item(LINT01_TRAIN_SCHEDULE_DEPA_TIME) as String).right(2))
-            case "22":
-                arr18.append((key.item(LINT01_TRAIN_SCHEDULE_DEPA_TIME) as String).right(2))
-            case "23":
-                arr19.append((key.item(LINT01_TRAIN_SCHEDULE_DEPA_TIME) as String).right(2))
-            case "00":
-                arr20.append((key.item(LINT01_TRAIN_SCHEDULE_DEPA_TIME) as String).right(2))
-            default:
-                arr20.append((key.item(LINT01_TRAIN_SCHEDULE_DEPA_TIME) as String).right(2))
-            }
-            
-        }
-        
-        timeArr.addObject(arr1)
-        timeArr.addObject(arr2)
-        timeArr.addObject(arr3)
-        timeArr.addObject(arr4)
-        timeArr.addObject(arr5)
-        timeArr.addObject(arr6)
-        timeArr.addObject(arr7)
-        timeArr.addObject(arr8)
-        timeArr.addObject(arr9)
-        timeArr.addObject(arr10)
-        timeArr.addObject(arr11)
-        timeArr.addObject(arr12)
-        timeArr.addObject(arr13)
-        timeArr.addObject(arr14)
-        timeArr.addObject(arr15)
-        timeArr.addObject(arr16)
-        timeArr.addObject(arr17)
-        timeArr.addObject(arr18)
-        timeArr.addObject(arr19)
-        if (arr20.count > 0) {
-            timeArr.addObject(arr20)
-        }
-        
-        return timeArr
-    }
-    
-    
-    func cellHeight(timeArr: NSMutableArray,index: Int) -> CGFloat {
-    
-        if (timeArr[index].count <= 6) {
-            
-            return 45
-        } else if (timeArr[index].count > 6 && timeArr[index].count <= 12) {
-            return 90
-        } else if (timeArr[index].count > 12 && timeArr[index].count <= 18) {
-            return 135
-        } else if (timeArr[index].count > 18 && timeArr[index].count <= 24) {
-            return 180
-        } else if (timeArr[index].count > 24 && timeArr[index].count <= 30) {
-            return 225
-        }  else if (timeArr[index].count > 30 && timeArr[index].count <= 36) {
-            return 260
-        } else {
-            return 45
-        }
-    }
-    
-
     
 }

@@ -101,8 +101,6 @@ class FacilityList: UIViewController,UITableViewDelegate,UITableViewDataSource {
         return 36
     }
 
-    
-
 /*******************************************************************************
 *      Implements Of UITableViewDataSource
 *******************************************************************************/

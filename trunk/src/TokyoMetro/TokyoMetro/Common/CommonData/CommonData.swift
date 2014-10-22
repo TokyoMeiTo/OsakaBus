@@ -20,6 +20,15 @@ class CommonData {
         return self;
     }
     
+    func fromDAOs(daos:NSArray) -> Array<CommonData>
+    {
+        var result:Array<CommonData> = Array<CommonData>()
+        for row in daos {
+            result.append(fromDAO(row as ODBDataTable))
+        }
+        return result
+    }
+    
     func toDAO() -> ODBDataTable
     {
         var dao:ODBDataTable = ODBDataTable()

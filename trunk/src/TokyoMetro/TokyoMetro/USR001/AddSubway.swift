@@ -51,8 +51,7 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
         super.viewDidLoad()
 
         self.title = "USR001_01".localizedString()
-        odbRoute()
-        odbStation()
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -64,6 +63,14 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
         super.viewWillAppear(animated)
         if (selectIndexPath != nil) {
             table.deselectRowAtIndexPath(selectIndexPath!, animated: true)
+        }
+        
+        // 返回刷新页面
+        odbRoute()
+        odbStation()
+        
+        if (segment.selectedSegmentIndex == 2 || segment.selectedSegmentIndex == 3 || segment.selectedSegmentIndex == 4) {
+            selectLandMarkId(segment.selectedSegmentIndex)
         }
     }
     
@@ -349,6 +356,10 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
         var table = UsrT03FavoriteTable()
         var stationTable = MstT02StationTable()
         
+        detailArr = NSMutableArray.array()
+        statJPNameArr = NSMutableArray.array()
+        changeLineArr = NSMutableArray.array()
+        
         table.favoType = "01"
         var rows: NSArray = table.selectAll()
         
@@ -392,6 +403,9 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
     func odbRoute() {
         var table = UsrT03FavoriteTable()
         var routeTable = LinT04RouteTable()
+        
+        ruteArr = NSMutableArray.array()
+        ruteRowIdArr = NSMutableArray.array()
         
         table.favoType = "04"
         var rows: NSArray = table.selectAll()
