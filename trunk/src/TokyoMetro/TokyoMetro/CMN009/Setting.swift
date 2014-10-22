@@ -19,7 +19,7 @@ class Setting : UIViewController, UITableViewDelegate, UITableViewDataSource, OA
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        arrList = ["离线数据管理", "评价App", "分享给好友"]
+        arrList = ["CMN009_02".localizedString(), "CMN009_03".localizedString(), "CMN009_04".localizedString()]
         self.mTabSettingItem.scrollEnabled = false
         
         mBtnOfficeWebSite.addTarget(self, action: BTNLINKACTION, forControlEvents: UIControlEvents.TouchUpInside)
@@ -66,9 +66,9 @@ class Setting : UIViewController, UITableViewDelegate, UITableViewDataSource, OA
             self.navigationItem.backBarButtonItem = backButton
             self.navigationController?.pushViewController(localCacheController, animated:true)
         case 1:
-            webLinkAction("评价", webSite:"http://www.baidu.com")
+            webLinkAction("CMN009_05".localizedString(), webSite:"http://www.baidu.com")
         case 2:
-            webLinkAction("分享", webSite:"http://www.google.com")
+            webLinkAction("CMN009_06".localizedString(), webSite:"http://www.google.com")
         default:
         
             var appservers : LocalCacheController = self.storyboard?.instantiateViewControllerWithIdentifier("localcache") as LocalCacheController
@@ -118,12 +118,12 @@ class Setting : UIViewController, UITableViewDelegate, UITableViewDataSource, OA
             
             self.navigationController?.pushViewController(appservers, animated:true)
         case self.mBtnOfficeWebSite:
-            webLinkAction("冈三华大", webSite:"http://www.google.com")
+            webLinkAction("CMN009_07".localizedString(), webSite:"http://www.google.com")
         case self.mBtnRelifDuty:
-           webLinkAction("免责声明", webSite:"http://www.google.com")
+           webLinkAction("CMN009_08".localizedString(), webSite:"http://www.google.com")
             
         default:
-        webLinkAction("冈三华大", webSite:"http://www.google.com")
+        webLinkAction("CMN009_07".localizedString(), webSite:"http://www.google.com")
         }
 
     }

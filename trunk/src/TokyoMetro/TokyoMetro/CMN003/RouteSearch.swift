@@ -435,6 +435,10 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
                         } else if (strresultExchType == "8") {
                             resultCelllblStationLineName.hidden = false
                             resultCelllblStationLineNameTip.hidden  = false
+                            resultCelllblStationLineImg.hidden  = false
+                            resultCelllblStationMoveDestTip.hidden  = false
+                            resultCelllblStationMoveDestName.hidden  = false
+                            
                             var strresultExchlineId = routStartDic["resultExchlineId"] as? NSString
                             
                             var strresultExchDestId = routStartDic["resultExchDestId"] as? NSString
@@ -467,9 +471,13 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
                         } else if (strresultExchType == "8") {
                             resultCelllblStationLineName.hidden = false
                             resultCelllblStationLineNameTip.hidden = false
+                            resultCelllblStationLineImg.hidden = false
+                            resultCelllblStationMoveDestTip.hidden = false
+                            resultCelllblStationMoveDestName.hidden = false
+                            resultCellIvStaionIcon.hidden = false
+                            
+                            
                             var strresultExchlineId = routStartDic["resultExchlineId"] as? NSString
-                            
-                            
                             resultCellIvStaionIcon.image = "routeexchange_metro".getImage()
                             var strresultExchDestId = routStartDic["resultExchDestId"] as? NSString
                             
@@ -478,7 +486,6 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
                             resultCelllblStationLineNameTip.text = (strresultExchlineId as String).line()
                             resultCelllblStationMoveDestTip.text = "CMN003_06".localizedString()
                             resultCelllblStationMoveDestName.text = (strresultExchDestId as String).station() + "PUBLIC_04".localizedString()
-                            
                             
                         }
                     }
@@ -750,10 +757,6 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
     func loadCollectedStation(){
         loadStation()
         showTipBtn("0")
-        
-        
-        
-
     }
     
     // 获取所有站的站名和图标
@@ -818,7 +821,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
     func serarchStationIdByStationName(StationNames:String) -> String {
         var resultid = ""
         var mst02table = MstT02StationTable()
-        var mst02rowID = mst02table.excuteQuery("select STAT_ID from MSTT02_STATION where STAT_NAME_EXT1 = '" + StationNames + "' and STAT_ID like '280%' ")
+        var mst02rowID = mst02table.excuteQuery("select STAT_ID,ROWID  from MSTT02_STATION where STAT_NAME_EXT1 = '" + StationNames + "' and STAT_ID like '280%' ")
         for mst02Row in mst02rowID {
             mst02Row as MstT02StationTable
             var searchstationId = mst02Row.item(MSTT02_STAT_ID) as String
@@ -1025,6 +1028,8 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
     // 读取本地数据
     func readStationIdCache() {
         var accoutDefaultRead : NSUserDefaults = NSUserDefaults()
+        
+        
         if accoutDefaultRead.objectForKey("historyStationdata") != nil {
             var readdate : NSMutableArray = accoutDefaultRead.objectForKey("historyStationdata") as NSMutableArray
             if (self.startStationText != ""){

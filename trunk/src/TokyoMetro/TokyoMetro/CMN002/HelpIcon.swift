@@ -13,7 +13,7 @@ class HelpIcon : UIViewController, UIScrollViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "标志通识"
+        self.title = "CMN002_01".localizedString()
         
         scrollView.zoomScale = 1.0
         

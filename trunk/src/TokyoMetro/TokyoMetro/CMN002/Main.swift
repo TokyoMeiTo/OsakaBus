@@ -147,6 +147,8 @@ class Main: UIViewController,UIScrollViewDelegate {
         mMainWrapper.addGestureRecognizer(mySingleTapGesture)
         
         // 禁止button同时点击
+        mBtnImgAdd.enabled = true
+        mBtnImgDec.enabled = true
         mBtnImgAdd.exclusiveTouch = true
         mBtnImgDec.exclusiveTouch = true
         
@@ -262,7 +264,6 @@ class Main: UIViewController,UIScrollViewDelegate {
 //            self.mUpButton.setBackgroundImage(image, forState: UIControlState.Highlighted)
             // 隐藏遮罩
             mBodyView.hidden = true
-            
         } else {
             mIsMenuShow = true
             image = UIImage(named: "helf_down_btn")
@@ -276,7 +277,6 @@ class Main: UIViewController,UIScrollViewDelegate {
 //            self.mUpButton.setBackgroundImage(image, forState: UIControlState.Highlighted)
             // 显示遮罩
             mBodyView.hidden = false
-            
         }
     }
     
