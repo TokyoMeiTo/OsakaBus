@@ -52,7 +52,7 @@ class Setting : UIViewController, UITableViewDelegate, UITableViewDataSource, OA
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 50
+        return 55
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {

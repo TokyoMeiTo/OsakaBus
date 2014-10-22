@@ -21,8 +21,14 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
     @IBOutlet weak var stationEnd: UITextField!
     // 显示数据的tableView
     @IBOutlet weak var tbView: UITableView!
+    
+    // 显示数据的tableView
+    @IBOutlet weak var vtbView: UIView!
     // 显示数据的tableView
     @IBOutlet weak var tbResultView: UITableView!
+    
+    // 显示数据的tableView
+    @IBOutlet weak var vtbResultView: UIView!
     // 查询按钮
     @IBOutlet weak var btnSearchRoute: UIButton!
     // 收藏按钮1
@@ -134,6 +140,8 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         self.stationEnd.placeholder = strEnd
         
         self.tbResultView.hidden = true
+        self.vtbResultView.hidden = true
+        self.vtbView.hidden = false
         self.tbView.hidden = false
         
         loadStation()
@@ -147,7 +155,6 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         
         testView.frame = CGRectMake(320, 568, 320, 33)
         testView.backgroundColor = UIColor.whiteColor()
-        mTipView()
         self.view.addSubview(testView)
         
         // 返回按钮点击事件
@@ -156,9 +163,6 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         
         mNearlyLogo.image = "route_locate".getImage()
         mCollectionLogo.image = "route_collectedlight".getImage()
-        
-        
-        
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -499,7 +503,6 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
                     if (self.pageTag == "1") {
                         var tempStatId = self.allOfStationItemsId.objectAtIndex(self.allOfStationItemsId.count - 1 - indexPath.row) as? String
                         self.startStationText = tempStatId as String!
-                        println("start \(self.startStationText)")
                         setSationIdCache()
                         
                     } else {
@@ -607,13 +610,15 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             errAlertView("CMN003_12".localizedString(), errMgs: "CMN003_11".localizedString(), errBtnTitle: "PUBLIC_06".localizedString())
             return
         }
-        showTipBtn("1")
+        
         getRouteIdByStationId(startStationText as NSString, endStationId: endStationText as NSString)
         getRouteline()
+        showTipBtn("1")
         self.pageTag = "2"
-        tbResultView.reloadData()
         
         self.tbResultView.hidden = false
+        self.vtbResultView.hidden = false
+        self.vtbView.hidden = true
         self.tbView.hidden = true
         tbResultView.reloadData()
         mNearlyLogo.image = "route_locate".getImage()
@@ -638,6 +643,10 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             btnCollect2.setBackgroundImage("searchroute_collection".getImage(), forState: UIControlState.Normal)
         }
         
+
+        btnCollectRouteImg.image = "route_collection".getImage()
+        
+        setSationIdCache()
     }
     
     func foucsChangeTo2 () {
@@ -655,6 +664,12 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         } else {
             btnCollect2.setBackgroundImage("searchroute_collection".getImage(), forState: UIControlState.Normal)
         }
+        
+        btnCollectRouteImg.image = "route_collection".getImage()
+        
+        setSationIdCache()
+            
+        
     }
     
     // 弹出对话框，判断是否要跳转到StationList页面
@@ -724,6 +739,10 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
     func loadCollectedStation(){
         loadStation()
         showTipBtn("0")
+        
+        
+        
+
     }
     
     // 获取所有站的站名和图标
@@ -738,6 +757,8 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         self.usrStationIds.removeAllObjects()
         
         self.tbResultView.hidden = true
+        self.vtbResultView.hidden = true
+        self.vtbView.hidden = false
         self.tbView.hidden = false
         self.tbView.reloadData()
         
@@ -769,7 +790,9 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
                 self.allOfStationItemsJpKana.addObject(stationNameKanatemp)
                 
             }
+            self.vtbResultView.hidden = true
             self.tbResultView.hidden = true
+            self.vtbView.hidden = false
             self.tbView.hidden = false
             tbView.reloadData()
         }
@@ -872,6 +895,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             var user03insert = user03table.insert()
             if user03insert {
                 reloadCollectedRouteId()
+                btnCollectRouteImg.image = "route_collectionlight".getImage()
             }
         }
         
@@ -990,13 +1014,20 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
     // 读取本地数据
     func readStationIdCache() {
         var accoutDefaultRead : NSUserDefaults = NSUserDefaults()
-        
-        println(accoutDefaultRead.objectForKey("historyStationdata")?.description)
-        
         if accoutDefaultRead.objectForKey("historyStationdata") != nil {
             var readdate : NSMutableArray = accoutDefaultRead.objectForKey("historyStationdata") as NSMutableArray
-            stationStart.text = (readdate[0] as String).station()
-            stationEnd.text = (readdate[1] as String).station()
+            if (self.startStationText != ""){
+                stationStart.text = self.startStationText.station()
+            } else {
+                stationStart.text = (readdate[0] as String).station()
+                self.startStationText = readdate[0] as String
+            }
+            if (self.endStationText != ""){
+                stationEnd.text = self.endStationText.station()
+            } else {
+                stationEnd.text = (readdate[1] as String).station()
+                self.endStationText = readdate[1] as String
+            }
         }
     }
     
@@ -1054,8 +1085,10 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         allOfNearlylineImageItems.removeAllObjects()
         allOfNearlyStationItemsJpKana.removeAllObjects()
         allNearlyStationlineGroup.removeAllObjects()
+        self.vtbResultView.hidden = true
         self.tbResultView.hidden = true
         self.tbView.hidden = false
+        self.vtbView.hidden = false
         self.tbView.reloadData()
         
         var locationTest : CLLocation = CLLocation(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
@@ -1086,8 +1119,10 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             }
             
         }
+        vtbResultView.hidden = true
         tbResultView.hidden = true
         tbView.hidden = false
+        vtbView.hidden = false
         tbView.reloadData()
         showTipBtn("0")
         
@@ -1125,6 +1160,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
     *   展示和收起底部menu菜单
     */
     func showTipBtn(index : String) {
+        mTipView()
         if (index == "0") {
             self.testView.frame = CGRectMake(0, self.mScreenSize.height, self.mScreenSize.width, 44)
             
@@ -1158,7 +1194,6 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             btnCollectRouteImg.image = "route_collectionlight".getImage()
         } else {
             btnCollectRouteImg.image = "route_collection".getImage()
-        
         }
         
         self.testView.addSubview(btnCollectRouteImg)

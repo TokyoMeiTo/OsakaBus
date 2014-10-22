@@ -712,15 +712,19 @@ class Main: UIViewController,UIScrollViewDelegate {
     // 跳转到相应地表
     @IBAction func showLnadMarkList(sender : UIButton) {
     var landMark: LandMarkListController = self.storyboard?.instantiateViewControllerWithIdentifier("landmarklist") as LandMarkListController
-    
+        
+        var landTypeTemp : Int = 0
     if (sender == mPopupBtnTravle) {
         odbLandMark("PUBLIC_12".localizedString())
-    landMark.title = "INF002_11".localizedString()
+        landTypeTemp = 0
+       landMark.title = "INF002_11".localizedString()
     } else if (sender == mPopupBtnFood) {
         odbLandMark("PUBLIC_13".localizedString())
+        landTypeTemp = 1
     landMark.title = "INF002_09".localizedString()
     } else {
         odbLandMark("PUBLIC_09".localizedString())
+        landTypeTemp = 2
     landMark.title = "PUBLIC_09".localizedString()
     }
     
@@ -728,7 +732,8 @@ class Main: UIViewController,UIScrollViewDelegate {
     self.navigationItem.backBarButtonItem = backButton
     
     landMark.landMarks = landMarkArr as? Array<MstT04LandMarkTable>
-    
+    landMark.landMarkStatId = self.selectStationGroupId
+    landMark.landMarkType = landTypeTemp
     self.navigationController?.pushViewController(landMark, animated: true)
     }
     
@@ -752,13 +757,14 @@ class Main: UIViewController,UIScrollViewDelegate {
             mlblShowCount.text = String(landMarkCount)
             mlblShowCount.font = UIFont.systemFontOfSize(12)
             mlblShowCount.textColor = UIColor.whiteColor()
+            mlblShowCount.textAlignment = NSTextAlignment.Center
             mlblShowCount.backgroundColor = UIColor(patternImage: "mpop_point".getImage())
             if (viewTag == 2002) {
-                mlblShowCount.frame = CGRectMake(71,156,8,11)
+                mlblShowCount.frame = CGRectMake(71,156,11,11)
             } else if (viewTag == 2003) {
-                mlblShowCount.frame = CGRectMake(141,156,8,11)
+                mlblShowCount.frame = CGRectMake(141,156,11,11)
             } else if (viewTag == 2004) {
-                mlblShowCount.frame = CGRectMake(211,156,8,11)
+                mlblShowCount.frame = CGRectMake(211,156,11,11)
             }
             
             self.mPopupStationView.addSubview(mlblShowCount)
