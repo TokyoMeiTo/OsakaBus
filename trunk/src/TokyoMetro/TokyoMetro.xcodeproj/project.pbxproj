@@ -74,6 +74,7 @@
 		3BED8F6B19F746D300F64277 /* UsrT03FavoriteTableData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BED8F5A19F746D300F64277 /* UsrT03FavoriteTableData.swift */; };
 		3BF0B88319EE5D2000150782 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3BF0B88519EE5D2000150782 /* InfoPlist.strings */; };
 		A10408D119F7D2AC002FC91A /* Sta002TimeTableModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10408D019F7D2AC002FC91A /* Sta002TimeTableModel.swift */; };
+		A10408D319F7DF49002FC91A /* Usr001AddSubwayModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10408D219F7DF49002FC91A /* Usr001AddSubwayModel.swift */; };
 		A158ACF819E9581500E63C03 /* SelectRaiders.swift in Sources */ = {isa = PBXBuildFile; fileRef = A158ACF719E9581500E63C03 /* SelectRaiders.swift */; };
 		A158ACFA19E9583100E63C03 /* RaidersDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = A158ACF919E9583100E63C03 /* RaidersDetail.swift */; };
 		A15CA4A319D57BDD00716A00 /* CmnT04ImageTable.m in Sources */ = {isa = PBXBuildFile; fileRef = A15CA49419D57BDD00716A00 /* CmnT04ImageTable.m */; };
@@ -317,6 +318,7 @@
 		3BF0B88719EE5D3300150782 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		3BF0B88819EE5D3B00150782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A10408D019F7D2AC002FC91A /* Sta002TimeTableModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sta002TimeTableModel.swift; sourceTree = "<group>"; };
+		A10408D219F7DF49002FC91A /* Usr001AddSubwayModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Usr001AddSubwayModel.swift; sourceTree = "<group>"; };
 		A158ACF719E9581500E63C03 /* SelectRaiders.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectRaiders.swift; sourceTree = "<group>"; };
 		A158ACF919E9583100E63C03 /* RaidersDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RaidersDetail.swift; sourceTree = "<group>"; };
 		A15CA49319D57BDD00716A00 /* CmnT04ImageTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CmnT04ImageTable.h; sourceTree = "<group>"; };
@@ -1054,6 +1056,7 @@
 			isa = PBXGroup;
 			children = (
 				A1ECD47519D2D41F00D5A0E2 /* AddSubway.swift */,
+				A10408D219F7DF49002FC91A /* Usr001AddSubwayModel.swift */,
 			);
 			path = USR001;
 			sourceTree = "<group>";
@@ -1344,6 +1347,7 @@
 				A1ECD48E19D2D41F00D5A0E2 /* LandMarkSearchController.swift in Sources */,
 				A1FDB38E19E8283C00083F9D /* CMN002DAO+mnT03StationGridTable.swift in Sources */,
 				3B2420A719B5ABFD00DAE392 /* Reachability.m in Sources */,
+				A10408D319F7DF49002FC91A /* Usr001AddSubwayModel.swift in Sources */,
 				A1F1FC9419E96E74004A59C9 /* UIRefreshControl+AFNetworking.m in Sources */,
 				3B24211119B5B5BC00DAE392 /* FMResultSet.m in Sources */,
 				A1F1FC9A19E96E74004A59C9 /* ZipArchive.mm in Sources */,
