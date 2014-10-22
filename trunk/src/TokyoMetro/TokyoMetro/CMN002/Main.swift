@@ -262,8 +262,6 @@ class Main: UIViewController,UIScrollViewDelegate {
 //            self.mUpButton.setBackgroundImage(image, forState: UIControlState.Highlighted)
             // 隐藏遮罩
             mBodyView.hidden = true
-            mBtnImgAdd.enabled = true
-            mBtnImgDec.enabled = true
             
         } else {
             mIsMenuShow = true
@@ -278,8 +276,6 @@ class Main: UIViewController,UIScrollViewDelegate {
 //            self.mUpButton.setBackgroundImage(image, forState: UIControlState.Highlighted)
             // 显示遮罩
             mBodyView.hidden = false
-            mBtnImgAdd.enabled = false
-            mBtnImgDec.enabled = false
             
         }
     }
