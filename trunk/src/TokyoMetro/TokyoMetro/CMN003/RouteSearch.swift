@@ -29,8 +29,6 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
     
     // 显示数据的tableView
     @IBOutlet weak var vtbResultView: UIView!
-    // 查询按钮
-    @IBOutlet weak var btnSearchRoute: UIButton!
     // 收藏按钮1
     @IBOutlet weak var btnCollect1: UIButton!
     // 收藏按钮2
@@ -41,7 +39,6 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
     @IBOutlet weak var btnCollectionStation: UIButton!
     // 所有站点列表
     @IBOutlet weak var btnPopToStaionList: UIButton!
-    @IBOutlet weak var btnInView: UIView!
     
     @IBOutlet weak var mCollectionLogo: UIImageView!
     @IBOutlet weak var mNearlyLogo: UIImageView!
@@ -247,6 +244,9 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         if (self.pageTag == "1" && tableView == tbView) {
             
             let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("SECell", forIndexPath: indexPath) as UITableViewCell
+            
+            
+            
             var celllblSatationName : UILabel = cell.viewWithTag(101) as UILabel!
             var celllblSatationNameJP : UILabel = cell.viewWithTag(102) as UILabel!
             var celllblCollection : UIImageView = cell.viewWithTag(100) as UIImageView!
@@ -299,6 +299,10 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             return cell
             
         }else {
+            
+            println("indexPath.row          ======    \(indexPath.row)")
+            
+            
             let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("routeResultCell", forIndexPath: indexPath) as UITableViewCell
             var resultCellIvStaionIcon : UIImageView = cell.viewWithTag(1001) as UIImageView
             var resultCelllblStationName : UILabel = cell.viewWithTag(1002) as UILabel
@@ -328,10 +332,18 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
                 resultCelllblStationWaitTimeTip.hidden = true
                 resultCelllblStationMoveTimeTip.hidden = true
                 
+                
+                
+                var cellInfoView: UIView! = cell.viewWithTag(8001) as UIView?
+                if (cellInfoView != nil){
+                cellInfoView.removeFromSuperview()
+                }
+                
                 var cellInfo:UIView = UIView()
                 cellInfo.frame = CGRectMake(5,5,310,60)
                 cellInfo.backgroundColor = UIColor.whiteColor()
                 cellInfo.layer.cornerRadius = 4
+                cellInfo.tag = 8001
                 var lable1: UILabel! = cell.viewWithTag(5001) as? UILabel
                 if (lable1 != nil) {
                     lable1.removeFromSuperview()
@@ -395,6 +407,8 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
                     resultCelllblStationName.text = stationEnd.text as String
                     
                 } else {
+                    
+                    
                     var routStartDic = self.routeDetial.objectAtIndex(indexPath.row - 1) as NSDictionary
                     
                     var strresultExchStatId = routStartDic["resultExchStatId"] as? NSString
@@ -417,10 +431,9 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
                         resultCelllblStationWaitTime.hidden = true
                         resultCelllblStationWaitTimeTip.hidden = true
                     }
-                    
                     resultCelllblStationMoveTime.text = "CMN003_04".localizedString()
                     resultCelllblStationMoveTimeTip.text = (strresultExchMoveTime as String) + "CMN003_03".localizedString()
-                    if (indexPath.row - 1 == 0){
+                    if (indexPath.row == 1){
                         // 设置起点图片
                         resultCellIvStaionIcon.image = "route_start".getImage()
                         
@@ -432,13 +445,15 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
                             resultCelllblStationWaitTimeTip.hidden = true
                             resultCelllblStationMoveDestTip.hidden = true
                             resultCelllblStationMoveDestName.hidden = true
+                            
+                            resultCelllblStationMoveTime.text = "CMN003_04".localizedString()
                         } else if (strresultExchType == "8") {
                             resultCelllblStationLineName.hidden = false
                             resultCelllblStationLineNameTip.hidden  = false
                             resultCelllblStationLineImg.hidden  = false
                             resultCelllblStationMoveDestTip.hidden  = false
                             resultCelllblStationMoveDestName.hidden  = false
-                            
+                            resultCelllblStationMoveTime.text = "CMN003_07".localizedString()
                             var strresultExchlineId = routStartDic["resultExchlineId"] as? NSString
                             
                             var strresultExchDestId = routStartDic["resultExchDestId"] as? NSString
@@ -450,11 +465,9 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
                             resultCelllblStationMoveDestTip.text = "CMN003_06".localizedString()
                             resultCelllblStationMoveDestName.text = (strresultExchDestId as String).station() + "PUBLIC_04".localizedString()
                             
-                            
-                            
                         }
                         
-                    } else {
+                    } else if (indexPath.row != routeDetial.count){
                         
                         if (strresultExchType == "255") {
                             resultCellIvStaionIcon.image = "routeexchange_walk".getImage()
@@ -699,6 +712,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         searchAllStation.routeSearch = self
         var nav:UINavigationController = UINavigationController(rootViewController: searchAllStation)
         
+        nav.navigationBar.barTintColor = UIColor(red: 86/255, green: 127/255, blue: 188/255, alpha: 1)
         
         // 返回按钮点击事件
         var rightButtonStyle:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton

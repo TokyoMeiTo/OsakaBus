@@ -522,27 +522,27 @@ class Main: UIViewController,UIScrollViewDelegate {
          odbLandMark("PUBLIC_09".localizedString())
         
          if (landMarkArr.count > 0 ){
-            mViewShowLandMark(landMarkArr.count, viewTag : 2002)
+            mViewShowLandMark(landMarkArr.count, viewTag : 2004)
         
          } else {
-            mViewShowLandMark(0, viewTag : 2002)
+            mViewShowLandMark(0, viewTag : 2004)
             
         }
         
          odbLandMark("PUBLIC_12".localizedString())
          if (landMarkArr.count > 0 ){
-            mViewShowLandMark(landMarkArr.count, viewTag : 2003)
+            mViewShowLandMark(landMarkArr.count, viewTag : 2002)
             
          } else {
-            mViewShowLandMark(0, viewTag : 2003)
+            mViewShowLandMark(0, viewTag : 2002)
         
         }
          odbLandMark("PUBLIC_13".localizedString())
          if (landMarkArr.count > 0 ){
-            mViewShowLandMark(landMarkArr.count, viewTag : 2004)
+            mViewShowLandMark(landMarkArr.count, viewTag : 2003)
             
          } else {
-            mViewShowLandMark(0, viewTag : 2004)
+            mViewShowLandMark(0, viewTag : 2003)
         
         }
         
@@ -724,13 +724,16 @@ class Main: UIViewController,UIScrollViewDelegate {
     landMark.title = "PUBLIC_09".localizedString()
     }
     
-    var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
-    self.navigationItem.backBarButtonItem = backButton
-    
-    landMark.landMarks = landMarkArr as? Array<MstT04LandMarkTable>
-    landMark.landMarkStatId = self.selectStationGroupId
-    landMark.landMarkType = landTypeTemp
-    self.navigationController?.pushViewController(landMark, animated: true)
+
+        if(landMarkArr.count != 0){
+            var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+            self.navigationItem.backBarButtonItem = backButton
+            landMark.landMarks = landMarkArr as? Array<MstT04LandMarkTable>
+            landMark.landMarkStatId = self.selectStationGroupId
+            landMark.landMarkType = landTypeTemp
+            self.navigationController?.pushViewController(landMark, animated: true)
+        }
+   
     }
     
     
