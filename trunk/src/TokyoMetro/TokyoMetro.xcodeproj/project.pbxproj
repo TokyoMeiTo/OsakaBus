@@ -53,6 +53,8 @@
 		3B24211219B5B5BC00DAE392 /* ODBDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B24210919B5B5BC00DAE392 /* ODBDataBase.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		3B24211319B5B5BC00DAE392 /* ODBDataTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B24210B19B5B5BC00DAE392 /* ODBDataTable.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		3B6F98F819B6EF30001C0DC1 /* OAPAsyncJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B6F98F719B6EF30001C0DC1 /* OAPAsyncJSONParser.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		3BCD2A6819F755AC00C792E5 /* InfT02TipsTableData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BCD2A6719F755AC00C792E5 /* InfT02TipsTableData.swift */; };
+		3BCD2A6A19F758FB00C792E5 /* MstT01LineTableData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BCD2A6919F758FB00C792E5 /* MstT01LineTableData.swift */; };
 		3BED8F5B19F746D300F64277 /* CmnT03StationGridTableData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BED8F4A19F746D300F64277 /* CmnT03StationGridTableData.swift */; };
 		3BED8F5C19F746D300F64277 /* CmnT04ImageTableData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BED8F4B19F746D300F64277 /* CmnT04ImageTableData.swift */; };
 		3BED8F5D19F746D300F64277 /* CommonData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BED8F4C19F746D300F64277 /* CommonData.swift */; };
@@ -287,6 +289,8 @@
 		3B64660519B5B7A900DB8DA1 /* OAP.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OAP.h; sourceTree = "<group>"; };
 		3B6F98F719B6EF30001C0DC1 /* OAPAsyncJSONParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAPAsyncJSONParser.m; sourceTree = "<group>"; };
 		3B6F98F919B6EF50001C0DC1 /* OAPAsyncJSONParser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OAPAsyncJSONParser.h; sourceTree = "<group>"; };
+		3BCD2A6719F755AC00C792E5 /* InfT02TipsTableData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfT02TipsTableData.swift; sourceTree = "<group>"; };
+		3BCD2A6919F758FB00C792E5 /* MstT01LineTableData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MstT01LineTableData.swift; sourceTree = "<group>"; };
 		3BED8F4A19F746D300F64277 /* CmnT03StationGridTableData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CmnT03StationGridTableData.swift; sourceTree = "<group>"; };
 		3BED8F4B19F746D300F64277 /* CmnT04ImageTableData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CmnT04ImageTableData.swift; sourceTree = "<group>"; };
 		3BED8F4C19F746D300F64277 /* CommonData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommonData.swift; sourceTree = "<group>"; };
@@ -781,11 +785,13 @@
 				3BED8F4B19F746D300F64277 /* CmnT04ImageTableData.swift */,
 				3BED8F4C19F746D300F64277 /* CommonData.swift */,
 				3BED8F4D19F746D300F64277 /* InfT01StrategyTableData.swift */,
+				3BCD2A6719F755AC00C792E5 /* InfT02TipsTableData.swift */,
 				3BED8F4E19F746D300F64277 /* InfT03RescureTableData.swift */,
 				3BED8F4F19F746D300F64277 /* LinT01TrainScheduleTrainTableData.swift */,
 				3BED8F5019F746D300F64277 /* LinT04RouteTableData.swift */,
 				3BED8F5119F746D300F64277 /* LinT05RouteDetailTableData.swift */,
 				3BED8F5219F746D300F64277 /* LinT06FareTableData.swift */,
+				3BCD2A6919F758FB00C792E5 /* MstT01LineTableData.swift */,
 				3BED8F5319F746D300F64277 /* MstT02StationTableData.swift */,
 				3BED8F5419F746D300F64277 /* MstT04LandMarkTableData.swift */,
 				3BED8F5519F746D300F64277 /* StaT01StationExitTableData.swift */,
@@ -1282,6 +1288,7 @@
 				A1ECD47919D2D41F00D5A0E2 /* Main.swift in Sources */,
 				A1F1FC9719E96E74004A59C9 /* mztools.c in Sources */,
 				A1ECD48619D2D41F00D5A0E2 /* UsrT01ArrivalAlarmTable.m in Sources */,
+				3BCD2A6819F755AC00C792E5 /* InfT02TipsTableData.swift in Sources */,
 				A1F1FC8719E96E74004A59C9 /* AFHTTPSessionManager.m in Sources */,
 				3B2420A919B5ABFD00DAE392 /* AsyncUdpSocket.m in Sources */,
 				A17EDA6F19E8B72A00D58386 /* USR002Dao.swift in Sources */,
@@ -1341,6 +1348,7 @@
 				A1629E6619EEA43B00DC54B1 /* Cmn003Dao.swift in Sources */,
 				A1ECD49919D2D41F00D5A0E2 /* FacilityList.swift in Sources */,
 				A1F1FC8519E96E74004A59C9 /* AFHTTPRequestOperation.m in Sources */,
+				3BCD2A6A19F758FB00C792E5 /* MstT01LineTableData.swift in Sources */,
 				A184391C19EAB71900E11778 /* StaT03ComercialInsideTable.m in Sources */,
 				3BED8F6019F746D300F64277 /* LinT01TrainScheduleTrainTableData.swift in Sources */,
 				3BED8F5F19F746D300F64277 /* InfT03RescureTableData.swift in Sources */,
