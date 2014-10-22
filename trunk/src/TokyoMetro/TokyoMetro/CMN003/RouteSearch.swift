@@ -300,7 +300,6 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             
         }else {
             
-            println("indexPath.row          ======    \(indexPath.row)")
             
             
             let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("routeResultCell", forIndexPath: indexPath) as UITableViewCell
@@ -563,13 +562,12 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             
             setSationIdCache()
             if (indexPath.row  == routeDetial.count) {
+
+
                 let cell = tableView.cellForRowAtIndexPath(indexPath) as UITableViewCell!
                 var resultCelllblStationName : UILabel = cell.viewWithTag(1002) as UILabel
                 
-                
-                
-                var tempStationId = serarchStationIdByStationName(resultCelllblStationName.text as String!)
-                
+                var tempStationId = self.endStationText
                 
                 if (statIsMetro(tempStationId as NSString!)){
                     var stationDetialArr:MstT02StationTable = getStationDetialById(tempStationId)
@@ -607,16 +605,30 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
     func exchangeAction(){
         
         var tempName:NSString = self.stationStart.text
-        println(self.stationStart.text)
-        println(self.stationEnd.text)
         self.stationStart.text = self.stationEnd.text
         self.stationEnd.text = tempName
         
         var tempStationId:String = startStationText
-        println(startStationText)
-        println(endStationText)
         startStationText  = endStationText
         endStationText  = tempStationId
+
+
+   
+        if (startStationText != "" && statIsCollected(startStationText)){
+                btnCollect1.setBackgroundImage("route_collectionlight".getImage(), forState: UIControlState.Normal)
+            } else {
+                btnCollect1.setBackgroundImage("searchroute_collection".getImage(), forState: UIControlState.Normal)
+            }
+       
+            
+            if (endStationText != "" && statIsCollected(endStationText)){
+                btnCollect2.setBackgroundImage("route_collectionlight".getImage(), forState: UIControlState.Normal)
+            } else {
+                btnCollect2.setBackgroundImage("searchroute_collection".getImage(), forState: UIControlState.Normal)
+            }
+     
+
+
         
         hideKeyBoard()
     }
@@ -634,8 +646,8 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
     // 进行搜索操作
     func searchRouteAction() {
         
-        self.routeStartStationId = serarchStationIdByStationName(stationStart.text)
-        self.routeEndStationId = serarchStationIdByStationName(stationEnd.text)
+        self.routeStartStationId = self.startStationText
+        self.routeEndStationId = self.endStationText
         
         if (routeStartStationId == "" || routeEndStationId == "") {
             errAlertView("CMN003_12".localizedString(), errMgs: "CMN003_11".localizedString(), errBtnTitle: "PUBLIC_06".localizedString())
@@ -831,18 +843,18 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         
     }
     
-    // 根据车站名字搜索车站ID
-    func serarchStationIdByStationName(StationNames:String) -> String {
-        var resultid = ""
-        var mst02table = MstT02StationTable()
-        var mst02rowID = mst02table.excuteQuery("select STAT_ID,ROWID  from MSTT02_STATION where STAT_NAME_EXT1 = '" + StationNames + "' and STAT_ID like '280%' ")
-        for mst02Row in mst02rowID {
-            mst02Row as MstT02StationTable
-            var searchstationId = mst02Row.item(MSTT02_STAT_ID) as String
-            resultid = searchstationId
-        }
-        return resultid
-    }
+//    // 根据车站名字搜索车站ID
+//    func serarchStationIdByStationName(StationNames:String) -> String {
+//        var resultid = ""
+//        var mst02table = MstT02StationTable()
+//        var mst02rowID = mst02table.excuteQuery("select STAT_ID,ROWID  from MSTT02_STATION where STAT_NAME_EXT1 = '" + StationNames + "' and STAT_ID like '280%' ")
+//        for mst02Row in mst02rowID {
+//            mst02Row as MstT02StationTable
+//            var searchstationId = mst02Row.item(MSTT02_STAT_ID) as String
+//            resultid = searchstationId
+//        }
+//        return resultid
+//    }
     
     
     // 添加收藏站点
@@ -851,14 +863,14 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         switch sender {
         case btnCollect1:
             if stationStart.text != "" {
-                insetStationName = stationStart.text
+                insetStationName = self.startStationText
             } else {
                 return
             }
             
         case btnCollect2:
             if stationEnd.text != "" {
-                insetStationName = stationEnd.text
+                insetStationName = self.endStationText
             } else {
                 return
             }
@@ -868,7 +880,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         }
         
         var user03table = UsrT03FavoriteTable()
-        user03table.statId = serarchStationIdByStationName(insetStationName)
+        user03table.statId = insetStationName
         user03table.favoType = "01"
         var user03insertBefore = user03table.selectAll()
         var checkInsert : NSMutableArray = NSMutableArray.array()
@@ -885,7 +897,6 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             
             var user03insert = user03table.insert()
             if user03insert {
-//                errAlertView("CMN003_12".localizedString(), errMgs:"CMN003_20".localizedString(), errBtnTitle:"PUBLIC_06".localizedString())
                 loadStation()
                 
                 if (sender == btnCollect1){
