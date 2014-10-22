@@ -28,8 +28,8 @@
 @property(copy,nonatomic) NSString* statId;
 @property(copy,nonatomic) NSString* statExitNum;
 @property(copy,nonatomic) NSString* statExitName;
-@property(copy,nonatomic) NSNumber* statExitType;
-@property(copy,nonatomic) NSNumber* statExitLon;
-@property(copy,nonatomic) NSNumber* statExitLat;
-@property(copy,nonatomic) NSNumber* statExitFloor;
+@property(copy,nonatomic) NSString* statExitType;
+@property(copy,nonatomic) NSString* statExitLon;
+@property(copy,nonatomic) NSString* statExitLat;
+@property(copy,nonatomic) NSString* statExitFloor;
 @end

@@ -13,7 +13,11 @@ import AudioToolbox
 /**
  * 提醒列表
  */
-class RemindListController: UIViewController, UITableViewDelegate, NSObjectProtocol, UIScrollViewDelegate, UITableViewDataSource, UIAlertViewDelegate{
+class RemindListController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIAlertViewDelegate{
+    
+    /*******************************************************************************
+    * IBOutlets
+    *******************************************************************************/
     
     /* SegmentedControl控件 */
     @IBOutlet weak var sgmMain: UISegmentedControl!
@@ -36,10 +40,12 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
     /* 到达站点信息 */
     @IBOutlet weak var lblArriveStation: UILabel!
     
-    var lblStart = UILabel(frame: CGRect(x:15,y:210,width:290,height: 35))
     
-    var lblEnd = UILabel(frame: CGRect(x:15,y:210,width:290,height: 35))
-    
+    /*******************************************************************************
+    * Global
+    *******************************************************************************/
+
+    let USR002_MODEL:USR002Model = USR002Model()
     /* 0 */
     let NUM_0 = 0
     /* 1 */
@@ -66,11 +72,30 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
     let LAST_METRO_TITLE = "USR002_23".localizedString()
     /* 末班车提醒 */
     let SAVE_BUTTON_TAG:Int = 200201
+
+    
+    /*******************************************************************************
+    * Public Properties
+    *******************************************************************************/
+
+    var routeStatTable01:MstT02StationTable?
+    var routeStatTable02:MstT02StationTable?
+
+    
+    /*******************************************************************************
+    * Private Properties
+    *******************************************************************************/
+
+    var lblStart = UILabel(frame: CGRect(x:15,y:210,width:290,height: 35))
+    
+    var lblEnd = UILabel(frame: CGRect(x:15,y:210,width:290,height: 35))
+    
+    var imageViewBeep = UIImageView(frame: CGRectMake(230, 270, 18, 18))
     
     /* 到站提醒当前条目 */
-    var alarm:UsrT01ArrivalAlarmTable?
+    var mAlarm:UsrT01ArrivalAlarmTable?
     /* 末班车提醒条目 */
-    var trainAlarms:Array<UsrT02TrainAlarmTable>?
+    var mTrainAlarms:Array<UsrT02TrainAlarmTable>?
     /* TableView条目 */
     var items: NSMutableArray = NSMutableArray.array()
     /* 线路 */
@@ -86,12 +111,26 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
     /* 线程池 */
     var queue:NSOperationQueue = NSOperationQueue()
     
-    var routeStatTable01:MstT02StationTable?
-    var routeStatTable02:MstT02StationTable?
+    
+    /*******************************************************************************
+    * Overrides From UIViewController
+    *******************************************************************************/
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        // 初期化变量
+        // 准备数据
         intitValue()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        // 画面内容变更
+        // 设置数据
+        self.view.backgroundColor = UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
+        lblArriveInfo.textColor = UIColor.redColor()
+        lblArriveInfo.font = UIFont(name:"Helvetica-Bold", size:14)
+
         // 获得UISegmentedControl索引位置
         if(sgmMain.selectedSegmentIndex == NUM_0){
             // 到站提醒
@@ -103,8 +142,8 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
         }
     }
     
-    override func viewDidDisappear(animated: Bool) {
-        tbList.reloadData()
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
     }
     
     override func didReceiveMemoryWarning() {
@@ -112,15 +151,204 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
         // Dispose of any resources that can be recreated.
     }
     
+    
+    /*******************************************************************************
+    *    Implements Of UITableViewDelegate
+    *******************************************************************************/
+
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath: NSIndexPath){
+        var remindDetailController = self.storyboard!.instantiateViewControllerWithIdentifier("reminddetail") as RemindDetailController
+        remindDetailController.title = LAST_METRO_TITLE
+        remindDetailController.segIndex = NUM_1
+        remindDetailController.tableUsrT02 = mTrainAlarms![didSelectRowAtIndexPath.section]
+        
+        // 返回按钮点击事件
+        var bakButtonStyle:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
+        bakButtonStyle.frame = CGRectMake(0, 0, 43, 43)
+        bakButtonStyle.setTitle("PUBLIC_05".localizedString(), forState: UIControlState.Normal)
+        bakButtonStyle.addTarget(remindDetailController.self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
+        
+        var backButton:UIBarButtonItem = UIBarButtonItem(customView: bakButtonStyle)
+        remindDetailController.navigationItem.leftBarButtonItem = backButton
+        
+        self.navigationController!.pushViewController(remindDetailController, animated:true)
+    }
+
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 80
+    }
+
+    
+    /*******************************************************************************
+    *      Implements Of UITableViewDataSource
+    *******************************************************************************/
+
+    // MARK: - Table View
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return items.count
+    }
+    
+    func tableView(tableView: UITableView!, titleForHeaderInSection section: Int) -> String! {
+        return nil//items[section][0] as String
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1//items[section][1].count
+    }
+    
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
+        let cellIdentifier:String = "AlarmListCell"
+        
+        var cell:UITableViewCell? = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as? UITableViewCell
+        
+        if(cell == nil){
+            cell = UITableViewCell(style: UITableViewCellStyle.Default,
+                reuseIdentifier:cellIdentifier)
+        }
+
+        for subview in cell!.subviews{
+            if(subview.isKindOfClass(UILabel) || (subview.tag as Int) == 102){
+                subview.removeFromSuperview()
+            }
+        }
+        
+        pushNotificationLastMetro("\(items[indexPath.section][0])的\(items[indexPath.section][3][indexPath.row])即将发车", notifyTime:"\(items[indexPath.section][3][indexPath.row])")
+        
+        var lblMetroType = UILabel(frame: CGRect(x:15,y:20,width:230,height:30))
+        lblMetroType.font = UIFont.systemFontOfSize(14)
+        lblMetroType.textColor = UIColor.lightGrayColor()
+        lblMetroType.text = items[indexPath.section][2][0] as? String
+        lblMetroType.textAlignment = NSTextAlignment.Left
+        
+        var lblLastMetroTime = UILabel(frame: CGRect(x:45,y:0,width:230,height:50))
+        lblLastMetroTime.tag = 101
+        var fontStyle:UIFont = UIFont.preferredFontForTextStyle("UltraLight")
+        //fontStyle.fontName = "Helvetica Neue"
+        var userFont:UIFontDescriptor = UIFontDescriptor.preferredFontDescriptorWithTextStyle("UltraLight")
+        var font:UIFont = UIFont(descriptor: userFont.fontDescriptorWithFamily("Helvetica Neue"), size: 65)//UIFont(name: "Helvetica Neue", size: userFontSize)
+        
+        lblLastMetroTime.font = font//UIFont(name: "Helvetica Neue", size: 65)
+        lblLastMetroTime.text = items[indexPath.section][3][indexPath.row] as? String
+        lblLastMetroTime.textAlignment = NSTextAlignment.Left
+        
+        var lblLastMetroDirt = UILabel(frame: CGRect(x:200,y:50,width:105,height:30))
+        lblLastMetroDirt.tag = 101
+        lblLastMetroDirt.font = UIFont.systemFontOfSize(14)
+        lblLastMetroDirt.textColor = UIColor.lightGrayColor()
+        lblLastMetroDirt.text = items[indexPath.section][1][indexPath.row] as? String
+        lblLastMetroDirt.textAlignment = NSTextAlignment.Right
+        
+        var lblStatInfo = UILabel(frame: CGRect(x:15,y:50,width:230,height:30))
+        lblStatInfo.font = UIFont.systemFontOfSize(14)
+        lblStatInfo.textColor = UIColor.lightGrayColor()
+        lblStatInfo.text = items[indexPath.section][0] as? String
+        lblStatInfo.textAlignment = NSTextAlignment.Left
+        
+        var switchAralm = UISwitch(frame: CGRect(x:255,y:20,width:60,height:30))
+        switchAralm.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.ValueChanged)
+        switchAralm.tag = 102
+        var lblSection = UILabel()
+        lblSection.hidden = true
+        lblSection.tag = 103
+        lblSection.text = "\(indexPath.section)"
+        var lblRow = UILabel()
+        lblRow.tag = 104
+        lblRow.hidden = true
+        lblRow.text = "\(indexPath.row)"
+        switchAralm.addSubview(lblSection)
+        switchAralm.addSubview(lblRow)
+        
+        if(indexPath.row == 0){
+            var strFirst:NSString = "\(mTrainAlarms![indexPath.section].item(USRT02_TRAIN_ALARM_ALAM_FLAG))"
+            if(strFirst.integerValue == 0){
+                switchAralm.on = false
+                cell!.backgroundColor = UIColor(red: 215/255,
+                    green: 255/255,
+                    blue: 255/255,
+                    alpha: 1.0)
+            }else{
+                switchAralm.on = true
+            }
+        }else if(indexPath.row == 1){
+            var strLast:NSString = "\(mTrainAlarms![indexPath.section].item(USRT02_TRAIN_ALARM_ALAM_FLAG))"
+            if(strLast.integerValue == 0){
+                switchAralm.on = false
+                cell!.backgroundColor = UIColor(red: 224/255,
+                    green: 255/255,
+                    blue: 255/255,
+                    alpha: 1.0)
+            }else{
+                switchAralm.on = true
+            }
+        }
+        
+        cell!.addSubview(lblMetroType)
+        cell!.addSubview(lblLastMetroTime)
+        cell!.addSubview(lblLastMetroDirt)
+        cell!.addSubview(lblStatInfo)
+        cell!.addSubview(switchAralm)
+        
+        return cell!
+    }
+    
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        // Return false if you do not want the specified item to be editable.
+        return false
+    }
+    
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if editingStyle == .Delete {
+            //items.removeObjectAtIndex(indexPath.row)
+            //tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+        } else if editingStyle == .Insert {
+            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
+        }
+    }
+
+    
+    /*******************************************************************************
+    *      Implements Of UIAlertViewDelegate
+    *******************************************************************************/
+
+    // after animation
+    func alertView(alertView: UIAlertView!, didDismissWithButtonIndex buttonIndex: Int){
+        switch buttonIndex{
+        case NUM_0:
+            // 停止计时
+            var timerThread = TimerThread.shareInstance()
+            timerThread.cancel()
+            self.lblHour.text = "00"
+            self.lblMin.text = "00"
+            self.lblSec.text = "00"
+            noAlarm()
+            USR002_MODEL.deleteAlarm()
+            btnEdit.enabled = true
+            imageViewBeep.hidden = true
+            
+            pushNotification(nil,min: NUM_NEGATIVE_1)
+            mAlarm!.cancelFlag = "1"
+            mAlarm!.cancelTime = RemindDetailController.convertDate2LocalTime(NSDate.date())
+            mAlarm!.update()
+            mAlarm = nil
+        default:
+            println("nothing")
+        }
+    }
+
+    
+    /*******************************************************************************
+    *    Private Methods
+    *******************************************************************************/
+    
     /**
      *
      */
     func intitValue(){
-        sgmMain.addTarget(self, action: "segmentChanged:", forControlEvents: UIControlEvents.ValueChanged)
-        self.view.backgroundColor = UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
-        lblArriveInfo.textColor = UIColor.redColor()
-        lblArriveInfo.font = UIFont(name:"Helvetica-Bold", size:14)
-        
+        sgmMain.addTarget(self,
+            action: "segmentChanged:",
+            forControlEvents: UIControlEvents.ValueChanged)
     }
     
     /**
@@ -137,22 +365,6 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
         }else{
         }
     }
-
-    func initArriveAlarm(usrT01Table:UsrT01ArrivalAlarmTable){
-        usrT01Table.lineFromId = "28001"
-        usrT01Table.statFromId = "2800101"
-        usrT01Table.lineToId = "28001"
-        usrT01Table.statToId = "2800101"
-        usrT01Table.traiDirt = "2800119"
-        usrT01Table.beepFlag = "1"
-        usrT01Table.voleFlag = "0"
-        usrT01Table.costTime = "0"
-        usrT01Table.alarmTime = "0"
-        usrT01Table.saveTime = RemindDetailController.convertDate2LocalTime(NSDate.date())
-        usrT01Table.onboardTime = "000000000000"
-        usrT01Table.cancelFlag = "0"
-        usrT01Table.cancelTime = "00000000000000"
-    }
     
     /**
      * 到站提醒
@@ -162,76 +374,77 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
         tbList.hidden = true
         lblStart.hidden = false
         lblEnd.hidden = false
-        
-        if(fromRoute()){
-            sgmMain.hidden = true
-            if(selectLinT04RouteTable("\(routeStatTable01!.item(MSTT02_STAT_ID))", toStationId: "\(routeStatTable02!.item(MSTT02_STAT_ID))")){
-                insertUsrT01()
-            }else{
-                RemindDetailController.showMessage("USR002_18".localizedString(), msg:"USR002_11".localizedString(),buttons:[MSG_0003], delegate: nil)
-            }
-        }
+        imageViewBeep.hidden = false
         
         // button点击事件
-        btnCancel.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
-        btnStart.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
-        btnEdit.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
-        var alarms:Array<UsrT01ArrivalAlarmTable>? = selectArrivalAlarmTable()
-        if(alarms!.count > 0){
-            for(var i=0; i < alarms!.count;i++){
-                if(alarms![i].item(USRT01_ARRIVAL_ALARM_CANCEL_FLAG) != nil && alarms![i].item(USRT01_ARRIVAL_ALARM_CANCEL_FLAG).integerValue != 1){
-                    alarm = alarms![i]
-                    break
-                }
+        btnCancel.addTarget(self,
+            action: "buttonAction:",
+            forControlEvents: UIControlEvents.TouchUpInside)
+        btnStart.addTarget(self,
+            action: "buttonAction:",
+            forControlEvents: UIControlEvents.TouchUpInside)
+        btnEdit.addTarget(self,
+            action: "buttonAction:",
+            forControlEvents: UIControlEvents.TouchUpInside)
+        
+        let usrt01Alarms:[UsrT01ArrivalAlarmTable]? = USR002_MODEL.findArrivalAlarm()
+        
+        for key in usrt01Alarms!{
+            key as UsrT01ArrivalAlarmTable
+            if(key.item(USRT01_ARRIVAL_ALARM_CANCEL_FLAG) != nil &&
+                key.item(USRT01_ARRIVAL_ALARM_CANCEL_FLAG).integerValue != 1){
+                mAlarm = key
+                break
             }
-            if(alarm == nil || alarm!.item(USRT01_ARRIVAL_ALARM_CANCEL_FLAG) == nil || alarm!.item(USRT01_ARRIVAL_ALARM_CANCEL_FLAG).integerValue == 1){
-                // 当前没有到站提醒
-                noAlarm()
-                alarm = nil
-            }else{
-                var alarmStart:UsrT01ArrivalAlarmTable?
-                var alarmEnd:UsrT01ArrivalAlarmTable?
-                alarmStart = alarms![0]
-                alarmEnd = alarms![alarms!.count - 1]
-                lblArriveStation.text = "到达" + "\(alarm!.item(USRT01_ARRIVAL_ALARM_STAT_TO_ID))".station() + "还需"
-                
-                lblStart.backgroundColor = UIColor.clearColor()
-                lblStart.font = UIFont.systemFontOfSize(15)
-                lblStart.textColor = UIColor.blackColor()
-                lblStart.text = "起点：" + "\(alarmStart!.statFromId)".station()
-                lblStart.textAlignment = NSTextAlignment.Left
-                self.view.addSubview(lblStart)
-                
-                lblEnd.backgroundColor = UIColor.clearColor()
-                lblEnd.font = UIFont.systemFontOfSize(15)
-                lblEnd.textColor = UIColor.blackColor()
-                lblEnd.text = "终点：" + "\(alarmEnd!.statToId)".station()
-                lblEnd.textAlignment = NSTextAlignment.Right
-                self.view.addSubview(lblEnd)
-                
-                lblArriveInfo.text = "\(alarm!.item(USRT01_ARRIVAL_ALARM_LINE_TO_ID))".line() + " " + "\(alarm!.item(USRT01_ARRIVAL_ALARM_TRAI_DIRT))".station() + "方向"
-                var imageViewBeep = UIImageView(frame: CGRectMake(250, 210, 18, 18))
-                var imgBeep = UIImage(named: "INF00202.png")
-                imageViewBeep.image = imgBeep
-                self.view.addSubview(imageViewBeep)
-                
-                updateTime(alarm!.item(USRT01_ARRIVAL_ALARM_COST_TIME).integerValue - alarm!.item(USRT01_ARRIVAL_ALARM_ALARM_TIME).integerValue)
-                // 开启线程计时
-                var timerThread = TimerThread.shareInstance()
-                timerThread.sender = self
-                if(timerThread.arriveTime == NO_STATION){
-                    // 没有上车
-                    btnCancel.enabled = false
-                    btnStart.enabled = true
-                }else{
-                    btnCancel.enabled = true
-                    btnStart.enabled = false
-                    // 线程已经运行,显示当前剩余时间
-                    showTime(convertTime(timerThread.surplusTime))
-                }
-            }
-        }else{
+        }
+        if(mAlarm == nil ||
+            mAlarm!.item(USRT01_ARRIVAL_ALARM_CANCEL_FLAG) == nil ||
+            mAlarm!.item(USRT01_ARRIVAL_ALARM_CANCEL_FLAG).integerValue == 1){
+            // 当前没有到站提醒
             noAlarm()
+            mAlarm = nil
+        }else{
+            var alarmStart:UsrT01ArrivalAlarmTable? = usrt01Alarms![0]
+            var alarmEnd:UsrT01ArrivalAlarmTable? = usrt01Alarms![usrt01Alarms!.count - 1]
+            
+            lblArriveStation.text = "USR002_26".localizedString() + "\(mAlarm!.item(USRT01_ARRIVAL_ALARM_STAT_TO_ID))".station() + "USR002_27".localizedString()
+            
+            lblStart.backgroundColor = UIColor.clearColor()
+            lblStart.font = UIFont.systemFontOfSize(15)
+            lblStart.textColor = UIColor.blackColor()
+            lblStart.text = "PUBLIC_01".localizedString() + ":" + "\(alarmStart!.statFromId)".station()
+            lblStart.textAlignment = NSTextAlignment.Left
+            
+            lblEnd.backgroundColor = UIColor.clearColor()
+            lblEnd.font = UIFont.systemFontOfSize(15)
+            lblEnd.textColor = UIColor.blackColor()
+            lblEnd.text = "PUBLIC_02".localizedString() + ":" + "\(alarmEnd!.statToId)".station()
+            lblEnd.textAlignment = NSTextAlignment.Right
+
+            lblArriveInfo.text = "\(mAlarm!.item(USRT01_ARRIVAL_ALARM_LINE_TO_ID))".line() + " " + "\(mAlarm!.item(USRT01_ARRIVAL_ALARM_TRAI_DIRT))".station() + "PUBLIC_04".localizedString()
+            
+            var imgBeep = UIImage(named: "usr007.png")
+            imageViewBeep.image = imgBeep
+            
+            self.view.addSubview(lblStart)
+            self.view.addSubview(lblEnd)
+            self.view.addSubview(imageViewBeep)
+            
+            updateTime(mAlarm!.item(USRT01_ARRIVAL_ALARM_COST_TIME).integerValue - mAlarm!.item(USRT01_ARRIVAL_ALARM_ALARM_TIME).integerValue)
+            
+            // 开启线程计时
+            var timerThread = TimerThread.shareInstance()
+            timerThread.sender = self
+            if(timerThread.arriveTime == NO_STATION){
+                // 没有上车
+                btnCancel.enabled = false
+                btnStart.enabled = true
+            }else{
+                btnCancel.enabled = true
+                btnStart.enabled = false
+                // 线程已经运行,显示当前剩余时间
+                showTime(convertTime(timerThread.surplusTime))
+            }
         }
     }
     
@@ -240,84 +453,24 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
      */
     func lastMetro(){
         // 添加按钮点击事件
-        let addButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "buttonAction:")
+        let addButton = UIBarButtonItem(barButtonSystemItem: .Add,
+            target: self,
+            action: "buttonAction:")
         self.navigationItem.rightBarButtonItem = addButton
+        
         tbList.hidden = false
         lblStart.hidden = true
         lblEnd.hidden = true
+        imageViewBeep.hidden = true
+        
         // 查询末班车信息
-        trainAlarms = selectTrainAlarmTable()
+        mTrainAlarms = USR002_MODEL.findTrainAlarmTable()
         
         loadItems()
         
         tbList.delegate = self
         tbList.dataSource = self
-        //tbList.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         tbList.reloadData()
-    }
-    
-    /**
-     * 从线路选择画面过来
-     */
-    func fromRoute() -> Bool{
-        return routeStatTable01 != nil && routeStatTable02 != nil
-    }
-    
-    func insertUsrT01(){
-        var routeDetails:Array<LinT05RouteDetailTable>? = selectLinT05RouteDetailTable("\(routeStatTable01!.item(MSTT02_STAT_ID))", toStationId: "\(routeStatTable02!.item(MSTT02_STAT_ID))")
-        
-        deleteAlarm()
-        
-        for(var i=0;i<routeDetails!.count;i++){
-            var routeDetail:LinT05RouteDetailTable = routeDetails![i]
-            var costTime:Int = ("\(routeDetail.item(LINT05_ROUTE_DETAIL_MOVE_TIME))" as NSString).integerValue * 60
-            if(i == 0){
-                var tableUsrT01Start:UsrT01ArrivalAlarmTable = UsrT01ArrivalAlarmTable()
-                initArriveAlarm(tableUsrT01Start)
-
-                tableUsrT01Start.costTime = "\(costTime)"
-                tableUsrT01Start.arriAlamId = "1"
-                if(routeDetails!.count > 2){
-                    tableUsrT01Start.statFromId = "\(routeStatTable01!.item(MSTT02_STAT_ID))"
-                    tableUsrT01Start.statToId = routeDetails![i+1].exchStatId
-                    tableUsrT01Start.insert()
-                }else{
-                    tableUsrT01Start.statFromId = "\(routeStatTable01!.item(MSTT02_STAT_ID))"
-                    tableUsrT01Start.statToId = "\(routeStatTable02!.item(MSTT02_STAT_ID))"
-                    tableUsrT01Start.insert()
-                    var controllers:AnyObject? = self.navigationController!.viewControllers
-                    if(controllers!.count > 1){
-                        var lastController:RemindListController = controllers![controllers!.count - 2] as RemindListController
-                        lastController.viewDidLoad()
-                    }
-                    self.navigationController!.popViewControllerAnimated(true)
-                }
-            }else if(i == routeDetails!.count - 2 && routeDetails!.count > 1){
-                var alarms:Array<UsrT01ArrivalAlarmTable>? = selectArrivalAlarmTable()
-                var alarm:UsrT01ArrivalAlarmTable? = alarms![alarms!.count - NUM_1]
-                var tableUsrT01Arrive:UsrT01ArrivalAlarmTable = UsrT01ArrivalAlarmTable()
-                
-                initArriveAlarm(tableUsrT01Arrive)
-                
-                tableUsrT01Arrive.arriAlamId = "\(alarm!.item(USRT01_ARRIVAL_ALARM_ARRI_ALAM_ID).integerValue + 1)"
-                tableUsrT01Arrive.statFromId = routeDetails![i+1].exchStatId
-                tableUsrT01Arrive.statToId = "\(routeStatTable02!.item(MSTT02_STAT_ID))"
-                tableUsrT01Arrive.costTime = "\(costTime)"
-                tableUsrT01Arrive.insert()
-            }else if(i < routeDetails!.count - 1){
-                var alarms:Array<UsrT01ArrivalAlarmTable>? = selectArrivalAlarmTable()
-                var alarm:UsrT01ArrivalAlarmTable? = alarms![alarms!.count - NUM_1]
-                var tableUsrT01Exch:UsrT01ArrivalAlarmTable = UsrT01ArrivalAlarmTable()
-                
-                initArriveAlarm(tableUsrT01Exch)
-                
-                tableUsrT01Exch.arriAlamId = "\(alarm!.item(USRT01_ARRIVAL_ALARM_ARRI_ALAM_ID).integerValue + 1)"
-                tableUsrT01Exch.statFromId = routeDetails![i].exchStatId
-                tableUsrT01Exch.statToId = routeDetails![i+1].exchStatId
-                tableUsrT01Exch.costTime = "\(costTime)"
-                tableUsrT01Exch.insert()
-            }
-        }
     }
     
     /**
@@ -338,16 +491,19 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
                 }
             }
             
-            if(trainAlarms![section].item(USRT02_TRAIN_ALARM_ALAM_FLAG).integerValue == 0){
-                trainAlarms![section].alamFlag = "1"
+            if(mTrainAlarms![section].item(USRT02_TRAIN_ALARM_ALAM_FLAG).integerValue == 0){
+                mTrainAlarms![section].alamFlag = "1"
             }else{
-                trainAlarms![section].alamFlag = "0"
+                mTrainAlarms![section].alamFlag = "0"
             }
-            trainAlarms![section].update()
+            mTrainAlarms![section].update()
         }
         switch sender{
         case btnCancel:
-            RemindDetailController.showMessage(MSG_0001, msg:MSG_0002,buttons:[MSG_0003, MSG_0004], delegate: self)
+            RemindDetailController.showMessage(MSG_0001,
+                msg:MSG_0002,
+                buttons:[MSG_0003, MSG_0004],
+                delegate: self)
         case btnStart:
             // 开启线程计时
             var timerThread = TimerThread.shareInstance()
@@ -356,11 +512,11 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
                 if(timerThread.executing){
                     return
                 }
-                var costTime:Int = alarm!.item(USRT01_ARRIVAL_ALARM_COST_TIME).integerValue
+                var costTime:Int = mAlarm!.item(USRT01_ARRIVAL_ALARM_COST_TIME).integerValue
                 // 线程未运行
                 timerThread.arriveTime = costTime
-                alarm!.onboardTime = RemindDetailController.convertDate2LocalTime(NSDate.date())
-                alarm!.update()
+                mAlarm!.onboardTime = RemindDetailController.convertDate2LocalTime(NSDate.date())
+                mAlarm!.update()
                 queue.addOperation(timerThread)
             }else{
                 // 线程已经运行,显示当前剩余时间
@@ -373,10 +529,10 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
             var remindDetailController = self.storyboard!.instantiateViewControllerWithIdentifier("reminddetail") as RemindDetailController
             remindDetailController.title = ARRIVE_STATION_TITLE
             remindDetailController.segIndex = NUM_0
-            if(alarm == nil){
+            if(mAlarm == nil){
                 remindDetailController.tableUsrT01 = nil
             }else{
-                remindDetailController.tableUsrT01 = alarm!
+                remindDetailController.tableUsrT01 = mAlarm!
             }
             // 返回按钮点击事件
             var bakButtonStyle:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
@@ -419,13 +575,13 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
      * 当前没有提醒
      */
     func noAlarm(){
-        println("no alarm !")
         btnCancel.enabled = false
         btnStart.enabled = false
         lblArriveStation.text = ""
-        lblArriveInfo.text = "当前没有设置提醒"
+        lblArriveInfo.text = "USR002_24".localizedString()
         lblStart.text = ""
         lblEnd.text = ""
+        imageViewBeep.hidden = true
     }
     
     /**
@@ -440,15 +596,15 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
         dispatch_async(dispatch_get_main_queue()) { () -> Void in
             self.showTime(times)
             if(time == self.NUM_0){
-                self.pushNotification("USR002_25".localizedString() + "\(self.alarm!.item(USRT01_ARRIVAL_ALARM_STAT_TO_ID))".station(),min: self.NUM_NEGATIVE_1)
-                self.alarm!.cancelFlag = "1"
-                self.alarm!.cancelTime = RemindDetailController.convertDate2LocalTime(NSDate.date())
-                self.alarm!.update()
+                self.pushNotification("USR002_25".localizedString() + "\(self.mAlarm!.item(USRT01_ARRIVAL_ALARM_STAT_TO_ID))".station(),min: self.NUM_NEGATIVE_1)
+                self.mAlarm!.cancelFlag = "1"
+                self.mAlarm!.cancelTime = RemindDetailController.convertDate2LocalTime(NSDate.date())
+                self.mAlarm!.update()
                 self.btnStart.enabled = false
                 self.btnCancel.enabled = false
                 self.arriveStation()
             }else{
-                var costTime:Int = self.alarm!.item(USRT01_ARRIVAL_ALARM_COST_TIME).integerValue
+                var costTime:Int = self.mAlarm!.item(USRT01_ARRIVAL_ALARM_COST_TIME).integerValue
                 if(time % 60 == 0){
                     self.pushNotification(nil,min: (time/60)%60)
                 }
@@ -490,22 +646,23 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
      */
     func loadItems(){
         items = NSMutableArray.array()
-        for(var i=0;i < trainAlarms!.count;i++){
-            var train:UsrT02TrainAlarmTable = trainAlarms![i]
+        for key in mTrainAlarms!{
+            key as UsrT02TrainAlarmTable
             
-            var trainFlag:Array<String> = [ "早班车：", "末班车："]
+            var trainFlag:Array<String> = [ "USR002_03".localizedString(), "USR002_04".localizedString()]
             var trainTime:Array<String> = [ "", ""]
             var directions:Array<String> = ["",""]
-            if("\(train.item(USRT02_TRAIN_ALARM_ALAM_TYPE))" == "1"){
-                trainFlag = ["早班车："]
+            
+            if("\(key.item(USRT02_TRAIN_ALARM_ALAM_TYPE))" == "1"){
+                trainFlag = ["USR002_03".localizedString().localizedString()]
             }else{
-                trainFlag = ["末班车："]
+                trainFlag = ["USR002_04".localizedString()]
             }
             
-            trainTime = [convertTrainTime("\(train.item(USRT02_TRAIN_ALARM_ALAM_TIME))"),""]
-            directions = ["\(train.item(USRT02_TRAIN_ALARM_TRAI_DIRT))".station() + "方向",""]
+            trainTime = [convertTrainTime("\(key.item(USRT02_TRAIN_ALARM_ALAM_TIME))"),""]
+            directions = ["\(key.item(USRT02_TRAIN_ALARM_TRAI_DIRT))".station() + "PUBLIC_04".localizedString(),""]
             
-            items.addObject(["\(train.item(USRT02_TRAIN_ALARM_LINE_ID))".line() + ":" + "\(train.item(USRT02_TRAIN_ALARM_STAT_ID))".station(), directions, trainFlag, trainTime])
+            items.addObject(["\(key.item(USRT02_TRAIN_ALARM_LINE_ID))".line() + ":" + "\(key.item(USRT02_TRAIN_ALARM_STAT_ID))".station(), directions, trainFlag, trainTime])
         }
     }
 
@@ -521,73 +678,7 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
         
         return "  " + time.substringToIndex(indexHourTo!.endIndex) + ":" + time.substringFromIndex(indexMinFrom!.startIndex) + "  "
     }
-    
-    /**
-     * 从DB查询到站信息
-     */
-    func selectArrivalAlarmTable() -> Array<UsrT01ArrivalAlarmTable>{
-        var tableUsrT01 = UsrT01ArrivalAlarmTable()
-        var arrivalAlarms:Array<UsrT01ArrivalAlarmTable> = tableUsrT01.selectAll() as Array<UsrT01ArrivalAlarmTable>
-        return arrivalAlarms
-    }
-    
-    func deleteAlarm(){
-        var tableUsrT01 = UsrT01ArrivalAlarmTable()
-        var arrivalAlarms:Array<UsrT01ArrivalAlarmTable> = tableUsrT01.selectAll() as Array<UsrT01ArrivalAlarmTable>
-        for arrivalAlarm in arrivalAlarms{
-            arrivalAlarm.delete()
-        }
-    }
-    
-    /**
-     * 从DB查询末班车信息
-     */
-    func selectTrainAlarmTable() -> Array<UsrT02TrainAlarmTable>{
-        var tableUsrT02 = UsrT02TrainAlarmTable()
-        var trainAlarms:Array<UsrT02TrainAlarmTable> = tableUsrT02.selectAll() as Array<UsrT02TrainAlarmTable>
-        return trainAlarms
-    }
-    
-    /**
-     * 从DB查询站点信息
-     */
-    func selectStationTableOne(stationId: String) -> MstT02StationTable{
-        var tableMstT02 = MstT02StationTable()
-        tableMstT02.statId = stationId
-        var station:MstT02StationTable = tableMstT02.select() as MstT02StationTable
-        return station
-    }
-    
-    /**
-     * 从DB查询线路
-     */
-    func selectLinT04RouteTable(startStationId: String, toStationId: String) -> Bool{
-        var tableLinT04 = LinT04RouteTable()
-        tableLinT04.startStatId = "\((selectStationTableOne(startStationId) as MstT02StationTable).item(MSTT02_STAT_GROUP_ID))"
-        tableLinT04.termStatId = "\((selectStationTableOne(toStationId) as MstT02StationTable).item(MSTT02_STAT_GROUP_ID))"
-        return (tableLinT04.ruteId == nil)
-    }
-    
-    /**
-     * 从DB查询花费时间
-     */
-    func selectLinT05RouteDetailTable(startStationId: String, toStationId: String) -> Array<LinT05RouteDetailTable>?{
-        let QUERY_EXCH = "select * , ROWID from LINT05_ROUTE_DETAIL where RUTE_ID = ?"
         
-        var tableLinT04 = LinT04RouteTable()
-        tableLinT04.startStatId = "\((selectStationTableOne(startStationId) as MstT02StationTable).item(MSTT02_STAT_GROUP_ID))"
-        tableLinT04.termStatId = "\((selectStationTableOne(toStationId) as MstT02StationTable).item(MSTT02_STAT_GROUP_ID))"
-        var ruteId: String = "\((tableLinT04.select() as LinT04RouteTable).item(LINT04_ROUTE_RUTE_ID))"
-        var costTime:Int = 0
-        var tableLinT05 = LinT05RouteDetailTable()
-        
-        var args:NSMutableArray = NSMutableArray.array();
-        args.addObject(ruteId);
-        
-        return tableLinT05.excuteQuery(QUERY_EXCH, withArgumentsInArray: args) as? Array<LinT05RouteDetailTable>
-    }
-
-    
     /**
      * 本地推送消息
      */
@@ -662,214 +753,9 @@ class RemindListController: UIViewController, UITableViewDelegate, NSObjectProto
     }
     
     
-    // MARK: - Segues
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        
-    }
+    /*******************************************************************************
+    *    Unused Codes
+    *******************************************************************************/
     
-    // MARK: - Table View
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return items.count
-    }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath: NSIndexPath){
-        var remindDetailController = self.storyboard!.instantiateViewControllerWithIdentifier("reminddetail") as RemindDetailController
-        remindDetailController.title = LAST_METRO_TITLE
-        remindDetailController.segIndex = NUM_1
-        remindDetailController.tableUsrT02 = trainAlarms![didSelectRowAtIndexPath.section]
-
-        // 返回按钮点击事件
-        var bakButtonStyle:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-        bakButtonStyle.frame = CGRectMake(0, 0, 43, 43)
-        bakButtonStyle.setTitle("PUBLIC_05".localizedString(), forState: UIControlState.Normal)
-        bakButtonStyle.addTarget(remindDetailController.self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
-        
-        var backButton:UIBarButtonItem = UIBarButtonItem(customView: bakButtonStyle)
-        remindDetailController.navigationItem.leftBarButtonItem = backButton
-
-        self.navigationController!.pushViewController(remindDetailController, animated:true)
-    }
-    
-    func tableView(tableView: UITableView!, titleForHeaderInSection section: Int) -> String! {
-        return nil//items[section][0] as String
-    }
-    
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1//items[section][1].count
-    }
-    
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 80
-    }
-    
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-//        var cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
-        var cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "Cell")
-        for subview in cell.subviews{
-            if(subview.isKindOfClass(UILabel) || (subview.tag as Int) == 102){
-                subview.removeFromSuperview()
-            }
-        }
-        
-        pushNotificationLastMetro("\(items[indexPath.section][0])的\(items[indexPath.section][3][indexPath.row])即将发车", notifyTime:"\(items[indexPath.section][3][indexPath.row])")
-        
-        var lblMetroType = UILabel(frame: CGRect(x:15,y:20,width:230,height:30))
-        lblMetroType.font = UIFont.systemFontOfSize(14)
-        lblMetroType.textColor = UIColor.lightGrayColor()
-        lblMetroType.text = items[indexPath.section][2][0] as? String
-        lblMetroType.textAlignment = NSTextAlignment.Left
-        cell.addSubview(lblMetroType)
-        
-        var lblLastMetroTime = UILabel(frame: CGRect(x:45,y:0,width:230,height:50))
-        lblLastMetroTime.tag = 101
-        var fontStyle:UIFont = UIFont.preferredFontForTextStyle("UltraLight")
-        //fontStyle.fontName = "Helvetica Neue"
-        var userFont:UIFontDescriptor = UIFontDescriptor.preferredFontDescriptorWithTextStyle("UltraLight")
-        var userFontSize:CGFloat = userFont.pointSize
-        var font:UIFont = UIFont(descriptor: userFont.fontDescriptorWithFamily("Helvetica Neue"), size: 65)//UIFont(name: "Helvetica Neue", size: userFontSize)
-        
-        lblLastMetroTime.font = font//UIFont(name: "Helvetica Neue", size: 65)
-        lblLastMetroTime.text = items[indexPath.section][3][indexPath.row] as? String
-        lblLastMetroTime.textAlignment = NSTextAlignment.Left
-        cell.addSubview(lblLastMetroTime)
-        
-        var lblLastMetroDirt = UILabel(frame: CGRect(x:200,y:50,width:105,height:30))
-        lblLastMetroDirt.tag = 101
-        lblLastMetroDirt.font = UIFont.systemFontOfSize(14)
-        lblLastMetroDirt.textColor = UIColor.lightGrayColor()
-        lblLastMetroDirt.text = items[indexPath.section][1][indexPath.row] as? String
-        lblLastMetroDirt.textAlignment = NSTextAlignment.Right
-        cell.addSubview(lblLastMetroDirt)
-
-        var lblStatInfo = UILabel(frame: CGRect(x:15,y:50,width:230,height:30))
-        lblStatInfo.font = UIFont.systemFontOfSize(14)
-        lblStatInfo.textColor = UIColor.lightGrayColor()
-        lblStatInfo.text = items[indexPath.section][0] as? String
-        lblStatInfo.textAlignment = NSTextAlignment.Left
-        cell.addSubview(lblStatInfo)
-        
-        var switchAralm = UISwitch(frame: CGRect(x:255,y:20,width:60,height:30))
-        switchAralm.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.ValueChanged)
-        switchAralm.tag = 102
-        var lblSection = UILabel()
-        lblSection.hidden = true
-        lblSection.tag = 103
-        lblSection.text = "\(indexPath.section)"
-        var lblRow = UILabel()
-        lblRow.tag = 104
-        lblRow.hidden = true
-        lblRow.text = "\(indexPath.row)"
-        switchAralm.addSubview(lblSection)
-        switchAralm.addSubview(lblRow)
-        
-        if(indexPath.row == 0){
-            var strFirst:NSString = "\(trainAlarms![indexPath.section].item(USRT02_TRAIN_ALARM_ALAM_FLAG))"
-            if(strFirst.integerValue == 0){
-                switchAralm.on = false
-                cell.backgroundColor = UIColor(red: 215/255, green: 255/255, blue: 255/255, alpha: 1.0)
-            }else{
-                switchAralm.on = true
-            }
-        }else if(indexPath.row == 1){
-            var strLast:NSString = "\(trainAlarms![indexPath.section].item(USRT02_TRAIN_ALARM_ALAM_FLAG))"
-            if(strLast.integerValue == 0){
-                switchAralm.on = false
-                cell.backgroundColor = UIColor(red: 224/255, green: 255/255, blue: 255/255, alpha: 1.0)
-            }else{
-                switchAralm.on = true
-            }
-        }
-        
-        cell.addSubview(switchAralm)
-        return cell
-    }
-    
-    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return false
-    }
-    
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            //items.removeObjectAtIndex(indexPath.row)
-            //tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
-        }
-    }
-    
-    // after animation
-    func alertView(alertView: UIAlertView!, didDismissWithButtonIndex buttonIndex: Int){
-        switch buttonIndex{
-        case NUM_0:
-            // 停止计时
-            var timerThread = TimerThread.shareInstance()
-            timerThread.cancel()
-            self.lblHour.text = "00"
-            self.lblMin.text = "00"
-            self.lblSec.text = "00"
-            noAlarm()
-            deleteAlarm()
-            btnEdit.enabled = true
-            pushNotification(nil,min: NUM_NEGATIVE_1)
-            alarm!.cancelFlag = "1"
-            alarm!.cancelTime = RemindDetailController.convertDate2LocalTime(NSDate.date())
-            alarm!.update()
-            alarm = nil
-        default:
-            println("nothing")
-        }
-    }
-}
-
-/**
- * 用于计时线程
- */
-class TimerThread: NSOperation{
-    
-    // 到达站点所需时间,s,
-    var arriveTime:Int = -1
-    // 画面viewController
-    var sender:AnyObject?
-    // 到达站点剩余时间
-    var surplusTime:Int = 0
-    
-    private override init(){
-    }
-    
-    /**
-     * 创建单例
-     */
-    class func shareInstance()->TimerThread{
-        struct qzSingle{
-            static var predicate:dispatch_once_t = 0;
-            static var instance:TimerThread? = nil
-        }
-        if(qzSingle.instance == nil){
-            qzSingle.instance = TimerThread()
-        }else if(qzSingle.instance!.finished){
-            qzSingle.instance = TimerThread()
-        }
-        return qzSingle.instance!
-    }
-    
-    override func start() {
-        super.start()
-    }
-    
-    override func main() {
-        for(var i=0;i <= arriveTime;i++){
-            var surplusTime = arriveTime - i
-            self.surplusTime = surplusTime
-            sender!.updateTime(surplusTime)
-            
-            sleep(1)
-        }
-        println("NSOperation over.")
-    }
-    
-    override func cancel() {
-        super.cancel()
-        arriveTime = -1
-    }
 }

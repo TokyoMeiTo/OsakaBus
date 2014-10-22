@@ -59,8 +59,9 @@ class LandMarkMapController: UIViewController, MKMapViewDelegate, UIActionSheetD
         
         //var statLocation = CLLocation(latitude: fromLat, longitude: fromLon)
         
+        var sta003_Model:STA003Model = STA003Model()
         // 获取最近的10个站点
-        stations = StationListController.selectStationTable(landMarkLocation!)
+        stations = sta003_Model.findNearbyStations(landMarkLocation!)
         
         
         
@@ -97,23 +98,6 @@ class LandMarkMapController: UIViewController, MKMapViewDelegate, UIActionSheetD
         var region : MKCoordinateRegion = MKCoordinateRegionMake(coordinateOnEarth, span)
         mkMap.setRegion(region, animated:true)
     }
-    
-    /**
-     * 到DB中查找最近的站点
-     */
-    class func selectStationTable(fromLocation: CLLocation) -> Array<MstT02StationTable>{
-        var stationsNearest:Array<MstT02StationTable> = Array<MstT02StationTable>()
-        
-        var dao = Sta003Dao()
-        var coordinateOnMars: CLLocationCoordinate2D = fromLocation.coordinate
-        var lon:CDouble = coordinateOnMars.longitude
-        var lat:CDouble = coordinateOnMars.latitude
-        
-        stationsNearest = dao.queryMiniDistance(lon,lat: lat) as Array<MstT02StationTable>
-        return stationsNearest
-    }
-
-    
     
     func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) ->
         MKAnnotationView!{

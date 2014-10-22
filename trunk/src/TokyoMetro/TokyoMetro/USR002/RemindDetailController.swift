@@ -14,22 +14,84 @@ import AudioToolbox
 /**
  * 编辑提醒
  */
-class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectProtocol, UIScrollViewDelegate, UITableViewDataSource, UIPickerViewDelegate, UIPickerViewDataSource, UIAlertViewDelegate{
+class RemindDetailController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIPickerViewDelegate, UIPickerViewDataSource, UIAlertViewDelegate{
+    
+    /*******************************************************************************
+    * IBOutlets
+    *******************************************************************************/
+    
     /* UITableView */
     @IBOutlet weak var tbList: UITableView!
     
+    
+    /*******************************************************************************
+    * Global
+    *******************************************************************************/
+    
+    let USR002_MODEL:USR002Model = USR002Model()
+    
+    /* 0 */
+    let NUM_0 = 0
+    /* 1 */
+    let NUM_1 = 1
+    /* 100 */
+    let NUM_100 = 100
+    
+    /* 添加 */
+    let ADD = "USR002_08".localizedString()
+    /* 编辑 */
+    let EDIT = "USR002_09".localizedString()
+    /* 编辑 */
+    let PICKERVIEW_STRING = "pickerview"
+    /* 确定删除本条提醒？ */
+    let MSG_0001 = "USR002_10".localizedString()
+    /* 通知 */
+    let MSG_0002 = "USR002_18".localizedString()
+    /* 确定 */
+    let MSG_0003 = "USR002_20".localizedString()
+    /* 取消 */
+    let MSG_0004 = "USR002_21".localizedString()
+    /* 确定添加本条提醒？ */
+    let MSG_0005 = "USR002_10".localizedString()
+    /* 确定添加本条提醒？ */
+    let MSG_0006 = "USR002_11".localizedString()
+    
+    let SAVE_BUTTON_TAG:Int = 200201
+    let DELETE_BUTTON_TAG:Int = 200202
+    let BACK_BUTTON_TAG:Int = 200203
+
+    /*******************************************************************************
+    * Public Properties
+    *******************************************************************************/
+
+    /* 上一个页面是否查找站点 */
+    var isSearsh:Bool = false
+    /* 选择的线路id */
+    var selectLineId:String?
+    /* 选择的线路站点id */
+    var selectStationId:String?
+    /* 线路画面站点id */
+    var routeStatTable01:MstT02StationTable?
+    var routeStatTable02:MstT02StationTable?
+
+    
+    /*******************************************************************************
+    * Private Properties
+    *******************************************************************************/
+
     /* 站点UIPickerView */
     var pickStations: UIPickerView = UIPickerView()
     /* 上车站点UIPickerView */
     var pickFromStations: UIPickerView = UIPickerView()
     /* 站点UIPickerView */
     var pickLineStations: Array<UIPickerView> = Array<UIPickerView>()
+    
     /* segIndex */
     var segIndex:Int?
     /* TableView条目 */
     var items: NSMutableArray = NSMutableArray.array()
     /* lines */
-    var lines:Array<MstT01LineTable> = Array<MstT01LineTable>()
+    var mLines:Array<MstT01LineTable>?
     /* stations */
     var stations:Array<MstT02StationTable> = Array<MstT02StationTable>()
     /* fromStations */
@@ -70,51 +132,25 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
     var pickerViewSection:Int = 0
     /* 选择的线路站点id */
     var statToId:String = "2800101"
-    /* 上一个页面是否查找站点 */
-    var isSearsh:Bool = false
-    /* 选择的线路id */
-    var selectLineId:String?
-    /* 选择的线路站点id */
-    var selectStationId:String?
     
-    var routeStatTable01:MstT02StationTable?
-    var routeStatTable02:MstT02StationTable?
     
-    /* 0 */
-    let NUM_0 = 0
-    /* 1 */
-    let NUM_1 = 1
-    /* 100 */
-    let NUM_100 = 100
-    
-    /* 线路数量 */
-    let LINE_COUNT:UInt = 9
-    /* 添加 */
-    let ADD = "USR002_08".localizedString()
-    /* 编辑 */
-    let EDIT = "USR002_09".localizedString()
-    /* 编辑 */
-    let PICKERVIEW_STRING = "pickerview"
-    /* 确定删除本条提醒？ */
-    let MSG_0001 = "USR002_10".localizedString()
-    /* 通知 */
-    let MSG_0002 = "USR002_18".localizedString()
-    /* 确定 */
-    let MSG_0003 = "USR002_20".localizedString()
-    /* 取消 */
-    let MSG_0004 = "USR002_21".localizedString()
-    /* 确定添加本条提醒？ */
-    let MSG_0005 = "USR002_10".localizedString()
-    /* 确定添加本条提醒？ */
-    let MSG_0006 = "USR002_11".localizedString()
-    
-    let SAVE_BUTTON_TAG:Int = 200201
-    let DELETE_BUTTON_TAG:Int = 200202
-    let BACK_BUTTON_TAG:Int = 200203
+    /*******************************************************************************
+    * Overrides From UIViewController
+    *******************************************************************************/
     
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        // 画面内容变更
+        // 设置数据
         intitValue()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
     }
     
     override func didReceiveMemoryWarning() {
@@ -122,6 +158,370 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
         // Dispose of any resources that can be recreated.
     }
 
+    
+    /*******************************************************************************
+    *    Implements Of UITableViewDelegate
+    *******************************************************************************/
+
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath: NSIndexPath){
+        if(segIndex == NUM_0){
+            if(didSelectRowAtIndexPath.section == 0 || didSelectRowAtIndexPath.section == 1){
+                setTableCellHeight(didSelectRowAtIndexPath)
+                //                self.pickerViewSection = didSelectRowAtIndexPath.section
+                //                var searchStationList = self.storyboard!.instantiateViewControllerWithIdentifier("SearchStationList") as SearchStationList
+                //                searchStationList.classType = "remindDetailController"
+                //                self.navigationController!.pushViewController(searchStationList, animated:true)
+                return
+            }
+        }else if(segIndex == NUM_1){
+            if(didSelectRowAtIndexPath.section == 0){
+                setTableCellHeight(didSelectRowAtIndexPath)
+                //                self.pickerViewSection = didSelectRowAtIndexPath.section
+                //                var searchStationList = self.storyboard!.instantiateViewControllerWithIdentifier("SearchStationList") as SearchStationList
+                //                searchStationList.classType = "remindDetailController"
+                //                self.navigationController!.pushViewController(searchStationList, animated:true)
+                return
+            }
+        }
+        
+        if(segIndex == NUM_0){
+            if(didSelectRowAtIndexPath.section == 2){
+                remindType = didSelectRowAtIndexPath.row
+                // 提醒方式
+                if(remindType == NUM_0){
+                    tableUsrT01!.beepFlag = "1"
+                    tableUsrT01!.voleFlag = "0"
+                    pushNotification(nil, min: -1, beep: true)
+                }else{
+                    tableUsrT01!.beepFlag = "0"
+                    tableUsrT01!.voleFlag = "1"
+                    pushNotification(nil, min: -1, beep: false)
+                }
+            }else if(didSelectRowAtIndexPath.section == 3){
+                remindTime = didSelectRowAtIndexPath.row
+                // 提醒时间
+                tableUsrT01!.alarmTime = "\((remindTime + 1) * 60)"
+            }
+        }else if(segIndex == NUM_1){
+            if(didSelectRowAtIndexPath.section == 3){
+                remindType = didSelectRowAtIndexPath.row
+                // 提醒方式
+                if(remindType == NUM_0){
+                    tableUsrT02!.beepFlag = "1"
+                    tableUsrT02!.voleFlag = "0"
+                    pushNotification(nil, min: -1, beep: true)
+                }else{
+                    tableUsrT02!.beepFlag = "0"
+                    tableUsrT02!.voleFlag = "1"
+                    pushNotification(nil, min: -1, beep: false)
+                }
+            }else if(didSelectRowAtIndexPath.section == 4){
+                remindTime = didSelectRowAtIndexPath.row
+                // 提醒时间
+                tableUsrT02!.alarmTime = "\((remindTime + 1) * 600)"
+            }else if(didSelectRowAtIndexPath.section == 1){
+                stationDirtFlag = didSelectRowAtIndexPath.row
+                if(stationDirtFlag == 0){
+                    tableUsrT02!.traiDirt = traiDirt0
+                }else{
+                    tableUsrT02!.traiDirt = traiDirt1
+                }
+            }else if(didSelectRowAtIndexPath.section == 2){
+                if(didSelectRowAtIndexPath.row == 0){
+                    tableUsrT02!.alamType = "1"
+                }else{
+                    tableUsrT02!.alamType = "9"
+                }
+            }
+        }
+        
+        for(var i=0; i < items[didSelectRowAtIndexPath.section][1].count;i++){
+            var indexPath = NSIndexPath(forRow: i, inSection: didSelectRowAtIndexPath.section)
+            var cell = tableView.cellForRowAtIndexPath(indexPath)
+            if(cell != nil){
+                cell!.accessoryType = UITableViewCellAccessoryType.None
+            }
+        }
+        tableView.cellForRowAtIndexPath(didSelectRowAtIndexPath)!.accessoryType =
+            UITableViewCellAccessoryType.Checkmark
+    }
+
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        if(segIndex == NUM_0){
+            if((indexPath.section == 0 || indexPath.section == 1) && indexPath.row == 1){
+                if(pickerViewHeight == 0 || indexPath.section != pickerViewSection){
+                    return 0
+                }else{
+                    return pickerViewHeight
+                }
+            }
+        }else if(segIndex == NUM_1){
+            if((indexPath.section == 0) && indexPath.row == 1){
+                if(pickerViewHeight == 0 || indexPath.section != pickerViewSection){
+                    return 0
+                }else{
+                    return pickerViewHeight
+                }
+            }
+        }
+        return 43
+    }
+    
+    
+    /*******************************************************************************
+    *      Implements Of UITableViewDataSource
+    *******************************************************************************/
+
+    // MARK: - Table View
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return items.count
+    }
+
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return items[section][1].count
+    }
+    
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return items[section][0] as? String
+    }
+    
+    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        var UIHeader:UIView = UIView()
+        if(segIndex == NUM_0){
+            if(section == 0){
+                var imgStationTo = UIImage(named: "USR00204.png")
+                var imageViewStationTo = UIImageView(frame: CGRectMake(15, 5, 25, 25))
+                imageViewStationTo.image = imgStationTo
+                UIHeader.addSubview(imageViewStationTo)
+            }else if(section == 1){
+                var imgStationFrom = UIImage(named: "USR00205.png")
+                var imageViewStationFrom = UIImageView(frame: CGRectMake(15, 5, 25, 25))
+                imageViewStationFrom.image = imgStationFrom
+                UIHeader.addSubview(imageViewStationFrom)
+            }else{
+                var imgAlarm = UIImage(named: "USR00206.png")
+                var imageViewAlarm = UIImageView(frame: CGRectMake(15, 5, 25, 25))
+                imageViewAlarm.image = imgAlarm
+                UIHeader.addSubview(imageViewAlarm)
+            }
+        }else if(segIndex == NUM_1){
+            if(section == 0){
+                var imgStationTo = UIImage(named: "USR00204.png")
+                var imageViewStationTo = UIImageView(frame: CGRectMake(15, 5, 25, 25))
+                imageViewStationTo.image = imgStationTo
+                UIHeader.addSubview(imageViewStationTo)
+            }else{
+                var imgAlarm = UIImage(named: "USR00206.png")
+                var imageViewAlarm = UIImageView(frame: CGRectMake(15, 5, 25, 25))
+                imageViewAlarm.image = imgAlarm
+                UIHeader.addSubview(imageViewAlarm)
+            }
+        }
+        
+        var lblText = UILabel(frame: CGRect(x:50,y:5,width:tableView.frame.width - 100,height:25))
+        lblText.textColor = UIColor.lightGrayColor()
+        lblText.font = UIFont.systemFontOfSize(15)
+        lblText.text = items[section][0] as? String
+        lblText.textAlignment = NSTextAlignment.Left
+        UIHeader.addSubview(lblText)
+        
+        return UIHeader
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        var cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
+        cell.accessoryType = UITableViewCellAccessoryType.None
+        for subview in cell.subviews{
+            if(subview.isKindOfClass(UIPickerView)){
+                subview.removeFromSuperview()
+            }
+        }
+        if(segIndex == NUM_0){
+            if(indexPath.section == 2 && indexPath.row == remindType){
+                cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+            }else if(indexPath.section == 3 && indexPath.row == remindTime){
+                cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+            }else if((indexPath.section == 0 || indexPath.section == 1) && indexPath.row == 1){
+                cell.addSubview(pickLineStations[indexPath.section])
+            }else{
+                cell.accessoryType = UITableViewCellAccessoryType.None
+            }
+        }else if(segIndex == NUM_1){
+            if(indexPath.section == 3 && indexPath.row == remindType){
+                cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+            }else if(indexPath.section == 4 && indexPath.row == remindTime){
+                cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+            }else if((indexPath.section == 0) && indexPath.row == 1){
+                cell.addSubview(pickLineStations[indexPath.section])
+            }else if((indexPath.section == 1) && indexPath.row == stationDirtFlag){
+                cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+            }else if((indexPath.section == 2)){
+                if(indexPath.row == 0 && tableUsrT02?.alamType == "1"){
+                    cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+                }else if(indexPath.row == 1 && tableUsrT02?.alamType == "9"){
+                    cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+                }
+            }else{
+                cell.accessoryType = UITableViewCellAccessoryType.None
+            }
+        }
+        
+        cell.textLabel!.text = items[indexPath.section][1][indexPath.row] as? String
+        return cell
+    }
+    
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        // Return false if you do not want the specified item to be editable.
+        return false
+    }
+    
+    
+    /*******************************************************************************
+    *      Implements Of UIPickerViewDelegate
+    *******************************************************************************/
+
+    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int){
+        if(pickerView == pickStations){
+            if(component == NUM_0){
+                // 线路
+                line = "\(mLines![row].lineId)".line()
+                // 站点
+                stations = selectStationTable(mLines![row].lineId)
+                pickerView.reloadComponent(NUM_1)
+                pickerView.selectRow(NUM_0, inComponent: NUM_1, animated: true)
+                station = "\(stations[NUM_0].statId)".station()
+                var stationsDirt = selectStationTableDirt(mLines![row].lineId)
+                stationDirt0 = "\(stationsDirt[0].item(MSTT02_STAT_ID))".station()
+                stationDirt1 = "\(stationsDirt[1].item(MSTT02_STAT_ID))".station()
+                traiDirt0 = "\(stationsDirt[0].item(MSTT02_STAT_ID))"
+                traiDirt1 = "\(stationsDirt[1].item(MSTT02_STAT_ID))"
+                if(segIndex == NUM_0){
+                    statToId = stations[NUM_0].statId
+                    tableUsrT01!.lineToId = mLines![row].lineId
+                    tableUsrT01!.statToId = stations[NUM_0].statId
+                }else if(segIndex == NUM_1){
+                    tableUsrT02!.lineId = mLines![row].lineId
+                    tableUsrT02!.statId = stations[NUM_0].statId
+                }
+            }else{
+                if(row < stations.count){
+                    station = "\(stations[row].statId)".station()
+                    if(segIndex == NUM_0){
+                        statToId = stations[row].statId
+                        tableUsrT01!.statToId = stations[row].statId
+                    }else if(segIndex == NUM_1){
+                        tableUsrT02!.statId = stations[row].statId
+                    }
+                }
+            }
+        }else if(pickerView == pickFromStations){
+            if(component == NUM_0){
+                // 线路
+                line = mLines![row].lineId.line()
+                tableUsrT01!.lineFromId = mLines![row].lineId
+                // 站点
+                fromStations = selectStationTable(mLines![row].lineId)
+                pickerView.reloadComponent(NUM_1)
+                pickerView.selectRow(NUM_0, inComponent: NUM_1, animated: true)
+                fromStation = "\(fromStations[NUM_0].statName)"
+                tableUsrT01!.statFromId = stations[NUM_0].statId
+            }else{
+                if(row < fromStations.count){
+                    fromStation = "\(fromStations[row].statId)".station()
+                    tableUsrT01!.statFromId = stations[row].statId
+                }
+            }
+        }
+        if(segIndex == NUM_0){
+            loadArriveStationItems()
+        }else if(segIndex == NUM_1){
+            loadLastMetroItems()
+        }
+        tbList.reloadData()
+    }
+
+    
+    /*******************************************************************************
+    *      Implements Of UIPickerViewDataSource
+    *******************************************************************************/
+
+    // returns the number of 'columns' to display.
+    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int{
+        return 2
+    }
+    
+    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String!{
+        var title = ""
+        if(pickerView == pickStations){
+            if(component == NUM_0){
+                if(row < mLines!.count){
+                    title = "\(mLines![row].lineId)".line()
+                }
+            }else{
+                if(row < stations.count){
+                    title = "\(stations[row].statId)".station()
+                }
+            }
+        }else if(pickerView == pickFromStations){
+            if(component == NUM_0){
+                if(row < mLines!.count){
+                    title = "\(mLines![row].lineId)".line()
+                }
+            }else{
+                if(row < fromStations.count){
+                    title = "\(fromStations[row].statId)".station()
+                }
+            }
+        }
+        return title
+    }
+    
+    // returns the # of rows in each component..
+    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int{
+        if(pickerView == pickStations){
+            if(component == NUM_0){
+                return mLines!.count
+            }else{
+                return stations.count
+            }
+        }else if(pickerView == pickFromStations){
+            if(component == NUM_0){
+                return mLines!.count
+            }else{
+                return stations.count
+            }
+        }
+        return 0
+    }
+
+    
+    /*******************************************************************************
+    *      Implements Of UIAlertViewDelegate
+    *******************************************************************************/
+
+    // after animation
+    func alertView(alertView: UIAlertView!, didDismissWithButtonIndex buttonIndex: Int){
+        switch buttonIndex{
+        case NUM_0:
+            // 删除本条提醒
+            tableUsrT02!.delete()
+            var controllers:AnyObject? = self.navigationController!.viewControllers
+            if(controllers!.count > 1){
+                var lastController:RemindListController = controllers![controllers!.count - 2] as RemindListController
+                lastController.viewDidLoad()
+            }
+            self.navigationController!.popViewControllerAnimated(true)
+        default:
+            println("nothing")
+        }
+    }
+
+    
+    /*******************************************************************************
+    *    Private Methods
+    *******************************************************************************/
+    
     /**
      *
      */
@@ -132,48 +532,16 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
         bakButtonStyle.frame = CGRectMake(0, 0, 43, 43)
         bakButtonStyle.setTitle("PUBLIC_05".localizedString(), forState: UIControlState.Normal)
         bakButtonStyle.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
-        var backButton:UIBarButtonItem =  UIBarButtonItem(customView: bakButtonStyle)
+        let backButton:UIBarButtonItem =  UIBarButtonItem(customView: bakButtonStyle)
         self.navigationItem.leftBarButtonItem = backButton
+        
         // 查询线路
-        lines = selectLineTable()
+        mLines = USR002_MODEL.findLineTable()
 
         if(segIndex == NUM_0){
             editArriveStation()
         }else if(segIndex == NUM_1){
             editLastMetro()
-        }
-    }
-    
-    /**
-     * ボタン点击事件
-     * @param sender
-     */
-    func buttonAction(sender: UIButton){
-        println(sender.tag)
-        switch sender.tag{
-        case SAVE_BUTTON_TAG:
-            // 保存末班车提醒
-            if(segIndex == NUM_0){
-                // 保存到站提醒
-                saveArriveStation()
-            }else if(segIndex == NUM_1){
-                // 保存末班车提醒
-                saveLastMetro()
-            }
-        case BACK_BUTTON_TAG:
-            self.navigationController!.popViewControllerAnimated(true)
-        case self.navigationItem.leftBarButtonItem!.tag:
-            if(segIndex == NUM_0){
-                // 保存到站提醒
-                saveArriveStation()
-            }else if(segIndex == NUM_1){
-                // 保存末班车提醒
-                saveLastMetro()
-            }
-        case self.navigationItem.rightBarButtonItem!.tag:
-            RemindDetailController.showMessage(MSG_0002, msg:MSG_0001,buttons:[MSG_0003, MSG_0004], delegate: self)
-        default:
-            println("nothing")
         }
     }
     
@@ -191,6 +559,19 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
         usrT01Table.onboardTime = "000000000000"
         usrT01Table.cancelFlag = "0"
         usrT01Table.cancelTime = "00000000000000"
+    }
+    
+    func initLastAlarm(tableUsrT02:UsrT02TrainAlarmTable?){
+        tableUsrT02!.lineId = "28001"
+        tableUsrT02!.statId = "2800101"
+        tableUsrT02!.alamType = "9"
+        tableUsrT02!.alamTime = "2310"
+        tableUsrT02!.alamFlag = "1"
+        tableUsrT02!.traiDirt = "2800119"
+        tableUsrT02!.beepFlag = "1"
+        tableUsrT02!.voleFlag = "0"
+        tableUsrT02!.alarmTime = "0"
+        tableUsrT02!.saveTime = "00000000000000"
     }
     
     /**
@@ -299,16 +680,7 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
             self.navigationItem.leftBarButtonItem = nil
             
             tableUsrT02 = UsrT02TrainAlarmTable()
-            tableUsrT02!.lineId = "28001"
-            tableUsrT02!.statId = "2800101"
-            tableUsrT02!.alamType = "9"
-            tableUsrT02!.alamTime = "2310"
-            tableUsrT02!.alamFlag = "1"
-            tableUsrT02!.traiDirt = "2800119"
-            tableUsrT02!.beepFlag = "1"
-            tableUsrT02!.voleFlag = "0"
-            tableUsrT02!.alarmTime = "0"
-            tableUsrT02!.saveTime = "00000000000000"
+            initLastAlarm(tableUsrT02)
         }
         
         if(isSearsh){
@@ -460,7 +832,7 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
      */
     func saveLastMetro(){
         var trainAlarms:Array<UsrT02TrainAlarmTable>? = selectTrainAlarmTable()
-        var usr002Dao:USR002Dao = USR002Dao()
+        var usr002Dao:USR002DAO = USR002DAO()
         tableUsrT02!.alamTime = usr002Dao.queryDepaTime(tableUsrT02!.lineId, statId: "\((selectStationTableOne(tableUsrT02!.statId) as MstT02StationTable).item(MSTT02_STAT_GROUP_ID))", destId: tableUsrT02!.traiDirt, trainFlag: tableUsrT02!.alamType, scheType: "1")
         if(tableUsrT02!.alamTime == nil || tableUsrT02!.alamTime == "nil" || tableUsrT02!.alamTime == ""){
             RemindDetailController.showMessage(MSG_0002, msg:"请重新选择车站",buttons:[MSG_0003], delegate: nil)
@@ -534,8 +906,41 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
     }
     
     /**
-    * 从线路选择画面过来
+    * ボタン点击事件
+    * @param sender
     */
+    func buttonAction(sender: UIButton){
+        println(sender.tag)
+        switch sender.tag{
+        case SAVE_BUTTON_TAG:
+            // 保存末班车提醒
+            if(segIndex == NUM_0){
+                // 保存到站提醒
+                saveArriveStation()
+            }else if(segIndex == NUM_1){
+                // 保存末班车提醒
+                saveLastMetro()
+            }
+        case BACK_BUTTON_TAG:
+            self.navigationController!.popViewControllerAnimated(true)
+        case self.navigationItem.leftBarButtonItem!.tag:
+            if(segIndex == NUM_0){
+                // 保存到站提醒
+                saveArriveStation()
+            }else if(segIndex == NUM_1){
+                // 保存末班车提醒
+                saveLastMetro()
+            }
+        case self.navigationItem.rightBarButtonItem!.tag:
+            RemindDetailController.showMessage(MSG_0002, msg:MSG_0001,buttons:[MSG_0003, MSG_0004], delegate: self)
+        default:
+            println("nothing")
+        }
+    }
+    
+    /**
+     * 从线路选择画面过来
+     */
     func fromRoute() -> Bool{
         return routeStatTable01 != nil && routeStatTable02 != nil
     }
@@ -553,15 +958,6 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
         viewLayer.bounds.size.height = height
     }
     
-    /**
-     * 从DB查询线路信息
-     */
-    func selectLineTable() -> Array<MstT01LineTable>{
-        var tableMstT01 = MstT01LineTable()
-        var lines:Array<MstT01LineTable> = tableMstT01.selectTop(LINE_COUNT) as Array<MstT01LineTable>
-        return lines
-    }
-
     /**
      * 从DB查询线路信息
      */
@@ -746,17 +1142,6 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
         return nsDate
     }
 
-    
-    // MARK: - Segues
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        
-    }
-    
-    // MARK: - Table View
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return items.count
-    }
-    
     func setTableCellHeight(didSelectRowAtIndexPath: NSIndexPath){
         if(self.pickerViewHeight != 0 && didSelectRowAtIndexPath.section != self.pickerViewSection){
             return
@@ -774,344 +1159,6 @@ class RemindDetailController: UIViewController, UITableViewDelegate, NSObjectPro
             self.pickerViewHeight = 0
             self.tbList.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
             self.pickLineStations[didSelectRowAtIndexPath.section].hidden = true
-        }
-    }
-    
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath: NSIndexPath){
-        if(segIndex == NUM_0){
-            if(didSelectRowAtIndexPath.section == 0 || didSelectRowAtIndexPath.section == 1){
-                setTableCellHeight(didSelectRowAtIndexPath)
-//                self.pickerViewSection = didSelectRowAtIndexPath.section
-//                var searchStationList = self.storyboard!.instantiateViewControllerWithIdentifier("SearchStationList") as SearchStationList
-//                searchStationList.classType = "remindDetailController"
-//                self.navigationController!.pushViewController(searchStationList, animated:true)
-                return
-            }
-        }else if(segIndex == NUM_1){
-            if(didSelectRowAtIndexPath.section == 0){
-                setTableCellHeight(didSelectRowAtIndexPath)
-//                self.pickerViewSection = didSelectRowAtIndexPath.section
-//                var searchStationList = self.storyboard!.instantiateViewControllerWithIdentifier("SearchStationList") as SearchStationList
-//                searchStationList.classType = "remindDetailController"
-//                self.navigationController!.pushViewController(searchStationList, animated:true)
-                return
-            }
-        }
-
-        if(segIndex == NUM_0){
-            if(didSelectRowAtIndexPath.section == 2){
-                remindType = didSelectRowAtIndexPath.row
-                // 提醒方式
-                if(remindType == NUM_0){
-                    tableUsrT01!.beepFlag = "1"
-                    tableUsrT01!.voleFlag = "0"
-                    pushNotification(nil, min: -1, beep: true)
-                }else{
-                    tableUsrT01!.beepFlag = "0"
-                    tableUsrT01!.voleFlag = "1"
-                    pushNotification(nil, min: -1, beep: false)
-                }
-            }else if(didSelectRowAtIndexPath.section == 3){
-                remindTime = didSelectRowAtIndexPath.row
-                // 提醒时间
-                tableUsrT01!.alarmTime = "\((remindTime + 1) * 60)"
-            }
-        }else if(segIndex == NUM_1){
-            if(didSelectRowAtIndexPath.section == 3){
-                remindType = didSelectRowAtIndexPath.row
-                // 提醒方式
-                if(remindType == NUM_0){
-                    tableUsrT02!.beepFlag = "1"
-                    tableUsrT02!.voleFlag = "0"
-                    pushNotification(nil, min: -1, beep: true)
-                }else{
-                    tableUsrT02!.beepFlag = "0"
-                    tableUsrT02!.voleFlag = "1"
-                    pushNotification(nil, min: -1, beep: false)
-                }
-            }else if(didSelectRowAtIndexPath.section == 4){
-                remindTime = didSelectRowAtIndexPath.row
-                // 提醒时间
-                tableUsrT02!.alarmTime = "\((remindTime + 1) * 600)"
-            }else if(didSelectRowAtIndexPath.section == 1){
-                stationDirtFlag = didSelectRowAtIndexPath.row
-                if(stationDirtFlag == 0){
-                    tableUsrT02!.traiDirt = traiDirt0
-                }else{
-                    tableUsrT02!.traiDirt = traiDirt1
-                }
-            }else if(didSelectRowAtIndexPath.section == 2){
-                if(didSelectRowAtIndexPath.row == 0){
-                    tableUsrT02!.alamType = "1"
-                }else{
-                    tableUsrT02!.alamType = "9"
-                }
-            }
-        }
-        
-        for(var i=0; i < items[didSelectRowAtIndexPath.section][1].count;i++){
-            var indexPath = NSIndexPath(forRow: i, inSection: didSelectRowAtIndexPath.section)
-            var cell = tableView.cellForRowAtIndexPath(indexPath)
-            if(cell != nil){
-                cell!.accessoryType = UITableViewCellAccessoryType.None
-            }
-        }
-        tableView.cellForRowAtIndexPath(didSelectRowAtIndexPath)!.accessoryType =
-            UITableViewCellAccessoryType.Checkmark
-    }
-    
-    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        var UIHeader:UIView = UIView()
-        if(segIndex == NUM_0){
-            if(section == 0){
-                var imgStationTo = UIImage(named: "USR00204.png")
-                var imageViewStationTo = UIImageView(frame: CGRectMake(15, 5, 25, 25))
-                    imageViewStationTo.image = imgStationTo
-                UIHeader.addSubview(imageViewStationTo)
-            }else if(section == 1){
-                var imgStationFrom = UIImage(named: "USR00205.png")
-                var imageViewStationFrom = UIImageView(frame: CGRectMake(15, 5, 25, 25))
-                imageViewStationFrom.image = imgStationFrom
-                UIHeader.addSubview(imageViewStationFrom)
-            }else{
-                var imgAlarm = UIImage(named: "USR00206.png")
-                var imageViewAlarm = UIImageView(frame: CGRectMake(15, 5, 25, 25))
-                imageViewAlarm.image = imgAlarm
-                UIHeader.addSubview(imageViewAlarm)
-            }
-        }else if(segIndex == NUM_1){
-            if(section == 0){
-                var imgStationTo = UIImage(named: "USR00204.png")
-                var imageViewStationTo = UIImageView(frame: CGRectMake(15, 5, 25, 25))
-                imageViewStationTo.image = imgStationTo
-                UIHeader.addSubview(imageViewStationTo)
-            }else{
-                var imgAlarm = UIImage(named: "USR00206.png")
-                var imageViewAlarm = UIImageView(frame: CGRectMake(15, 5, 25, 25))
-                imageViewAlarm.image = imgAlarm
-                UIHeader.addSubview(imageViewAlarm)
-            }
-        }
-
-        var lblText = UILabel(frame: CGRect(x:50,y:5,width:tableView.frame.width - 100,height:25))
-        lblText.textColor = UIColor.lightGrayColor()
-        lblText.font = UIFont.systemFontOfSize(15)
-        lblText.text = items[section][0] as? String
-        lblText.textAlignment = NSTextAlignment.Left
-        UIHeader.addSubview(lblText)
-        
-        return UIHeader
-    }
-    
-    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return items[section][0] as? String
-    }
-    
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items[section][1].count
-    }
-    
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if(segIndex == NUM_0){
-            if((indexPath.section == 0 || indexPath.section == 1) && indexPath.row == 1){
-                if(pickerViewHeight == 0 || indexPath.section != pickerViewSection){
-                    return 0
-                }else{
-                    return pickerViewHeight
-                }
-            }
-        }else if(segIndex == NUM_1){
-            if((indexPath.section == 0) && indexPath.row == 1){
-                if(pickerViewHeight == 0 || indexPath.section != pickerViewSection){
-                    return 0
-                }else{
-                    return pickerViewHeight
-                }
-            }
-        }
-        return 43
-    }
-    
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
-        cell.accessoryType = UITableViewCellAccessoryType.None
-        for subview in cell.subviews{
-            if(subview.isKindOfClass(UIPickerView)){
-                subview.removeFromSuperview()
-            }
-        }
-        if(segIndex == NUM_0){
-            if(indexPath.section == 2 && indexPath.row == remindType){
-                cell.accessoryType = UITableViewCellAccessoryType.Checkmark
-            }else if(indexPath.section == 3 && indexPath.row == remindTime){
-                cell.accessoryType = UITableViewCellAccessoryType.Checkmark
-            }else if((indexPath.section == 0 || indexPath.section == 1) && indexPath.row == 1){
-                cell.addSubview(pickLineStations[indexPath.section])
-            }else{
-                cell.accessoryType = UITableViewCellAccessoryType.None
-            }
-        }else if(segIndex == NUM_1){
-            if(indexPath.section == 3 && indexPath.row == remindType){
-                cell.accessoryType = UITableViewCellAccessoryType.Checkmark
-            }else if(indexPath.section == 4 && indexPath.row == remindTime){
-                cell.accessoryType = UITableViewCellAccessoryType.Checkmark
-            }else if((indexPath.section == 0) && indexPath.row == 1){
-                cell.addSubview(pickLineStations[indexPath.section])
-            }else if((indexPath.section == 1) && indexPath.row == stationDirtFlag){
-                cell.accessoryType = UITableViewCellAccessoryType.Checkmark
-            }else if((indexPath.section == 2)){
-                if(indexPath.row == 0 && tableUsrT02?.alamType == "1"){
-                    cell.accessoryType = UITableViewCellAccessoryType.Checkmark
-                }else if(indexPath.row == 1 && tableUsrT02?.alamType == "9"){
-                    cell.accessoryType = UITableViewCellAccessoryType.Checkmark
-                }
-            }else{
-                cell.accessoryType = UITableViewCellAccessoryType.None
-            }
-        }
-        
-        cell.textLabel!.text = items[indexPath.section][1][indexPath.row] as? String
-        return cell
-    }
-    
-    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return false
-    }
-    
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            //items.removeObjectAtIndex(indexPath.row)
-            //tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        }else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
-        }
-    }
-    
-    
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String!{
-        var title = ""
-        if(pickerView == pickStations){
-            if(component == NUM_0){
-                if(row < lines.count){
-                    title = "\(lines[row].lineId)".line()
-                }
-            }else{
-                if(row < stations.count){
-                    title = "\(stations[row].statId)".station()
-                }
-            }
-        }else if(pickerView == pickFromStations){
-            if(component == NUM_0){
-                if(row < lines.count){
-                    title = "\(lines[row].lineId)".line()
-                }
-            }else{
-                if(row < fromStations.count){
-                    title = "\(fromStations[row].statId)".station()
-                }
-            }
-        }
-        return title
-    }
-    
-    // returns the number of 'columns' to display.
-    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int{
-        return 2
-    }
-    
-    // returns the # of rows in each component..
-    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int{
-        if(pickerView == pickStations){
-            if(component == NUM_0){
-                return lines.count
-            }else{
-                return stations.count
-            }
-        }else if(pickerView == pickFromStations){
-            if(component == NUM_0){
-                return lines.count
-            }else{
-                return stations.count
-            }
-        }
-        return 0
-    }
-
-    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int){
-        if(pickerView == pickStations){
-            if(component == NUM_0){
-                // 线路
-                line = "\(lines[row].lineId)".line()
-                // 站点
-                stations = selectStationTable(lines[row].lineId)
-                pickerView.reloadComponent(NUM_1)
-                pickerView.selectRow(NUM_0, inComponent: NUM_1, animated: true)
-                station = "\(stations[NUM_0].statId)".station()
-                var stationsDirt = selectStationTableDirt(lines[row].lineId)
-                stationDirt0 = "\(stationsDirt[0].item(MSTT02_STAT_ID))".station()
-                stationDirt1 = "\(stationsDirt[1].item(MSTT02_STAT_ID))".station()
-                traiDirt0 = "\(stationsDirt[0].item(MSTT02_STAT_ID))"
-                traiDirt1 = "\(stationsDirt[1].item(MSTT02_STAT_ID))"
-                if(segIndex == NUM_0){
-                    statToId = stations[NUM_0].statId
-                    tableUsrT01!.lineToId = lines[row].lineId
-                    tableUsrT01!.statToId = stations[NUM_0].statId
-                }else if(segIndex == NUM_1){
-                    tableUsrT02!.lineId = lines[row].lineId
-                    tableUsrT02!.statId = stations[NUM_0].statId
-                }
-            }else{
-                if(row < stations.count){
-                    station = "\(stations[row].statId)".station()
-                    if(segIndex == NUM_0){
-                        statToId = stations[row].statId
-                        tableUsrT01!.statToId = stations[row].statId
-                    }else if(segIndex == NUM_1){
-                        tableUsrT02!.statId = stations[row].statId
-                    }
-                }
-            }
-        }else if(pickerView == pickFromStations){
-            if(component == NUM_0){
-                // 线路
-                line = lines[row].lineId.line()
-                tableUsrT01!.lineFromId = lines[row].lineId
-                // 站点
-                fromStations = selectStationTable(lines[row].lineId)
-                pickerView.reloadComponent(NUM_1)
-                pickerView.selectRow(NUM_0, inComponent: NUM_1, animated: true)
-                fromStation = "\(fromStations[NUM_0].statName)"
-                tableUsrT01!.statFromId = stations[NUM_0].statId
-            }else{
-                if(row < fromStations.count){
-                    fromStation = "\(fromStations[row].statId)".station()
-                    tableUsrT01!.statFromId = stations[row].statId
-                }
-            }
-        }
-        if(segIndex == NUM_0){
-            loadArriveStationItems()
-        }else if(segIndex == NUM_1){
-            loadLastMetroItems()
-        }
-        tbList.reloadData()
-    }
-    
-    // after animation
-    func alertView(alertView: UIAlertView!, didDismissWithButtonIndex buttonIndex: Int){
-        switch buttonIndex{
-        case NUM_0:
-            // 删除本条提醒
-            tableUsrT02!.delete()
-            var controllers:AnyObject? = self.navigationController!.viewControllers
-            if(controllers!.count > 1){
-                var lastController:RemindListController = controllers![controllers!.count - 2] as RemindListController
-                lastController.viewDidLoad()
-            }
-            self.navigationController!.popViewControllerAnimated(true)
-        default:
-            println("nothing")
         }
     }
 

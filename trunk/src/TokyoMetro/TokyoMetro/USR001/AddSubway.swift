@@ -15,6 +15,7 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
     *******************************************************************************/
     @IBOutlet var table: UITableView!
     @IBOutlet var segment: UISegmentedControl!
+    @IBOutlet var vNoData: UIView!
     
     /*******************************************************************************
     * Private Properties
@@ -49,7 +50,7 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.title = "收藏"
+        self.title = "USR001_01".localizedString()
         odbRoute()
         odbStation()
     }
@@ -100,11 +101,11 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
             var landMarkDetailController = self.storyboard!.instantiateViewControllerWithIdentifier("landmarkdetail") as LandMarkDetailController
             switch segment.selectedSegmentIndex {
             case 2:
-                landMarkDetailController.title = "景点"
+                landMarkDetailController.title = "PUBLIC_12".localizedString()
             case 3:
-                landMarkDetailController.title = "美食"
+                landMarkDetailController.title = "PUBLIC_13".localizedString()
             case 4:
-                landMarkDetailController.title = "购物"
+                landMarkDetailController.title = "PUBLIC_14".localizedString()
             default:
                 println("nothing")
             }
@@ -317,8 +318,24 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBAction func segmentChangedLinster(sender: UISegmentedControl) {
         
-        if (sender.selectedSegmentIndex == 0 || sender.selectedSegmentIndex == 1) {
-            table.reloadData()
+        if (sender.selectedSegmentIndex == 0) {
+            
+            if (stationArr.count == 0) {
+                table.hidden = true
+                table.reloadData()
+            } else {
+                table.hidden = false
+                table.reloadData()
+            }
+            
+        } else if (sender.selectedSegmentIndex == 1) {
+            if (ruteArr.count == 0) {
+                table.hidden = true
+                table.reloadData()
+            } else {
+                table.hidden = false
+                table.reloadData()
+            }
         } else {
             selectLandMarkId(sender.selectedSegmentIndex)
         }
@@ -450,8 +467,10 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         landMarks = NSMutableArray.array()
         if (rows.count > 0) {
+            self.table.hidden = false
             selectLandMarkTable(type)
         } else {
+            self.table.hidden = true
             self.table.reloadData()
         }
     }

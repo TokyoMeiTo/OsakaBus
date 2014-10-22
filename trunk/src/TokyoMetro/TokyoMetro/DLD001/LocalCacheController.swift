@@ -27,7 +27,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
 
     var classType:Int = 0
     
-    let uri:String = "http://www.okasan.net/Resource.zip"//"http://osakabus.sinaapp.com/Resource.zip"
+    let uri:String = "198.168.1.84/Resource.zip"//"http://www.okasan.net/Resource.zip"//"http://osakabus.sinaapp.com/Resource.zip"
     let filePath:String = "Resource.zip"
     let unZipPath:String = "TokyoMetroCache"
     

@@ -8,11 +8,11 @@
 
 import Foundation
 
-class Sta003Dao:MstT02StationTable {
-    
-    let QUERY_MINI_DISTANCE = "select * , ROWID from MSTT02_STATION where LINE_ID LIKE '280%%' order by (STAT_LON - ?) * (STAT_LON - ?) + (STAT_LAT - ?)*(STAT_LAT - ?) limit 0,10"
+extension MstT02StationTable {
 
-    func queryMiniDistance(lon:CDouble, lat:CDouble) -> NSArray {
+    func queryNearbyStations(lon:CDouble, lat:CDouble) -> NSArray {
+        let QUERY_MINI_DISTANCE = "select * , ROWID from MSTT02_STATION where LINE_ID LIKE '280%%' order by (STAT_LON - ?) * (STAT_LON - ?) + (STAT_LAT - ?)*(STAT_LAT - ?) limit 0,10"
+
         var arr:NSMutableArray = NSMutableArray.array();
         arr.addObject(lon);
         arr.addObject(lon);

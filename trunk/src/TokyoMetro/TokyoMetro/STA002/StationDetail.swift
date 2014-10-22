@@ -18,7 +18,8 @@ class StationDetail: UIViewController, UITableViewDelegate, UITableViewDataSourc
     @IBOutlet weak var cellJPNmaeLabel: UILabel!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var weSegment: UISegmentedControl!
-    @IBOutlet weak var imgCollect: UIImageView!
+//    @IBOutlet weak var imgCollect: UIImageView!
+    @IBOutlet weak var btnCollect: UIButton!
     
 /*******************************************************************************
 * Global
@@ -245,7 +246,7 @@ class StationDetail: UIViewController, UITableViewDelegate, UITableViewDataSourc
             var sureBtn: UIAlertView = UIAlertView(title: "", message: "CMN003_21".localizedString(), delegate: self, cancelButtonTitle: "PUBLIC_06".localizedString())
             
             sureBtn.show()
-            imgCollect.image = UIImage(named: "station_collect_icon")
+            btnCollect.setBackgroundImage(UIImage(named: "station_collect_yellow"), forState: UIControlState.Normal)
         } else {
             var sureBtn: UIAlertView = UIAlertView(title: "", message: "CMN003_20".localizedString(), delegate: self, cancelButtonTitle: "PUBLIC_06".localizedString())
             
@@ -375,9 +376,11 @@ class StationDetail: UIViewController, UITableViewDelegate, UITableViewDataSourc
         table.statId = group_id
         var rows = table.selectAll()
         if (rows.count > 0) {
-            imgCollect.image = UIImage(named: "station_collect_icon")
+//            imgCollect.image = UIImage(named: "station_collect_icon")
+            btnCollect.setBackgroundImage(UIImage(named: "station_collect_yellow"), forState: UIControlState.Normal)
         } else {
-            imgCollect.image = UIImage(named: "station_uncollect_icon")
+//            imgCollect.image = UIImage(named: "station_uncollect_icon")
+            btnCollect.setBackgroundImage(UIImage(named: "station_collect"), forState: UIControlState.Normal)
         }
     }
 

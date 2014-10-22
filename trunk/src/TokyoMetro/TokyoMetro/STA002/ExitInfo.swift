@@ -53,9 +53,9 @@ class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource, MK
     
     var locatonArr:Array<CLLocation> = Array<CLLocation>()
     
-    var stationLength: String = ""
+//    var stationLength: String = ""
     
-    var index: Int = -1
+    var targetLocation: CLLocation?
     
     /*******************************************************************************
     * Overrides From UIViewController
@@ -82,20 +82,21 @@ class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource, MK
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
-        
+
         let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("ExitInfoCell", forIndexPath: indexPath) as UITableViewCell
         
         var map = rows[indexPath.row] as StaT01StationExitTable
         (cell.viewWithTag(301) as UILabel).text = map.item(STAT01_STAT_EXIT_NAME) as? String
-        if (index == indexPath.row && stationLength != "") {
-            (cell.viewWithTag(302) as UILabel).text = stationLength + " " + "STA002_17".localizedString()
-        } else {
-            (cell.viewWithTag(302) as UILabel).text = ""
+        
+        if (targetLocation != nil) {
+            var statLat: Double = ("\(map.item(STAT01_STAT_EXIT_LAT))" as NSString).doubleValue
+            var statLon: Double = ("\(map.item(STAT01_STAT_EXIT_LON))" as NSString).doubleValue
+            var location: CLLocation = CLLocation(latitude: statLat, longitude: statLon)
+            var length =  "\(Int(calcDistance(location, statLocation: targetLocation!)))"
+            (cell.viewWithTag(302) as UILabel).text = length + " " + "STA002_17".localizedString()
         }
         
         return cell
-        
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -113,25 +114,6 @@ class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource, MK
     //    }
     //
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
-        var key = rows[indexPath.row] as StaT01StationExitTable
-        
-        //        var statLat: Double = ("\(key.item(STAT01_STAT_EXIT_LAT))" as NSString).doubleValue
-        //        var statLon: Double = ("\(key.item(STAT01_STAT_EXIT_LON))" as NSString).doubleValue
-        //        var location: CLLocation = CLLocation(latitude: statLat, longitude: statLon)
-        if (locatonArr.count > 0) {
-            locatonArr[0] = landMarkLocation!
-            if (locatonArr.count == 2) {
-                stationLength = "\(Int(calcDistance(locatonArr[0], statLocation: locatonArr[1])))"
-                drawLineWithLocationArray(locatonArr)
-                exitTable.reloadData()
-            }
-        } else {
-            locatonArr.append(landMarkLocation!)
-        }
-        index = indexPath.row
-    }
     
     /*******************************************************************************
     *    Implements Of MKMapViewDelegate
@@ -181,21 +163,24 @@ class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource, MK
         if(view.annotation.subtitle == nil){
             return
         }
-        if(locatonArr.count > 0 && locatonArr.count < 2) {
-            //            var locations:Array<CLLocation> = Array<CLLocation>()
-            //            locations.append(location!)
-            locatonArr.append(CLLocation(latitude: view.annotation.coordinate.latitude, longitude: view.annotation.coordinate.longitude))
-            
-            stationLength = "\(Int(calcDistance(locatonArr[0], statLocation: locatonArr[1])))"
-            drawLineWithLocationArray(locatonArr)
-            exitTable.reloadData()
-        } else if (locatonArr.count == 2) {
-            locatonArr[1] = CLLocation(latitude: view.annotation.coordinate.latitude, longitude: view.annotation.coordinate.longitude)
-            
-            stationLength = "\(Int(calcDistance(locatonArr[0], statLocation: locatonArr[1])))"
-            drawLineWithLocationArray(locatonArr)
-            exitTable.reloadData()
-        }
+//        if(locatonArr.count > 0 && locatonArr.count < 2) {
+//            //            var locations:Array<CLLocation> = Array<CLLocation>()
+//            //            locations.append(location!)
+//            locatonArr.append(CLLocation(latitude: view.annotation.coordinate.latitude, longitude: view.annotation.coordinate.longitude))
+//            
+//            stationLength = "\(Int(calcDistance(locatonArr[0], statLocation: locatonArr[1])))"
+//            drawLineWithLocationArray(locatonArr)
+//            exitTable.reloadData()
+//        } else if (locatonArr.count == 2) {
+//            locatonArr[1] = CLLocation(latitude: view.annotation.coordinate.latitude, longitude: view.annotation.coordinate.longitude)
+//            
+//            stationLength = "\(Int(calcDistance(locatonArr[0], statLocation: locatonArr[1])))"
+//            drawLineWithLocationArray(locatonArr)
+//            exitTable.reloadData()
+//        }
+        
+        targetLocation = CLLocation(latitude: view.annotation.coordinate.latitude, longitude: view.annotation.coordinate.longitude)
+        exitTable.reloadData()
     }
     
     func mapView(mapView: MKMapView!, rendererForOverlay overlay: MKOverlay!) -> MKOverlayRenderer!{
@@ -220,17 +205,17 @@ class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource, MK
     /**
     * 到DB中查找最近的站点
     */
-    func selectStationTable(fromLocation: CLLocation) -> Array<MstT02StationTable>{
-        var stationsNearest:Array<MstT02StationTable> = Array<MstT02StationTable>()
-        
-        var dao = Sta003Dao()
-        var coordinateOnMars: CLLocationCoordinate2D = fromLocation.coordinate
-        var lon:CDouble = coordinateOnMars.longitude
-        var lat:CDouble = coordinateOnMars.latitude
-        
-        stationsNearest = dao.queryMiniDistance(lon,lat: lat) as Array<MstT02StationTable>
-        return stationsNearest
-    }
+//    func selectStationTable(fromLocation: CLLocation) -> Array<MstT02StationTable>{
+//        var stationsNearest:Array<MstT02StationTable> = Array<MstT02StationTable>()
+//        
+//        var dao = Sta003Dao()
+//        var coordinateOnMars: CLLocationCoordinate2D = fromLocation.coordinate
+//        var lon:CDouble = coordinateOnMars.longitude
+//        var lat:CDouble = coordinateOnMars.latitude
+//        
+//        stationsNearest = dao.queryMiniDistance(lon,lat: lat) as Array<MstT02StationTable>
+//        return stationsNearest
+//    }
     
     /**
     * 显示地图
@@ -348,9 +333,6 @@ class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource, MK
             }
         }
     }
-    
-    
-
     
     /**
     * 计算两点之间距离

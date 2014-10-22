@@ -31,21 +31,17 @@ class GPSHelper: UIViewController, CLLocationManagerDelegate{
         var GPSEnabled = false
         switch authStatus {
         case CLAuthorizationStatus.NotDetermined:
-            NSLog("GPS authorization status: NotDetermined")
+            GPSEnabled = false
             locationManager.delegate = self
             locationManager.requestWhenInUseAuthorization()
         case CLAuthorizationStatus.Restricted:
-            NSLog("GPS authorization status: Restricted")
-            
+            GPSEnabled = false
         case CLAuthorizationStatus.Denied:
-            NSLog("GPS authorization status: Denied")
-            
+            GPSEnabled = false
         case CLAuthorizationStatus.Authorized:
-            NSLog("GPS authorization status: Authorized")
             GPSEnabled = true
             
         case CLAuthorizationStatus.AuthorizedWhenInUse:
-            NSLog("GPS authorization status: AuthorizedWhenInUse")
             GPSEnabled = true
         }
         if(GPSEnabled){
@@ -88,7 +84,7 @@ class GPSHelper: UIViewController, CLLocationManagerDelegate{
      *    Invoked when an error has occurred. Error types are defined in "CLError.h".
      */
     func locationManager(manager: CLLocationManager!, didFailWithError error: NSError!){
-        println("STA003_01".localizedString() + error.code.description)
+        println(error.code)
         delegate!.locationUpdateComplete(currentLocation)
     }
     

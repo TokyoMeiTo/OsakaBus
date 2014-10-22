@@ -40,10 +40,10 @@
                           ODB_DATATYPE_TEXT,
                           ODB_DATATYPE_TEXT,
                           ODB_DATATYPE_TEXT,
-                          ODB_DATATYPE_INTEGER,
-                          ODB_DATATYPE_INTEGER,
-                          ODB_DATATYPE_INTEGER,
-                          ODB_DATATYPE_INTEGER, nil];
+                          ODB_DATATYPE_TEXT,
+                          ODB_DATATYPE_TEXT,
+                          ODB_DATATYPE_TEXT,
+                          ODB_DATATYPE_TEXT, nil];
         self.primaryKeys = [NSArray arrayWithObjects:STAT01_STAT_EXIT_ID, nil];
     }
     return self;

@@ -8,7 +8,7 @@
 
 import Foundation
 
-class USR002Dao:LinT01TrainScheduleTrainTable {
+class USR002DAO:LinT01TrainScheduleTrainTable {
     
     func queryDepaTime(lineId:String, statId:String, destId:String, trainFlag:String, scheType:String) -> String {
         self.lineId = lineId

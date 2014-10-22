@@ -85,6 +85,10 @@
 		A15CA4B419D57BF400716A00 /* String+Encrypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15CA4AF19D57BF400716A00 /* String+Encrypto.swift */; };
 		A1629E6419EE98E800DC54B1 /* INF002Dao+mstT04LandMarkTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1629E6319EE98E800DC54B1 /* INF002Dao+mstT04LandMarkTable.swift */; };
 		A1629E6619EEA43B00DC54B1 /* Cmn003Dao.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1629E6519EEA43B00DC54B1 /* Cmn003Dao.swift */; };
+		A17527E819F7592900A9E656 /* STA003DAO+MstT02StationTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17527E619F7592900A9E656 /* STA003DAO+MstT02StationTable.swift */; };
+		A17527E919F7592900A9E656 /* STA003Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17527E719F7592900A9E656 /* STA003Model.swift */; };
+		A17527EC19F7593700A9E656 /* TimerThread.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17527EA19F7593700A9E656 /* TimerThread.swift */; };
+		A17527ED19F7593700A9E656 /* USR002Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17527EB19F7593700A9E656 /* USR002Model.swift */; };
 		A17BB67519EF86970084DE74 /* HelpIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17BB67419EF86970084DE74 /* HelpIcon.swift */; };
 		A17CE0C419D8FC3700A27092 /* UITouchableImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = A17CE0C119D8FC3700A27092 /* UITouchableImageView.m */; };
 		A17CE0C519D8FC3700A27092 /* UITouchableView.m in Sources */ = {isa = PBXBuildFile; fileRef = A17CE0C319D8FC3700A27092 /* UITouchableView.m */; };
@@ -102,7 +106,6 @@
 		A184391719EA64C200E11778 /* LinkWebSite.swift in Sources */ = {isa = PBXBuildFile; fileRef = A184391619EA64C200E11778 /* LinkWebSite.swift */; };
 		A184391C19EAB71900E11778 /* StaT03ComercialInsideTable.m in Sources */ = {isa = PBXBuildFile; fileRef = A184391B19EAB71900E11778 /* StaT03ComercialInsideTable.m */; };
 		A184391E19EABE1900E11778 /* StationFacilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = A184391D19EABE1900E11778 /* StationFacilities.swift */; };
-		A18474FF19E4E1D100D2DD7B /* Sta003Dao.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18474FE19E4E1D100D2DD7B /* Sta003Dao.swift */; };
 		A184750219E4FB2400D2DD7B /* MstV01StationGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = A184750119E4FB2400D2DD7B /* MstV01StationGroup.m */; };
 		A1A02C3019D7F317001C7D73 /* String+Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1A02C2F19D7F317001C7D73 /* String+Item.swift */; };
 		A1A02C3119D80B6B001C7D73 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B241FF819B5A5CF00DAE392 /* Main.storyboard */; };
@@ -331,6 +334,10 @@
 		A15CA4AF19D57BF400716A00 /* String+Encrypto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Encrypto.swift"; sourceTree = "<group>"; };
 		A1629E6319EE98E800DC54B1 /* INF002Dao+mstT04LandMarkTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "INF002Dao+mstT04LandMarkTable.swift"; sourceTree = "<group>"; };
 		A1629E6519EEA43B00DC54B1 /* Cmn003Dao.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cmn003Dao.swift; sourceTree = "<group>"; };
+		A17527E619F7592900A9E656 /* STA003DAO+MstT02StationTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "STA003DAO+MstT02StationTable.swift"; sourceTree = "<group>"; };
+		A17527E719F7592900A9E656 /* STA003Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = STA003Model.swift; sourceTree = "<group>"; };
+		A17527EA19F7593700A9E656 /* TimerThread.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimerThread.swift; sourceTree = "<group>"; };
+		A17527EB19F7593700A9E656 /* USR002Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = USR002Model.swift; sourceTree = "<group>"; };
 		A17BB67419EF86970084DE74 /* HelpIcon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpIcon.swift; sourceTree = "<group>"; };
 		A17CE0C019D8FC3700A27092 /* UITouchableImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITouchableImageView.h; sourceTree = "<group>"; };
 		A17CE0C119D8FC3700A27092 /* UITouchableImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UITouchableImageView.m; sourceTree = "<group>"; };
@@ -353,7 +360,6 @@
 		A184391A19EAB71900E11778 /* StaT03ComercialInsideTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StaT03ComercialInsideTable.h; sourceTree = "<group>"; };
 		A184391B19EAB71900E11778 /* StaT03ComercialInsideTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StaT03ComercialInsideTable.m; sourceTree = "<group>"; };
 		A184391D19EABE1900E11778 /* StationFacilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StationFacilities.swift; sourceTree = "<group>"; };
-		A18474FE19E4E1D100D2DD7B /* Sta003Dao.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sta003Dao.swift; sourceTree = "<group>"; };
 		A184750019E4FB2400D2DD7B /* MstV01StationGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MstV01StationGroup.h; sourceTree = "<group>"; };
 		A184750119E4FB2400D2DD7B /* MstV01StationGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MstV01StationGroup.m; sourceTree = "<group>"; };
 		A1A02C2F19D7F317001C7D73 /* String+Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Item.swift"; sourceTree = "<group>"; };
@@ -1032,7 +1038,8 @@
 		A1ECD47019D2D41F00D5A0E2 /* STA003 */ = {
 			isa = PBXGroup;
 			children = (
-				A18474FE19E4E1D100D2DD7B /* Sta003Dao.swift */,
+				A17527E619F7592900A9E656 /* STA003DAO+MstT02StationTable.swift */,
+				A17527E719F7592900A9E656 /* STA003Model.swift */,
 				A1ECD47119D2D41F00D5A0E2 /* GPSDelegate.swift */,
 				A1ECD47219D2D41F00D5A0E2 /* GPSHelper.swift */,
 				A1ECD47319D2D41F00D5A0E2 /* StationListController.swift */,
@@ -1051,6 +1058,8 @@
 		A1ECD47619D2D41F00D5A0E2 /* USR002 */ = {
 			isa = PBXGroup;
 			children = (
+				A17527EA19F7593700A9E656 /* TimerThread.swift */,
+				A17527EB19F7593700A9E656 /* USR002Model.swift */,
 				A17EDA6E19E8B72A00D58386 /* USR002Dao.swift */,
 				A1ECD47719D2D41F00D5A0E2 /* RemindDetailController.swift */,
 				A1ECD47819D2D41F00D5A0E2 /* RemindListController.swift */,
@@ -1192,6 +1201,7 @@
 				TargetAttributes = {
 					3B241FEE19B5A5CF00DAE392 = {
 						CreatedOnToolsVersion = 6.0;
+						DevelopmentTeam = ATMPA4PSH3;
 					};
 					3B24200019B5A5CF00DAE392 = {
 						CreatedOnToolsVersion = 6.0;
@@ -1284,7 +1294,6 @@
 				3B241FF719B5A5CF00DAE392 /* ViewController.swift in Sources */,
 				A1ECD47D19D2D41F00D5A0E2 /* InfT02TipsTable.m in Sources */,
 				A158ACFA19E9583100E63C03 /* RaidersDetail.swift in Sources */,
-				A18474FF19E4E1D100D2DD7B /* Sta003Dao.swift in Sources */,
 				A1ECD47919D2D41F00D5A0E2 /* Main.swift in Sources */,
 				A1F1FC9719E96E74004A59C9 /* mztools.c in Sources */,
 				A1ECD48619D2D41F00D5A0E2 /* UsrT01ArrivalAlarmTable.m in Sources */,
@@ -1307,6 +1316,7 @@
 				A15CA4A319D57BDD00716A00 /* CmnT04ImageTable.m in Sources */,
 				A1ECD48D19D2D41F00D5A0E2 /* LandMarkMapController.swift in Sources */,
 				A1ECD4A119D2D41F00D5A0E2 /* RemindDetailController.swift in Sources */,
+				A17527EC19F7593700A9E656 /* TimerThread.swift in Sources */,
 				3B2420DC19B5AD1500DAE392 /* NSString+CString.m in Sources */,
 				A1ECD49F19D2D41F00D5A0E2 /* StationListController.swift in Sources */,
 				A1ECD49B19D2D41F00D5A0E2 /* StationImg.swift in Sources */,
@@ -1357,12 +1367,14 @@
 				3B24209F19B5ABFD00DAE392 /* ASIAuthenticationDialog.m in Sources */,
 				3B2420E119B5AD1500DAE392 /* OWINAsyncXMLParser.m in Sources */,
 				A1F1FC8B19E96E74004A59C9 /* AFURLRequestSerialization.m in Sources */,
+				A17527E919F7592900A9E656 /* STA003Model.swift in Sources */,
 				A1ECD48A19D2D41F00D5A0E2 /* ShopDetial.swift in Sources */,
 				3B24210E19B5B5BC00DAE392 /* FMDatabaseAdditions.m in Sources */,
 				3BED8F5C19F746D300F64277 /* CmnT04ImageTableData.swift in Sources */,
 				A15CA4A519D57BDD00716A00 /* LinT03TrainMovingTable.m in Sources */,
 				A1F1FC9219E96E74004A59C9 /* UIImageView+AFNetworking.m in Sources */,
 				A15CA4A419D57BDD00716A00 /* LinT01TrainScheduleTable.m in Sources */,
+				A17527ED19F7593700A9E656 /* USR002Model.swift in Sources */,
 				A17EDA7119E8B74800D58386 /* INF002FavDao.swift in Sources */,
 				A17CE0CD19D9017200A27092 /* String+CString.swift in Sources */,
 				A17CE0CC19D9017200A27092 /* Data+Encrypto.swift in Sources */,
@@ -1380,6 +1392,7 @@
 				3B2420E219B5AD1500DAE392 /* OWINHttpRequest.m in Sources */,
 				A1F1FC9519E96E74004A59C9 /* UIWebView+AFNetworking.m in Sources */,
 				A1ECD49519D2D41F00D5A0E2 /* LineStationList.swift in Sources */,
+				A17527E819F7592900A9E656 /* STA003DAO+MstT02StationTable.swift in Sources */,
 				3B241FF519B5A5CF00DAE392 /* AppDelegate.swift in Sources */,
 				3B2420AE19B5ABFD00DAE392 /* OWINFilterSocketRequest.m in Sources */,
 				A1A44B9719D52B5B007963F4 /* Setting.swift in Sources */,
@@ -1537,11 +1550,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer: 伟佳 曹 (Y7F884PG7D)";
 				DEFINES_MODULE = YES;
 				INFOPLIST_FILE = TokyoMetro/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "904b141f-b47c-402d-8295-ecb90f2dd7d5";
 				SWIFT_OBJC_BRIDGING_HEADER = "TokyoMetro/TokyoMetro-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -1553,11 +1568,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer: 伟佳 曹 (Y7F884PG7D)";
 				DEFINES_MODULE = YES;
 				INFOPLIST_FILE = TokyoMetro/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "904b141f-b47c-402d-8295-ecb90f2dd7d5";
 				SWIFT_OBJC_BRIDGING_HEADER = "TokyoMetro/TokyoMetro-Bridging-Header.h";
 			};
 			name = Release;
