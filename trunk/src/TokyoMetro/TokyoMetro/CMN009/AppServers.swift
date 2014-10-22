@@ -12,7 +12,7 @@ class AppServerse : UIViewController {
     @IBOutlet weak var showServera: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "服务条款详情"
+        self.title = "CMN009_01".localizedString()
         
     }
     
