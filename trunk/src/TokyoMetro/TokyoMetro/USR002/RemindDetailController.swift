@@ -74,6 +74,10 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
     var routeStatTable01:MstT02StationTable?
     var routeStatTable02:MstT02StationTable?
 
+    /* UsrT01ArrivalAlarmTable 参数 */
+    var tableUsrT01: UsrT01ArrivalAlarmTable?
+    /* UsrT02TrainAlarmTable 参数 */
+    var tableUsrT02: UsrT02TrainAlarmTable?
     
     /*******************************************************************************
     * Private Properties
@@ -96,16 +100,12 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
     var stations:Array<MstT02StationTable> = Array<MstT02StationTable>()
     /* fromStations */
     var fromStations:Array<MstT02StationTable> = Array<MstT02StationTable>()
-    /* UsrT01ArrivalAlarmTable 参数 */
-    var tableUsrT01: UsrT01ArrivalAlarmTable?
-    /* UsrT02TrainAlarmTable 参数 */
-    var tableUsrT02: UsrT02TrainAlarmTable?
     /* 提醒方式 */
     var remindsMethod:Array<String> = ["USR002_01".localizedString(),"USR002_02".localizedString()]
     /* 提醒时间 */
-    var remindsTimeArrive:Array<String> = ["USR002_03".localizedString(),"USR002_04".localizedString(),"USR002_05".localizedString(),"USR002_06".localizedString(),"USR002_07".localizedString()]
+    var remindsTimeArrive:Array<String> = ["1分钟","2分钟","3分钟","4分钟","5分钟"]
     /* 提醒时间 */
-    var remindsTime:Array<String> = ["USR002_03".localizedString(),"USR002_04".localizedString(),"USR002_05".localizedString(),"USR002_06".localizedString(),"USR002_07".localizedString()]
+    var remindsTime:Array<String> = ["5分钟","15分钟","20分钟","25分钟","30分钟"]
     /* line */
     var line:String = "東西線"
     /* station */
@@ -545,20 +545,20 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
         }
     }
     
-    func initArriveAlarm(usrT01Table:UsrT01ArrivalAlarmTable){
-        usrT01Table.lineFromId = "28001"
-        usrT01Table.statFromId = "2800101"
-        usrT01Table.lineToId = "28001"
-        usrT01Table.statToId = "2800101"
-        usrT01Table.traiDirt = "2800119"
-        usrT01Table.beepFlag = "1"
-        usrT01Table.voleFlag = "0"
-        usrT01Table.costTime = "0"
-        usrT01Table.alarmTime = "0"
-        usrT01Table.saveTime = RemindDetailController.convertDate2LocalTime(NSDate.date())
-        usrT01Table.onboardTime = "000000000000"
-        usrT01Table.cancelFlag = "0"
-        usrT01Table.cancelTime = "00000000000000"
+    func initArriveAlarm(usrT01Table:UsrT01ArrivalAlarmTable?){
+        usrT01Table!.lineFromId = "28001"
+        usrT01Table!.statFromId = "2800101"
+        usrT01Table!.lineToId = "28001"
+        usrT01Table!.statToId = "2800101"
+        usrT01Table!.traiDirt = "2800119"
+        usrT01Table!.beepFlag = "1"
+        usrT01Table!.voleFlag = "0"
+        usrT01Table!.costTime = "0"
+        usrT01Table!.alarmTime = "0"
+        usrT01Table!.saveTime = RemindDetailController.convertDate2LocalTime(NSDate.date())
+        usrT01Table!.onboardTime = "000000000000"
+        usrT01Table!.cancelFlag = "0"
+        usrT01Table!.cancelTime = "00000000000000"
     }
     
     func initLastAlarm(tableUsrT02:UsrT02TrainAlarmTable?){
@@ -580,7 +580,7 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
     func editArriveStation(){
         self.navigationItem.rightBarButtonItem = nil
         // 完成按钮点击事件
-        var saveButton:UIBarButtonItem = UIBarButtonItem(title: "保存", style: UIBarButtonItemStyle.Plain, target:self, action: "buttonAction:")
+        var saveButton:UIBarButtonItem = UIBarButtonItem(title: "USR002_06".localizedString(), style: UIBarButtonItemStyle.Plain, target:self, action: "buttonAction:")
         self.navigationItem.rightBarButtonItem = saveButton
         self.navigationItem.rightBarButtonItem!.tag = SAVE_BUTTON_TAG
         
@@ -591,13 +591,13 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
             initArriveAlarm(tableUsrT01!)
         }
         
-        if(isSearsh && pickerViewSection == 0){
-            tableUsrT01!.lineToId = selectLineId
-            tableUsrT01!.statToId = selectStationId
-        }else if(isSearsh && pickerViewSection == 1){
-            tableUsrT01!.lineFromId = selectLineId
-            tableUsrT01!.statFromId = selectStationId
-        }
+//        if(isSearsh && pickerViewSection == 0){
+//            tableUsrT01!.lineToId = selectLineId
+//            tableUsrT01!.statToId = selectStationId
+//        }else if(isSearsh && pickerViewSection == 1){
+//            tableUsrT01!.lineFromId = selectLineId
+//            tableUsrT01!.statFromId = selectStationId
+//        }
         
         if(fromRoute()){
             tableUsrT01!.statFromId = "\(routeStatTable01!.item(MSTT02_STAT_ID))"
@@ -900,7 +900,7 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
         items = NSMutableArray.array()
         items.addObject(["提醒站点：",[station,""]])
         items.addObject(["方向：",[stationDirt0 + "方向",stationDirt1 + "方向"]])
-        items.addObject(["早末班车：",["USR002_26".localizedString(), "USR002_27".localizedString()]])
+        items.addObject(["早末班车：",["USR002_03".localizedString(), "USR002_04".localizedString()]])
         items.addObject(["USR002_16".localizedString(),remindsMethod])
         items.addObject(["USR002_17".localizedString(),remindsTime])
     }

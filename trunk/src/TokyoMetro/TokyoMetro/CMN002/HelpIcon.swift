@@ -23,6 +23,11 @@ class HelpIcon : UIViewController, UIScrollViewDelegate {
         super.didReceiveMemoryWarning()
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        scrollView.contentSize = CGSizeMake(320.0, 713.0)
+    }
+    
     func viewForZoomingInScrollView(scrollView: UIScrollView!) -> UIView! {
         
         for view in scrollView.subviews {

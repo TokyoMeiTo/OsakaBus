@@ -27,7 +27,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
 
     var classType:Int = 0
     
-    let uri:String = "198.168.1.84/Resource.zip"//"http://www.okasan.net/Resource.zip"//"http://osakabus.sinaapp.com/Resource.zip"
+    let uri:String = "http://192.168.1.84/Resource.zip"//"http://www.okasan.net/Resource.zip"//"http://osakabus.sinaapp.com/Resource.zip"
     let filePath:String = "Resource.zip"
     let unZipPath:String = "TokyoMetroCache"
     
@@ -285,7 +285,7 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
      */
     class func readFile(name:String) -> String {
         let folder = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String
-        let path = folder.stringByAppendingPathComponent("/TokyoMetroCache/Resource/Landmark/" + name + ".png")
+        let path = folder.stringByAppendingPathComponent("/TokyoMetroCache/Resource/Landmark/" + name)//  + ".png"
         println(path)
         var fileExists = NSFileManager().fileExistsAtPath(path)
         var file:UnsafeMutablePointer<FILE>?

@@ -98,7 +98,7 @@ class StationDetail: UIViewController, UITableViewDelegate, UITableViewDataSourc
         // 添加首末班车时间
         addLineTime()
         // 添加站点相关信息的链接
-        addStationSelect()
+//        addStationSelect()
         // 检索该站是否已收藏
         odbCollectStation()
 
@@ -107,6 +107,13 @@ class StationDetail: UIViewController, UITableViewDelegate, UITableViewDataSourc
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        // 添加站点相关信息的链接
+        addStationSelect()
     }
     
 /*******************************************************************************

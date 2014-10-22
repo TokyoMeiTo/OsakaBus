@@ -76,29 +76,6 @@ class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource, MK
     *    Implements Of UITableViewDelegate
     *******************************************************************************/
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        return rows.count
-    }
-    
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-
-        let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("ExitInfoCell", forIndexPath: indexPath) as UITableViewCell
-        
-        var map = rows[indexPath.row] as StaT01StationExitTable
-        (cell.viewWithTag(301) as UILabel).text = map.item(STAT01_STAT_EXIT_NAME) as? String
-        
-        if (targetLocation != nil) {
-            var statLat: Double = ("\(map.item(STAT01_STAT_EXIT_LAT))" as NSString).doubleValue
-            var statLon: Double = ("\(map.item(STAT01_STAT_EXIT_LON))" as NSString).doubleValue
-            var location: CLLocation = CLLocation(latitude: statLat, longitude: statLon)
-            var length =  "\(Int(calcDistance(location, statLocation: targetLocation!)))"
-            (cell.viewWithTag(302) as UILabel).text = length + " " + "STA002_17".localizedString()
-        }
-        
-        return cell
-    }
-    
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 44
     }
@@ -114,6 +91,34 @@ class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource, MK
     //    }
     //
     
+    
+    /*******************************************************************************
+    *    Implements Of UITableViewDataSource
+    *******************************************************************************/
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        return rows.count
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
+        let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("ExitInfoCell", forIndexPath: indexPath) as UITableViewCell
+        
+        var map = rows[indexPath.row] as StaT01StationExitTable
+        (cell.viewWithTag(301) as UILabel).text = "\(map.item(STAT01_STAT_EXIT_ID))".stationExit()
+        
+        if (targetLocation != nil) {
+            var statLat: Double = ("\(map.item(STAT01_STAT_EXIT_LAT))" as NSString).doubleValue
+            var statLon: Double = ("\(map.item(STAT01_STAT_EXIT_LON))" as NSString).doubleValue
+            var location: CLLocation = CLLocation(latitude: statLat, longitude: statLon)
+            var length =  "\(Int(calcDistance(location, statLocation: targetLocation!)))"
+            (cell.viewWithTag(302) as UILabel).text = length + " " + "STA002_17".localizedString()
+        }
+        
+        return cell
+    }
+
     
     /*******************************************************************************
     *    Implements Of MKMapViewDelegate

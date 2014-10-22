@@ -23,7 +23,7 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
     /* landMarksType */
     var landMarksSubType:Array<String>?
     /* landMarksRange */
-    var landMarksRange:Array<String> = ["INF002_15".localizedString(),"INF002_16".localizedString(),"INF002_17".localizedString(),"INF002_19".localizedString()]
+    var landMarksRange:Array<String> = ["INF002_14".localizedString(),"INF002_15".localizedString(),"INF002_16".localizedString(),"INF002_19".localizedString()]
     var pickerViewIsOpen = false
 
     var landMarkType:Int = 0
@@ -92,17 +92,17 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
             }
             
             if(landMarkSpecialWard == ""){
-                items.addObject(["INF002_13".localizedString(),["INF002_19".localizedString(),""]])
+                items.addObject(["INF002_12".localizedString(),["INF002_19".localizedString(),""]])
             }else{
-                items.addObject(["INF002_13".localizedString(),[landMarkShowSpecialWard.specialWard(),""]])
+                items.addObject(["INF002_12".localizedString(),[landMarkShowSpecialWard.specialWard(),""]])
             }
-            items.addObject(["INF002_14".localizedString(),landMarksRange])
+            items.addObject(["INF002_13".localizedString(),landMarksRange])
             items.addObject(["INF002_20".localizedString(),["INF002_21".localizedString(),"INF002_22".localizedString(),"INF002_23".localizedString(),"INF002_19".localizedString()]])
             var priceStr:String = "INF002_24".localizedString()
             items.addObject(["INF002_25".localizedString(),["5000" + priceStr,"1000" + priceStr,"INF002_26".localizedString(),"INF002_19".localizedString()]])
             items.addObject(["INF002_27".localizedString(), ["INF002_28".localizedString(),"INF002_29".localizedString(),"INF002_30".localizedString(),"INF002_19".localizedString()]])
             var PointStr:String = "分及以上"
-            items.addObject(["INF002_10".localizedString(),["2" + PointStr,"3" + PointStr,"4" + PointStr,"5" + PointStr,"INF002_19".localizedString()]])
+            items.addObject(["INF002_10".localizedString(),["1-2分","2-3分","3-4分","4-5分","INF002_19".localizedString()]])
         default:
             items = NSMutableArray.array()
             if(landMarkStatId != ""){
@@ -112,11 +112,11 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
                 items.addObject(["PUBLIC_03".localizedString(),["INF002_19".localizedString()]])
             }
             if(landMarkSpecialWard == ""){
-                items.addObject(["INF002_13".localizedString(),["INF002_19".localizedString(),""]])
+                items.addObject(["INF002_12".localizedString(),["INF002_19".localizedString(),""]])
             }else{
-                items.addObject(["INF002_13".localizedString(),[landMarkShowSpecialWard.specialWard(),""]])
+                items.addObject(["INF002_12".localizedString(),[landMarkShowSpecialWard.specialWard(),""]])
             }
-            items.addObject(["INF002_14".localizedString(),landMarksRange])
+            items.addObject(["INF002_13".localizedString(),landMarksRange])
         }
     }
     

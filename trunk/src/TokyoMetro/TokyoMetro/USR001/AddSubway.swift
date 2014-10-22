@@ -382,6 +382,10 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
             changeLineArr.addObject(lineArr)
         }
         
+        if (stationArr.count == 0) {
+            self.table.hidden = true
+        }
+        
     }
     
     
