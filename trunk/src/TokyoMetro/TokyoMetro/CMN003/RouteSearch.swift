@@ -425,12 +425,13 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
                         resultCellIvStaionIcon.image = "route_start".getImage()
                         
                         if (strresultExchType == "255") {
-                            resultCelllblStationMoveTime.text = "CMN003_07".localizedString() + (strresultExchMoveTime as String) + "CMN003_03".localizedString()
                             resultCelllblStationLineName.hidden = true
                             resultCelllblStationLineNameTip.hidden = true
                             resultCelllblStationLineImg.hidden = true
                             resultCelllblStationWaitTime.hidden = true
                             resultCelllblStationWaitTimeTip.hidden = true
+                            resultCelllblStationMoveDestTip.hidden = true
+                            resultCelllblStationMoveDestName.hidden = true
                         } else if (strresultExchType == "8") {
                             resultCelllblStationLineName.hidden = false
                             resultCelllblStationLineNameTip.hidden  = false
@@ -544,26 +545,36 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             if (indexPath.row  == routeDetial.count) {
                 let cell = tableView.cellForRowAtIndexPath(indexPath) as UITableViewCell!
                 var resultCelllblStationName : UILabel = cell.viewWithTag(1002) as UILabel
+                
+                
+                
                 var tempStationId = serarchStationIdByStationName(resultCelllblStationName.text as String!)
-                var stationDetialArr:MstT02StationTable = getStationDetialById(tempStationId)
-                var stationDetail : StationDetail = self.storyboard?.instantiateViewControllerWithIdentifier("StationDetail") as StationDetail
-                stationDetail.stat_id = tempStationId
-                stationDetail.cellJPName = stationDetialArr.statName as String
-                stationDetail.cellJPNameKana = stationDetialArr.statNameKana as String
-                stationDetail.statMetroId = stationDetialArr.statNameMetroId as String
-                self.navigationController?.pushViewController(stationDetail, animated:true)
+                
+                
+                if (statIsMetro(tempStationId as NSString!)){
+                    var stationDetialArr:MstT02StationTable = getStationDetialById(tempStationId)
+                    var stationDetail : StationDetail = self.storyboard?.instantiateViewControllerWithIdentifier("StationDetail") as StationDetail
+                    stationDetail.stat_id = tempStationId
+                    stationDetail.cellJPName = stationDetialArr.statName as String
+                    stationDetail.cellJPNameKana = stationDetialArr.statNameKana as String
+                    stationDetail.statMetroId = stationDetialArr.statNameMetroId as String
+                    self.navigationController?.pushViewController(stationDetail, animated:true)
+                }
+                
+              
                 
             } else if (indexPath.row  != 0){
                 var routStartDic = self.routeDetial.objectAtIndex(indexPath.row - 1) as NSDictionary
                 var strresultExchStatId = routStartDic["resultExchStatId"] as? NSString
-                
-                var stationDetialArr:MstT02StationTable = getStationDetialById(strresultExchStatId as String)
-                var stationDetail : StationDetail = self.storyboard?.instantiateViewControllerWithIdentifier("StationDetail") as StationDetail
-                stationDetail.stat_id = strresultExchStatId as String
-                stationDetail.cellJPName = stationDetialArr.statName as String
-                stationDetail.cellJPNameKana = stationDetialArr.statNameKana as String
-                stationDetail.statMetroId = stationDetialArr.statNameMetroId as String
-                self.navigationController?.pushViewController(stationDetail, animated:true)
+                if (statIsMetro(strresultExchStatId!)){
+                    var stationDetialArr:MstT02StationTable = getStationDetialById(strresultExchStatId as String)
+                    var stationDetail : StationDetail = self.storyboard?.instantiateViewControllerWithIdentifier("StationDetail") as StationDetail
+                    stationDetail.stat_id = strresultExchStatId as String
+                    stationDetail.cellJPName = stationDetialArr.statName as String
+                    stationDetail.cellJPNameKana = stationDetialArr.statNameKana as String
+                    stationDetail.statMetroId = stationDetialArr.statNameMetroId as String
+                    self.navigationController?.pushViewController(stationDetail, animated:true)
+                }
                 
             }
             
@@ -1230,6 +1241,16 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             return true
             }
         
+        }
+        return false
+    }
+    
+    // 判断换成站点是否是都运营线路
+    func statIsMetro(statId:NSString) -> Bool {
+        var checkId : NSString = ""
+        checkId = statId.substringToIndex(3)
+        if (checkId == "280"){
+            return true
         }
         return false
     }
