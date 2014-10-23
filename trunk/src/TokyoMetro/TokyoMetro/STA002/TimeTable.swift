@@ -63,7 +63,7 @@ class TimeTable: UIViewController,UITableViewDelegate,UITableViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.title = "STA002_12".localizedString()
+        self.title = "STA002_02".localizedString()
         
         model = Sta002TimeTableModel()
         

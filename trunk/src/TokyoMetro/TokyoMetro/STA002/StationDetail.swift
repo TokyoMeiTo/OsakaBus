@@ -265,14 +265,10 @@ class StationDetail: UIViewController, UITableViewDelegate, UITableViewDataSourc
             }
         } else {
             if (model!.collectStation(group_id)) {
-                var sureBtn: UIAlertView = UIAlertView(title: "", message: "CMN003_21".localizedString(), delegate: self, cancelButtonTitle: "PUBLIC_06".localizedString())
-                
-                sureBtn.show()
+
                 odbCollectStation()
             } else {
-                var sureBtn: UIAlertView = UIAlertView(title: "", message: "CMN003_20".localizedString(), delegate: self, cancelButtonTitle: "PUBLIC_06".localizedString())
-                
-                sureBtn.show()
+
             }
         }
     }
@@ -533,7 +529,7 @@ class StationDetail: UIViewController, UITableViewDelegate, UITableViewDataSourc
         
         var stationMap: StationImg = self.storyboard?.instantiateViewControllerWithIdentifier("StationImg") as StationImg
         
-        stationMap.stationMapUrl = group_id.getStationInnerMapImagePath()
+        stationMap.stationMapUrl = group_id
         var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
         self.navigationItem.backBarButtonItem = backButton
         

@@ -62,7 +62,7 @@ class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource, MK
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.title = "STA002_01".localizedString()
+        self.title = "STA002_19".localizedString()
         odbExitInfo()
     }
     
@@ -111,7 +111,13 @@ class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource, MK
             var statLon: Double = ("\(map.item(STAT01_STAT_EXIT_LON))" as NSString).doubleValue
             var location: CLLocation = CLLocation(latitude: statLat, longitude: statLon)
             var length =  "\(Int(calcDistance(location, statLocation: targetLocation!)))"
-            (cell.viewWithTag(302) as UILabel).text = length + " " + "STA002_17".localizedString()
+            (cell.viewWithTag(302) as UILabel).text = length
+            (cell.viewWithTag(303) as UILabel).hidden = false
+            (cell.viewWithTag(304) as UILabel).hidden = false
+        } else {
+            (cell.viewWithTag(302) as UILabel).text = ""
+            (cell.viewWithTag(303) as UILabel).hidden = true
+            (cell.viewWithTag(304) as UILabel).hidden = true
         }
         
         return cell
@@ -205,20 +211,6 @@ class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource, MK
         initMap()
     }
     
-    /**
-    * 到DB中查找最近的站点
-    */
-//    func selectStationTable(fromLocation: CLLocation) -> Array<MstT02StationTable>{
-//        var stationsNearest:Array<MstT02StationTable> = Array<MstT02StationTable>()
-//        
-//        var dao = Sta003Dao()
-//        var coordinateOnMars: CLLocationCoordinate2D = fromLocation.coordinate
-//        var lon:CDouble = coordinateOnMars.longitude
-//        var lat:CDouble = coordinateOnMars.latitude
-//        
-//        stationsNearest = dao.queryMiniDistance(lon,lat: lat) as Array<MstT02StationTable>
-//        return stationsNearest
-//    }
     
     /**
     * 显示地图
@@ -273,7 +265,7 @@ class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource, MK
             var annotation = MKPointAnnotation()
             annotation.coordinate = CLLocation(latitude: (statLat as NSString).doubleValue, longitude: (statLon as NSString).doubleValue).coordinate
             annotation.title = "\(key.item(MSTT04_LANDMARK_LMAK_NAME_EXT1))"
-            annotation.subtitle = "\(key.item(MSTT04_LANDMARK_LMAK_TYPE))"
+            annotation.subtitle = "\(key.item(MSTT04_LANDMARK_LMAK_ADDR))"
             mkMap.addAnnotation(annotation)
             var region : MKCoordinateRegion = MKCoordinateRegionMake(annotation.coordinate, span)
             mkMap.setRegion(region, animated:true)
@@ -281,6 +273,7 @@ class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource, MK
 
         
         annotation.title = "\(statId.station())"
+        annotation.subtitle = ""
         
         annotation.coordinate = coordinateOnEarth
         

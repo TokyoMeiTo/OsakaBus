@@ -137,7 +137,7 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
         if (segment.selectedSegmentIndex == 0) {
             return 55
         } else if (segment.selectedSegmentIndex == 1) {
-            return 55
+            return 99
         } else {
             return 170
         }
@@ -216,69 +216,80 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
             var openStation =  cell.viewWithTag(301) as UILabel
             var closeStation =  cell.viewWithTag(302) as UILabel
             
-            openStation.text = "PUBLIC_01".localizedString() + "：" + (key.item(LINT04_ROUTE_START_STAT_ID) as String).station()
             
-            closeStation.text = "PUBLIC_02".localizedString() + "：" + (key.item(LINT04_ROUTE_TERM_STAT_ID) as String).station()
+            openStation.text = (key.item(LINT04_ROUTE_START_STAT_ID) as String).station()
+            
+            closeStation.text = (key.item(LINT04_ROUTE_TERM_STAT_ID) as String).station()
+            
+            (cell.viewWithTag(303) as UILabel).text = model!.selectStatJPName(key.item(LINT04_ROUTE_START_STAT_ID) as? String)
+            (cell.viewWithTag(304) as UILabel).text = model!.selectStatJPName(key.item(LINT04_ROUTE_TERM_STAT_ID) as? String)
             
             return cell
         } else {
             
-            var cell = tableView.dequeueReusableCellWithIdentifier("LnadMarkCell", forIndexPath: indexPath) as UITableViewCell
-            for subview in cell.subviews{
+            let cellIdentifier:String = "LnadMarkCell"
+            
+            var cell:UITableViewCell? = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as? UITableViewCell
+            
+            if(cell == nil){
+                cell = UITableViewCell(style: UITableViewCellStyle.Default,
+                    reuseIdentifier:cellIdentifier)
+            }
+
+            for subview in cell!.contentView.subviews{
+
                 subview.removeFromSuperview()
             }
             
-            var key = landMarks[indexPath.row] as MstT04LandMarkTable
             // cell显示内容
-            var imgLandMark = UIImage(named: LocalCacheController.readFile("\(key.item(MSTT04_LANDMARK_IMAG_ID1))"))
-            if("\(key.item(MSTT04_LANDMARK_LMAK_NAME_EXT1))" == "皇居"){
-                imgLandMark = UIImage(named: LocalCacheController.readFile("\(key.item(MSTT04_LANDMARK_IMAG_ID2))"))
-            }
+            var imgLandMark = "\(landMarks[indexPath.row].item(MSTT04_LANDMARK_IMAG_ID1))".image("Landmark")
             var imageViewLandMark = UIImageView(frame: CGRectMake(0, 0, tableView.frame.width, 170))
             imageViewLandMark.image = imgLandMark
-            cell.addSubview(imageViewLandMark)
+            cell!.contentView.addSubview(imageViewLandMark)
             
             var lblTemp = UILabel(frame: CGRect(x:0,y:140,width:tableView.frame.width,height:30))
             lblTemp.alpha = 0.4
             lblTemp.backgroundColor = UIColor.blackColor()
-            cell.addSubview(lblTemp)
+            cell!.contentView.addSubview(lblTemp)
             
             var lblLandMark = UILabel(frame: CGRect(x:15,y:135,width:tableView.frame.width,height:40))
             lblLandMark.backgroundColor = UIColor.clearColor()
             lblLandMark.font = UIFont.boldSystemFontOfSize(16)
             lblLandMark.textColor = UIColor.whiteColor()
-            lblLandMark.text = "\(key.item(MSTT04_LANDMARK_LMAK_NAME_EXT1))"
+            lblLandMark.text = "\(landMarks[indexPath.row].item(MSTT04_LANDMARK_LMAK_NAME_EXT1))"
             lblLandMark.textAlignment = NSTextAlignment.Left
-            cell.addSubview(lblLandMark)
+            cell!.contentView.addSubview(lblLandMark)
             
-            var lblLandMarkWard = UILabel(frame: CGRect(x:tableView.frame.width - 70,y:10,width:70,height:40))
+            var lblLandMarkWard = UILabel(frame: CGRect(x:tableView.frame.width - 85,y:10,width:70,height:40))
             lblLandMarkWard.backgroundColor = UIColor.clearColor()
             lblLandMarkWard.font = UIFont.boldSystemFontOfSize(16)
             lblLandMarkWard.textColor = UIColor.whiteColor()
-            lblLandMarkWard.text = "\(key.item(MSTT04_LANDMARK_WARD))".specialWard()
-            lblLandMarkWard.textAlignment = NSTextAlignment.Left
-            cell.addSubview(lblLandMarkWard)
+            lblLandMarkWard.text = "\(landMarks[indexPath.row].item(MSTT04_LANDMARK_WARD))".specialWard()
+            lblLandMarkWard.textAlignment = NSTextAlignment.Right
+            cell!.contentView.addSubview(lblLandMarkWard)
             
             var btnFav:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
             btnFav.frame = CGRect(x:15,y:10,width:40,height:40)
             
-            var tableUsrT03:INF002FavDao = INF002FavDao()
-            var lmkFav:UsrT03FavoriteTable? = tableUsrT03.queryFav("\(key.item(MSTT04_LANDMARK_LMAK_ID))")
+            var mINF002Model:INF002Model = INF002Model()
+            
+            var mINF002Data:UsrT03FavoriteTableData = mINF002Model.findFav("\(landMarks[indexPath.row].item(MSTT04_LANDMARK_LMAK_ID))")
             
             var imgFav = UIImage(named: "INF00202")
-            if(lmkFav!.rowid != nil && lmkFav!.rowid != ""){
+            if(mINF002Data.ext4 != ""){
                 imgFav = UIImage(named: "INF00206")
             }
             
             btnFav.setBackgroundImage(imgFav, forState: UIControlState.Normal)
-            btnFav.tag = 101
+            btnFav.tag = 101 + indexPath.row
             
-            cell.addSubview(btnFav)
+            btnFav.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
+            cell!.contentView.addSubview(btnFav)
             
-            if(key.item(MSTT04_LANDMARK_MICI_RANK) != nil && "\(key.item(MSTT04_LANDMARK_MICI_RANK))" != ""){
+            if(landMarks[indexPath.row].item(MSTT04_LANDMARK_RANK) != nil && "\(landMarks[indexPath.row].item(MSTT04_LANDMARK_RANK))" != ""){
                 lblTemp.frame = CGRect(x:0,y:125,width:tableView.frame.width,height:45)
-                
-                for(var i=0;i<("\(key.item(MSTT04_LANDMARK_MICI_RANK))" as NSString).integerValue; i++){
+                ("\(landMarks[indexPath.row].item(MSTT04_LANDMARK_RANK))" as NSString).integerValue
+                for(var i=0;i < 4; i++){
                     var xFloat:CGFloat = 15//100
                     
                     for(var j=0;j<i;j++){
@@ -288,11 +299,34 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
                     var imageViewStar = UIImageView(frame: CGRectMake(xFloat, 130, 15, 15))
                     var imageStar = UIImage(named: "INF00209")
                     imageViewStar.image = imageStar
-                    cell.addSubview(imageViewStar)
+                    cell!.contentView.addSubview(imageViewStar)
                 }
             }
-            cell.selectionStyle = UITableViewCellSelectionStyle.None
-            return cell
+            
+            if(landMarks[indexPath.row].item(MSTT04_LANDMARK_MICI_RANK) != nil && "\(landMarks[indexPath.row].item(MSTT04_LANDMARK_MICI_RANK))" != ""){
+                for(var i=0;i<("\(landMarks[indexPath.row].item(MSTT04_LANDMARK_MICI_RANK))" as NSString).integerValue; i++){
+                    var xFloat:CGFloat = 60//100
+                    
+                    for(var j=0;j<i;j++){
+                        xFloat = xFloat + 20
+                    }
+                    
+                    var imageViewStar = UIImageView(frame: CGRectMake(xFloat, 20, 20, 20))
+                    var imageStar = UIImage(named: "INF00211")
+                    imageViewStar.image = imageStar
+                    cell!.contentView.addSubview(imageViewStar)
+                }
+            }
+            
+            if("\(landMarks[indexPath.row].item(MSTT04_LANDMARK_OLIMPIC_FLAG))" == "1"){
+                
+                var imageViewOlimpic = UIImageView(frame: CGRectMake(80, 20, 30, 30))
+                var imageOlimpic = UIImage(named: "inf00213")
+                imageViewOlimpic.image = imageOlimpic
+                cell!.contentView.addSubview(imageViewOlimpic)
+            }
+            cell!.selectionStyle = UITableViewCellSelectionStyle.None
+            return cell!
             
         }
     }

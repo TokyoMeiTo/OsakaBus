@@ -58,5 +58,22 @@ class Usr001AddSubwayModel {
         
         return landMarks
     }
+    
+    
+    func selectStatJPName(statId: String?) -> String {
+        var table: MstT02StationTable = MstT02StationTable()
+        if (statId == nil || statId == "") {
+            return ""
+        }
+        table.statId = statId
+        var rows = table.selectAll()
+        
+        if (rows.count > 0) {
+            var key = rows[0] as MstT02StationTable
+            return (key.item(MSTT02_STAT_NAME) as String) + "（\(key.item(MSTT02_STAT_NAME_KANA) as String)）"
+        } else {
+            return ""
+        }
+    }
 
 }

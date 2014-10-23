@@ -35,7 +35,7 @@ class StationImg: UIViewController, UIScrollViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.title = "STA002_11".localizedString()
+        self.title = "STA002_03".localizedString()
         
         size = UIScreen.mainScreen().bounds.size
         
@@ -91,7 +91,7 @@ class StationImg: UIViewController, UIScrollViewDelegate {
     
     func addMap() -> UIImage{
  
-        var image = UIImage(named: stationMapUrl)
+        var image = stationMapUrl.image("StationInnerMap")
         return image
     }
 
