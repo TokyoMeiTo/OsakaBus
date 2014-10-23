@@ -33,7 +33,10 @@ class GPSHelper: UIViewController, CLLocationManagerDelegate{
         case CLAuthorizationStatus.NotDetermined:
             GPSEnabled = false
             locationManager.delegate = self
-            locationManager.requestWhenInUseAuthorization()
+            //for ios 8
+            if (locationManager.respondsToSelector("requestAlwaysAuthorization")){
+                locationManager.requestWhenInUseAuthorization()
+            }
         case CLAuthorizationStatus.Restricted:
             GPSEnabled = false
         case CLAuthorizationStatus.Denied:
@@ -51,7 +54,11 @@ class GPSHelper: UIViewController, CLLocationManagerDelegate{
                 locationManager.distanceFilter = 1000.0
             }
             locationManager.startUpdatingLocation()
-            locationManager.requestWhenInUseAuthorization()
+            
+            //for ios 8
+            if (locationManager.respondsToSelector("requestAlwaysAuthorization")){
+                locationManager.requestWhenInUseAuthorization()
+            }
         }
     }
     
