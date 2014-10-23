@@ -349,6 +349,7 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
         var table = UsrT03FavoriteTable()
         var stationTable = MstT02StationTable()
         
+        stationArr = NSMutableArray.array()
         detailArr = NSMutableArray.array()
         statJPNameArr = NSMutableArray.array()
         changeLineArr = NSMutableArray.array()
@@ -460,42 +461,16 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
         landMarks = NSMutableArray.array()
         if (rows.count > 0) {
             self.table.hidden = false
-            selectLandMarkTable(type)
+            landMarks = model!.selectLandMarkTable(type, landMarkId: landMarkIdStr)
+            
+            self.table.reloadData()
         } else {
             self.table.hidden = true
             self.table.reloadData()
         }
     }
     
-    /**
-    * 从DB查询地标信息
-    */
-    func selectLandMarkTable(type:Int){
-        //var daoINF002 = INF002Dao()
-        var mstT04Table:MstT04LandMarkTable = MstT04LandMarkTable()
-        
-        var landMarkTypeStr:String = ""
-        switch type{
-        case 2:
-            landMarkTypeStr = "景点"
-        case 3:
-            landMarkTypeStr = "美食"
-        case 4:
-            landMarkTypeStr = "购物"
-        default:
-            println("nothing")
-        }
-        if (landMarkIdStr != "") {
-            var rows = mstT04Table.excuteQuery("select *, ROWID from MSTT04_LANDMARK where LMAK_TYPE = '\(landMarkTypeStr)' and LMAK_ID in (\(landMarkIdStr)) and IMAG_ID1 IS NOT NULL")
-            
-            for key in rows {
-                key as MstT04LandMarkTable
-                landMarks.addObject(key)
-            }
-        }
-        
-        table.reloadData()
-    }
+   
 
 
 }
