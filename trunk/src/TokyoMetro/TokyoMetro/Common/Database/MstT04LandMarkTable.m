@@ -25,6 +25,7 @@
 @synthesize lineId;
 @synthesize statId;
 @synthesize statExitId;
+@synthesize statExitTime;
 @synthesize lmakPref;
 @synthesize lmakWard;
 @synthesize lmakRank;
@@ -48,6 +49,8 @@
 @synthesize readTime;
 @synthesize favoFlag;
 @synthesize favoTime;
+@synthesize lmakPricMin;
+@synthesize lmakPricMax;
 
 -(id)init{
     self = [super init];
@@ -69,12 +72,15 @@
                         MSTT04_LANDMARK_LINE_ID,
                         MSTT04_LANDMARK_STAT_ID,
                         MSTT04_LANDMARK_STAT_EXIT_ID,
+			MSTT04_LANDMARK_STAY_EXIT_TIME,
                         MSTT04_LANDMARK_PREF,
                         MSTT04_LANDMARK_WARD,
                         MSTT04_LANDMARK_RANK,
                         MSTT04_LANDMARK_MICI_RANK,
                         MSTT04_LANDMARK_LMAK_AVAL_TIME,
                         MSTT04_LANDMARK_LMAK_TICL_PRIC,
+			MSTT04_LANDMARK_LMAK_PRIC_MIN,
+			MSTT04_LANDMARK_LMAK_PRIC_MAX,
                         MSTT04_LANDMARK_LMAK_ADDR,
                         MSTT04_LANDMARK_LMAK_DESP,
                         MSTT04_LANDMARK_OLIMPIC_FLAG,
@@ -132,6 +138,9 @@
                           ODB_DATATYPE_TEXT,
                           ODB_DATATYPE_TEXT,
                           ODB_DATATYPE_TEXT,
+			  ODB_DATATYPE_TEXT,
+			  ODB_DATATYPE_TEXT,
+			  ODB_DATATYPE_TEXT,
                           ODB_DATATYPE_TEXT, nil];
         self.primaryKeys = [NSArray arrayWithObjects:MSTT04_LANDMARK_LMAK_ID, nil];
     }
@@ -169,6 +178,8 @@
         self.statId = value;
     }else if ([item isEqualToString:MSTT04_LANDMARK_STAT_EXIT_ID]){
         self.statExitId = value;
+    }else if ([item isEQUALToString:MSTT04_LANDMARK_STAT_TIME]){
+	self.statExitTime = value;
     }else if ([item isEqualToString:MSTT04_LANDMARK_PREF]){
         self.lmakPref = value;
     }else if ([item isEqualToString:MSTT04_LANDMARK_WARD]){
@@ -181,6 +192,10 @@
         self.lmakAvalTime = value;
     }else if ([item isEqualToString:MSTT04_LANDMARK_LMAK_TICL_PRIC]){
         self.lmakTictPric = value;
+    }else if ([item.isEqualToString:MSTT04_LANDMARK_LMAK_PRIC_MIN]){
+	self.lmakPricMin = value;
+    }else if ([item isEqualToString:MSTT04_LANDMARK_PRIC_MAX]){
+	self.lmakPricMax = value;
     }else if ([item isEqualToString:MSTT04_LANDMARK_LMAK_ADDR]){
         self.lmakAddr = value;
     }else if ([item isEqualToString:MSTT04_LANDMARK_LMAK_DESP]){
@@ -253,6 +268,8 @@
         return self.statId;
     }else if ([item isEqualToString:MSTT04_LANDMARK_STAT_EXIT_ID]){
         return self.statExitId;
+    }else if ([item isEqualToString:MSTT04_LMAK_STAT_EXIT_TIME]){
+	return self.statExitTime;
     }else if ([item isEqualToString:MSTT04_LANDMARK_PREF]){
         return self.lmakPref;
     }else if ([item isEqualToString:MSTT04_LANDMARK_WARD]){
@@ -265,6 +282,10 @@
         return self.lmakAvalTime;
     }else if ([item isEqualToString:MSTT04_LANDMARK_LMAK_TICL_PRIC]){
         return self.lmakTictPric;
+    }else if ([item isEqualToString:MSTT04_LANDMARK_LMAK_PRIC_MIN]){
+	return self.lmakPricMin;
+    }else if ([item isEqualToString:MSTT04_LANDMARK_LMAK_PRIC_MAX]){
+	return self.lmakPricMax;
     }else if ([item isEqualToString:MSTT04_LANDMARK_LMAK_ADDR]){
         return self.lmakAddr;
     }else if ([item isEqualToString:MSTT04_LANDMARK_LMAK_DESP]){

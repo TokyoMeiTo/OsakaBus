@@ -25,12 +25,15 @@ class MstT04LandMarkTableData : CommonData {
     var lineId :String = ""
     var statId :String = ""
     var statExitId :String = ""
+    var statExitTime:String = ""
     var lmakPref :String = ""
     var lmakWard :String = ""
     var lmakRank :String = ""
     var lmakMiciRank :String = ""
     var lmakAvalTime :String = ""
     var lmakTictPric :String = ""
+    var lmakPricMax:Double = 0.0
+    var lmakPricMin:Double = 0.0
     var lmakAddr :String = ""
     var lmakDesp :String = ""
     var olimpicFlag :String = ""
@@ -43,14 +46,21 @@ class MstT04LandMarkTableData : CommonData {
     var imagId3 :String = ""
     var imagId4 :String = ""
     var imagId5 :String = ""
-    var lmakLon :String = ""
-    var lmakLat :String = ""
-    var readFlag :String = ""
+    var lmakLon :Double = 0.0
+    var lmakLat :Double = 0.0
+    var readFlag :Bool = false
     var readTime :String = ""
-    var favoFlag :String = ""
+    var favoFlag :Bool = false
     var favoTime :String = ""
-    
-    
+
+    var lmakLonStr :String = ""
+    var lmakLatStr :String = ""
+    var readFlagStr :String = ""
+    var favoFlagStr :String = ""
+    var lmakPricMaxStr : String = ""
+    var lmakPricMinStr : String = ""
+
+
     
     override func fromDAO(dao:ODBDataTable) -> CommonData
     {
@@ -69,12 +79,15 @@ class MstT04LandMarkTableData : CommonData {
         lineId       = dbNull(dao.item(MSTT04_LANDMARK_LINE_ID) as? String)
         statId       = dbNull(dao.item(MSTT04_LANDMARK_STAT_ID) as? String)
         statExitId   = dbNull(dao.item(MSTT04_LANDMARK_STAT_EXIT_ID) as? String)
+	statExitTime = dbNull(dao.item(MSTT04_LANDMARK_STAT_EXIT_TIME) as? String)
         lmakPref     = dbNull(dao.item(MSTT04_LANDMARK_PREF) as? String)
         lmakWard     = dbNull(dao.item(MSTT04_LANDMARK_WARD) as? String)
         lmakRank     = dbNull(dao.item(MSTT04_LANDMARK_RANK) as? String)
         lmakMiciRank = dbNull(dao.item(MSTT04_LANDMARK_MICI_RANK) as? String)
         lmakAvalTime = dbNull(dao.item(MSTT04_LANDMARK_LMAK_AVAL_TIME) as? String)
-        lmakTictPric = dbNull(dao.item(MSTT04_LANDMARK_LMAK_TICL_PRIC) as? String)
+	lmakTictPric = dbNull(dao.item(MSTT04_LANDMARK_LMAK_TICL_PRIC) as? String)
+	lmakPricMin  = textToDouble(dao.item(MSTT04_LANDMARK_LMAK_PRIC_MIN) as? String)
+	lmakPricMax  = textToDouble(dao.item(MSTT04_LANDMARK_LMAK_PRIC_MAX) as? String)
         lmakAddr     = dbNull(dao.item(MSTT04_LANDMARK_LMAK_ADDR) as? String)
         lmakDesp     = dbNull(dao.item(MSTT04_LANDMARK_LMAK_DESP) as? String)
         olimpicFlag  = dbNull(dao.item(MSTT04_LANDMARK_OLIMPIC_FLAG) as? String)
@@ -87,13 +100,20 @@ class MstT04LandMarkTableData : CommonData {
         imagId3      = dbNull(dao.item(MSTT04_LANDMARK_IMAG_ID3) as? String)
         imagId4      = dbNull(dao.item(MSTT04_LANDMARK_IMAG_ID4) as? String)
         imagId5      = dbNull(dao.item(MSTT04_LANDMARK_IMAG_ID5) as? String)
-        lmakLon      = dbNull(dao.item(MSTT04_LANDMARK_LMAK_LON) as? String)
-        lmakLat      = dbNull(dao.item(MSTT04_LANDMARK_LMAK_LAT) as? String)
-        readFlag     = dbNull(dao.item(MSTT04_LANDMARK_READ_FLAG) as? String)
+        lmakLon      = textToDouble(dao.item(MSTT04_LANDMARK_LMAK_LON) as? String)
+        lmakLat      = textToDouble(dao.item(MSTT04_LANDMARK_LMAK_LAT) as? String)
+        readFlag     = textToBool(dao.item(MSTT04_LANDMARK_READ_FLAG) as? String)
         readTime     = dbNull(dao.item(MSTT04_LANDMARK_READ_TIME) as? String)
-        favoFlag     = dbNull(dao.item(MSTT04_LANDMARK_FAVO_FLAG) as? String)
+        favoFlag     = textToBool(dao.item(MSTT04_LANDMARK_FAVO_FLAG) as? String)
         favoTime     = dbNull(dao.item(MSTT04_LANDMARK_FAVO_TIME) as? String)
-        
+
+	lmakLonStr   = dbNull(dao.item(MSTT04_LANDMARK_LMAK_LON) as? String)
+	lmakLatStr   = dbNull(dao.item(MSTT04_LANDMARK_LMAK_LAT) as? String)
+	readFlagStr  = dbNull(dao.item(MSTT04_LANDMARK_READ_FLAG) as? String)
+	favoFlagStr  = dbNull(dao.item(MSTT04_LANDMARK_FAVO_FLAG) as? String)
+	lmakPricMinStr = dbNull(dao.item(MSTT04_LANDMARK_LMAK_PRIC_MIN) as? String)
+	lmakPricMaxStr = dbNull(dao.item(MSTT04_LANDMARK_LMAK_PRIC_MAX) as? String)
+
         return super.fromDAO(dao);
     }
     
@@ -115,12 +135,15 @@ class MstT04LandMarkTableData : CommonData {
         dao.item(MSTT04_LANDMARK_LINE_ID,value:lineId)
         dao.item(MSTT04_LANDMARK_STAT_ID,value:statId)
         dao.item(MSTT04_LANDMARK_STAT_EXIT_ID,value:statExitId)
+	dao.item(MSTT04_LANDMARK_STAT_EXIT_TIME,value:statExitTime)
         dao.item(MSTT04_LANDMARK_PREF,value:lmakPref)
         dao.item(MSTT04_LANDMARK_WARD,value:lmakWard)
         dao.item(MSTT04_LANDMARK_RANK,value:lmakRank)
         dao.item(MSTT04_LANDMARK_MICI_RANK,value:lmakMiciRank)
         dao.item(MSTT04_LANDMARK_LMAK_AVAL_TIME,value:lmakAvalTime)
         dao.item(MSTT04_LANDMARK_LMAK_TICL_PRIC,value:lmakTictPric)
+	dao.item(MSTT04_LANDMARK_LMAK_PRIC_MIN,value:lmakPricMinStr)
+	dao.item(MSTT04_LANDMARK_LMAK_PRIC_MAX,value:lmakPricMaxStr)
         dao.item(MSTT04_LANDMARK_LMAK_ADDR,value:lmakAddr)
         dao.item(MSTT04_LANDMARK_LMAK_DESP,value:lmakDesp)
         dao.item(MSTT04_LANDMARK_OLIMPIC_FLAG,value:olimpicFlag)
@@ -133,13 +156,13 @@ class MstT04LandMarkTableData : CommonData {
         dao.item(MSTT04_LANDMARK_IMAG_ID3,value:imagId3)
         dao.item(MSTT04_LANDMARK_IMAG_ID4,value:imagId4)
         dao.item(MSTT04_LANDMARK_IMAG_ID5,value:imagId5)
-        dao.item(MSTT04_LANDMARK_LMAK_LON,value:lmakLon)
-        dao.item(MSTT04_LANDMARK_LMAK_LAT,value:lmakLat)
-        dao.item(MSTT04_LANDMARK_READ_FLAG,value:readFlag)
+        dao.item(MSTT04_LANDMARK_LMAK_LON,value:lmakLonStr)
+        dao.item(MSTT04_LANDMARK_LMAK_LAT,value:lmakLatStr)
+        dao.item(MSTT04_LANDMARK_READ_FLAG,value:readFlagStr)
         dao.item(MSTT04_LANDMARK_READ_TIME,value:readTime)
-        dao.item(MSTT04_LANDMARK_FAVO_FLAG,value:favoFlag)
+        dao.item(MSTT04_LANDMARK_FAVO_FLAG,value:favoFlagStr)
         dao.item(MSTT04_LANDMARK_FAVO_TIME,value:favoTime)
-        
+
         return dao
     }
 }
