@@ -158,13 +158,13 @@ class StationDetail: UIViewController, UITableViewDelegate, UITableViewDataSourc
             case 0:
                 showTime()
             case 1:
-                pushStationMap()
+                showStationMap()
             case 2:
                 showFacility()
             case 3:
                 showComercialInside()
             default:
-                pushStationMap()
+                showStationMap()
             }
         } else{
             showLnadMarkList(indexPath.row)
@@ -286,6 +286,8 @@ class StationDetail: UIViewController, UITableViewDelegate, UITableViewDataSourc
             landMarkMap.landMarkLocation = CLLocation(latitude: statLat, longitude: statLon)
             landMarkMap.statId = group_id
             
+            landMarkMap.landMarkArr = model!.odbLandMark(group_id)
+            
             landMarkMap.title = "STA002_16".localizedString()
         }
         
@@ -295,18 +297,6 @@ class StationDetail: UIViewController, UITableViewDelegate, UITableViewDataSourc
         self.navigationController?.pushViewController(landMarkMap, animated: true)
     }
     
-    
-    @IBAction func pushStationMap() {
-        
-        var stationMap: StationImg = self.storyboard?.instantiateViewControllerWithIdentifier("StationImg") as StationImg
-        
-        stationMap.stationMapUrl = group_id.getStationInnerMapImagePath()
-        var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
-        self.navigationItem.backBarButtonItem = backButton
-        
-        self.navigationController?.pushViewController(stationMap, animated: true)
-    }
-
     @IBAction func setStartStation() {
         
         var routeSearch: RouteSearch = self.storyboard?.instantiateViewControllerWithIdentifier("RouteSearch") as RouteSearch
@@ -479,16 +469,6 @@ class StationDetail: UIViewController, UITableViewDelegate, UITableViewDataSourc
 
     }
     
-    func showExitInfo() {
-        var exitInfo: ExitInfo = self.storyboard?.instantiateViewControllerWithIdentifier("ExitInfo") as ExitInfo
-        
-        var rowArr = model!.odbLandMark(group_id)
-        
-        exitInfo.landMarkArr = rowArr
-        
-        self.navigationController?.pushViewController(exitInfo, animated: true)
-    }
-    
     func showComercialInside() {
         var stationFacilities: StationFacilities = self.storyboard?.instantiateViewControllerWithIdentifier("StationFacilities") as StationFacilities
         stationFacilities.statId = group_id
@@ -511,6 +491,17 @@ class StationDetail: UIViewController, UITableViewDelegate, UITableViewDataSourc
         self.navigationItem.backBarButtonItem = backButton
 
         self.navigationController?.pushViewController(timeDetail, animated: true)
+    }
+    
+    func showStationMap() {
+        
+        var stationMap: StationImg = self.storyboard?.instantiateViewControllerWithIdentifier("StationImg") as StationImg
+        
+        stationMap.stationMapUrl = group_id.getStationInnerMapImagePath()
+        var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = backButton
+        
+        self.navigationController?.pushViewController(stationMap, animated: true)
     }
     
     func showFacility() {

@@ -27,6 +27,8 @@ class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource, MK
     
     var statId: String = ""
     
+    var landMarkArr: NSArray = NSArray.array()
+    
     /*******************************************************************************
     * Private Properties
     *******************************************************************************/
@@ -40,10 +42,6 @@ class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource, MK
     //    var stations:Array<MstT02StationTable>?
     /* 地标 */
     //    var landMark:MstT04LandMarkTable?
-    
-    var landMarkArr: NSArray = NSArray.array()
-    
-    //    var landMarkType:String = "景点"
     
     var landMarkLocation:CLLocation?
     
@@ -272,10 +270,7 @@ class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource, MK
             var statLat:AnyObject? = key.item(MSTT04_LANDMARK_LMAK_LAT)
             var statLon:AnyObject? = key.item(MSTT04_LANDMARK_LMAK_LON)
             
-            println("\(statLat)")
-            println("\(statLon)")
             var annotation = MKPointAnnotation()
-//            annotation.coordinate = CLLocationCoordinate2D(latitude:statLat as CLLocationDegrees, longitude:statLon as CLLocationDegrees)
             annotation.coordinate = CLLocation(latitude: (statLat as NSString).doubleValue, longitude: (statLon as NSString).doubleValue).coordinate
             annotation.title = "\(key.item(MSTT04_LANDMARK_LMAK_NAME_EXT1))"
             annotation.subtitle = "\(key.item(MSTT04_LANDMARK_LMAK_TYPE))"
