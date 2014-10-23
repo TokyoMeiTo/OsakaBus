@@ -201,6 +201,11 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
     
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        tableView.separatorColor = UIColor.clearColor()
+        tableView.backgroundColor = UIColor(red: 239/255,
+            green: 239/255,
+            blue: 244/255,
+            alpha: 1.0)
         
         let cellIdentifier:String = "AlarmListCell"
         
@@ -232,7 +237,7 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
         var userFont:UIFontDescriptor = UIFontDescriptor.preferredFontDescriptorWithTextStyle("UltraLight")
         var font:UIFont = UIFont(descriptor: userFont.fontDescriptorWithFamily("Helvetica Neue"), size: 65)//UIFont(name: "Helvetica Neue", size: userFontSize)
         
-        lblLastMetroTime.font = font//UIFont(name: "Helvetica Neue", size: 65)
+        lblLastMetroTime.font = UIFont(name: "Helvetica Neue", size: 60)
         lblLastMetroTime.text = items[indexPath.section][3][indexPath.row] as? String
         lblLastMetroTime.textAlignment = NSTextAlignment.Left
         
@@ -271,6 +276,7 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
                     green: 239/255,
                     blue: 244/255,
                     alpha: 1.0)
+                lblLastMetroTime.textColor = UIColor.lightGrayColor()
             }else{
                 switchAralm.on = true
                 cell!.backgroundColor = UIColor.whiteColor()
@@ -283,6 +289,7 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
                     green: 255/255,
                     blue: 255/255,
                     alpha: 1.0)
+                lblLastMetroTime.textColor = UIColor.lightGrayColor()
             }else{
                 switchAralm.on = true
             }
