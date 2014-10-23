@@ -87,6 +87,7 @@
 		A15CA4B419D57BF400716A00 /* String+Encrypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15CA4AF19D57BF400716A00 /* String+Encrypto.swift */; };
 		A1629E6419EE98E800DC54B1 /* INF002Dao+mstT04LandMarkTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1629E6319EE98E800DC54B1 /* INF002Dao+mstT04LandMarkTable.swift */; };
 		A1629E6619EEA43B00DC54B1 /* Cmn003Dao.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1629E6519EEA43B00DC54B1 /* Cmn003Dao.swift */; };
+		A16DB61519F915B900F0D219 /* INF002Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16DB61419F915B900F0D219 /* INF002Model.swift */; };
 		A17527E819F7592900A9E656 /* STA003DAO+MstT02StationTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17527E619F7592900A9E656 /* STA003DAO+MstT02StationTable.swift */; };
 		A17527E919F7592900A9E656 /* STA003Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17527E719F7592900A9E656 /* STA003Model.swift */; };
 		A17527EC19F7593700A9E656 /* TimerThread.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17527EA19F7593700A9E656 /* TimerThread.swift */; };
@@ -339,6 +340,7 @@
 		A15CA4AF19D57BF400716A00 /* String+Encrypto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Encrypto.swift"; sourceTree = "<group>"; };
 		A1629E6319EE98E800DC54B1 /* INF002Dao+mstT04LandMarkTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "INF002Dao+mstT04LandMarkTable.swift"; sourceTree = "<group>"; };
 		A1629E6519EEA43B00DC54B1 /* Cmn003Dao.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cmn003Dao.swift; sourceTree = "<group>"; };
+		A16DB61419F915B900F0D219 /* INF002Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = INF002Model.swift; sourceTree = "<group>"; };
 		A17527E619F7592900A9E656 /* STA003DAO+MstT02StationTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "STA003DAO+MstT02StationTable.swift"; sourceTree = "<group>"; };
 		A17527E719F7592900A9E656 /* STA003Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = STA003Model.swift; sourceTree = "<group>"; };
 		A17527EA19F7593700A9E656 /* TimerThread.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimerThread.swift; sourceTree = "<group>"; };
@@ -979,6 +981,7 @@
 				A17EDA7019E8B74800D58386 /* INF002FavDao.swift */,
 				A1ECD45719D2D41F00D5A0E2 /* LandMarkDetailController.swift */,
 				A1ECD45819D2D41F00D5A0E2 /* LandMarkListController.swift */,
+				A16DB61419F915B900F0D219 /* INF002Model.swift */,
 				A1ECD45919D2D41F00D5A0E2 /* LandMarkMapController.swift */,
 				A1629E6319EE98E800DC54B1 /* INF002Dao+mstT04LandMarkTable.swift */,
 				A1ECD45A19D2D41F00D5A0E2 /* LandMarkSearchController.swift */,
@@ -1283,6 +1286,7 @@
 				3B2420DA19B5AD1500DAE392 /* NSData+Encrypto.m in Sources */,
 				A1ECD49119D2D41F00D5A0E2 /* TipsContentList.swift in Sources */,
 				A1ECD47E19D2D41F00D5A0E2 /* InfT03RescureTable.m in Sources */,
+				A16DB61519F915B900F0D219 /* INF002Model.swift in Sources */,
 				3B24209719B5ABFD00DAE392 /* OAPAsyncXMLParser.m in Sources */,
 				3B6F98F819B6EF30001C0DC1 /* OAPAsyncJSONParser.m in Sources */,
 				A17CE0CF19D9017200A27092 /* String+Decimal.swift in Sources */,
