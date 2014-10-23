@@ -130,18 +130,23 @@ extension String {
     }
     
     /**
-    * 获取Landmark下的图片路径
-    */
-    func getLandmarkImagePath() -> String {
-        let folder = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String
-        let path = folder.stringByAppendingPathComponent("TokyoMetroCache/Resource/Landmark/" + self + ".png")
-        println(path)
+     * 获取Resource下的图片
+     */
+    func image(folderNm:String) -> UIImage {
+        let mDocumentFolder = NSHomeDirectory() + "/Documents/"
+        let path = mDocumentFolder.stringByAppendingPathComponent("TokyoMetroCache/Resource/" +
+            folderNm + "/" + self + ".png")
         var fileExists = NSFileManager().fileExistsAtPath(path)
-        var file:UnsafeMutablePointer<FILE>?
+        
+        var mDeviceVersion:Double = (UIDevice.currentDevice().systemVersion as NSString).doubleValue
         if(fileExists){
-            file = fopen(path, "")
+            if(mDeviceVersion >= 7.0 && mDeviceVersion <= 7.9){
+                return UIImage(contentsOfFile: path)
+            }else{
+                return UIImage(named: path)
+            }
         }
-        return path
+        return UIImage(named: "")
     }
     
     /**

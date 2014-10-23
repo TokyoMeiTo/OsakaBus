@@ -2816,11 +2816,11 @@ lable</string>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S0F-sS-O5O">
                                 <rect key="frame" x="20" y="280" width="100" height="100"/>
-                                <state key="normal" backgroundImage="USR00201"/>
+                                <state key="normal" backgroundImage="usr012"/>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L76-Qa-XZA">
                                 <rect key="frame" x="200" y="280" width="100" height="100"/>
-                                <state key="normal" backgroundImage="USR00202">
+                                <state key="normal" backgroundImage="usr010">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                             </button>
@@ -2853,7 +2853,7 @@ lable</string>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EqB-0y-UJB">
                                 <rect key="frame" x="110" y="350" width="100" height="100"/>
-                                <state key="normal" backgroundImage="USR00203">
+                                <state key="normal" backgroundImage="usr009">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                             </button>
@@ -3279,9 +3279,6 @@ lable</string>
     <resources>
         <image name="INF00201" width="31" height="31"/>
         <image name="INF00202" width="31" height="31"/>
-        <image name="USR00201" width="93" height="93"/>
-        <image name="USR00202" width="93" height="93"/>
-        <image name="USR00203" width="93" height="93"/>
         <image name="answer" width="35" height="35"/>
         <image name="btnAddImg" width="35" height="40"/>
         <image name="btnDecImg" width="35" height="40"/>
@@ -3333,5 +3330,8 @@ lable</string>
         <image name="tablecell_lineicon_t" width="44" height="44"/>
         <image name="tablecell_lineicon_y" width="44" height="44"/>
         <image name="tablecell_lineicon_z" width="44" height="44"/>
+        <image name="usr009" width="90" height="91"/>
+        <image name="usr010" width="90" height="91"/>
+        <image name="usr012" width="90" height="91"/>
     </resources>
 </document>

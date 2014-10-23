@@ -11,19 +11,37 @@ import Foundation
 import UIKit
 import CoreLocation
 
-class LandMarkListController: UIViewController, UITableViewDelegate, NSObjectProtocol, UIScrollViewDelegate, UITableViewDataSource, GPSDelegate{
+class LandMarkListController: UIViewController, UITableViewDelegate, UITableViewDataSource, GPSDelegate{
+    
+    /*******************************************************************************
+    * IBOutlets
+    *******************************************************************************/
+    
     /* 最近站点列表UITableView */
     @IBOutlet weak var tbList: UITableView!
+    
+    
+    /*******************************************************************************
+    * Global
+    *******************************************************************************/
     
     /* 起点軽度 */
     let fromLat = 35.672737//31.23312372 // 天地科技广场1号楼
     /* 起点緯度 */
     let fromLon = 139.768898//121.38368547 // 天地科技广场1号楼
-
     /* GPSHelper */
     let GPShelper:GPSHelper = GPSHelper()
-    /* 地标一览 */
-    var landMarks:Array<MstT04LandMarkTable>?
+    
+    let BTN_SEARCH_TAG:Int = 110
+    let BTN_FAV_TAG:Int = 101
+    
+    let FOLDER_NAME:String = "Landmark"
+    
+    
+    /*******************************************************************************
+    * Public Properties
+    *******************************************************************************/
+    
     /* 类型 */
     var landMarkType:Int = 0
     /* 地区 */
@@ -34,9 +52,19 @@ class LandMarkListController: UIViewController, UITableViewDelegate, NSObjectPro
     var landMarkStatId:String? = ""
     
     var classType = ""
+
     
-    let BTN_SEARCH_TAG:Int = 110
-    let BTN_FAV_TAG:Int = 101
+    /*******************************************************************************
+    * Private Properties
+    *******************************************************************************/
+    
+    /* 地标一览 */
+    var landMarks:Array<MstT04LandMarkTable>?
+    
+    
+    /*******************************************************************************
+    * Overrides From UIViewController
+    *******************************************************************************/
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,10 +97,6 @@ class LandMarkListController: UIViewController, UITableViewDelegate, NSObjectPro
         var searchButton:UIBarButtonItem = UIBarButtonItem(customView: searchButtonTemp!)
         self.navigationItem.rightBarButtonItem = searchButton
     }
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     
     override func viewWillAppear(animated: Bool) {
         if(landMarks == nil){
@@ -80,6 +104,196 @@ class LandMarkListController: UIViewController, UITableViewDelegate, NSObjectPro
         }
         tbList.reloadData()
     }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    
+    /*******************************************************************************
+    *    Implements Of UITableViewDelegate
+    *******************************************************************************/
+
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath: NSIndexPath){
+        var landMarkDetailController = self.storyboard!.instantiateViewControllerWithIdentifier("landmarkdetail") as LandMarkDetailController
+        switch landMarkType{
+        case 0:
+            landMarkDetailController.title = "INF002_07".localizedString()
+        case 1:
+            landMarkDetailController.title = "INF002_08".localizedString()
+        case 2:
+            landMarkDetailController.title = "PUBLIC_09".localizedString()
+        default:
+            println("nothing")
+        }
+        
+        landMarkDetailController.landMark = landMarks![didSelectRowAtIndexPath.row]
+        var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = backButton
+        
+        self.navigationController!.pushViewController(landMarkDetailController, animated:true)
+    }
+
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 172
+    }
+
+    
+    /*******************************************************************************
+    *      Implements Of UITableViewDataSource
+    *******************************************************************************/
+
+    // MARK: - Table View
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return landMarks!.count
+    }
+    
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cellIdentifier:String = "LandMarkListCell"
+        
+        var cell:UITableViewCell? = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as? UITableViewCell
+
+        if(cell == nil){
+            cell = UITableViewCell(style: UITableViewCellStyle.Default,
+                reuseIdentifier:cellIdentifier)
+        }
+        
+        for subview in cell!.contentView.subviews{
+            // subview.isKindOfClass(UIButton) ||
+//            if(subview.isKindOfClass(UILabel)){
+//                subview.removeFromSuperview()
+//            }
+            subview.removeFromSuperview()
+        }
+        // cell显示内容
+        var imgLandMark = "\(landMarks![indexPath.row].item(MSTT04_LANDMARK_IMAG_ID1))".image(FOLDER_NAME)
+        var imageViewLandMark = UIImageView(frame: CGRectMake(0, 0, tableView.frame.width, 170))
+        imageViewLandMark.image = imgLandMark
+        cell!.contentView.addSubview(imageViewLandMark)
+        
+        var lblTemp = UILabel(frame: CGRect(x:0,y:140,width:tableView.frame.width,height:30))
+        lblTemp.alpha = 0.4
+        lblTemp.backgroundColor = UIColor.blackColor()
+        cell!.contentView.addSubview(lblTemp)
+        
+        var lblLandMark = UILabel(frame: CGRect(x:15,y:135,width:tableView.frame.width,height:40))
+        lblLandMark.backgroundColor = UIColor.clearColor()
+        lblLandMark.font = UIFont.boldSystemFontOfSize(16)
+        lblLandMark.textColor = UIColor.whiteColor()
+        lblLandMark.text = "\(landMarks![indexPath.row].item(MSTT04_LANDMARK_LMAK_NAME_EXT1))"
+        lblLandMark.textAlignment = NSTextAlignment.Left
+        cell!.contentView.addSubview(lblLandMark)
+        
+        var lblLandMarkWard = UILabel(frame: CGRect(x:tableView.frame.width - 85,y:10,width:70,height:40))
+        lblLandMarkWard.backgroundColor = UIColor.clearColor()
+        lblLandMarkWard.font = UIFont.boldSystemFontOfSize(16)
+        lblLandMarkWard.textColor = UIColor.whiteColor()
+        lblLandMarkWard.text = "\(landMarks![indexPath.row].item(MSTT04_LANDMARK_WARD))".specialWard()
+        lblLandMarkWard.textAlignment = NSTextAlignment.Right
+        cell!.contentView.addSubview(lblLandMarkWard)
+        
+        var btnFav:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
+        btnFav.frame = CGRect(x:15,y:10,width:40,height:40)
+        
+        var tableUsrT03:INF002FavDao = INF002FavDao()
+        var lmkFav:UsrT03FavoriteTable? = tableUsrT03.queryFav("\(landMarks![indexPath.row].item(MSTT04_LANDMARK_LMAK_ID))")
+        
+        var imgFav = UIImage(named: "INF00202.png")
+        if(lmkFav!.rowid != nil && lmkFav!.rowid != ""){
+            imgFav = UIImage(named: "INF00206.png")
+        }
+        
+        btnFav.setBackgroundImage(imgFav, forState: UIControlState.Normal)
+        btnFav.tag = BTN_FAV_TAG
+        
+        btnFav.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
+        cell!.contentView.addSubview(btnFav)
+        
+        //        if(landMarks![indexPath.row].item(MSTT04_LANDMARK_RANK) != nil && "\(landMarks![indexPath.row].item(MSTT04_LANDMARK_RANK))" != ""){
+        if(true){
+            lblTemp.frame = CGRect(x:0,y:125,width:tableView.frame.width,height:45)
+            //            ("\(landMarks![indexPath.row].item(MSTT04_LANDMARK_MICI_RANK))" as NSString).integerValue
+            for(var i=0;i < 4; i++){
+                var xFloat:CGFloat = 15//100
+                
+                for(var j=0;j<i;j++){
+                    xFloat = xFloat + 20
+                }
+                
+                var imageViewStar = UIImageView(frame: CGRectMake(xFloat, 130, 15, 15))
+                var imageStar = UIImage(named: "INF00209.png")
+                imageViewStar.image = imageStar
+                cell!.contentView.addSubview(imageViewStar)
+            }
+        }
+        
+        if(landMarks![indexPath.row].item(MSTT04_LANDMARK_MICI_RANK) != nil && "\(landMarks![indexPath.row].item(MSTT04_LANDMARK_MICI_RANK))" != ""){
+            for(var i=0;i<("\(landMarks![indexPath.row].item(MSTT04_LANDMARK_MICI_RANK))" as NSString).integerValue; i++){
+                var xFloat:CGFloat = 60//100
+                
+                for(var j=0;j<i;j++){
+                    xFloat = xFloat + 20
+                }
+                
+                var imageViewStar = UIImageView(frame: CGRectMake(xFloat, 20, 20, 20))
+                var imageStar = UIImage(named: "INF00211.png")
+                imageViewStar.image = imageStar
+                cell!.contentView.addSubview(imageViewStar)
+            }
+        }
+        
+        if("\(landMarks![indexPath.row].item(MSTT04_LANDMARK_OLIMPIC_FLAG))" == "1"){
+            
+            var imageViewOlimpic = UIImageView(frame: CGRectMake(80, 20, 30, 30))
+            var imageOlimpic = UIImage(named: "inf00213.png")
+            imageViewOlimpic.image = imageOlimpic
+            cell!.contentView.addSubview(imageViewOlimpic)
+        }
+        cell!.selectionStyle = UITableViewCellSelectionStyle.None
+        return cell!
+    }
+    
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        // Return false if you do not want the specified item to be editable.
+        return false
+    }
+    
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if editingStyle == .Delete {
+            //items.removeObjectAtIndex(indexPath.row)
+            //tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+        } else if editingStyle == .Insert {
+            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
+        }
+    }
+
+    
+    /*******************************************************************************
+    *      Implements Of GPSDelegate
+    *******************************************************************************/
+
+    /**
+     * 位置定位完成
+     */
+    func locationUpdateComplete(location: CLLocation){
+        
+    }
+
+    
+    /*******************************************************************************
+    *    Private Methods
+    *******************************************************************************/
     
     /**
      * ボタン点击事件
@@ -139,13 +353,6 @@ class LandMarkListController: UIViewController, UITableViewDelegate, NSObjectPro
     }
     
     /**
-     * 位置定位完成
-     */
-    func locationUpdateComplete(location: CLLocation){
-
-    }
-    
-    /**
      * 从DB查询地标信息
      */
     func selectLandMarkTable(type:Int) -> Array<MstT04LandMarkTable>{
@@ -167,154 +374,9 @@ class LandMarkListController: UIViewController, UITableViewDelegate, NSObjectPro
         return landMarks!
     }
     
-    
-    // MARK: - Segues
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
 
-    }
-    
-    // MARK: - Table View
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath: NSIndexPath){
-        var landMarkDetailController = self.storyboard!.instantiateViewControllerWithIdentifier("landmarkdetail") as LandMarkDetailController
-        switch landMarkType{
-        case 0:
-            landMarkDetailController.title = "INF002_07".localizedString()
-        case 1:
-            landMarkDetailController.title = "INF002_08".localizedString()
-        case 2:
-            landMarkDetailController.title = "PUBLIC_09".localizedString()
-        default:
-            println("nothing")
-        }
-        
-        landMarkDetailController.landMark = landMarks![didSelectRowAtIndexPath.row]
-        var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
-        self.navigationItem.backBarButtonItem = backButton
-
-        self.navigationController!.pushViewController(landMarkDetailController, animated:true)
-    }
-    
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return landMarks!.count
-    }
-    
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 170
-    }
-    
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-//        var cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
-        var cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "Cell")
-        for subview in cell.subviews{
-            subview.removeFromSuperview()
-        }
-        // cell显示内容
-        var imgLandMark = UIImage(named: LocalCacheController.readFile("\(landMarks![indexPath.row].item(MSTT04_LANDMARK_IMAG_ID1))"))
-        if("\(landMarks![indexPath.row].item(MSTT04_LANDMARK_LMAK_NAME_EXT1))" == "皇居"){
-            imgLandMark = UIImage(named: LocalCacheController.readFile("\(landMarks![indexPath.row].item(MSTT04_LANDMARK_IMAG_ID2))"))
-        }
-        var imageViewLandMark = UIImageView(frame: CGRectMake(0, 0, tableView.frame.width, 170))
-        imageViewLandMark.image = imgLandMark
-        cell.addSubview(imageViewLandMark)
-        
-        var lblTemp = UILabel(frame: CGRect(x:0,y:140,width:tableView.frame.width,height:30))
-        lblTemp.alpha = 0.4
-        lblTemp.backgroundColor = UIColor.blackColor()
-        cell.addSubview(lblTemp)
-        
-        var lblLandMark = UILabel(frame: CGRect(x:15,y:135,width:tableView.frame.width,height:40))
-        lblLandMark.backgroundColor = UIColor.clearColor()
-        lblLandMark.font = UIFont.boldSystemFontOfSize(16)
-        lblLandMark.textColor = UIColor.whiteColor()
-        lblLandMark.text = "\(landMarks![indexPath.row].item(MSTT04_LANDMARK_LMAK_NAME_EXT1))"
-        lblLandMark.textAlignment = NSTextAlignment.Left
-        cell.addSubview(lblLandMark)
-        
-        var lblLandMarkWard = UILabel(frame: CGRect(x:tableView.frame.width - 85,y:10,width:70,height:40))
-        lblLandMarkWard.backgroundColor = UIColor.clearColor()
-        lblLandMarkWard.font = UIFont.boldSystemFontOfSize(16)
-        lblLandMarkWard.textColor = UIColor.whiteColor()
-        lblLandMarkWard.text = "\(landMarks![indexPath.row].item(MSTT04_LANDMARK_WARD))".specialWard()
-        lblLandMarkWard.textAlignment = NSTextAlignment.Right
-        cell.addSubview(lblLandMarkWard)
-        
-        var btnFav:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-        btnFav.frame = CGRect(x:15,y:10,width:40,height:40)
-        
-        var tableUsrT03:INF002FavDao = INF002FavDao()
-        var lmkFav:UsrT03FavoriteTable? = tableUsrT03.queryFav("\(landMarks![indexPath.row].item(MSTT04_LANDMARK_LMAK_ID))")
-        
-        var imgFav = UIImage(named: "INF00202.png")
-        if(lmkFav!.rowid != nil && lmkFav!.rowid != ""){
-            imgFav = UIImage(named: "INF00206.png")
-        }
-        
-        btnFav.setBackgroundImage(imgFav, forState: UIControlState.Normal)
-        btnFav.tag = BTN_FAV_TAG
-        
-        btnFav.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
-        cell.addSubview(btnFav)
-        
-//        if(landMarks![indexPath.row].item(MSTT04_LANDMARK_RANK) != nil && "\(landMarks![indexPath.row].item(MSTT04_LANDMARK_RANK))" != ""){
-        if(true){
-            lblTemp.frame = CGRect(x:0,y:125,width:tableView.frame.width,height:45)
-//            ("\(landMarks![indexPath.row].item(MSTT04_LANDMARK_MICI_RANK))" as NSString).integerValue
-            for(var i=0;i < 4; i++){
-                var xFloat:CGFloat = 15//100
-                
-                for(var j=0;j<i;j++){
-                    xFloat = xFloat + 20
-                }
-                
-                var imageViewStar = UIImageView(frame: CGRectMake(xFloat, 130, 15, 15))
-                var imageStar = UIImage(named: "INF00209.png")
-                imageViewStar.image = imageStar
-                cell.addSubview(imageViewStar)
-            }
-        }
-        
-        if(landMarks![indexPath.row].item(MSTT04_LANDMARK_MICI_RANK) != nil && "\(landMarks![indexPath.row].item(MSTT04_LANDMARK_MICI_RANK))" != ""){
-            for(var i=0;i<("\(landMarks![indexPath.row].item(MSTT04_LANDMARK_MICI_RANK))" as NSString).integerValue; i++){
-                var xFloat:CGFloat = 60//100
-                
-                for(var j=0;j<i;j++){
-                    xFloat = xFloat + 20
-                }
-                
-                var imageViewStar = UIImageView(frame: CGRectMake(xFloat, 20, 20, 20))
-                var imageStar = UIImage(named: "INF00211.png")
-                imageViewStar.image = imageStar
-                cell.addSubview(imageViewStar)
-            }
-        }
-        
-        if("\(landMarks![indexPath.row].item(MSTT04_LANDMARK_OLIMPIC_FLAG))" == "1"){
-            
-            var imageViewOlimpic = UIImageView(frame: CGRectMake(80, 20, 30, 30))
-            var imageOlimpic = UIImage(named: "inf00213.png")
-            imageViewOlimpic.image = imageOlimpic
-            cell.addSubview(imageViewOlimpic)
-        }
-        cell.selectionStyle = UITableViewCellSelectionStyle.None
-        return cell
-    }
-    
-    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return false
-    }
-    
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            //items.removeObjectAtIndex(indexPath.row)
-            //tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
-        }
-    }
+    /*******************************************************************************
+    *    Unused Codes
+    *******************************************************************************/
 
 }

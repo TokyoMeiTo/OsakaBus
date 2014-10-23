@@ -9,7 +9,12 @@
 import Foundation
 import UIKit
 
-class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProtocol, UIScrollViewDelegate, UITableViewDataSource{
+class LocalCacheController: UIViewController{
+    
+    /*******************************************************************************
+    * IBOutlets
+    *******************************************************************************/
+    
     /* 缓存信息 */
     @IBOutlet weak var imgMain: UIImageView!
     /* 缓存信息 */
@@ -25,11 +30,26 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
     /* 缓存信息 */
     @IBOutlet weak var lblProgress: UILabel!
 
-    var classType:Int = 0
     
+    /*******************************************************************************
+    * Global
+    *******************************************************************************/
+
     let uri:String = "http://192.168.1.84/Resource.zip"//"http://www.okasan.net/Resource.zip"//"http://osakabus.sinaapp.com/Resource.zip"
     let filePath:String = "Resource.zip"
     let unZipPath:String = "TokyoMetroCache"
+
+    
+    /*******************************************************************************
+    * Public Properties
+    *******************************************************************************/
+    
+    var classType:Int = 0
+
+    
+    /*******************************************************************************
+    * Private Properties
+    *******************************************************************************/
     
     /* NSFileManager */
     let fileManager = NSFileManager()
@@ -44,15 +64,34 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
     var loadProgress:String? = ""
     var tipText:String = "DLD001_08".localizedString()
     
+    /*******************************************************************************
+    * Overrides From UIViewController
+    *******************************************************************************/
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         intitValue()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        // 画面内容变更
+        // 设置数据
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    
+    /*******************************************************************************
+    *    Private Methods
+    *******************************************************************************/
     
     func intitValue(){
         self.title = "DLD001_01".localizedString()
@@ -286,7 +325,6 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
     class func readFile(name:String) -> String {
         let folder = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String
         let path = folder.stringByAppendingPathComponent("/TokyoMetroCache/Resource/Landmark/" + name)//  + ".png"
-        println(path)
         var fileExists = NSFileManager().fileExistsAtPath(path)
         var file:UnsafeMutablePointer<FILE>?
         if(fileExists){
@@ -309,292 +347,9 @@ class LocalCacheController: UIViewController, UITableViewDelegate, NSObjectProto
         return formatter.stringFromNumber(("\(freeSpace!)" as NSString).doubleValue/1024.0/1024.0/1024.0)
     }
     
-    func calLblHeight(text:String, font:UIFont, constrainedToSize size:CGSize) -> CGSize {
-        var textSize:CGSize?
-        if CGSizeEqualToSize(size, CGSizeZero) {
-            let attributes = NSDictionary(object: font, forKey: NSFontAttributeName)
-            textSize = text.sizeWithAttributes(attributes)
-        } else {
-            let option = NSStringDrawingOptions.UsesLineFragmentOrigin
-            let attributes = NSDictionary(object: font, forKey: NSFontAttributeName)
-            let stringRect = text.boundingRectWithSize(size, options: option, attributes: attributes, context: nil)
-            textSize = stringRect.size
-        }
-        return textSize!
-    }
     
-    
-    // MARK: - Segues
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        
-    }
-    
-    // MARK: - Table View
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return items.count
-    }
-    
-    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        var lastUIHeader:UIView? = tableView.viewWithTag(110)
-//        if(lastUIHeader != nil){
-//            lastUIHeader!.removeFromSuperview()
-//        }
-        
-        var uiHeader:UIView = UIView(frame: CGRect(x:0,y:0,width:tableView.frame.width,height:80))
-        uiHeader.tag = 110
-        
-        if(classType == 0){
-            switch section{
-            case 1:
-                var lblTip = UILabel(frame: CGRect(x:15,y:5,width:tableView.frame.width - 30,height:80))
-                lblTip.numberOfLines = 0
-                lblTip.lineBreakMode = NSLineBreakMode.ByCharWrapping
-                lblTip.backgroundColor = UIColor.clearColor()
-                lblTip.font = UIFont.systemFontOfSize(14)
-                lblTip.textColor = UIColor.blackColor()
-                lblTip.text = tipText
-                lblTip.textAlignment = NSTextAlignment.Left
-                uiHeader.addSubview(lblTip)
-                
-                return uiHeader
-            case 2:
-                if(downloading){
-                    var lblProgressTemp = UILabel(frame: CGRect(x:0,y:5,width:tableView.frame.width/2,height:80))
-                    lblProgressTemp.backgroundColor = UIColor.clearColor()
-                    lblProgressTemp.font = UIFont.systemFontOfSize(16)
-                    lblProgressTemp.textColor = UIColor.blackColor()
-                    lblProgressTemp.text = "DLD001_09".localizedString()
-                    lblProgressTemp.textAlignment = NSTextAlignment.Right
-                    uiHeader.addSubview(lblProgressTemp)
-                }else{
-                    if(updateComplete || loadProgress != ""){
-                        var lblProgressTemp = UILabel(frame: CGRect(x:0,y:5,width:tableView.frame.width/2,height:80))
-                        lblProgressTemp.backgroundColor = UIColor.clearColor()
-                        lblProgressTemp.font = UIFont.systemFontOfSize(16)
-                        lblProgressTemp.textColor = UIColor.blackColor()
-                        lblProgressTemp.text = "DLD001_10".localizedString()
-                        lblProgressTemp.textAlignment = NSTextAlignment.Right
-                        uiHeader.addSubview(lblProgressTemp)
-                    }
-                }
-                var lblMobileSize = UILabel(frame: CGRect(x:tableView.frame.width/2,y:5,width:tableView.frame.width/2,height:80))
-                lblMobileSize.backgroundColor = UIColor.clearColor()
-                lblMobileSize.font = UIFont.systemFontOfSize(16)
-                lblMobileSize.textColor = UIColor.blackColor()
-                lblMobileSize.text = loadProgress
-                lblMobileSize.textAlignment = NSTextAlignment.Left
-                uiHeader.addSubview(lblMobileSize)
-                return uiHeader
-            default:
-                return uiHeader
-            }
-        }else{
-            switch section{
-            case 1:
-                var lblTip = UILabel(frame: CGRect(x:15,y:5,width:tableView.frame.width - 30,height:80))
-                lblTip.numberOfLines = 0
-                lblTip.lineBreakMode = NSLineBreakMode.ByCharWrapping
-                lblTip.backgroundColor = UIColor.clearColor()
-                lblTip.font = UIFont.systemFontOfSize(14)
-                lblTip.textColor = UIColor.blackColor()
-                lblTip.text = tipText
-                lblTip.textAlignment = NSTextAlignment.Left
-                uiHeader.addSubview(lblTip)
-                
-                return uiHeader
-            case 2:
-                if(downloading){
-                    var lblProgressTemp = UILabel(frame: CGRect(x:0,y:5,width:tableView.frame.width/2,height:80))
-                    lblProgressTemp.backgroundColor = UIColor.clearColor()
-                    lblProgressTemp.font = UIFont.systemFontOfSize(16)
-                    lblProgressTemp.textColor = UIColor.blackColor()
-                    lblProgressTemp.text = "DLD001_09".localizedString()
-                    lblProgressTemp.textAlignment = NSTextAlignment.Right
-                    uiHeader.addSubview(lblProgressTemp)
-                }else{
-                    if(updateComplete || loadProgress != ""){
-                        var lblProgressTemp = UILabel(frame: CGRect(x:0,y:5,width:tableView.frame.width/2,height:80))
-                        lblProgressTemp.backgroundColor = UIColor.clearColor()
-                        lblProgressTemp.font = UIFont.systemFontOfSize(16)
-                        lblProgressTemp.textColor = UIColor.blackColor()
-                        lblProgressTemp.text = "DLD001_10".localizedString()
-                        lblProgressTemp.textAlignment = NSTextAlignment.Right
-                        uiHeader.addSubview(lblProgressTemp)
-                    }
-                }
-                var lblMobileSize = UILabel(frame: CGRect(x:tableView.frame.width/2,y:5,width:tableView.frame.width/2,height:80))
-                lblMobileSize.backgroundColor = UIColor.clearColor()
-                lblMobileSize.font = UIFont.systemFontOfSize(16)
-                lblMobileSize.textColor = UIColor.blackColor()
-                lblMobileSize.text = loadProgress
-                lblMobileSize.textAlignment = NSTextAlignment.Left
-                uiHeader.addSubview(lblMobileSize)
-                return uiHeader
-            default:
-                return uiHeader
-            }
-        }
-    }
-    
-    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        switch section{
-        case 1,2:
-            return 90
-        default:
-            return 0
-        }
-    }
-    
-    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return items[section][0] as? String
-    }
-    
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items[section][1].count
-    }
-    
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        switch indexPath.section{
-        case 0:
-            return 135
-        case 1:
-            return 250/4
-        default:
-            return 43
-        }
-    }
-    
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
-        for subview in cell.subviews{
-            subview.removeFromSuperview()
-        }
-        switch classType{
-        case 0:
-            switch indexPath.section{
-            case 0:
-                var imgCache = UIImage(named: "DLD00104.png")
-                var imageViewCache = UIImageView(frame: CGRectMake(15, 30, 80, 80))
-                imageViewCache.image = imgCache
-                cell.addSubview(imageViewCache)
-                
-                var lblCacheVersion = UILabel(frame: CGRect(x:120,y:20,width:tableView.frame.width,height:tableView.frame.height/13))
-                lblCacheVersion.backgroundColor = UIColor.clearColor()
-                lblCacheVersion.font = UIFont.systemFontOfSize(15)
-                lblCacheVersion.textColor = UIColor.blackColor()
-                lblCacheVersion.text = "缓存版本: 1.0"
-                lblCacheVersion.textAlignment = NSTextAlignment.Left
-                cell.addSubview(lblCacheVersion)
-                
-                var lblCacheSize = UILabel(frame: CGRect(x:120,y:50,width:tableView.frame.width,height:tableView.frame.height/13))
-                lblCacheSize.backgroundColor = UIColor.clearColor()
-                lblCacheSize.font = UIFont.systemFontOfSize(15)
-                lblCacheSize.textColor = UIColor.blackColor()
-                lblCacheSize.text = "缓存大小: 83593KB"
-                lblCacheSize.textAlignment = NSTextAlignment.Left
-                cell.addSubview(lblCacheSize)
-                
-                var lblMobileSize = UILabel(frame: CGRect(x:120,y:80,width:tableView.frame.width,height:tableView.frame.height/13))
-                lblMobileSize.backgroundColor = UIColor.clearColor()
-                lblMobileSize.font = UIFont.systemFontOfSize(15)
-                lblMobileSize.textColor = UIColor.blackColor()
-                lblMobileSize.text = "剩余容量: 10G"
-                lblMobileSize.textAlignment = NSTextAlignment.Left
-                cell.addSubview(lblMobileSize)
-            case 1:
-                if(!updateComplete){
-                    var btnDownload:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-                    btnDownload.frame = CGRect(x:(tableView.frame.width - 250)/2,y:0,width:250,height:250/4)
-                    var imgDownload = UIImage(named: "DLD00101.png")
-                    btnDownload.setBackgroundImage(imgDownload, forState: UIControlState.Normal)
-                    btnDownload.tag = 101
-                    
-                    btnDownload.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
-                    cell.backgroundColor = UIColor.clearColor()
-                    cell.addSubview(btnDownload)
-                }else{
-                    var btnUse:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-                    btnUse.frame = CGRect(x:(tableView.frame.width - 250)/2,y:0,width:250,height:250/4)
-                    var imgUse = UIImage(named: "DLD00102.png")
-                    btnUse.setBackgroundImage(imgUse, forState: UIControlState.Normal)
-                    btnUse.tag = 102
-                    btnUse.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
-                    cell.backgroundColor = UIColor.clearColor()
-                    cell.addSubview(btnUse)
-                }
-                
-            case 2:
-                cell.backgroundColor = UIColor.clearColor()
-            default:
-                return cell
-            }
-        default:
-            switch indexPath.section{
-            case 0:
-                var imgCache = UIImage(named: "DLD00104")
-                var imageViewCache = UIImageView(frame: CGRectMake(15, 30, 80, 80))
-                imageViewCache.image = imgCache
-                cell.addSubview(imageViewCache)
-                
-                var lblCacheVersion = UILabel(frame: CGRect(x:120,y:20,width:tableView.frame.width,height:tableView.frame.height/13))
-                lblCacheVersion.backgroundColor = UIColor.clearColor()
-                lblCacheVersion.font = UIFont.systemFontOfSize(15)
-                lblCacheVersion.textColor = UIColor.blackColor()
-                lblCacheVersion.text = "缓存版本: 1.0"
-                lblCacheVersion.textAlignment = NSTextAlignment.Left
-                cell.addSubview(lblCacheVersion)
-                
-                var lblCacheSize = UILabel(frame: CGRect(x:120,y:50,width:tableView.frame.width,height:tableView.frame.height/13))
-                lblCacheSize.backgroundColor = UIColor.clearColor()
-                lblCacheSize.font = UIFont.systemFontOfSize(15)
-                lblCacheSize.textColor = UIColor.blackColor()
-                lblCacheSize.text = "缓存大小: 10M"
-                lblCacheSize.textAlignment = NSTextAlignment.Left
-                cell.addSubview(lblCacheSize)
-                
-                var lblMobileSize = UILabel(frame: CGRect(x:120,y:80,width:tableView.frame.width,height:tableView.frame.height/13))
-                lblMobileSize.backgroundColor = UIColor.clearColor()
-                lblMobileSize.font = UIFont.systemFontOfSize(15)
-                lblMobileSize.textColor = UIColor.blackColor()
-                lblMobileSize.text = "剩余容量: 10G"
-                lblMobileSize.textAlignment = NSTextAlignment.Left
-                cell.addSubview(lblMobileSize)
-            case 1:
-                var btnDownload:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-                btnDownload.frame = CGRect(x:(tableView.frame.width - 250)/2,y:0,width:250,height: 250/4)
-                var imgDownload = UIImage(named: "DLD00101.png")
-                btnDownload.setBackgroundImage(imgDownload, forState: UIControlState.Normal)
-                //btnDownload.setTitle("重新下载", forState: UIControlState.Normal)
-                btnDownload.tag = 101
-                
-                btnDownload.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
-                cell.backgroundColor = UIColor.clearColor()
-                cell.addSubview(btnDownload)
-            case 2:
-                cell.backgroundColor = UIColor.clearColor()
-            default:
-                return cell
-            }
-        }
-        cell.selectionStyle = UITableViewCellSelectionStyle.None
-    return cell
-    }
-    
-    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return false
-    }
-    
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            //items.removeObjectAtIndex(indexPath.row)
-            //tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        }else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
-        }
-    }
+    /*******************************************************************************
+    *    Unused Codes
+    *******************************************************************************/
 
-    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        //UIloading = false
-    }
 }

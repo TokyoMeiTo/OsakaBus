@@ -87,7 +87,7 @@ class StationListController: UIViewController, UITableViewDelegate, UITableViewD
     *******************************************************************************/
 
     /* 最近站点信息 */
-    var mStations:Array<MstT02StationTable>?
+    var mStations:Array<MstT02StationTableData>?
     /* 当前位置信息 */
     var mLocation:CLLocation?
     /* 线路索引 */
@@ -131,7 +131,7 @@ class StationListController: UIViewController, UITableViewDelegate, UITableViewD
         var controllers:AnyObject? = self.navigationController!.viewControllers
         if(controllers!.count > 1){
             var main:Main = controllers![controllers!.count - 2] as Main
-            main.stationIdFromStationList = "\(mStations![indexPath.row].item(MSTT02_STAT_ID))"
+            main.stationIdFromStationList = mStations![indexPath.row].statId
         }
         self.navigationController!.popViewControllerAnimated(true)
     }
@@ -163,15 +163,15 @@ class StationListController: UIViewController, UITableViewDelegate, UITableViewD
                 reuseIdentifier:cellIdentifier)
         }
         
-        for subview in cell!.subviews{
+        for subview in cell!.contentView.subviews{
             if(subview.isKindOfClass(UILabel) || subview.isKindOfClass(UIImageView)){
                 subview.removeFromSuperview()
             }
         }
         
-        var tableMstT02 = mStations![indexPath.row] as MstT02StationTable
-        var line:MstT01LineTable = STA003_MODEL.findLineTable("\(tableMstT02.item(MSTT02_LINE_ID))") as MstT01LineTable
-        var statNm:String = "\(tableMstT02.item(MSTT02_STAT_ID))".station()
+        var mMstT02Data:MstT02StationTableData = mStations![indexPath.row]
+        var line:MstT01LineTableData = STA003_MODEL.findLineTable(mMstT02Data.lineId)
+        var statNm:String = mMstT02Data.statId.station()
         
         var lblStation = UILabel(frame: CGRect(x:15,y:5,width:tableView.frame.width - 30,height:30))
         lblStation.font = UIFont.systemFontOfSize(17)
@@ -181,28 +181,28 @@ class StationListController: UIViewController, UITableViewDelegate, UITableViewD
         var lblDetail = UILabel(frame: CGRect(x:15,y:30,width:tableView.frame.width - 30,height:25))
         lblDetail.font = UIFont.systemFontOfSize(13)
         lblDetail.textColor = UIColor.darkGrayColor()
-        lblDetail.text = "\(tableMstT02.item(MSTT02_STAT_NAME))" + "(\(tableMstT02.item(MSTT02_STAT_NAME_KANA)))"
+        lblDetail.text = mMstT02Data.statName + mMstT02Data.statNameKana
         lblDetail.textAlignment = NSTextAlignment.Left
         
-        var statLat:Double = ("\(tableMstT02.item(MSTT02_STAT_LAT))" as NSString).doubleValue
-        var statLon:Double = ("\(tableMstT02.item(MSTT02_STAT_LON))" as NSString).doubleValue
+        var statLat:Double = (mMstT02Data.statLat as NSString).doubleValue
+        var statLon:Double = (mMstT02Data.statLon as NSString).doubleValue
         var locationStat:CLLocation = CLLocation(latitude: statLat, longitude: statLon)
         
         var lblDistance = UILabel(frame: CGRect(x:15,y:15,width:tableView.frame.width - 75,height:25))
         lblDistance.font = UIFont.systemFontOfSize(13)
         lblDistance.textColor = UIColor.darkGrayColor()
-        lblDistance.text = StationListController.convertDistance(StationListController.calcDistance(mLocation!, statLocation: locationStat))
+        lblDistance.text = STA003_MODEL.convertDistance(STA003_MODEL.calcDistance(mLocation!, statLocation: locationStat))
         lblDistance.textAlignment = NSTextAlignment.Right
         
         var imageViewLine = UIImageView(frame: CGRectMake(tableView.frame.width - 48, 18, 18, 18))
-        imageViewLine.image = "\(tableMstT02.item(MSTT02_LINE_ID))".getLineMiniImage()
+        imageViewLine.image = mMstT02Data.statId.getLineMiniImage()
         
         cell!.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
         
-        cell!.addSubview(lblStation)
-        cell!.addSubview(lblDetail)
-        cell!.addSubview(lblDistance)
-        cell!.addSubview(imageViewLine)
+        cell!.contentView.addSubview(lblStation)
+        cell!.contentView.addSubview(lblDetail)
+        cell!.contentView.addSubview(lblDistance)
+        cell!.contentView.addSubview(imageViewLine)
         
         return cell!
     }
@@ -266,10 +266,10 @@ class StationListController: UIViewController, UITableViewDelegate, UITableViewD
             rightButton.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
             // button添加tag，点击时用
             for(var i=0;i<mStations!.count;i++){
-                var key = mStations![i] as MstT02StationTable
-                var statLat:AnyObject? = key.item(MSTT02_STAT_LAT)
-                var statLon:AnyObject? = key.item(MSTT02_STAT_LON)
-                if(statLat as CLLocationDegrees == annotation.coordinate.latitude && statLon as CLLocationDegrees == annotation.coordinate.longitude){
+                var key = mStations![i]
+                var statLat:Double? = (key.statLat as NSString).doubleValue
+                var statLon:Double? = (key.statLon as NSString).doubleValue
+                if(statLat! as CLLocationDegrees == annotation.coordinate.latitude && statLon! as CLLocationDegrees == annotation.coordinate.longitude){
                     rightButton.tag = NUM_100 + i
                 }
             }
@@ -354,11 +354,11 @@ class StationListController: UIViewController, UITableViewDelegate, UITableViewD
         case BUTTON_RIGHT_TAG:
             RemindDetailController.showMessage(MSG_0002, msg:MSG_0001,buttons:[MSG_0003, MSG_0004], delegate: nil)
         default:
-            if(mStations!.count > 0){
+            if(mStations != nil && mStations!.count > 0){
                 var controllers:AnyObject? = self.navigationController!.viewControllers
-                if(controllers!.count > 1){
+                if(controllers != nil && controllers!.count > 1){
                     var main:Main = controllers![controllers!.count - 2] as Main
-                    main.stationIdFromStationList = "\(mStations![sender.tag - NUM_100].item(MSTT02_STAT_ID))"
+                    main.stationIdFromStationList = mStations![sender.tag - NUM_100].statId
                 }
                 self.navigationController!.popViewControllerAnimated(true)
             }
@@ -403,13 +403,15 @@ class StationListController: UIViewController, UITableViewDelegate, UITableViewD
         var fromLocation = mLocation//CLLocation(latitude: testLat, longitude: testLon)
         
         // 显示距离最近的10个地铁站
-        for(var i=0;i<mStations!.count;i++){
-            var key = mStations![i] as MstT02StationTable
-            var statLat:AnyObject? = key.item(MSTT02_STAT_LAT)
-            var statLon:AnyObject? = key.item(MSTT02_STAT_LON)
-            var statNm:AnyObject? = key.item(MSTT02_STAT_NAME)
+        for key in mStations!{
+            var statLat:Double? = (key.statLat as NSString).doubleValue
+            var statLon:Double? = (key.statLon as NSString).doubleValue
+            var statNm:AnyObject? = key.statNameExt1
+            if(statLat == nil || statLon == nil || statNm == nil){
+                continue
+            }
             var annotation = MKPointAnnotation()
-            annotation.coordinate = CLLocationCoordinate2D(latitude:statLat as CLLocationDegrees, longitude:statLon as CLLocationDegrees)
+            annotation.coordinate = CLLocationCoordinate2D(latitude:statLat! as CLLocationDegrees, longitude:statLon! as CLLocationDegrees)
             annotation.title = statNm as String
             mkMap.addAnnotation(annotation)
             var region : MKCoordinateRegion = MKCoordinateRegionMake(annotation.coordinate, span)
@@ -478,24 +480,6 @@ class StationListController: UIViewController, UITableViewDelegate, UITableViewD
                 }
             }
         }
-    }
-    
-    /**
-     * 计算两点之间距离
-     */
-    class func calcDistance(fromLocation: CLLocation, statLocation: CLLocation) -> CDouble{
-        var distance:CLLocationDistance = statLocation.distanceFromLocation(fromLocation)
-        return distance
-    }
-
-    /**
-     * 0.00KM
-     */
-    class func convertDistance(distance: CDouble) -> String{
-        let DIDTANCE:String = "\(distance / 1000)"
-        
-        var dotIndex = DIDTANCE.indexOf(".")
-        return "\(DIDTANCE.left(dotIndex + 2))" + "KM"
     }
 
     
