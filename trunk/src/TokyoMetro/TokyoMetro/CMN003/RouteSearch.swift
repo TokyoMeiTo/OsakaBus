@@ -110,8 +110,8 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
     var routeDetial05table = LinT05RouteDetailTable()
 
     // 路径查询结果后，设置路径收藏
-    var btnCollectRouteImg: UIImageView = UIImageView(frame: CGRectMake(30, 9, 22, 22))
-    var btnSetAlarmImg: UIImageView = UIImageView(frame: CGRectMake(190, 9, 22, 22))
+   // var btnCollectRouteImg: UIImageView = UIImageView(frame: CGRectMake(30, 9, 22, 22))
+    // var btnSetAlarmImg: UIImageView = UIImageView(frame: CGRectMake(190, 9, 22, 22))
     
     
     var vline: UIView = UIButton(frame: CGRectMake(0, 1, 320, 1))
@@ -176,6 +176,8 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         
         mNearlyLogo.image = "route_locate".getImage()
         mCollectionLogo.image = "route_collectedlight".getImage()
+        
+        //btnCollectRoute
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -387,7 +389,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             resultTipCelllblStationExchangeTip.text = (routeDetial.count - 2).description + " " + "CMN003_23".localizedString()
         } else {
             resultTipCelllblStationExchange.hidden = true
-            resultTipCelllblStationExchangeTip.hidden = true
+            resultTipCelllblStationExchangeTip.text = "无须换乘"
         }
         
         resultTipCelllblStationFare.text = "PUBLIC_10".localizedString()
@@ -418,8 +420,6 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         var strresultExchType = routStartDic["resultExchType"] as? NSString
         
         if (indexPath.row == routeDetial.count){
-
-            
             resultCelllblStationLineName.hidden = true
             resultCelllblStationWaitTime.hidden = true
             resultCelllblStationMoveTime.hidden = true
@@ -435,11 +435,8 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             
             resultCellIvStaionIcon.image = "route_end".getImage()
             resultCelllblStationName.text = self.endStationText.station()
-            
-            
         } else if (indexPath.row  == 1){
-            
-            
+
             var strresultExchStatId = routStartDic["resultExchStatId"] as? NSString
             resultCelllblStationName.text = (strresultExchStatId as String).station()
             resultCellIvStaionIcon.image = "route_start".getImage()
@@ -620,7 +617,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
                 }
                 
             } else {
-                errAlertView("PUBLIC_04".localizedString(), errMgs: "CMN003_09".localizedString(), errBtnTitle: "PUBLIC_06".localizedString())
+                errAlertView("PUBLIC_04".localizedString(), errMgs: "CMN003_08".localizedString(), errBtnTitle: "PUBLIC_06".localizedString())
             }
             
         } else if focusNumber == "2" {
@@ -640,7 +637,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
                 }
                 
             } else {
-                errAlertView("PUBLIC_04".localizedString(), errMgs: "CMN003_09".localizedString(), errBtnTitle: "PUBLIC_06".localizedString())
+                errAlertView("PUBLIC_04".localizedString(), errMgs: "CMN003_08".localizedString(), errBtnTitle: "PUBLIC_06".localizedString())
             }
             
         }
@@ -807,7 +804,8 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         var isInsertRoute = cmn003Model.addUserFavoriteRoute(self.routeID)
         if isInsertRoute {
             reloadCollectedRouteId()
-            btnCollectRouteImg.image = "route_collectionlight".getImage()
+           //  btnCollectRouteImg.image = "route_collectionlight".getImage()
+            btnCollectRoute.setBackgroundImage("route_collectionRoutelight".getImage(), forState: UIControlState.Normal)
         }
     }
     
@@ -852,8 +850,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         mTipView()
         if (index == "0") {
             self.testView.frame = CGRectMake(0, self.mScreenSize.height, self.mScreenSize.width, 44)
-            
-            
+
         } else if (index == "1"){
             self.testView.frame = CGRectMake(0, self.mScreenSize.height - 44, self.mScreenSize.width, 44)
             
@@ -900,29 +897,27 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         vline.backgroundColor = UIColor.lightGrayColor()
         self.testView.addSubview(vline)
 
-        btnCollectRoute.setTitle("CMN003_25".localizedString(), forState: UIControlState.Normal)
+        //btnCollectRoute.setTitle("CMN003_25".localizedString(), forState: UIControlState.Normal)
         btnCollectRoute.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
         btnCollectRoute.addTarget(self, action: "addUserfavoriteRoute", forControlEvents: UIControlEvents.TouchUpInside)
         self.testView.addSubview(btnCollectRoute)
         
         
-        btnSetAlarm.setTitle("CMN003_14".localizedString(), forState: UIControlState.Normal)
+        //btnSetAlarm.setTitle("CMN003_14".localizedString(), forState: UIControlState.Normal)
         btnSetAlarm.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
+        btnSetAlarm.setBackgroundImage("route_routeAlarm".getImage(), forState: UIControlState.Normal)
         btnSetAlarm.addTarget(self, action: "isPopToAlarm", forControlEvents: UIControlEvents.TouchUpInside)
         self.testView.addSubview(btnSetAlarm)
         
         
         if (routeIsCollected(self.routeID)){
-            btnCollectRouteImg.image = "route_collectionlight".getImage()
+            // btnCollectRouteImg.image = "route_collectionlight".getImage()
+            btnCollectRoute.setBackgroundImage("route_collectionRoutelight".getImage(), forState: UIControlState.Normal)
         } else {
-            btnCollectRouteImg.image = "route_collection".getImage()
+           // btnCollectRouteImg.image = "route_collection".getImage()
+            btnCollectRoute.setBackgroundImage("route_collectionRoute".getImage(), forState: UIControlState.Normal)
         }
-        
-        self.testView.addSubview(btnCollectRouteImg)
-        
-        
-        btnSetAlarmImg.image = "route_alarm".getImage()
-        self.testView.addSubview(btnSetAlarmImg)
+
     }
     
     
@@ -956,7 +951,8 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             btnCollect2.setBackgroundImage("searchroute_collection".getImage(), forState: UIControlState.Normal)
         }
 
-        btnCollectRouteImg.image = "route_collection".getImage()
+        // btnCollectRouteImg.image = "route_collection".getImage()
+        btnCollectRoute.setBackgroundImage("route_collectionRoute".getImage(), forState: UIControlState.Normal)
         setSationIdCache()
     }
     
@@ -976,7 +972,8 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             btnCollect2.setBackgroundImage("searchroute_collection".getImage(), forState: UIControlState.Normal)
         }
         
-        btnCollectRouteImg.image = "route_collection".getImage()
+        //btnCollectRouteImg.image = "route_collection".getImage()
+        btnCollectRoute.setBackgroundImage("route_collectionRoute".getImage(), forState: UIControlState.Normal)
         setSationIdCache()
     }
     
@@ -1163,7 +1160,6 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             getTotalTime(resultExchMoveTime.description as NSString)
             getTotalTime(resultExchWaitTime.description as NSString)
         }
-
     }
 
     // 位置定位到最近站点
@@ -1247,22 +1243,31 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
     // 读取本地数据
     func readStationIdCache() {
         
-        if (self.startStationText != ""){
+        if (self.startStationText != ""  && (self.endStationText != self.startStationText)){
             stationStart.text = self.startStationText.station()
-        } else {
-            stationStart.text = self.appDelegate.startStatId.station()
-            self.startStationText = self.appDelegate.startStatId
-        }
-        if (self.endStationText != ""){
+            
+        } else if (self.endStationText != "" && (self.endStationText != self.startStationText)){
             stationEnd.text = self.endStationText.station()
+            
         } else {
-            stationEnd.text = self.appDelegate.endStatId.station()
-            self.endStationText = self.appDelegate.endStatId
+            
+            if (self.endStationText == self.startStationText && self.startStationText != "" && self.endStationText != "") {
+                
+                errAlertView("CMN003_12".localizedString(), errMgs: "CMN003_08".localizedString(), errBtnTitle: "PUBLIC_06".localizedString())
+            } else {
+                stationStart.text = self.appDelegate.startStatId.station()
+                self.startStationText = self.appDelegate.startStatId
+                
+                stationEnd.text = self.appDelegate.endStatId.station()
+                self.endStationText = self.appDelegate.endStatId
+
+            }
+            
+            
         }
         
     }
 
-    
 
     /*******************************************************************************
     *    Unused Codes

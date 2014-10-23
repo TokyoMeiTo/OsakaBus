@@ -103,27 +103,27 @@ class Setting : UIViewController, UITableViewDelegate, UITableViewDataSource, OA
     
     // 设定页面下角跳转
     func btnLinkAction(sender:UIButton) {
-        var appservers : AppServerse = self.storyboard?.instantiateViewControllerWithIdentifier("appServerse") as AppServerse
-        
-        var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
-        self.navigationItem.backBarButtonItem = backButton
-        self.navigationController?.pushViewController(appservers, animated:true)
+//        var appservers : AppServerse = self.storyboard?.instantiateViewControllerWithIdentifier("appServerse") as AppServerse
+//        
+//        var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+//        self.navigationItem.backBarButtonItem = backButton
+//        self.navigationController?.pushViewController(appservers, animated:true)
         switch (sender) {
-            
+        
         case self.mBtnAppServer:
             var appservers : AppServerse = self.storyboard?.instantiateViewControllerWithIdentifier("appServerse") as AppServerse
             
             var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
             self.navigationItem.backBarButtonItem = backButton
-            
             self.navigationController?.pushViewController(appservers, animated:true)
+            
         case self.mBtnOfficeWebSite:
             webLinkAction("CMN009_07".localizedString(), webSite:"http://www.google.com")
         case self.mBtnRelifDuty:
-           webLinkAction("CMN009_08".localizedString(), webSite:"http://www.google.com")
+            webLinkAction("CMN009_08".localizedString(), webSite:"http://www.google.com")
             
         default:
-        webLinkAction("CMN009_07".localizedString(), webSite:"http://www.google.com")
+            webLinkAction("CMN009_07".localizedString(), webSite:"http://www.google.com")
         }
 
     }

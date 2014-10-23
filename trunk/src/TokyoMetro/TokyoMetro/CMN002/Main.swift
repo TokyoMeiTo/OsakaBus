@@ -9,7 +9,10 @@
 import UIKit
 
 class Main: UIViewController,UIScrollViewDelegate {
-    //
+    
+    /*******************************************************************************
+    * IBOutlets
+    *******************************************************************************/
     @IBOutlet weak var mMenuView: UIView!
     @IBOutlet weak var mBodyView: UIView!
     @IBOutlet weak var mBtnToSearchRoute: UIBarButtonItem!
@@ -33,23 +36,29 @@ class Main: UIViewController,UIScrollViewDelegate {
     
     @IBOutlet weak var mMenuBtn04: UIButton!
     
+    /*******************************************************************************
+    * Public Properties
+    *******************************************************************************/
+    
+    // 记录设置的起点车站id
+    var setStationStartId :String = ""
+    // 记录设置的终点车站id
+    var setStationEndId : String = ""
+    
+    /*******************************************************************************
+    * Private Properties
+    *******************************************************************************/
+    
     // 判断是否要显示底部menu
     var mIsMenuShow = false
     // 屏幕尺寸
     var mScreenSize: CGSize!
     // 设为起点的车站id
     var mCuttentStationID : String = ""
-
     // 记录点击点的坐标
     var locatPoint : CGPoint = CGPoint()
-    // 记录设置的起点车站id
-    var setStationStartId :String = ""
-    // 记录设置的终点车站id
-    var setStationEndId : String = ""
-    
     // 从站点列表页面而来的车站id
     var stationIdFromStationList : String = ""
-    
     // 显示弹框的车站的车站名 JP
     var selectStationNameJP : String = ""
     // 显示弹框的车站的车站id
@@ -89,7 +98,9 @@ class Main: UIViewController,UIScrollViewDelegate {
     
     var cmn002Model:CMN002Model = CMN002Model();
     
-    
+    /*******************************************************************************
+    * Overrides From UIViewController
+    *******************************************************************************/
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -185,29 +196,50 @@ class Main: UIViewController,UIScrollViewDelegate {
         }
     }
     
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        
-    }
+    /*******************************************************************************
+    *    Implements Of UIScrollViewDelegate
+    *******************************************************************************/
     
     func viewForZoomingInScrollView(scrollView: UIScrollView!) -> UIView! {
         return mMainWrapper
     }
     
-    // 双击之后真个scrollView放大
-    func doubleTapAction(myTapGesture :UITapGestureRecognizer) {
-        var doubleOffsetX:CGFloat = (mScrollView.bounds.size.width >
-            mScrollView.contentSize.width) ? (mScrollView.bounds.size.width - mScrollView.contentSize.width)/2 : 0.0
-        var doubleOffsetY:CGFloat = (mScrollView.bounds.size.height >
-            mScrollView.contentSize.height) ? (mScrollView.bounds.size.height - mScrollView.contentSize.height)/2 : 0.0
-        
-        self.mMainWrapper.center = CGPointMake(mScrollView.contentSize.width * 0.5 + doubleOffsetX , mScrollView.contentSize.height * 0.5 + doubleOffsetY)
-        
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
-            self.mScrollView.zoomScale = (self.mScrollView.zoomScale + 0.5)
-        })
+    // scroll移动是也不断设置弹窗位置
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        if mPopupStationView.hidden == false
+        {
+            getPopStationViewLocate(scrollView)
+        }
     }
+    
+    // scroll放大和缩小后是也不断设置弹窗位置
+    func scrollViewDidZoom(scrollView: UIScrollView) {
+        if mPopupStationView.hidden == false
+        {
+            getPopStationViewLocate(scrollView)
+        }
+    }
+    
+    func rectAfterZoomed() -> CGRect{
+        var ptX:CGFloat=(locatPoint.x * mScrollView.zoomScale - mScrollView.contentOffset.x ) - mPopupStationView.frame.size.width / 2
+        var ptY:CGFloat=(locatPoint.y * mScrollView.zoomScale - mScrollView.contentOffset.y) - mPopupStationView.frame.size.height / 2
+        var height:CGFloat=mPopupStationView.frame.size.height
+        var width:CGFloat=mPopupStationView.frame.size.width
+        return CGRectMake(ptX,ptY,width,height)
+    }
+    
+    // 获取弹窗消息的位置
+    func getPopStationViewLocate(scrollView: UIScrollView) {
+        
+        var mpopViewSizeWidth:CGFloat = mPopupStationView.frame.size.width
+        var mpopViewSizeHeigh:CGFloat = mPopupStationView.frame.size.height
+        
+        mPopupStationView.frame = CGRectMake((locatPoint.x * scrollView.zoomScale - scrollView.contentOffset.x ) - mpopViewSizeWidth / 2, (locatPoint.y * scrollView.zoomScale - scrollView.contentOffset.y) - mpopViewSizeHeigh, mpopViewSizeWidth, mpopViewSizeHeigh)
+    }
+    
+    /*******************************************************************************
+    *      IBActions
+    *******************************************************************************/
     
     // 控制图片放大和缩小
     @IBAction func ControllImage(sender:UIButton) {
@@ -244,7 +276,21 @@ class Main: UIViewController,UIScrollViewDelegate {
             self.mScrollView.zoomScale = self.mScrollView.zoomScale
             
         }
-
+        
+    }
+    
+    // 双击之后真个scrollView放大
+    func doubleTapAction(myTapGesture :UITapGestureRecognizer) {
+        var doubleOffsetX:CGFloat = (mScrollView.bounds.size.width >
+            mScrollView.contentSize.width) ? (mScrollView.bounds.size.width - mScrollView.contentSize.width)/2 : 0.0
+        var doubleOffsetY:CGFloat = (mScrollView.bounds.size.height >
+            mScrollView.contentSize.height) ? (mScrollView.bounds.size.height - mScrollView.contentSize.height)/2 : 0.0
+        
+        self.mMainWrapper.center = CGPointMake(mScrollView.contentSize.width * 0.5 + doubleOffsetX , mScrollView.contentSize.height * 0.5 + doubleOffsetY)
+        
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.mScrollView.zoomScale = (self.mScrollView.zoomScale + 0.5)
+        })
     }
     
     /**
@@ -385,8 +431,102 @@ class Main: UIViewController,UIScrollViewDelegate {
         self.navigationItem.backBarButtonItem = backButton
         self.navigationController?.pushViewController(helpIcon, animated: true)
     }
+    
+    // 携带起点和终点车站id 跳转到路线搜索结果页面
+    @IBAction func popToRouteSearchResult() {
+        
+        var routeSearch : RouteSearch = self.storyboard?.instantiateViewControllerWithIdentifier("RouteSearch") as RouteSearch
+        
+        routeSearch.startStationText = self.setStationStartId
+        routeSearch.endStationText = self.setStationEndId
+        
+        setSationIdCache()
+        
+        var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = backButton
+        
+        self.navigationController?.pushViewController(routeSearch, animated:true)
+    }
+    
+    // 跳转到相应地表
+    @IBAction func showLnadMarkList(sender : UIButton) {
+        var landMark: LandMarkListController = self.storyboard?.instantiateViewControllerWithIdentifier("landmarklist") as LandMarkListController
+        
+        var landTypeTemp : Int = 0
+        if (sender == mPopupBtnTravle) {
+            odbLandMark("PUBLIC_12".localizedString())
+            landTypeTemp = 0
+            landMark.title = "INF002_11".localizedString()
+        } else if (sender == mPopupBtnFood) {
+            odbLandMark("PUBLIC_13".localizedString())
+            landTypeTemp = 1
+            landMark.title = "INF002_09".localizedString()
+        } else {
+            odbLandMark("PUBLIC_09".localizedString())
+            landTypeTemp = 2
+            landMark.title = "PUBLIC_09".localizedString()
+        }
+        
+        if(landMarkArr.count != 0){
+            var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+            self.navigationItem.backBarButtonItem = backButton
+            landMark.landMarks = landMarkArr as? Array<MstT04LandMarkTable>
+            landMark.landMarkStatId = self.selectStationGroupId
+            landMark.landMarkType = landTypeTemp
+            self.navigationController?.pushViewController(landMark, animated: true)
+        }
+        
+    }
+    
+    // 点击弹框中的设置起点和终点， 记录当前的数据， 完成后跳转页面
+    func setStation(sender:UIButton) {
+        switch sender {
+        case mPopupBtnStart:
+            self.setStationStartId = self.mCuttentStationID
+            
+            self.mPopupStationView.hidden = true
+            addUStartITag()
+            
+            // 判断终点是否设置，设置了的话，就直接跳查找结果页面
+            if (setStationEndId != "") {
+                popToRouteSearchResult()
+            }
+            
+            
+        case mPopupBtnEnd:
+            self.setStationEndId = self.mCuttentStationID
+            self.mPopupStationView.hidden = true
+            addUEndITag()
+            
+            // 判断起点是否设置，设置了的话，就直接跳查找结果页面
+            if (setStationStartId != "") {
+                popToRouteSearchResult()
+            }
+        case mPopupBtnMore:
+            // 跳转到此站详细页面
+            mPopupStationView.hidden = true
+            var stationDetail : StationDetail = self.storyboard?.instantiateViewControllerWithIdentifier("StationDetail") as StationDetail
+            stationDetail.stat_id = self.mCuttentStationID
+            stationDetail.statMetroId = self.selectStationMetroID
+            stationDetail.cellJPName = self.selectStationNameJP
+            stationDetail.cellJPNameKana = self.selectStationNameKana
+            
+            var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+            self.navigationItem.backBarButtonItem = backButton
+            
+            self.navigationController?.pushViewController(stationDetail, animated:true)
+            
+        default:
+            mPopupStationView.hidden = false
+        }
+    }
 
 
+
+
+    /*******************************************************************************
+    *    Private Methods
+    *******************************************************************************/
     
     // 根据点击的像素点从db中获取车站id
     func singleTapAction(sender:UITapGestureRecognizer) {
@@ -434,7 +574,6 @@ class Main: UIViewController,UIScrollViewDelegate {
             var ptX1:CGFloat=(locatPoint.x * mScrollView.zoomScale - mScrollView.contentOffset.x ) - mPopupStationView.frame.size.width / 2
             var ptY1:CGFloat=(locatPoint.y * mScrollView.zoomScale - mScrollView.contentOffset.y) - mPopupStationView.frame.size.height
             
-            
             println("\(locatPoint.x),\(locatPoint.y )     ?         \(mScrollView.zoomScale),   \(mScrollView.contentOffset.y)")
             
             var height1:CGFloat=mPopupStationView.frame.size.height
@@ -468,8 +607,7 @@ class Main: UIViewController,UIScrollViewDelegate {
     }
     
     func setPopViewInLineGraph(PointX : CGFloat, PointY : CGFloat) {
-        
-        
+
         // 将scroll大小固定，设置弹出气泡信息
         self.mScrollView.zoomScale = 1
         var offertoPoint : CGPoint = CGPoint()
@@ -515,102 +653,30 @@ class Main: UIViewController,UIScrollViewDelegate {
             mPopupLineView.addSubview(mlinesLineImg)
         }
         mPopupViewSetImage.addSubview(mPopupLineView)
-        
-        
-        
+
         // 添加相应的地表个数
          odbLandMark("PUBLIC_09".localizedString())
-        
          if (landMarkArr.count > 0 ){
             mViewShowLandMark(landMarkArr.count, viewTag : 2004)
-        
          } else {
             mViewShowLandMark(0, viewTag : 2004)
-            
         }
         
          odbLandMark("PUBLIC_12".localizedString())
          if (landMarkArr.count > 0 ){
             mViewShowLandMark(landMarkArr.count, viewTag : 2002)
-            
          } else {
             mViewShowLandMark(0, viewTag : 2002)
-        
-        }
+         }
          odbLandMark("PUBLIC_13".localizedString())
          if (landMarkArr.count > 0 ){
             mViewShowLandMark(landMarkArr.count, viewTag : 2003)
-            
          } else {
             mViewShowLandMark(0, viewTag : 2003)
-        
-        }
-        
-        
-        
+         }
+
     }
-    
-    
-    // 点击弹框中的设置起点和终点， 记录当前的数据， 完成后跳转页面
-    func setStation(sender:UIButton) {
-        switch sender {
-        case mPopupBtnStart:
-            self.setStationStartId = self.mCuttentStationID
-            
-            self.mPopupStationView.hidden = true
-            addUStartITag()
-            
-            // 判断终点是否设置，设置了的话，就直接跳查找结果页面
-            if (setStationEndId != "") {
-                popToRouteSearchResult()
-            }
-            
-            
-        case mPopupBtnEnd:
-            self.setStationEndId = self.mCuttentStationID
-            self.mPopupStationView.hidden = true
-            addUEndITag()
-            
-            // 判断起点是否设置，设置了的话，就直接跳查找结果页面
-            if (setStationStartId != "") {
-                popToRouteSearchResult()
-            }
-        case mPopupBtnMore:
-            // 跳转到此站详细页面
-            mPopupStationView.hidden = true
-            var stationDetail : StationDetail = self.storyboard?.instantiateViewControllerWithIdentifier("StationDetail") as StationDetail
-            stationDetail.stat_id = self.mCuttentStationID
-            stationDetail.statMetroId = self.selectStationMetroID
-            stationDetail.cellJPName = self.selectStationNameJP
-            stationDetail.cellJPNameKana = self.selectStationNameKana
-            
-            var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
-            self.navigationItem.backBarButtonItem = backButton
-            
-            self.navigationController?.pushViewController(stationDetail, animated:true)
-            
-        default:
-            mPopupStationView.hidden = false
-        }
-    }
-    
-    
-    // 携带起点和终点车站id 跳转到路线搜索结果页面
-    @IBAction func popToRouteSearchResult() {
-        
-        var routeSearch : RouteSearch = self.storyboard?.instantiateViewControllerWithIdentifier("RouteSearch") as RouteSearch
-        
-        routeSearch.startStationText = self.setStationStartId
-        routeSearch.endStationText = self.setStationEndId
-        
-        setSationIdCache()
-        
-        var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
-        self.navigationItem.backBarButtonItem = backButton
-        
-        self.navigationController?.pushViewController(routeSearch, animated:true)
-    }
-    
+
     // 根据选中的车站的左上角坐标 ，在选中的地方添加半透明遮罩
     func addUStartITag() {
         
@@ -665,38 +731,6 @@ class Main: UIViewController,UIScrollViewDelegate {
         self.tagmViewShade = 2
     }
     
-    // scroll移动是也不断设置弹窗位置
-    func scrollViewDidScroll(scrollView: UIScrollView) {
-        if mPopupStationView.hidden == false
-        {
-            getPopStationViewLocate(scrollView)
-        }
-    }
-    
-    // scroll放大和缩小后是也不断设置弹窗位置
-    func scrollViewDidZoom(scrollView: UIScrollView) {
-        if mPopupStationView.hidden == false
-        {
-            getPopStationViewLocate(scrollView)
-        }
-    }
-
-    func rectAfterZoomed() -> CGRect{
-        var ptX:CGFloat=(locatPoint.x * mScrollView.zoomScale - mScrollView.contentOffset.x ) - mPopupStationView.frame.size.width / 2
-        var ptY:CGFloat=(locatPoint.y * mScrollView.zoomScale - mScrollView.contentOffset.y) - mPopupStationView.frame.size.height / 2
-        var height:CGFloat=mPopupStationView.frame.size.height
-        var width:CGFloat=mPopupStationView.frame.size.width
-        return CGRectMake(ptX,ptY,width,height)
-    }
-    // 获取弹窗消息的位置
-    func getPopStationViewLocate(scrollView: UIScrollView) {
-        
-        var mpopViewSizeWidth:CGFloat = mPopupStationView.frame.size.width
-        var mpopViewSizeHeigh:CGFloat = mPopupStationView.frame.size.height
-        
-        mPopupStationView.frame = CGRectMake((locatPoint.x * scrollView.zoomScale - scrollView.contentOffset.x ) - mpopViewSizeWidth / 2, (locatPoint.y * scrollView.zoomScale - scrollView.contentOffset.y) - mpopViewSizeHeigh, mpopViewSizeWidth, mpopViewSizeHeigh)
-    }
-
     // 查询站点的地标信息
     func odbLandMark(type: String) {
 
@@ -704,40 +738,8 @@ class Main: UIViewController,UIScrollViewDelegate {
          landMarkArr = mstT04Table.queryLandMarkByStatId(self.selectStationGroupId, lmakType: type)
         
     }
-    
-    // 跳转到相应地表
-    @IBAction func showLnadMarkList(sender : UIButton) {
-    var landMark: LandMarkListController = self.storyboard?.instantiateViewControllerWithIdentifier("landmarklist") as LandMarkListController
-        
-        var landTypeTemp : Int = 0
-    if (sender == mPopupBtnTravle) {
-        odbLandMark("PUBLIC_12".localizedString())
-        landTypeTemp = 0
-       landMark.title = "INF002_11".localizedString()
-    } else if (sender == mPopupBtnFood) {
-        odbLandMark("PUBLIC_13".localizedString())
-        landTypeTemp = 1
-    landMark.title = "INF002_09".localizedString()
-    } else {
-        odbLandMark("PUBLIC_09".localizedString())
-        landTypeTemp = 2
-    landMark.title = "PUBLIC_09".localizedString()
-    }
-    
 
-        if(landMarkArr.count != 0){
-            var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
-            self.navigationItem.backBarButtonItem = backButton
-            landMark.landMarks = landMarkArr as? Array<MstT04LandMarkTable>
-            landMark.landMarkStatId = self.selectStationGroupId
-            landMark.landMarkType = landTypeTemp
-            self.navigationController?.pushViewController(landMark, animated: true)
-        }
-   
-    }
-    
-    
-    // 添加地表个数的小lable
+    // 添加某站点附近地表个数的小lable
     func mViewShowLandMark(landMarkCount : Int, viewTag : Int) {
         if (landMarkCount == 0){
             var mlbl = mPopupStationView.viewWithTag(viewTag) as UILabel!
@@ -767,22 +769,29 @@ class Main: UIViewController,UIScrollViewDelegate {
             }
             
             self.mPopupStationView.addSubview(mlblShowCount)
-        
+
         }
-        
-        
 
     }
     
-    // 放置本地数据 记录起点和重点的ID
+    // 放置本地数据 记录起点和终点的ID
     func setSationIdCache() {
         self.appDelegate.startStatId = self.setStationStartId
         self.appDelegate.endStatId = self.self.setStationEndId
     }
     
-    // 读取本地数据 记录起点和重点的ID
+    // 读取本地数据 记录起点和终点的ID
     func readStationIdCache() {
         self.setStationStartId = self.appDelegate.startStatId
         self.setStationEndId = self.appDelegate.endStatId
+    }
+    
+    /*******************************************************************************
+    *    Unused Codes
+    *******************************************************************************/
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        
     }
 }
