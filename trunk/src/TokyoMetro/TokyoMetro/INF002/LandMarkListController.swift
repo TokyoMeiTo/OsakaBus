@@ -140,7 +140,7 @@ class LandMarkListController: UIViewController, UITableViewDelegate, UITableView
     }
 
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 172
+        return 171
     }
 
     
@@ -206,24 +206,24 @@ class LandMarkListController: UIViewController, UITableViewDelegate, UITableView
         var btnFav:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
         btnFav.frame = CGRect(x:15,y:10,width:40,height:40)
         
-        var tableUsrT03:INF002FavDao = INF002FavDao()
-        var lmkFav:UsrT03FavoriteTable? = tableUsrT03.queryFav("\(landMarks![indexPath.row].item(MSTT04_LANDMARK_LMAK_ID))")
+        var mINF002Model:INF002Model = INF002Model()
+        
+        var mINF002Data:UsrT03FavoriteTableData = mINF002Model.findFav("\(landMarks![indexPath.row].item(MSTT04_LANDMARK_LMAK_ID))")
         
         var imgFav = UIImage(named: "INF00202.png")
-        if(lmkFav!.rowid != nil && lmkFav!.rowid != ""){
+        if(mINF002Data.ext4 != ""){
             imgFav = UIImage(named: "INF00206.png")
         }
         
         btnFav.setBackgroundImage(imgFav, forState: UIControlState.Normal)
-        btnFav.tag = BTN_FAV_TAG
+        btnFav.tag = BTN_FAV_TAG + indexPath.row
         
         btnFav.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
         cell!.contentView.addSubview(btnFav)
         
-        //        if(landMarks![indexPath.row].item(MSTT04_LANDMARK_RANK) != nil && "\(landMarks![indexPath.row].item(MSTT04_LANDMARK_RANK))" != ""){
-        if(true){
+        if(landMarks![indexPath.row].item(MSTT04_LANDMARK_RANK) != nil && "\(landMarks![indexPath.row].item(MSTT04_LANDMARK_RANK))" != ""){
             lblTemp.frame = CGRect(x:0,y:125,width:tableView.frame.width,height:45)
-            //            ("\(landMarks![indexPath.row].item(MSTT04_LANDMARK_MICI_RANK))" as NSString).integerValue
+            ("\(landMarks![indexPath.row].item(MSTT04_LANDMARK_RANK))" as NSString).integerValue
             for(var i=0;i < 4; i++){
                 var xFloat:CGFloat = 15//100
                 
@@ -315,30 +315,29 @@ class LandMarkListController: UIViewController, UITableViewDelegate, UITableView
             self.navigationItem.backBarButtonItem = backButton
 
             self.navigationController!.pushViewController(landMarkSearchController, animated:true)
-        case BTN_FAV_TAG:
-            var tableUsrT03:INF002FavDao = INF002FavDao()
-//            var lmkFav:UsrT03FavoriteTable? = tableUsrT03.queryFav("\(landMarks!.item(MSTT04_LANDMARK_LMAK_ID))")
-//            //
-//            if(lmkFav!.rowid != nil && lmkFav!.rowid != ""){
-//                lmkFav!.delete()
-//                tbList.reloadData()
-//            }else{
-//                var lmkFavAdd:UsrT03FavoriteTable = UsrT03FavoriteTable()
-//                lmkFavAdd.lmakId = "\(landMark!.item(MSTT04_LANDMARK_LMAK_ID))"
-//                lmkFavAdd.favoType = "3"
-//                lmkFavAdd.favoTime = RemindDetailController.convertDate2LocalTime(NSDate.date())
-//                lmkFavAdd.lineId = "\(landMark!.item(MSTT04_LANDMARK_LINE_ID))"
-//                lmkFavAdd.statId = "\(landMark!.item(MSTT04_LANDMARK_STAT_ID))"
-//                lmkFavAdd.statExitId = "0"
-//                lmkFavAdd.ruteId = "0"
-//                lmkFavAdd.statExitId = "0"
-//                lmkFavAdd.ext4 = "\(landMark!.item(MSTT04_LANDMARK_LMAK_TYPE))"
-//                if(lmkFavAdd.insert()){
-//                    tbList.reloadData()
-//                }
-//            }
         default:
-            println("nothing")
+            var mINF002Model:INF002Model = INF002Model()
+            
+            var mINF002Data:UsrT03FavoriteTableData = mINF002Model.findFav("\(landMarks![sender.tag - BTN_FAV_TAG].item(MSTT04_LANDMARK_LMAK_ID))")
+            //
+            if(mINF002Data.ext4 != ""){
+                mINF002Model.deleteFav(mINF002Data)
+                tbList.reloadData()
+            }else{
+                var lmkFavAdd:UsrT03FavoriteTableData = UsrT03FavoriteTableData()
+                lmkFavAdd.lmakId = "\(landMarks![sender.tag - BTN_FAV_TAG].item(MSTT04_LANDMARK_LMAK_ID))"
+                lmkFavAdd.favoType = "03"
+                lmkFavAdd.favoTime = RemindDetailController.convertDate2LocalTime(NSDate.date())
+                lmkFavAdd.lineId = "\(landMarks![sender.tag - BTN_FAV_TAG].item(MSTT04_LANDMARK_LINE_ID))"
+                lmkFavAdd.statId = "\(landMarks![sender.tag - BTN_FAV_TAG].item(MSTT04_LANDMARK_STAT_ID))"
+                lmkFavAdd.statExitId = "0"
+                lmkFavAdd.ruteId = "0"
+                lmkFavAdd.statExitId = "0"
+                lmkFavAdd.ext4 = "\(landMarks![sender.tag - BTN_FAV_TAG].item(MSTT04_LANDMARK_LMAK_TYPE))"
+                mINF002Model.insertFav(lmkFavAdd)
+                tbList.reloadData()
+            }
+
         }
     }
     

@@ -400,7 +400,7 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
                 stations = selectStationTable(mLines![row].lineId)
                 pickerView.reloadComponent(NUM_1)
                 pickerView.selectRow(NUM_0, inComponent: NUM_1, animated: true)
-                station = "\(stations[NUM_0].statId)".station()
+                station = line + " " + "\(stations[NUM_0].statId)".station()
                 var stationsDirt = selectStationTableDirt(mLines![row].lineId)
                 stationDirt0 = "\(stationsDirt[0].item(MSTT02_STAT_ID))".station()
                 stationDirt1 = "\(stationsDirt[1].item(MSTT02_STAT_ID))".station()
@@ -416,7 +416,7 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
                 }
             }else{
                 if(row < stations.count){
-                    station = "\(stations[row].statId)".station()
+                    station = line + "\(stations[row].statId)".station()
                     if(segIndex == NUM_0){
                         statToId = stations[row].statId
                         usrT01Data!.statToId = stations[row].statId
@@ -434,11 +434,11 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
                 fromStations = selectStationTable(mLines![row].lineId)
                 pickerView.reloadComponent(NUM_1)
                 pickerView.selectRow(NUM_0, inComponent: NUM_1, animated: true)
-                fromStation = "\(fromStations[NUM_0].statName)"
+                fromStation = mLines![row].lineId.line() + " " + fromStations[NUM_0].statId.station()
                 usrT01Data!.statFromId = stations[NUM_0].statId
             }else{
                 if(row < fromStations.count){
-                    fromStation = "\(fromStations[row].statId)".station()
+                    fromStation = line + " " + "\(fromStations[row].statId)".station()
                     usrT01Data!.statFromId = stations[row].statId
                 }
             }

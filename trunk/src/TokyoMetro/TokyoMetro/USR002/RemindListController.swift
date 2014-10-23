@@ -217,15 +217,15 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
             }
         }
         
-        //pushNotificationLastMetro("\(items[indexPath.section][0])的\(items[indexPath.section][3][indexPath.row])即将发车", notifyTime:"\(items[indexPath.section][3][indexPath.row])")
+        pushNotificationLastMetro("\(items[indexPath.section][0])的\(items[indexPath.section][3][indexPath.row])即将发车", notifyTime:"\(items[indexPath.section][3][indexPath.row])")
         
-        var lblMetroType = UILabel(frame: CGRect(x:15,y:20,width:230,height:30))
+        var lblMetroType = UILabel(frame: CGRect(x:15,y:50,width:230,height:30))
         lblMetroType.font = UIFont.systemFontOfSize(14)
         lblMetroType.textColor = UIColor.lightGrayColor()
         lblMetroType.text = items[indexPath.section][2][0] as? String
         lblMetroType.textAlignment = NSTextAlignment.Left
         
-        var lblLastMetroTime = UILabel(frame: CGRect(x:45,y:0,width:230,height:50))
+        var lblLastMetroTime = UILabel(frame: CGRect(x:15,y:0,width:230,height:50))
         lblLastMetroTime.tag = 101
         var fontStyle:UIFont = UIFont.preferredFontForTextStyle("UltraLight")
         //fontStyle.fontName = "Helvetica Neue"
@@ -243,7 +243,7 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
         lblLastMetroDirt.text = items[indexPath.section][1][indexPath.row] as? String
         lblLastMetroDirt.textAlignment = NSTextAlignment.Right
         
-        var lblStatInfo = UILabel(frame: CGRect(x:15,y:50,width:230,height:30))
+        var lblStatInfo = UILabel(frame: CGRect(x:75,y:50,width:230,height:30))
         lblStatInfo.font = UIFont.systemFontOfSize(14)
         lblStatInfo.textColor = UIColor.lightGrayColor()
         lblStatInfo.text = items[indexPath.section][0] as? String
@@ -267,12 +267,13 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
             var strFirst:NSString = mTrainAlarms![indexPath.section].alamFlag
             if(strFirst.integerValue == 0){
                 switchAralm.on = false
-                cell!.backgroundColor = UIColor(red: 215/255,
-                    green: 255/255,
-                    blue: 255/255,
+                cell!.backgroundColor = UIColor(red: 239/255,
+                    green: 239/255,
+                    blue: 244/255,
                     alpha: 1.0)
             }else{
                 switchAralm.on = true
+                cell!.backgroundColor = UIColor.whiteColor()
             }
         }else if(indexPath.row == 1){
             var strLast:NSString = mTrainAlarms![indexPath.section].alamFlag
@@ -505,6 +506,8 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
                 mTrainAlarms![section].alamFlag = "0"
             }
             mUsr002Model.updateUsrT02(mTrainAlarms![section])
+            loadItems()
+            tbList.reloadData()
         }
         switch sender{
         case btnCancel:
