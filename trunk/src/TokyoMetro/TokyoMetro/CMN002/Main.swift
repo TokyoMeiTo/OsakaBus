@@ -168,7 +168,7 @@ class Main: UIViewController,UIScrollViewDelegate {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        mImgLineGraph.image = UIImage(named: "MetroCH".getLineGraphImagePath())
+        mImgLineGraph.image = "MetroCH".image("LineGraph")
         
         self.mPopupStationView.hidden = true
         mIsMenuShow = false
