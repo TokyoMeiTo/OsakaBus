@@ -73,8 +73,8 @@
                           ODB_DATATYPE_TEXT,
                           ODB_DATATYPE_TEXT,
                           ODB_DATATYPE_TEXT,
-                          ODB_DATATYPE_REAL,
-                          ODB_DATATYPE_REAL,
+                          ODB_DATATYPE_TEXT,
+                          ODB_DATATYPE_TEXT,
                           ODB_DATATYPE_TEXT,
                           ODB_DATATYPE_TEXT,
                           ODB_DATATYPE_TEXT,nil];
