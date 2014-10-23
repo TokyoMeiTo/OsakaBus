@@ -776,25 +776,13 @@ class Main: UIViewController,UIScrollViewDelegate {
     
     // 放置本地数据 记录起点和重点的ID
     func setSationIdCache() {
-        
-        var accoutDefault : NSUserDefaults = NSUserDefaults()
-        var historyStationdate: NSMutableArray = NSMutableArray.array()
-        historyStationdate.addObject(self.setStationStartId)
-        historyStationdate.addObject(self.setStationEndId)
-        accoutDefault.setObject(historyStationdate, forKey: "historyStationdata")
-        
+        self.appDelegate.startStatId = self.setStationStartId
+        self.appDelegate.endStatId = self.self.setStationEndId
     }
     
     // 读取本地数据 记录起点和重点的ID
     func readStationIdCache() {
-        var accoutDefaultRead : NSUserDefaults = NSUserDefaults()
-        
-        println(accoutDefaultRead.objectForKey("historyStationdata")?.description)
-        
-        if accoutDefaultRead.objectForKey("historyStationdata") != nil {
-            var readdate : NSMutableArray = accoutDefaultRead.objectForKey("historyStationdata") as NSMutableArray
-            self.setStationStartId = readdate[0] as String
-            self.setStationEndId = readdate[1] as String
-        }
+        self.setStationStartId = self.appDelegate.startStatId
+        self.setStationEndId = self.appDelegate.endStatId
     }
 }
