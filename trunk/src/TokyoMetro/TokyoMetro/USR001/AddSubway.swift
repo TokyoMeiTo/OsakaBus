@@ -30,7 +30,7 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var ruteArr: NSMutableArray = NSMutableArray.array()
     
     var detailArr: NSMutableArray = NSMutableArray.array()
-    
+    // 收藏路线的rowid
     var ruteRowIdArr: NSMutableArray = NSMutableArray.array()
     
     /* 地标一览 */
@@ -40,8 +40,10 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var landMarkRwoIdArr: NSMutableArray = NSMutableArray.array()
     // 存放地标id
     var landMarkIdStr: String = ""
-    
+    // tableview的选中行
     var selectIndexPath: NSIndexPath?
+    
+    var model: Usr001AddSubwayModel?
     
     /*******************************************************************************
     * Overrides From UIViewController
@@ -51,6 +53,8 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
         super.viewDidLoad()
 
         self.title = "USR001_01".localizedString()
+        
+        model = Usr001AddSubwayModel()
         
     }
     
@@ -66,11 +70,12 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
         
         // 返回刷新页面
-        odbRoute()
-        odbStation()
-        
-        if (segment.selectedSegmentIndex == 2 || segment.selectedSegmentIndex == 3 || segment.selectedSegmentIndex == 4) {
+        if (segment.selectedSegmentIndex == 1) {
+            odbRoute()
+        } else if (segment.selectedSegmentIndex == 2 || segment.selectedSegmentIndex == 3 || segment.selectedSegmentIndex == 4) {
             selectLandMarkId(segment.selectedSegmentIndex)
+        } else {
+            odbStation()
         }
     }
     
@@ -260,9 +265,9 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
             var tableUsrT03:INF002FavDao = INF002FavDao()
             var lmkFav:UsrT03FavoriteTable? = tableUsrT03.queryFav("\(key.item(MSTT04_LANDMARK_LMAK_ID))")
             
-            var imgFav = UIImage(named: "INF00202.png")
+            var imgFav = UIImage(named: "INF00202")
             if(lmkFav!.rowid != nil && lmkFav!.rowid != ""){
-                imgFav = UIImage(named: "INF00206.png")
+                imgFav = UIImage(named: "INF00206")
             }
             
             btnFav.setBackgroundImage(imgFav, forState: UIControlState.Normal)
@@ -281,7 +286,7 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
                     }
                     
                     var imageViewStar = UIImageView(frame: CGRectMake(xFloat, 130, 15, 15))
-                    var imageStar = UIImage(named: "INF00209.png")
+                    var imageStar = UIImage(named: "INF00209")
                     imageViewStar.image = imageStar
                     cell.addSubview(imageViewStar)
                 }
@@ -297,21 +302,19 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
         if(editingStyle == UITableViewCellEditingStyle.Delete){
             
             if (segment.selectedSegmentIndex == 0) {
-                
-                if (removeSubway(indexPath.row)) {
-                    stationArr.removeObjectAtIndex(indexPath.row)
-                    table.reloadData()
+                if (model!.removeCollection((stationArr[indexPath.row] as UsrT03FavoriteTable).rowid)) {
+
+                    odbStation()
                 }
             } else if (segment.selectedSegmentIndex == 1) {
-                if (removeRute(indexPath.row)) {
-                    ruteArr.removeObjectAtIndex(indexPath.row)
-                    ruteRowIdArr.removeObjectAtIndex(indexPath.row)
-                    table.reloadData()
+                if (model!.removeCollection(ruteRowIdArr[indexPath.row] as? String)) {
+
+                    odbRoute()
                 }
             } else {
-                if (removeLandMark(indexPath.row)) {
-                    landMarks.removeObjectAtIndex(indexPath.row)
-                    table.reloadData()
+                if (model!.removeCollection((landMarkRwoIdArr[indexPath.row] as UsrT03FavoriteTable).rowid)) {
+
+                    selectLandMarkId(segment.selectedSegmentIndex)
                 }
             }
             
@@ -327,22 +330,12 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         if (sender.selectedSegmentIndex == 0) {
             
-            if (stationArr.count == 0) {
-                table.hidden = true
-                table.reloadData()
-            } else {
-                table.hidden = false
-                table.reloadData()
-            }
-            
+            odbStation()
+
         } else if (sender.selectedSegmentIndex == 1) {
-            if (ruteArr.count == 0) {
-                table.hidden = true
-                table.reloadData()
-            } else {
-                table.hidden = false
-                table.reloadData()
-            }
+            
+            odbRoute()
+ 
         } else {
             selectLandMarkId(sender.selectedSegmentIndex)
         }
@@ -395,8 +388,10 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         if (stationArr.count == 0) {
             self.table.hidden = true
+        } else {
+            self.table.hidden = false
         }
-        
+        self.table.reloadData()
     }
     
     
@@ -422,34 +417,13 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 ruteRowIdArr.addObject(key.rowid)
             }
         }
-
-    }
-    
-    // 删除站点
-    func removeSubway(index: Int) -> Bool {
-        var table = UsrT03FavoriteTable()
-        var map: UsrT03FavoriteTable = stationArr[index] as UsrT03FavoriteTable
-        table.rowid = map.rowid
         
-        return table.delete()
-    }
-    
-    // 删除路线
-    func removeRute(index: Int) -> Bool {
-        var table = UsrT03FavoriteTable()
-//        var map: UsrT03FavoriteTable = ruteArr[index] as UsrT03FavoriteTable
-        table.rowid = ruteRowIdArr[index] as String
-        
-        return table.delete()
-    }
-    
-    // 删除地标
-    func removeLandMark(index: Int) -> Bool {
-        var table = UsrT03FavoriteTable()
-        var key = landMarkRwoIdArr[index] as UsrT03FavoriteTable
-        table.rowid = key.rowid
-        
-        return table.delete()
+        if (ruteArr.count == 0) {
+            self.table.hidden = true
+        } else {
+            self.table.hidden = false
+        }
+        self.table.reloadData()
     }
     
     

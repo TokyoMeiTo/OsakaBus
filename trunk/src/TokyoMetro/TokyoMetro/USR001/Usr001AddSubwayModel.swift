@@ -11,29 +11,22 @@ import Foundation
 
 class Usr001AddSubwayModel {
     
-    // 删除站点
-//    func removeSubway(ruteRowId: String) -> Bool {
-//        var table = UsrT03FavoriteTable()
-//        var map: UsrT03FavoriteTable = stationArr[index] as UsrT03FavoriteTable
-//        table.rowid = map.rowid
-//        
-//        return table.delete()
-//    }
-//    
-//    // 删除路线
-//    func removeRute(ruteRowId: String) -> Bool {
-//        var table = UsrT03FavoriteTable()
-//        table.rowid = ruteRowId
-//        
-//        return table.delete()
-//    }
-//    
-//    // 删除地标
-//    func removeLandMark(ruteRowId: String) -> Bool {
-//        var table = UsrT03FavoriteTable()
-//        var key = landMarkRwoIdArr[index] as UsrT03FavoriteTable
-//        table.rowid = key.rowid
-//        
-//        return table.delete()
-//    }
+    
+    // 删除收藏表中的数据
+    func removeCollection(ruteRowId: String?) -> Bool {
+        // 没有rowid时不让删除
+        if (ruteRowId == nil || ruteRowId == "") {
+            return false
+        }
+        
+        var table = UsrT03FavoriteTable()
+        table.rowid = ruteRowId!
+        
+        if (table.selectAll().count > 0) {
+            return table.delete()
+        } else {
+            return false
+        }
+    }
+
 }
