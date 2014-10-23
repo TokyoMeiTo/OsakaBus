@@ -10,6 +10,29 @@ import Foundation
 
 class Sta002TimeTableModel {
     
+    
+    /*
+    *  查询并获取时刻表数据
+    */
+    func odbDirtStatId(statId: String?) -> [String]{
+        
+        var dirtStationArr = [String]()
+        if (statId == nil || statId == "") {
+            return dirtStationArr
+        }
+        
+        var table = LinT01TrainScheduleTrainTable()
+        var rows = table.excuteQuery("select *, ROWID from LINT01_TRAIN_SCHEDULE where 1 = 1 and STAT_ID = '\(statId!)' and FIRST_TRAIN_FLAG = '1' and SCHE_TYPE = '1'")
+        
+        
+        for key in rows {
+            key as LinT01TrainScheduleTrainTable
+            dirtStationArr.append(key.item(LINT01_TRAIN_SCHEDULE_DIRT_STAT_ID) as String)
+        }
+        
+        return dirtStationArr
+    }
+    
     func cellHeight(timeArr: NSMutableArray,index: Int) -> CGFloat {
         
         if (timeArr[index].count <= 6) {

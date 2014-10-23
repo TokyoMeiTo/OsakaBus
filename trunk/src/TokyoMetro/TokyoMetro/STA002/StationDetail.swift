@@ -101,8 +101,6 @@ class StationDetail: UIViewController, UITableViewDelegate, UITableViewDataSourc
         addLineView()
         // 添加首末班车时间
         addLineTime()
-        // 添加站点相关信息的链接
-//        addStationSelect()
         // 检索该站是否已收藏
         odbCollectStation()
 
@@ -233,6 +231,9 @@ class StationDetail: UIViewController, UITableViewDelegate, UITableViewDataSourc
 *      IBActions
 *******************************************************************************/
     
+    /*
+    *  出口信息画面跳转
+    */
     @IBAction func showStationExit() {
         
         var exitInfo: ExitInfo = self.storyboard?.instantiateViewControllerWithIdentifier("ExitInfo") as ExitInfo
@@ -250,7 +251,9 @@ class StationDetail: UIViewController, UITableViewDelegate, UITableViewDataSourc
         self.navigationController?.pushViewController(exitInfo, animated: true)
     }
     
-    
+    /*
+    *  收藏按钮点击功能（添加、删除）
+    */
     @IBAction func addSubway() {
         
         if (btnCollect.tag == 401) {
@@ -265,7 +268,6 @@ class StationDetail: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 var sureBtn: UIAlertView = UIAlertView(title: "", message: "CMN003_21".localizedString(), delegate: self, cancelButtonTitle: "PUBLIC_06".localizedString())
                 
                 sureBtn.show()
-//                btnCollect.setBackgroundImage(UIImage(named: "station_collect_yellow"), forState: UIControlState.Normal)
                 odbCollectStation()
             } else {
                 var sureBtn: UIAlertView = UIAlertView(title: "", message: "CMN003_20".localizedString(), delegate: self, cancelButtonTitle: "PUBLIC_06".localizedString())
@@ -275,6 +277,9 @@ class StationDetail: UIViewController, UITableViewDelegate, UITableViewDataSourc
         }
     }
     
+    /*
+    *  周边地图跳转
+    */
     @IBAction func showLandMarkMap() {
         
         var landMarkMap: LandMarkMapController = self.storyboard?.instantiateViewControllerWithIdentifier("landmarkmap") as LandMarkMapController
@@ -297,6 +302,9 @@ class StationDetail: UIViewController, UITableViewDelegate, UITableViewDataSourc
         self.navigationController?.pushViewController(landMarkMap, animated: true)
     }
     
+    /*
+    *  设置起点
+    */
     @IBAction func setStartStation() {
         
         var routeSearch: RouteSearch = self.storyboard?.instantiateViewControllerWithIdentifier("RouteSearch") as RouteSearch
@@ -308,6 +316,9 @@ class StationDetail: UIViewController, UITableViewDelegate, UITableViewDataSourc
         self.navigationController?.pushViewController(routeSearch, animated: true)
     }
     
+    /*
+    *  设置终点
+    */
     @IBAction func setEndStation() {
         
         var routeSearch: RouteSearch = self.storyboard?.instantiateViewControllerWithIdentifier("RouteSearch") as RouteSearch
@@ -319,6 +330,9 @@ class StationDetail: UIViewController, UITableViewDelegate, UITableViewDataSourc
         self.navigationController?.pushViewController(routeSearch, animated: true)
     }
     
+    /*
+    *  平日、周末、假日segment切换
+    */
     @IBAction func weekendSegmentChanged(sender: UISegmentedControl) {
         
         if (sender.selectedSegmentIndex == 0) {
@@ -346,7 +360,9 @@ class StationDetail: UIViewController, UITableViewDelegate, UITableViewDataSourc
 *    Private Methods
 *******************************************************************************/
 
-    
+    /*
+    *  根据statid查groupid，然后根据groupid查出车站信息
+    */
     func odbStation(){
         var table = MstT02StationTable()
         
@@ -362,7 +378,9 @@ class StationDetail: UIViewController, UITableViewDelegate, UITableViewDataSourc
         }
     }
 
-    
+    /*
+    *  查询收藏表，判断该站点是否收藏并附上相应的图片
+    */
     func odbCollectStation() {
         var table = UsrT03FavoriteTable()
         table.favoType = "01"
@@ -378,7 +396,9 @@ class StationDetail: UIViewController, UITableViewDelegate, UITableViewDataSourc
         }
     }
 
-    
+    /*
+    *  代码画出该站点在所有地铁线上的站号
+    */
     func addLineView() {
         
         for (var i = 0; i < statSeqArr.count; i++) {
@@ -393,7 +413,9 @@ class StationDetail: UIViewController, UITableViewDelegate, UITableViewDataSourc
         
     }
 
-
+    /*
+    *  代码画出首末班车列表
+    */
     func addLineTime() {
 
         for key in statSeqArr {
@@ -433,6 +455,9 @@ class StationDetail: UIViewController, UITableViewDelegate, UITableViewDataSourc
 
     }
     
+    /*
+    *  代码画出车站的链接列表，并设置uiscrollview的高度
+    */
     func addStationSelect() {
 
         var table = UITableView(frame: CGRectMake(0, CGFloat(220 + depaTimeArr.count * 35 + 15), 320, CGFloat(44 * (selectList.count + landMarkTitleList.count) + 30)), style: UITableViewStyle.Plain)
@@ -445,7 +470,9 @@ class StationDetail: UIViewController, UITableViewDelegate, UITableViewDataSourc
         scrollView.contentSize = CGSizeMake(320, table.frame.origin.y + table.frame.height)
     }
     
-    
+    /*
+    *  景点、美食、购物链接跳转
+    */
     func showLnadMarkList(index: Int) {
         var landMark: LandMarkListController = self.storyboard?.instantiateViewControllerWithIdentifier("landmarklist") as LandMarkListController
         
@@ -469,6 +496,9 @@ class StationDetail: UIViewController, UITableViewDelegate, UITableViewDataSourc
 
     }
     
+    /*
+    *  站内商业设施跳转
+    */
     func showComercialInside() {
         var stationFacilities: StationFacilities = self.storyboard?.instantiateViewControllerWithIdentifier("StationFacilities") as StationFacilities
         stationFacilities.statId = group_id
@@ -479,6 +509,9 @@ class StationDetail: UIViewController, UITableViewDelegate, UITableViewDataSourc
         self.navigationController?.pushViewController(stationFacilities, animated: true)
     }
     
+    /*
+    *  时刻表跳转
+    */
     func showTime() {
     
         var timeDetail: TimeTable = self.storyboard?.instantiateViewControllerWithIdentifier("TimeTable") as TimeTable
@@ -493,6 +526,9 @@ class StationDetail: UIViewController, UITableViewDelegate, UITableViewDataSourc
         self.navigationController?.pushViewController(timeDetail, animated: true)
     }
     
+    /*
+    *  车站结构图跳转
+    */
     func showStationMap() {
         
         var stationMap: StationImg = self.storyboard?.instantiateViewControllerWithIdentifier("StationImg") as StationImg
@@ -504,6 +540,9 @@ class StationDetail: UIViewController, UITableViewDelegate, UITableViewDataSourc
         self.navigationController?.pushViewController(stationMap, animated: true)
     }
     
+    /*
+    *  车站便利设施跳转
+    */
     func showFacility() {
     
         var facilityList: FacilityList = self.storyboard?.instantiateViewControllerWithIdentifier("FacilityList") as FacilityList

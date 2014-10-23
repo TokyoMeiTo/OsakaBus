@@ -83,7 +83,7 @@ class TimeTable: UIViewController,UITableViewDelegate,UITableViewDataSource {
             statId = (lineArr[0] as MstT02StationTable).item(MSTT02_STAT_ID) as String
             statIcon.image = lineId.getLineImage()
         }
-        odbDirtStatId()
+        dirtStationArr = model!.odbDirtStatId(statId)
 
         setSegment()
         
@@ -444,17 +444,23 @@ class TimeTable: UIViewController,UITableViewDelegate,UITableViewDataSource {
 *    Private Methods
 *******************************************************************************/
     
-    func odbDirtStatId() {
-        var table = LinT01TrainScheduleTrainTable()
-        var rows = table.excuteQuery("select *, ROWID from LINT01_TRAIN_SCHEDULE where 1 = 1 and STAT_ID = '\(statId)' and FIRST_TRAIN_FLAG = '1' and SCHE_TYPE = '1'")
-        
-        dirtStationArr = [String]()
-        for key in rows {
-            key as LinT01TrainScheduleTrainTable
-            dirtStationArr.append(key.item(LINT01_TRAIN_SCHEDULE_DIRT_STAT_ID) as String)
-        }
-    }
+//    /*
+//    *  查询并获取时刻表数据
+//    */
+//    func odbDirtStatId() {
+//        var table = LinT01TrainScheduleTrainTable()
+//        var rows = table.excuteQuery("select *, ROWID from LINT01_TRAIN_SCHEDULE where 1 = 1 and STAT_ID = '\(statId)' and FIRST_TRAIN_FLAG = '1' and SCHE_TYPE = '1'")
+//        
+//        dirtStationArr = [String]()
+//        for key in rows {
+//            key as LinT01TrainScheduleTrainTable
+//            dirtStationArr.append(key.item(LINT01_TRAIN_SCHEDULE_DIRT_STAT_ID) as String)
+//        }
+//    }
     
+    /*
+    *  代码画出地铁线路列表
+    */
     func addLine() {
         
         for (var i = 0; i < lineArr.count; i++) {
@@ -495,6 +501,9 @@ class TimeTable: UIViewController,UITableViewDelegate,UITableViewDataSource {
         lineView.frame = CGRectMake(60, CGFloat((mScreenSize.height - viewHeight - 64)/2 + 64), 200, viewHeight)
     }
     
+    /*
+    *  地铁线路选择后重新查找数据
+    */
     func lineSelected(sender:UITapGestureRecognizer) {
         selectedIndex = sender.view!.tag - 300
         var key = lineArr[selectedIndex] as MstT02StationTable
@@ -502,7 +511,7 @@ class TimeTable: UIViewController,UITableViewDelegate,UITableViewDataSource {
         statId = key.item(MSTT02_STAT_ID) as String
         // 替换图标
         statIcon.image = lineId.getLineImage()
-        odbDirtStatId()
+        dirtStationArr = model!.odbDirtStatId(statId)
         setSegment()
         destTimeArr1.removeAllObjects()
         destTimeArr2.removeAllObjects()
@@ -516,6 +525,9 @@ class TimeTable: UIViewController,UITableViewDelegate,UITableViewDataSource {
         lineMenuView.hidden = true
     }
     
+    /*
+    *  重新设置segment
+    */
     func setSegment() {
         if (dirtStationArr.count > 0) {
             segment.removeAllSegments()
@@ -528,7 +540,9 @@ class TimeTable: UIViewController,UITableViewDelegate,UITableViewDataSource {
         
     }
     
-    
+    /*
+    *  查询时刻表数据（平日、周末、假日数据）
+    */
     func odbTime() {
         
         var index = segment.selectedSegmentIndex
@@ -583,7 +597,6 @@ class TimeTable: UIViewController,UITableViewDelegate,UITableViewDataSource {
             destTimeArr3.addObject(model!.initTimeArr(timeTypeArr2))
             destTimeArr3.addObject(model!.initTimeArr(timeTypeArr3))
         }
-        
         
     }
     

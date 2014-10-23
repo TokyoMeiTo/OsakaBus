@@ -11,10 +11,16 @@ import UIKit
 
 class StationLine: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
+    /*******************************************************************************
+    * IBOutlets
+    *******************************************************************************/
     @IBOutlet weak var table: UITableView!
     @IBOutlet weak var segment: UISegmentedControl!
     @IBOutlet weak var lineView: UIView!
     
+    /*******************************************************************************
+    * Private Properties
+    *******************************************************************************/
     // 存储车站信息数组
     var stationArr: NSMutableArray = NSMutableArray.arrayWithCapacity(26)
     // 存储地铁信息数组
@@ -26,6 +32,10 @@ class StationLine: UIViewController, UITableViewDataSource, UITableViewDelegate 
     
     var segmentIndex: Int = 0
     
+    
+    /*******************************************************************************
+    * Overrides From UIViewController
+    *******************************************************************************/
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -53,6 +63,156 @@ class StationLine: UIViewController, UITableViewDataSource, UITableViewDelegate 
     }
     
     
+    /*******************************************************************************
+    *    Implements Of UITableViewDelegate
+    *******************************************************************************/
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        if (segment.selectedSegmentIndex == 0) {
+            return 85
+        } else {
+            return 55
+        }
+    }
+
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
+        if (segment.selectedSegmentIndex == 0) {
+            var lineList: LineStationList = self.storyboard?.instantiateViewControllerWithIdentifier("LineStationList") as LineStationList
+            
+            let map = LineArr[indexPath.row] as MstT01LineTable
+            lineList.line_id = map.item(MSTT01_LINE_ID) as String
+            lineList.line_name = (map.item(MSTT01_LINE_ID) as String).line()
+            
+            var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+            self.navigationItem.backBarButtonItem = backButton
+            
+            self.navigationController?.pushViewController(lineList, animated: true)
+        } else {
+            var detail: StationDetail = self.storyboard?.instantiateViewControllerWithIdentifier("StationDetail") as StationDetail
+            
+            var map: MstT02StationTable = stationArr[indexPath.row] as MstT02StationTable
+            
+            detail.cellJPName = map.item(MSTT02_STAT_NAME) as String
+            detail.cellJPNameKana = map.item(MSTT02_STAT_NAME_KANA) as String
+            detail.stat_id = map.item(MSTT02_STAT_ID) as String
+            detail.statMetroId = map.item(MSTT02_STAT_METRO_ID) as String
+            
+            var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+            self.navigationItem.backBarButtonItem = backButton
+            
+            self.navigationController?.pushViewController(detail, animated: true)
+        }
+    }
+
+    
+    /*******************************************************************************
+    *      Implements Of UITableViewDataSource
+    *******************************************************************************/
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if (segment.selectedSegmentIndex == 0) {
+            return LineArr.count
+        } else {
+            return stationArr.count
+        }
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
+        if (segment.selectedSegmentIndex == 0) {
+            
+            var lineMap: MstT01LineTable = LineArr[indexPath.row] as MstT01LineTable
+            
+            if ((lineMap.item(MSTT01_LINE_ID) as String) == "28002") {
+                
+                let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("MLineCell", forIndexPath: indexPath) as UITableViewCell
+                
+                var lineName = cell.viewWithTag(402) as UILabel
+                lineName.text = (lineMap.item(MSTT01_LINE_ID) as String).line()
+                
+                var lineJPName = cell.viewWithTag(403) as UILabel
+                lineJPName.text = (lineMap.item(MSTT01_LINE_NAME) as String) + "（"+(lineMap.item(MSTT01_LINE_NAME_KANA) as String) + "）"
+                
+                var lineDest1 = cell.viewWithTag(404) as UILabel
+                lineDest1.text = "2800228".station() + " - " + "2800201".station()
+                
+                var lineKana1 = cell.viewWithTag(405) as UILabel
+                lineKana1.text = "荻窪" + " - " + "池袋"
+                
+                var lineDest2 = cell.viewWithTag(406) as UILabel
+                lineDest2.text = "2800223".station() + " - " + "2800201".station()
+                
+                var lineKana2 = cell.viewWithTag(407) as UILabel
+                lineKana2.text = "方南町" + " - " + "池袋"
+                
+                return cell
+                
+            } else {
+                let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("LineListCell", forIndexPath: indexPath) as UITableViewCell
+                
+                var imgLine = cell.viewWithTag(301) as UIImageView
+                
+                imgLine.image = (lineMap.item(MSTT01_LINE_ID) as String).getLineImage()
+                
+                var lineName = cell.viewWithTag(302) as UILabel
+                lineName.text = (lineMap.item(MSTT01_LINE_ID) as String).line()
+                
+                var lineJPName = cell.viewWithTag(305) as UILabel
+                lineJPName.text = (lineMap.item(MSTT01_LINE_NAME) as String) + "（"+(lineMap.item(MSTT01_LINE_NAME_KANA) as String) + "）"
+                
+                var lineDest = cell.viewWithTag(304) as UILabel
+                lineDest.text = destStatName(lineMap.item(MSTT01_LINE_ID) as String)
+                
+                var lineKana = cell.viewWithTag(306) as UILabel
+                lineKana.text = destStatJPName(lineMap.item(MSTT01_LINE_ID) as String)
+                
+                return cell
+            }
+            
+        } else {
+            
+            let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("StationListCell", forIndexPath: indexPath) as UITableViewCell
+            
+            var map: MstT02StationTable = stationArr[indexPath.row] as MstT02StationTable
+            
+            var textName = cell.viewWithTag(201) as UILabel
+            textName.text = (map.item(MSTT02_STAT_ID) as String).station()
+            
+            var textJPName = cell.viewWithTag(203) as UILabel
+            textJPName.text = (map.item(MSTT02_STAT_NAME) as String) + "（" + (map.item(MSTT02_STAT_NAME_KANA) as String) + "）"
+            
+            var view = cell.viewWithTag(202) as UIView!
+            
+            if (view != nil) {
+                view.removeFromSuperview()
+            }
+            
+            var lineView = UIView()
+            lineView.frame = CGRectMake(225, 5, 70, 45)
+            lineView.tag = 202
+            
+            var arrStation: [String] = changeLineArr[indexPath.row] as [String]
+            if (arrStation != ["self"]) {
+                for (var i = 0; i < arrStation.count; i++) {
+                    var line: UIImageView = UIImageView()
+                    line.frame = CGRectMake(CGFloat(66 - (i+1)*18 - i * 4), 13, 18, 18)
+                    //                    line.image = lineImage(arrStation[i])
+                    line.image = arrStation[i].getLineMiniImage()
+                    
+                    lineView.addSubview(line)
+                }
+            }
+            
+            cell.addSubview(lineView)
+            
+            return cell
+        }
+    }
+
+    /*******************************************************************************
+    *      IBActions
+    *******************************************************************************/
+    
     @IBAction func segmentChangedLinster(sender: UISegmentedControl) {
     
         if (sender.selectedSegmentIndex == 1) {
@@ -71,6 +231,18 @@ class StationLine: UIViewController, UITableViewDataSource, UITableViewDelegate 
     }
     
     
+    @IBAction func showStationSearch() {
+        var searchStationList: SearchStationList = self.storyboard?.instantiateViewControllerWithIdentifier("SearchStationList") as SearchStationList
+        
+        var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = backButton
+        
+        self.navigationController?.pushViewController(searchStationList, animated: true)
+    }
+    
+    /*******************************************************************************
+    *    Private Methods
+    *******************************************************************************/
     func odbStation(){
         var table = MstT02StationTable()
         var rows: NSArray = table.excuteQuery("select *, ROWID, count(distinct STAT_NAME_EXT1) from MSTT02_STATION where 1 = 1 and STAT_ID like '280%' group by STAT_NAME_EXT1")
@@ -106,147 +278,6 @@ class StationLine: UIViewController, UITableViewDataSource, UITableViewDelegate 
 
         }
         
-    }
-    
-
-    
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if (segment.selectedSegmentIndex == 0) {
-            return 85
-        } else {
-            return 55
-        }
-    }
-    
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if (segment.selectedSegmentIndex == 0) {
-            return LineArr.count
-        } else {
-            return stationArr.count
-        }
-    }
-    
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
-        if (segment.selectedSegmentIndex == 0) {
-        
-            var lineMap: MstT01LineTable = LineArr[indexPath.row] as MstT01LineTable
-            
-            if ((lineMap.item(MSTT01_LINE_ID) as String) == "28002") {
-                
-                let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("MLineCell", forIndexPath: indexPath) as UITableViewCell
-                
-                var lineName = cell.viewWithTag(402) as UILabel
-                lineName.text = (lineMap.item(MSTT01_LINE_ID) as String).line()
-                
-                var lineJPName = cell.viewWithTag(403) as UILabel
-                lineJPName.text = (lineMap.item(MSTT01_LINE_NAME) as String) + "（"+(lineMap.item(MSTT01_LINE_NAME_KANA) as String) + "）"
-                
-                var lineDest1 = cell.viewWithTag(404) as UILabel
-                lineDest1.text = "2800228".station() + " - " + "2800201".station()
-                
-                var lineKana1 = cell.viewWithTag(405) as UILabel
-                lineKana1.text = "荻窪" + " - " + "池袋"
-                
-                var lineDest2 = cell.viewWithTag(406) as UILabel
-                lineDest2.text = "2800223".station() + " - " + "2800201".station()
-                
-                var lineKana2 = cell.viewWithTag(407) as UILabel
-                lineKana2.text = "方南町" + " - " + "池袋"
-                
-                return cell
-
-            } else {
-                let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("LineListCell", forIndexPath: indexPath) as UITableViewCell
- 
-                var imgLine = cell.viewWithTag(301) as UIImageView
-
-                imgLine.image = (lineMap.item(MSTT01_LINE_ID) as String).getLineImage()
-                
-                var lineName = cell.viewWithTag(302) as UILabel
-                lineName.text = (lineMap.item(MSTT01_LINE_ID) as String).line()
-            
-                var lineJPName = cell.viewWithTag(305) as UILabel
-                lineJPName.text = (lineMap.item(MSTT01_LINE_NAME) as String) + "（"+(lineMap.item(MSTT01_LINE_NAME_KANA) as String) + "）"
-            
-                var lineDest = cell.viewWithTag(304) as UILabel
-                lineDest.text = destStatName(lineMap.item(MSTT01_LINE_ID) as String)
-                
-                var lineKana = cell.viewWithTag(306) as UILabel
-                lineKana.text = destStatJPName(lineMap.item(MSTT01_LINE_ID) as String)
-                
-                return cell
-            }
-
-        } else {
-        
-            let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("StationListCell", forIndexPath: indexPath) as UITableViewCell
-            
-            var map: MstT02StationTable = stationArr[indexPath.row] as MstT02StationTable
-            
-            var textName = cell.viewWithTag(201) as UILabel
-            textName.text = (map.item(MSTT02_STAT_ID) as String).station()
-            
-            var textJPName = cell.viewWithTag(203) as UILabel
-            textJPName.text = (map.item(MSTT02_STAT_NAME) as String) + "（" + (map.item(MSTT02_STAT_NAME_KANA) as String) + "）"
-                        
-            var view = cell.viewWithTag(202) as UIView!
-            
-            if (view != nil) {
-                view.removeFromSuperview()
-            }
-            
-            var lineView = UIView()
-            lineView.frame = CGRectMake(225, 5, 70, 45)
-            lineView.tag = 202
-            
-            var arrStation: [String] = changeLineArr[indexPath.row] as [String]
-            if (arrStation != ["self"]) {
-                for (var i = 0; i < arrStation.count; i++) {
-                    var line: UIImageView = UIImageView()
-                    line.frame = CGRectMake(CGFloat(66 - (i+1)*18 - i * 4), 13, 18, 18)
-//                    line.image = lineImage(arrStation[i])
-                    line.image = arrStation[i].getLineMiniImage()
-                    
-                    lineView.addSubview(line)
-                }
-            }
-            
-            cell.addSubview(lineView)
-            
-            return cell
-        }
-    }
-    
-    
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
-        if (segment.selectedSegmentIndex == 0) {
-            var lineList: LineStationList = self.storyboard?.instantiateViewControllerWithIdentifier("LineStationList") as LineStationList
-            
-            let map = LineArr[indexPath.row] as MstT01LineTable
-            lineList.line_id = map.item(MSTT01_LINE_ID) as String
-            lineList.line_name = (map.item(MSTT01_LINE_ID) as String).line()
-            
-            var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
-            self.navigationItem.backBarButtonItem = backButton
-            
-            self.navigationController?.pushViewController(lineList, animated: true)
-        } else {
-            var detail: StationDetail = self.storyboard?.instantiateViewControllerWithIdentifier("StationDetail") as StationDetail
-            
-            var map: MstT02StationTable = stationArr[indexPath.row] as MstT02StationTable
-            
-            detail.cellJPName = map.item(MSTT02_STAT_NAME) as String
-            detail.cellJPNameKana = map.item(MSTT02_STAT_NAME_KANA) as String
-            detail.stat_id = map.item(MSTT02_STAT_ID) as String
-            detail.statMetroId = map.item(MSTT02_STAT_METRO_ID) as String
-            
-            var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
-            self.navigationItem.backBarButtonItem = backButton
-
-            self.navigationController?.pushViewController(detail, animated: true)
-        }
     }
 
     
