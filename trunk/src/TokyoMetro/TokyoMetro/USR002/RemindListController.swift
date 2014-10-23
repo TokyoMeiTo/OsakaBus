@@ -222,7 +222,7 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
             }
         }
         
-        pushNotificationLastMetro("\(items[indexPath.section][0])的\(items[indexPath.section][3][indexPath.row])即将发车", notifyTime:"\(items[indexPath.section][3][indexPath.row])")
+//        pushNotificationLastMetro("\(items[indexPath.section][0])的\(items[indexPath.section][3][indexPath.row])即将发车", notifyTime:"\(items[indexPath.section][3][indexPath.row])")
         
         var lblMetroType = UILabel(frame: CGRect(x:15,y:50,width:230,height:30))
         lblMetroType.font = UIFont.systemFontOfSize(14)
@@ -307,15 +307,6 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
     func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         // Return false if you do not want the specified item to be editable.
         return false
-    }
-    
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            //items.removeObjectAtIndex(indexPath.row)
-            //tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
-        }
     }
 
     
@@ -438,7 +429,7 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
 
             lblArriveInfo.text = mAlarm!.lineToId.line() + " " + mAlarm!.traiDirt.station() + "PUBLIC_04".localizedString()
             
-            var imgBeep = UIImage(named: "usr007.png")
+            var imgBeep = UIImage(named: "usr007")
             imageViewBeep.image = imgBeep
             
             self.view.addSubview(lblStart)
@@ -458,7 +449,7 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
                 btnCancel.enabled = true
                 btnStart.enabled = false
                 // 线程已经运行,显示当前剩余时间
-                showTime(convertTime(timerThread.surplusTime))
+                showTime(mUsr002Model.convertTime(timerThread.surplusTime))
             }
         }
     }
@@ -482,7 +473,7 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
         // 查询末班车信息
         mTrainAlarms = mUsr002Model.findTrainAlarmTable()
         
-        loadItems()
+        items = mUsr002Model.loadItems(mTrainAlarms)
         
         tbList.delegate = self
         tbList.dataSource = self
@@ -513,7 +504,7 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
                 mTrainAlarms![section].alamFlag = "0"
             }
             mUsr002Model.updateUsrT02(mTrainAlarms![section])
-            loadItems()
+            items = mUsr002Model.loadItems(mTrainAlarms)
             tbList.reloadData()
         }
         switch sender{
@@ -538,7 +529,7 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
                 queue.addOperation(timerThread)
             }else{
                 // 线程已经运行,显示当前剩余时间
-                showTime(convertTime(timerThread.surplusTime))
+                showTime(mUsr002Model.convertTime(timerThread.surplusTime))
             }
             btnStart.enabled = false
             btnCancel.enabled = true
@@ -607,7 +598,7 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
      * 更新剩余时间
      */
     func updateTime(time: Int){
-        var times = convertTime(time)
+        var times = mUsr002Model.convertTime(time)
         if(times.count < 1){
             return
         }
@@ -632,26 +623,6 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     /**
-     * s2hh:mm:ss
-     */
-    func convertTime(time: Int) -> Array<String>{
-        var sec:String = String(time%60)
-        if(time%60 < 10){
-            sec = "0" + sec
-        }
-        var min:String = String((time/60)%60)
-        if((time/60)%60 < 10){
-            min = "0" + min
-        }
-        var hour:String = String((time/60)/60)
-        if((time/60)/60 < 10){
-            hour = "0" + hour
-        }
-        var times = [hour,min,sec]
-        return times
-    }
-    
-    /**
      * 显示时间
      */
     func showTime(times: Array<String>){
@@ -660,42 +631,6 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
         self.lblSec.text = times[self.NUM_2]
     }
     
-    /**
-     * 加载items
-     */
-    func loadItems(){
-        items = NSMutableArray.array()
-        for key in mTrainAlarms!{
-            var trainFlag:Array<String> = [ "USR002_03".localizedString(), "USR002_04".localizedString()]
-            var trainTime:Array<String> = [ "", ""]
-            var directions:Array<String> = ["",""]
-            
-            if(key.alamType == "1"){
-                trainFlag = ["USR002_03".localizedString()]
-            }else{
-                trainFlag = ["USR002_04".localizedString()]
-            }
-            
-            trainTime = [convertTrainTime(key.alamTime),""]
-            directions = [key.traiDirt.station() + "PUBLIC_04".localizedString(),""]
-            
-            items.addObject([key.lineId.line() + ":" + key.statId.station(), directions, trainFlag, trainTime])
-        }
-    }
-
-    func convertTrainTime(time:String) -> String{
-        if(countElements(time) < 4){
-            return time
-        }
-        
-        var tempStr = "0123"
-        
-        var indexHourTo = tempStr.rangeOfString("1")
-        var indexMinFrom = tempStr.rangeOfString("2")
-        
-        return "  " + time.substringToIndex(indexHourTo!.endIndex) + ":" + time.substringFromIndex(indexMinFrom!.startIndex) + "  "
-    }
-        
     /**
      * 本地推送消息
      */
@@ -734,7 +669,7 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
             return
         }
         var fromDate:NSDate = NSDate()
-        var calendar:NSCalendar = NSCalendar(identifier: NSGregorianCalendar)
+        var calendar:NSCalendar = NSCalendar()// identifier: NSGregorianCalendar
         calendar.timeZone = NSTimeZone.systemTimeZone()
         var dateComp:NSDateComponents = calendar.components((NSCalendarUnit.CalendarUnitYear | NSCalendarUnit.CalendarUnitMonth | NSCalendarUnit.CalendarUnitDay | NSCalendarUnit.CalendarUnitHour | NSCalendarUnit.CalendarUnitMinute | NSCalendarUnit.CalendarUnitSecond), fromDate: fromDate)
         
@@ -748,12 +683,20 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
         }
         dateToComp.setValue((notifyTime.left(2) as NSString).integerValue, forComponent: NSCalendarUnit.CalendarUnitHour)
         dateToComp.setValue((notifyTime.right(2) as NSString).integerValue, forComponent: NSCalendarUnit.CalendarUnitMinute)
-        var calendarTo:NSCalendar = NSCalendar(identifier: NSGregorianCalendar)
+        var calendarTo:NSCalendar = NSCalendar()// identifier: NSGregorianCalendar
         var toDate:NSDate = calendarTo.dateFromComponents(dateToComp)!
         
-        
-        // 注册推送权限
-        var settings = UIUserNotificationSettings(forTypes: UIUserNotificationType.Alert | UIUserNotificationType.Badge | UIUserNotificationType.Sound, categories: nil)
+        var mDeviceVersion:Double = (UIDevice.currentDevice().systemVersion as NSString).doubleValue
+        // 通知
+        var app = UIApplication.sharedApplication()
+        // ios8以下
+        if(mDeviceVersion >= 7.0 && mDeviceVersion <= 7.9){
+            app.registerForRemoteNotificationTypes(UIRemoteNotificationType.Alert | UIRemoteNotificationType.Badge | UIRemoteNotificationType.Sound)
+        }else{
+            // 注册推送权限
+            var settings = UIUserNotificationSettings(forTypes: UIUserNotificationType.Alert | UIUserNotificationType.Badge | UIUserNotificationType.Sound, categories: nil)
+            app.registerUserNotificationSettings(settings)
+        }
         
         var localNotif:UILocalNotification = UILocalNotification()
         localNotif.fireDate = toDate
@@ -764,10 +707,7 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
         if(Msg != nil){
             localNotif.alertBody = Msg
         }
-        
-        // 通知
-        var app = UIApplication.sharedApplication()
-        app.registerUserNotificationSettings(settings)
+
         app.scheduleLocalNotification(localNotif)
     }
 

@@ -292,29 +292,29 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
         var UIHeader:UIView = UIView()
         if(segIndex == NUM_0){
             if(section == 0){
-                var imgStationTo = UIImage(named: "USR00204.png")
+                var imgStationTo = UIImage(named: "USR00204")
                 var imageViewStationTo = UIImageView(frame: CGRectMake(15, 5, 25, 25))
                 imageViewStationTo.image = imgStationTo
                 UIHeader.addSubview(imageViewStationTo)
             }else if(section == 1){
-                var imgStationFrom = UIImage(named: "USR00205.png")
+                var imgStationFrom = UIImage(named: "USR00205")
                 var imageViewStationFrom = UIImageView(frame: CGRectMake(15, 5, 25, 25))
                 imageViewStationFrom.image = imgStationFrom
                 UIHeader.addSubview(imageViewStationFrom)
             }else{
-                var imgAlarm = UIImage(named: "USR00206.png")
+                var imgAlarm = UIImage(named: "USR00206")
                 var imageViewAlarm = UIImageView(frame: CGRectMake(15, 5, 25, 25))
                 imageViewAlarm.image = imgAlarm
                 UIHeader.addSubview(imageViewAlarm)
             }
         }else if(segIndex == NUM_1){
             if(section == 0){
-                var imgStationTo = UIImage(named: "USR00204.png")
+                var imgStationTo = UIImage(named: "USR00204")
                 var imageViewStationTo = UIImageView(frame: CGRectMake(15, 5, 25, 25))
                 imageViewStationTo.image = imgStationTo
                 UIHeader.addSubview(imageViewStationTo)
             }else{
-                var imgAlarm = UIImage(named: "USR00206.png")
+                var imgAlarm = UIImage(named: "USR00206")
                 var imageViewAlarm = UIImageView(frame: CGRectMake(15, 5, 25, 25))
                 imageViewAlarm.image = imgAlarm
                 UIHeader.addSubview(imageViewAlarm)
@@ -342,7 +342,7 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
         }
         
         cell!.accessoryType = UITableViewCellAccessoryType.None
-        for subview in cell!.subviews{
+        for subview in cell!.contentView.subviews{
             if(subview.isKindOfClass(UIPickerView)){
                 subview.removeFromSuperview()
             }
@@ -353,7 +353,7 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
             }else if(indexPath.section == 3 && indexPath.row == remindTime){
                 cell!.accessoryType = UITableViewCellAccessoryType.Checkmark
             }else if((indexPath.section == 0 || indexPath.section == 1) && indexPath.row == 1){
-                cell!.addSubview(pickLineStations[indexPath.section])
+                cell!.contentView.addSubview(pickLineStations[indexPath.section])
             }else{
                 cell!.accessoryType = UITableViewCellAccessoryType.None
             }
@@ -363,7 +363,7 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
             }else if(indexPath.section == 4 && indexPath.row == remindTime){
                 cell!.accessoryType = UITableViewCellAccessoryType.Checkmark
             }else if((indexPath.section == 0) && indexPath.row == 1){
-                cell!.addSubview(pickLineStations[indexPath.section])
+                cell!.contentView.addSubview(pickLineStations[indexPath.section])
             }else if((indexPath.section == 1) && indexPath.row == stationDirtFlag){
                 cell!.accessoryType = UITableViewCellAccessoryType.Checkmark
             }else if((indexPath.section == 2)){

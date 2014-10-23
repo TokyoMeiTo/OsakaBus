@@ -181,7 +181,7 @@ class StationListController: UIViewController, UITableViewDelegate, UITableViewD
         var lblDetail = UILabel(frame: CGRect(x:15,y:30,width:tableView.frame.width - 30,height:25))
         lblDetail.font = UIFont.systemFontOfSize(13)
         lblDetail.textColor = UIColor.darkGrayColor()
-        lblDetail.text = mMstT02Data.statName + mMstT02Data.statNameKana
+        lblDetail.text = mMstT02Data.statName + "(" + mMstT02Data.statNameKana + ")"
         lblDetail.textAlignment = NSTextAlignment.Left
         
         var statLat:Double = (mMstT02Data.statLat as NSString).doubleValue
@@ -195,7 +195,7 @@ class StationListController: UIViewController, UITableViewDelegate, UITableViewD
         lblDistance.textAlignment = NSTextAlignment.Right
         
         var imageViewLine = UIImageView(frame: CGRectMake(tableView.frame.width - 48, 18, 18, 18))
-        imageViewLine.image = mMstT02Data.statId.getLineMiniImage()
+        imageViewLine.image = mMstT02Data.lineId.getLineMiniImage()
         
         cell!.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
         
@@ -250,14 +250,14 @@ class StationListController: UIViewController, UITableViewDelegate, UITableViewD
         if(annotation.title == LOCATION_STRING){
             pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "STA003_02".localizedString())
             pinView!.pinColor = .Red
-            var img = UIImage(named: "STA00302.png")
+            var img = UIImage(named: "STA00302")
             pinView!.image = img
             pinView!.canShowCallout = true
             pinView!.frame = CGRectMake((CGRectMake(0, 0, 185, 162).size.width-16)/2, 56, 30, 35)
         }else{
             pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "")
             pinView!.pinColor = .Purple
-            var img = UIImage(named: "STA00301.png")
+            var img = UIImage(named: "STA00301")
             pinView!.image = img
             pinView!.canShowCallout = true
             pinView!.frame = CGRectMake((CGRectMake(0, 0, 185, 162).size.width-16)/2, 56, 30, 35)

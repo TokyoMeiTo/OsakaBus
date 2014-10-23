@@ -161,4 +161,64 @@ class USR002Model{
         return mUsrT02Dao.delete()
     }
 
+    /**
+     * s2hh:mm:ss
+     * 0000 -> 00:00
+     */
+    func convertTrainTime(time:String) -> String{
+        if(countElements(time) < 4){
+            return time
+        }
+        
+        var tempStr = "0123"
+        
+        var indexHourTo = tempStr.rangeOfString("1")
+        var indexMinFrom = tempStr.rangeOfString("2")
+        
+        return "  " + time.substringToIndex(indexHourTo!.endIndex) + ":" + time.substringFromIndex(indexMinFrom!.startIndex) + "  "
+    }
+    
+    /**
+     * s2hh:mm:ss
+     */
+    func convertTime(time: Int) -> Array<String>{
+        var sec:String = String(time%60)
+        if(time%60 < 10){
+            sec = "0" + sec
+        }
+        var min:String = String((time/60)%60)
+        if((time/60)%60 < 10){
+            min = "0" + min
+        }
+        var hour:String = String((time/60)/60)
+        if((time/60)/60 < 10){
+            hour = "0" + hour
+        }
+        var times = [hour,min,sec]
+        return times
+    }
+    
+    /**
+     * 加载tableview数据
+     */
+    func loadItems(mTrainAlarms:Array<UsrT02TrainAlarmTableData>?) -> NSMutableArray{
+        var mItems = NSMutableArray.array()
+        for key in mTrainAlarms!{
+            var trainFlag:Array<String> = [ "USR002_03".localizedString(), "USR002_04".localizedString()]
+            var trainTime:Array<String> = [ "", ""]
+            var directions:Array<String> = ["",""]
+            
+            if(key.alamType == "1"){
+                trainFlag = ["USR002_03".localizedString()]
+            }else{
+                trainFlag = ["USR002_04".localizedString()]
+            }
+            
+            trainTime = [convertTrainTime(key.alamTime),""]
+            directions = [key.traiDirt.station() + "PUBLIC_04".localizedString(),""]
+            
+            mItems.addObject([key.lineId.line() + ":" + key.statId.station(), directions, trainFlag, trainTime])
+        }
+        return mItems
+    }
 }

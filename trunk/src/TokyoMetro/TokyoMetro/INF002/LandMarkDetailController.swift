@@ -125,7 +125,7 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, UITableVi
             // 地标名（系统语言）
             return 40
         case 2:
-            return 25
+            return 35
         case 3:
             // label自适应高度
             var infoFont:UIFont = UIFont.systemFontOfSize(SMALL_TEXT_SIZE)
@@ -284,9 +284,9 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, UITableVi
             
             var mINF002Data:UsrT03FavoriteTableData = mINF002Model.findFav("\(landMark!.item(MSTT04_LANDMARK_LMAK_ID))")
             
-            var imgFav = UIImage(named: "INF00202.png")
+            var imgFav = UIImage(named: "INF00202")
             if(mINF002Data.ext4 != ""){
-                imgFav = UIImage(named: "INF00206.png")
+                imgFav = UIImage(named: "INF00206")
             }
             btnFav.setBackgroundImage(imgFav, forState: UIControlState.Normal)
             btnFav.tag = 101
@@ -300,7 +300,7 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, UITableVi
             
             var btnMap:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
             btnMap.frame = CGRect(x:70,y:135,width:50,height:50)
-            var imgMap = UIImage(named: "INF00201.png")
+            var imgMap = UIImage(named: "INF00201")
             btnMap.setBackgroundImage(imgMap, forState: UIControlState.Normal)
             btnMap.tag = 102
             
@@ -321,7 +321,7 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, UITableVi
             cell!.contentView.addSubview(lblLocalNM)
             // 地标名（日文汉字）
         case 2:
-            var lblJpNM = UILabel(frame: CGRect(x:15,y:3,width:tableView.frame.width - 30,height:25))
+            var lblJpNM = UILabel(frame: CGRect(x:15,y:3,width:tableView.frame.width - 30,height:35))
             if(landMark!.item(MSTT04_LANDMARK_LMAK_NAME_KANA) != nil && "\(landMark!.item(MSTT04_LANDMARK_LMAK_NAME_KANA))" != "" && "\(landMark!.item(MSTT04_LANDMARK_LMAK_NAME_KANA))" != "nil"){
                 lblJpNM.text = "\(landMark!.item(MSTT04_LANDMARK_LMAK_NAME_KANA))"
             }else{
@@ -332,7 +332,7 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, UITableVi
             lblJpNM.textAlignment = NSTextAlignment.Left
             cell!.contentView.addSubview(lblJpNM)
             
-            var lblTemp = UILabel(frame: CGRect(x:0,y:23,width:tableView.frame.width,height:1))
+            var lblTemp = UILabel(frame: CGRect(x:0,y:33,width:tableView.frame.width,height:1))
             lblTemp.textColor = UIColor.lightGrayColor()
             lblTemp.backgroundColor = UIColor.lightGrayColor()
             cell!.contentView.addSubview(lblTemp)
@@ -611,6 +611,10 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, UITableVi
             var landMarkMapController = self.storyboard!.instantiateViewControllerWithIdentifier("landmarkmap") as LandMarkMapController
             landMarkMapController.title = "\(landMark!.item(MSTT04_LANDMARK_LMAK_NAME_EXT1))"
             landMarkMapController.landMark = landMark!
+            
+            var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+            self.navigationItem.backBarButtonItem = backButton
+            
             self.navigationController!.pushViewController(landMarkMapController, animated:true)
         case 103:
             var stationDetail = self.storyboard!.instantiateViewControllerWithIdentifier("landmarkmap") as StationDetail
