@@ -53,8 +53,6 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
     @IBOutlet weak var mCollectionLogo: UIImageView!
     // 收藏附近站点图片
     @IBOutlet weak var mNearlyLogo: UIImageView!
-    /* 加载进度条ActivityIndicatorView */
-    @IBOutlet weak var gaiLoading: UIActivityIndicatorView!
     
     var SearchButton:UIBarButtonItem?
     
@@ -112,6 +110,8 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
     var routeID : String = " "
     var startStationText : String = ""
     var endStationText : String = ""
+    var endStationLandMarkId : String = ""
+    
     var mImgZoomScale : CGFloat = 0.0
     var mst02table = MstT02StationTable()
     var user03table = UsrT03FavoriteTable()
@@ -210,8 +210,8 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         } else {
             btnCollect2.setBackgroundImage("searchroute_collection".getImage(), forState: UIControlState.Normal)
         }
-//        viewStatStartText.backgroundColor = UIColor(patternImage: "btnText_focus".getImage())
-//        viewStatEndText.backgroundColor = UIColor(patternImage: "btnText_normal".getImage())
+        viewStatStartText.backgroundColor = UIColor(patternImage: "btnText_focus".getImage())
+        viewStatEndText.backgroundColor = UIColor(patternImage: "btnText_normal".getImage())
         viewStatStartText.layer.cornerRadius = 4
         viewStatEndText.layer.cornerRadius = 4
         searchWayAction()
@@ -453,6 +453,8 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         var resultCelllblStationWaitTimeTipAfter : UILabel = cell.viewWithTag(1112) as UILabel
         var resultCelllblStationMoveTimeTip : UILabel = cell.viewWithTag(1013) as UILabel
         var resultCelllblStationMoveTimeTipAfter : UILabel = cell.viewWithTag(1113) as UILabel
+        var resultCelllblStationEixtInfo : UIView = cell.viewWithTag(9500) as UIView!
+        
 
         var routStartDic = self.routeDetial.objectAtIndex(indexPath.row - 1) as NSDictionary
         var strresultExchWaitTime = routStartDic["resultExchWaitTime"] as? NSString
@@ -473,11 +475,23 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             resultCelllblStationMoveDestNameAfter.hidden = true
             resultCelllblStationLineNameTip.hidden = true
             
+            
             resultCellIvStaionIcon.hidden = false
             resultCelllblStationName.hidden = false
             
             resultCellIvStaionIcon.image = "route_end".getImage()
             resultCelllblStationName.text = self.endStationText.station()
+            
+            if (!endStationLandMarkId.isEmpty) {
+                 var exitInfoDic = landMarkExitInfo("21")
+                //var exitInfoDic = landMarkExitInfo(endStationLandMarkId)
+                resultCelllblStationEixtInfo = mViewExitInfo(exitInfoDic!, viewInfo: resultCelllblStationEixtInfo, cell:cell)
+                endStationLandMarkId = ""
+
+            }
+            
+            
+            
         } else if (indexPath.row  == 1){
 
             var strresultExchStatId = routStartDic["resultExchStatId"] as? NSString
@@ -742,8 +756,8 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         btnCollectRoute.setBackgroundImage("route_collectionRoute".getImage(), forState: UIControlState.Normal)
         setSationIdCache()
         
-//        viewStatStartText.backgroundColor = UIColor(patternImage: "btnText_focus".getImage())
-//        viewStatEndText.backgroundColor = UIColor(patternImage: "btnText_normal".getImage())
+        viewStatStartText.backgroundColor = UIColor(patternImage: "btnText_focus".getImage())
+        viewStatEndText.backgroundColor = UIColor(patternImage: "btnText_normal".getImage())
         
         
         
@@ -764,8 +778,8 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         }
         btnCollectRoute.setBackgroundImage("route_collectionRoute".getImage(), forState: UIControlState.Normal)
         setSationIdCache()
-//        viewStatStartText.backgroundColor = UIColor(patternImage: "btnText_normal".getImage())
-//        viewStatEndText.backgroundColor = UIColor(patternImage: "btnText_focus".getImage())
+        viewStatStartText.backgroundColor = UIColor(patternImage: "btnText_normal".getImage())
+        viewStatEndText.backgroundColor = UIColor(patternImage: "btnText_focus".getImage())
     }
     
     // 判断是否要跳转到StationList页面
@@ -873,42 +887,52 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         default:
             return
         }
-
-        //btnCollect1 1233 表示已经收藏，进行删除     1133 表示还未收藏，进行添加
-        //btnCollect2 2233 表示已经收藏，进行删除     2133 表示还未收藏，进行添加
-        if (btnCollect1.tag == 1233 || btnCollect2.tag == 2233) {
+        
+        
+        if (btnCollect1.tag == 1233) {
             
             var  isDeleteStat = cmn003Model.removeUserFavorite(insertStationId, deleteType: "01")
             if isDeleteStat {
-                
-                btnCollectionStation.tag == 10001
+                btnCollectionStation.tag = 10001
                 loadStation()
-                if (sender == btnCollect1){
-                    btnCollect1.setBackgroundImage("searchroute_collection".getImage(), forState: UIControlState.Normal)
-                    btnCollect1.tag = 1133
-                } else if (sender == btnCollect2){
-                    btnCollect2.setBackgroundImage("searchroute_collection".getImage(), forState: UIControlState.Normal)
-                    btnCollect2.tag = 2133
-                }
+                btnCollect1.setBackgroundImage("searchroute_collection".getImage(), forState: UIControlState.Normal)
+                btnCollect1.tag = 1133
             }
             
-        
+            
         } else {
             var  isInsertStat = cmn003Model.addUserFavoriteStat(insertStationId)
             if isInsertStat {
-                btnCollectionStation.tag == 10001
+                btnCollectionStation.tag = 10001
                 loadStation()
-                if (sender == btnCollect1){
-                    btnCollect1.setBackgroundImage("route_collectionlight".getImage(), forState: UIControlState.Normal)
-                    btnCollect1.tag = 1233
-                } else if (sender == btnCollect2){
-                    btnCollect2.setBackgroundImage("route_collectionlight".getImage(), forState: UIControlState.Normal)
-                    btnCollect2.tag = 2233
-                }
+                btnCollect1.setBackgroundImage("route_collectionlight".getImage(), forState: UIControlState.Normal)
+                btnCollect1.tag = 1233
+                
             }
         }
         
-    }
+        if (btnCollect2.tag == 2233) {
+            
+            var  isDeleteStat = cmn003Model.removeUserFavorite(insertStationId, deleteType: "01")
+            if isDeleteStat {
+                btnCollectionStation.tag = 10001
+                loadStation()
+                btnCollect2.setBackgroundImage("searchroute_collection".getImage(), forState: UIControlState.Normal)
+                btnCollect2.tag = 2133
+            }
+            
+            
+        } else {
+            var  isInsertStat = cmn003Model.addUserFavoriteStat(insertStationId)
+            if isInsertStat {
+                btnCollectionStation.tag = 10001
+                loadStation()
+                btnCollect2.setBackgroundImage("route_collectionlight".getImage(), forState: UIControlState.Normal)
+                btnCollect2.tag = 2233
+                
+            }
+        }
+     }
     
     // 添加收藏路线
     func addUserfavoriteRoute() {
@@ -986,26 +1010,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             
         }
     }
-    
-    // 进度转圈
-    class ActivityIndicatorController{
-        
-        class func show(gaiLoading: UIActivityIndicatorView) ->
-            Bool{
-                gaiLoading.hidden = true
-                gaiLoading.startAnimating()
-                return false
-        }
-        
-        class func disMiss(gaiLoading: UIActivityIndicatorView) ->
-            Bool{
-                gaiLoading.stopAnimating()
-                gaiLoading.hidden = true
-                return false
-        }
-    }
 
-    
     /**
     * 到DB中查找最近的站点
     */
@@ -1060,7 +1065,6 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
     * 加载当前位置
     */
     func loadLocation(){
-        ActivityIndicatorController.show(gaiLoading)
         if(GPShelper.delegate == nil){
             GPShelper.delegate = self
         }
@@ -1139,6 +1143,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             
             mNearlyLogo.image = "route_locate".getImage()
             mCollectionLogo.image = "route_collectedlight".getImage()
+            
             btnCollectionStation.tag = 10011
             btnNearlyStation.tag = 10002
         }
@@ -1308,6 +1313,12 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         
         mNearlyLogo.image = "route_locatelight".getImage()
         mCollectionLogo.image = "route_collected".getImage()
+//        
+//        btnCollectionStation.tag = 10001
+//        btnNearlyStation.tag = 10012
+//        
+//        btnCollectionStation.tag = 10001
+//        btnNearlyStation.tag = 10012
         
         
     }
@@ -1321,6 +1332,8 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         if (focusNumber == "1"){
             if (startStationText != "" && statIsCollected(startStationText)){
                 btnCollect1.setBackgroundImage("route_collectionlight".getImage(), forState: UIControlState.Normal)
+                btnCollect1.tag = 1233
+                
             } else {
                 btnCollect1.setBackgroundImage("searchroute_collection".getImage(), forState: UIControlState.Normal)
             }
@@ -1328,6 +1341,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             
             if (endStationText != "" && statIsCollected(endStationText)){
                 btnCollect2.setBackgroundImage("route_collectionlight".getImage(), forState: UIControlState.Normal)
+                btnCollect2.tag = 2233
             } else {
                 btnCollect2.setBackgroundImage("searchroute_collection".getImage(), forState: UIControlState.Normal)
             }
@@ -1371,6 +1385,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
     }
     
 
+    //
     func isSearchable() -> Bool {
         if (self.startStationText != "" && self.startStationText != self.endStationText && self.endStationText != ""){
             return true
@@ -1379,6 +1394,145 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         }
     
     }
+    
+    // 根据lmak——ID 查询相关景点的出口信息
+    func landMarkExitInfo(lmakId:String) -> Dictionary<String, String>? {
+        
+        
+        var exitId: String = ""
+        var exitMoveTime: String = ""
+        var exitInfo: String = ""
+        
+        if (!lmakId.isEmpty) {
+            var mst04LandMarkTable : MstT04LandMarkTable = MstT04LandMarkTable()
+            mst04LandMarkTable.lmakId = lmakId
+            
+            var lmak04SearchResult : Array = mst04LandMarkTable.selectAll()
+     
+            if (lmak04SearchResult.count == 1) {
+                exitId = lmak04SearchResult[0].statExitId
+                exitMoveTime = lmak04SearchResult[0].statExitTime
+                
+            } else {
+                return nil
+            }
+        
+        }
+        
+        var exitInfoDic : Dictionary = ["exitId":exitId, "exitMoveTime":exitMoveTime]
+
+        return exitInfoDic
+    
+    }
+    
+    func mViewExitInfo(exitInfoDic: Dictionary<String, String>, viewInfo: UIView, cell:UITableViewCell) -> UIView{
+        
+
+        if (!exitInfoDic.isEmpty) {
+            var exitId: String? = exitInfoDic["exitId"] as String!
+            if ((exitId != nil) && (exitId != "")) {
+                
+                var lblNameBefore = viewInfo.viewWithTag(4501)
+                if (lblNameBefore != nil ){
+                lblNameBefore?.removeFromSuperview()
+                }
+                var lblExitNameBefor : UILabel = UILabel()
+                lblExitNameBefor.font = UIFont.systemFontOfSize(13)
+                lblExitNameBefor.textColor = UIColor.lightGrayColor()
+                lblExitNameBefor.text = "从"
+                lblExitNameBefor.tag = 4501
+                lblExitNameBefor.frame = CGRectMake(10, 0, 30, 33)
+                
+                var mlblExitName = viewInfo.viewWithTag(4502)
+                if (mlblExitName != nil ){
+                    mlblExitName?.removeFromSuperview()
+                }
+                var lblExitName : UILabel = UILabel()
+                lblExitName.tag = 4502
+                lblExitName.font = UIFont.systemFontOfSize(15)
+                lblExitName.frame = CGRectMake(30, 0, 90, 33)
+                lblExitName.textAlignment = NSTextAlignment.Center
+                lblExitName.text = exitId!.stationExit()
+                var mlblExitNameAfter = viewInfo.viewWithTag(4503)
+                if (mlblExitNameAfter != nil ){
+                    mlblExitNameAfter?.removeFromSuperview()
+                }
+                var lblExitNameAfter : UILabel = UILabel()
+                lblExitNameAfter.tag = 4503
+                lblExitNameAfter.font = UIFont.systemFontOfSize(13)
+                lblExitNameAfter.textColor = UIColor.lightGrayColor()
+                lblExitNameAfter.frame = CGRectMake(120, 0, 30, 33)
+                lblExitNameAfter.text = "出发"
+                
+                viewInfo.addSubview(lblExitNameBefor)
+                viewInfo.addSubview(lblExitName)
+                viewInfo.addSubview(lblExitNameAfter)
+                
+            }
+            
+            var exitMoveTime: String? = exitInfoDic["exitMoveTime"] as String!
+             if ((exitMoveTime != nil) && (exitMoveTime != "0") && (exitMoveTime != "")) {
+                var lblTimeBefore = viewInfo.viewWithTag(5501)
+                if (lblTimeBefore != nil ){
+                    lblTimeBefore?.removeFromSuperview()
+                }
+                var lblExitTimeBefor : UILabel = UILabel()
+                lblExitTimeBefor.font = UIFont.systemFontOfSize(13)
+                lblExitTimeBefor.textColor = UIColor.lightGrayColor()
+                lblExitTimeBefor.text = "步行大约"
+                lblExitTimeBefor.tag = 5501
+                lblExitTimeBefor.frame = CGRectMake(150, 0, 60, 33)
+                
+                var mlblTimeName = viewInfo.viewWithTag(5502)
+                if (mlblTimeName != nil ){
+                    mlblTimeName?.removeFromSuperview()
+                }
+                var lblExitTime : UILabel = UILabel()
+                lblExitTime.tag = 5502
+                lblExitTime.font = UIFont.systemFontOfSize(15)
+                lblExitTime.frame = CGRectMake(210, 0, 40, 33)
+                lblExitTime.textAlignment = NSTextAlignment.Center
+                lblExitTime.text = exitMoveTime
+                var mlblExitTimeAfter = viewInfo.viewWithTag(5503)
+                if (mlblExitTimeAfter != nil ){
+                    mlblExitTimeAfter?.removeFromSuperview()
+                }
+                var lblExitTimeAfter : UILabel = UILabel()
+                lblExitTimeAfter.tag = 5503
+                lblExitTimeAfter.font = UIFont.systemFontOfSize(13)
+                lblExitTimeAfter.textColor = UIColor.lightGrayColor()
+                lblExitTimeAfter.frame = CGRectMake(250, 0, 30, 33)
+                lblExitTimeAfter.text = "分钟"
+                viewInfo.addSubview(lblExitTimeBefor)
+                viewInfo.addSubview(lblExitTime)
+                viewInfo.addSubview(lblExitTimeAfter)
+            }
+        }
+        return viewInfo
+
+    }
+
+
+    
+//    func statExitNameByExitId(exitId:String) -> String {
+//        var exitName: String = ""
+//        
+//        if (!exitId.isEmpty){
+//            var stat01ExitTable : StaT01StationExitTable = StaT01StationExitTable()
+//            
+//            stat01ExitTable.statExitId = exitId
+//            var stat01ExitSearchResult : NSArray = stat01ExitTable.selectAll()
+//            if (stat01ExitSearchResult.count == 1) {
+//                exitName = stat01ExitSearchResult[0].statExitName
+//            } else {
+//                return ""
+//            
+//            }
+//            
+//        }
+//        return exitName
+//
+//    }
 
 
     /*******************************************************************************

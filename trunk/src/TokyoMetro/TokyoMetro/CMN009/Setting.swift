@@ -80,7 +80,11 @@ class Setting : UIViewController, UITableViewDelegate, UITableViewDataSource, OA
             self.navigationItem.backBarButtonItem = backButton
             self.navigationController?.pushViewController(localCacheController, animated:true)
         case 1:
-            webLinkAction("CMN009_05".localizedString(), webSite:"http://www.baidu.com")
+            // webLinkAction("CMN009_05".localizedString(), webSite:"http://www.baidu.com")
+            let url = NSURL.URLWithString("http://itunes.apple.com/cn/app/id416048305?mt=8")
+            UIApplication.sharedApplication().openURL(url)
+            
+            
         case 2:
              webLinkAction("CMN009_06".localizedString(), webSite:"http://www.google.com")
         default:
@@ -92,9 +96,7 @@ class Setting : UIViewController, UITableViewDelegate, UITableViewDataSource, OA
             self.navigationController?.pushViewController(appservers, animated:true)
 
         }
-        
-        
-        
+
     }
     
     // 获取图片
