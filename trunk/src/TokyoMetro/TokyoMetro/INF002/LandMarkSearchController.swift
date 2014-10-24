@@ -364,9 +364,9 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
             
             if("\(items[indexPath.section][1][indexPath.row])" != "INF002_19".localizedString()){
                 var btnAll:UIButton = UIButton.buttonWithType(UIButtonType.Custom) as UIButton
-                btnAll.frame = CGRect(x:tableView.frame.size.width - 75,y:0,width:60,height:43)
+                btnAll.frame = CGRect(x:tableView.frame.size.width - 50,y:7,width:30,height:30)
                 //btnAll.setTitle("INF002_19".localizedString(), forState: UIControlState.Normal)
-                btnAll.setBackgroundImage(UIImage(named: "btnDecImg"), forState: UIControlState.Normal)
+                btnAll.setBackgroundImage(UIImage(named: "inf00222"), forState: UIControlState.Normal)
                 btnAll.tag = BTN_ALL
                 
                 btnAll.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
@@ -385,9 +385,9 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
             }else if(indexPath.row == 0){
                 if("\(items[indexPath.section][1][indexPath.row])" != "INF002_19".localizedString()){
                     var btnAll:UIButton = UIButton.buttonWithType(UIButtonType.Custom) as UIButton
-                    btnAll.frame = CGRect(x:tableView.frame.size.width - 75,y:0,width:60,height:43)
+                    btnAll.frame = CGRect(x:tableView.frame.size.width - 50,y:7,width:30,height:30)
                     //btnAll.setTitle("INF002_19".localizedString(), forState: UIControlState.Normal)
-                    btnAll.setBackgroundImage(UIImage(named: "btnDecImg"), forState: UIControlState.Normal)
+                    btnAll.setBackgroundImage(UIImage(named: "inf00222"), forState: UIControlState.Normal)
                     btnAll.tag = BTN_ALL_SPEACIAL
                     
                     btnAll.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)

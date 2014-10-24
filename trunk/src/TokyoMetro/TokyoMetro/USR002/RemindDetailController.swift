@@ -135,6 +135,8 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
     /* 选择的线路站点id */
     var statToId:String = "2800101"
     
+    var mEditFlag:Bool = false
+    
     
     /*******************************************************************************
     * Overrides From UIViewController
@@ -162,7 +164,9 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
 
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        saveLastMetro()
+        if(usrT02Data != nil && mEditFlag){
+            saveLastMetro()
+        }
     }
 
     
@@ -543,12 +547,12 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
     func intitValue(){
         self.navigationItem.leftBarButtonItem = nil
         // 返回按钮点击事件
-        var bakButtonStyle:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-        bakButtonStyle.frame = CGRectMake(0, 0, 43, 43)
-        bakButtonStyle.setTitle("PUBLIC_05".localizedString(), forState: UIControlState.Normal)
-        bakButtonStyle.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
-        let backButton:UIBarButtonItem =  UIBarButtonItem(customView: bakButtonStyle)
-        self.navigationItem.leftBarButtonItem = backButton
+//        var bakButtonStyle:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
+//        bakButtonStyle.frame = CGRectMake(0, 0, 43, 43)
+//        bakButtonStyle.setTitle("PUBLIC_05".localizedString(), forState: UIControlState.Normal)
+//        bakButtonStyle.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
+//        let backButton:UIBarButtonItem =  UIBarButtonItem(customView: bakButtonStyle)
+//        self.navigationItem.leftBarButtonItem = backButton
         
         // 查询线路
         mLines = USR002_MODEL.findLineTable()
@@ -695,7 +699,10 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
             delButton.action = "buttonAction:"
         }
         
+        mEditFlag = true
+        
         if(usrT02Data == nil){
+            mEditFlag = false
             self.title = "添加"
             self.navigationItem.rightBarButtonItem = nil
             // 完成按钮点击事件
@@ -860,10 +867,12 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
         var trainAlarms:Array<UsrT02TrainAlarmTable>? = selectTrainAlarmTable()
         var usr002Dao:USR002DAO = USR002DAO()
         usrT02Data!.alamTime = usr002Dao.queryDepaTime(usrT02Data!.lineId, statId: "\((selectStationTableOne(usrT02Data!.statId) as MstT02StationTable).item(MSTT02_STAT_GROUP_ID))", destId: usrT02Data!.traiDirt, trainFlag: usrT02Data!.alamType, scheType: "1")
-        if(usrT02Data!.alamTime == ""){
+        if(usrT02Data!.alamTime == "" || usrT02Data!.alamTime == "nil"){
             RemindDetailController.showMessage(MSG_0002, msg:"请重新选择车站",buttons:[MSG_0003], delegate: nil)
-            self.navigationController!.popViewControllerAnimated(true)
-            return
+            if(!mEditFlag){
+                self.navigationController!.popViewControllerAnimated(true)
+                return
+            }
         }
         if(trainAlarms!.count > 0){
             if(usrT02Data!.rowid == ""){
@@ -882,14 +891,14 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
             }else{
                 usrT02Data!.saveTime = RemindDetailController.convertDate2LocalTime(NSDate.date())
                 if(mUsr002Model.updateUsrT02(usrT02Data!)){
-                    var controllers:AnyObject? = self.navigationController!.viewControllers
-                    if(controllers!.count > 1){
-                        var lastController:RemindListController = controllers![controllers!.count - 2] as RemindListController
-                        lastController.viewDidLoad()
-                    }
-                    self.navigationController!.popViewControllerAnimated(true)
+//                    var controllers:AnyObject? = self.navigationController!.viewControllers
+//                    if(controllers!.count > 1){
+//                        var lastController:RemindListController = controllers![controllers!.count - 2] as RemindListController
+//                        lastController.viewDidLoad()
+//                    }
+                    //self.navigationController!.popViewControllerAnimated(true)
                 }else{
-                    self.navigationController!.popViewControllerAnimated(true)
+                    //self.navigationController!.popViewControllerAnimated(true)
                 }
             }
         }else{
