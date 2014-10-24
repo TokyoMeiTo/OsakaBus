@@ -352,7 +352,7 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
             imageViewEnd.hidden = true
             imageViewArrow.hidden = true
             
-            pushNotification(nil,min: NUM_NEGATIVE_1)
+            pushNotification(nil,min: NUM_NEGATIVE_1,soundId: 0)
             mAlarm!.cancelFlag = "1"
             mAlarm!.cancelTime = RemindDetailController.convertDate2LocalTime(NSDate.date())
             mUsr002Model.updateUsrT01(mAlarm!)
@@ -374,7 +374,7 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
         sgmMain.addTarget(self,
             action: "segmentChanged:",
             forControlEvents: UIControlEvents.ValueChanged)
-        sgmMain.setTitle("USR002_28".localizedString(), forSegmentAtIndex: 1)
+        sgmMain.setTitle("USR002_29".localizedString(), forSegmentAtIndex: 1)
     }
     
     /**
@@ -438,9 +438,9 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
             var alarmEnd:UsrT01ArrivalAlarmTableData? = usrt01Alarms![usrt01Alarms!.count - 1]
             
             if(mAlarm!.statToId == alarmEnd!.statToId){
-                lblArriveStation.text = "到" + mAlarm!.statToId.station() + "下车,还需"
+                lblArriveStation.text = "USR002_16".localizedString() + mAlarm!.statToId.station() +  "USR001_17".localizedString() + "," + "USR002_27".localizedString()
             }else{
-                lblArriveStation.text = "到" + mAlarm!.statToId.station() + "换乘,还需"
+                lblArriveStation.text = "USR002_16".localizedString() + mAlarm!.statToId.station() + "CMN003_01".localizedString() + "," + "USR002_27".localizedString()
             }
             
             lblStart.backgroundColor = UIColor.clearColor()
@@ -455,7 +455,7 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
             lblEnd.text = alarmEnd!.lineToId.line() + " " + alarmEnd!.statToId.station()
             lblEnd.textAlignment = NSTextAlignment.Right
 
-            lblArriveInfo.text = "上车后,请点击开始"
+            lblArriveInfo.text = "USR002_28".localizedString()
             var imgBeep = UIImage(named: "usr007")
             if(mAlarm!.voleFlag == "1"){
                  imgBeep = UIImage(named: "usr008")
@@ -633,7 +633,11 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
         dispatch_async(dispatch_get_main_queue()) { () -> Void in
             self.showTime(times)
             if(time == self.NUM_0){
-                self.pushNotification("USR002_25".localizedString() + self.mAlarm!.statToId.station(),min: self.NUM_NEGATIVE_1)
+                if(self.mAlarm!.beepFlag == "0"){
+                     self.pushNotification("USR002_25".localizedString() + self.mAlarm!.statToId.station(),min: self.NUM_NEGATIVE_1,soundId: 1007)
+                }else{
+                    self.pushNotification("USR002_25".localizedString() + self.mAlarm!.statToId.station(),min: self.NUM_NEGATIVE_1,soundId: 4095)
+                }
                 self.mAlarm!.cancelFlag = "1"
                 self.mAlarm!.cancelTime = RemindDetailController.convertDate2LocalTime(NSDate.date())
                 self.mUsr002Model.updateUsrT01(self.mAlarm!)
@@ -643,7 +647,7 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
             }else{
                 var costTime:Int = (self.mAlarm!.costTime as NSString).integerValue
                 if(time % 60 == 0){
-                    self.pushNotification(nil,min: (time/60)%60)
+                    self.pushNotification(nil,min: (time/60)%60,soundId: 0)
                 }
             }
         }
@@ -661,7 +665,7 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
     /**
      * 本地推送消息
      */
-    func pushNotification(Msg: String?, min:Int?){
+    func pushNotification(Msg: String?, min:Int?, soundId: UInt32){
         var mDeviceVersion:Double = (UIDevice.currentDevice().systemVersion as NSString).doubleValue
         // 通知
         var app = UIApplication.sharedApplication()
@@ -677,8 +681,9 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
         var localNotif:UILocalNotification = UILocalNotification()
         localNotif.fireDate = NSDate()
         localNotif.timeZone = NSTimeZone.localTimeZone()
-        AudioServicesPlaySystemSound(1007 as SystemSoundID)
-//        AudioServicesPlaySystemSound(4095 as SystemSoundID)
+        if(soundId != 0){
+            AudioServicesPlaySystemSound(soundId as SystemSoundID)// 1007,4095
+        }
         localNotif.soundName = UILocalNotificationDefaultSoundName
         if(Msg != nil){
             localNotif.alertBody = Msg

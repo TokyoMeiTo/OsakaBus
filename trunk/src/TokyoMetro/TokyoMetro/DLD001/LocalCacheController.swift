@@ -66,7 +66,7 @@ class LocalCacheController: UIViewController, UIAlertViewDelegate{
     var downloading:Bool = false
     var UIloading:Bool = false
     var loadProgress:String? = ""
-    var tipText:String = "数据下载完成前,您将无法使用本产品。下载数据时,建议使用WIFI方式。若使用3G/2G下载将产生流量费用。资费标准请咨询通讯运营商。"
+    var tipText:String = "DLD001_08".localizedString()
     
     /*******************************************************************************
     * Overrides From UIViewController
@@ -123,7 +123,7 @@ class LocalCacheController: UIViewController, UIAlertViewDelegate{
         lblTip.numberOfLines = 0
         lblTip.lineBreakMode = NSLineBreakMode.ByCharWrapping
         
-        lblTip2.text = "请耐心等待下载完成,中途退出会中断下载"
+        lblTip2.text = "DLD001_11".localizedString()
         
         disMiss(gaiLoading)
         
@@ -177,7 +177,7 @@ class LocalCacheController: UIViewController, UIAlertViewDelegate{
             default:
                 if(!downloading){
                     RemindDetailController.showMessage("PUBLIC_08".localizedString(),
-                        msg:"确定要重新下载?",
+                        msg:"DLD001_18".localizedString(),
                         buttons:["PUBLIC_06".localizedString(), "PUBLIC_07".localizedString()],
                         delegate: self)
                 }

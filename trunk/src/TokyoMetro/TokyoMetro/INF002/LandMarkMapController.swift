@@ -156,7 +156,7 @@ class LandMarkMapController: UIViewController, MKMapViewDelegate, UIActionSheetD
             var statLat:Double = ("\(landMark!.item(MSTT04_LANDMARK_LMAK_LAT))" as NSString).doubleValue
             var statLon:Double = ("\(landMark!.item(MSTT04_LANDMARK_LMAK_LON))" as NSString).doubleValue
 
-            landMarkLocation = CLLocation(latitude: statLon, longitude: statLat)
+            landMarkLocation = CLLocation(latitude: statLat, longitude: statLon)
         }
         
         //var statLocation = CLLocation(latitude: fromLat, longitude: fromLon)
@@ -177,7 +177,7 @@ class LandMarkMapController: UIViewController, MKMapViewDelegate, UIActionSheetD
                 var statLon:Double? = (key.statLon as NSString).doubleValue
                 var annotation = MKPointAnnotation()
                 annotation.coordinate = CLLocationCoordinate2D(latitude:statLat! as CLLocationDegrees, longitude:statLon! as CLLocationDegrees)
-                annotation.title = key.statId.station()
+                annotation.title = key.statId.station() + "\n" + key.statAddr
                 mkMap.addAnnotation(annotation)
                 var region : MKCoordinateRegion = MKCoordinateRegionMake(annotation.coordinate, span)
                 mkMap.setRegion(region, animated:true)
@@ -212,6 +212,19 @@ class LandMarkMapController: UIViewController, MKMapViewDelegate, UIActionSheetD
         
         var region : MKCoordinateRegion = MKCoordinateRegionMake(coordinateOnEarth, span)
         mkMap.setRegion(region, animated:true)
+    }
+    
+    /**
+    * ボタン点击事件
+    * @param sender
+    */
+    func buttonAction(sender: UIButton){
+        switch sender.tag{
+        case BTN_Location_TAG:
+            println("nothing")
+        default:
+            println("nothing")
+        }
     }
     
     

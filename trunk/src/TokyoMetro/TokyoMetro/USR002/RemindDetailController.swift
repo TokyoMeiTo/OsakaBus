@@ -525,11 +525,11 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
         case NUM_0:
             // 删除本条提醒
             mUsr002Model.deleteUsrT02(usrT02Data!)
-            var controllers:AnyObject? = self.navigationController!.viewControllers
-            if(controllers!.count > 1){
-                var lastController:RemindListController = controllers![controllers!.count - 2] as RemindListController
-                lastController.viewDidLoad()
-            }
+//            var controllers:AnyObject? = self.navigationController!.viewControllers
+//            if(controllers!.count > 1){
+//                var lastController:RemindListController = controllers![controllers!.count - 2] as RemindListController
+//                lastController.viewDidLoad()
+//            }
             self.navigationController!.popViewControllerAnimated(true)
         default:
             println("nothing")
@@ -868,11 +868,10 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
         var usr002Dao:USR002DAO = USR002DAO()
         usrT02Data!.alamTime = usr002Dao.queryDepaTime(usrT02Data!.lineId, statId: "\((selectStationTableOne(usrT02Data!.statId) as MstT02StationTable).item(MSTT02_STAT_GROUP_ID))", destId: usrT02Data!.traiDirt, trainFlag: usrT02Data!.alamType, scheType: "1")
         if(usrT02Data!.alamTime == "" || usrT02Data!.alamTime == "nil"){
-            RemindDetailController.showMessage(MSG_0002, msg:"请重新选择车站",buttons:[MSG_0003], delegate: nil)
-            if(!mEditFlag){
-                self.navigationController!.popViewControllerAnimated(true)
-                return
-            }
+            RemindDetailController.showMessage(MSG_0002, msg:"USR002_05".localizedString(),buttons:[MSG_0003], delegate: nil)
+            mEditFlag = false
+            self.navigationController!.popViewControllerAnimated(true)
+            return
         }
         if(trainAlarms!.count > 0){
             if(usrT02Data!.rowid == ""){
@@ -956,17 +955,18 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
                 // 保存末班车提醒
                 saveLastMetro()
             }
-        case BACK_BUTTON_TAG:
-            self.navigationController!.popViewControllerAnimated(true)
-        case self.navigationItem.leftBarButtonItem!.tag:
-            if(segIndex == NUM_0){
-                // 保存到站提醒
-                saveArriveStation()
-            }else if(segIndex == NUM_1){
-                // 保存末班车提醒
-                saveLastMetro()
-            }
+//        case BACK_BUTTON_TAG:
+//            self.navigationController!.popViewControllerAnimated(true)
+//        case self.navigationItem.leftBarButtonItem!.tag:
+//            if(segIndex == NUM_0){
+//                // 保存到站提醒
+//                saveArriveStation()
+//            }else if(segIndex == NUM_1){
+//                // 保存末班车提醒
+//                saveLastMetro()
+//            }
         case self.navigationItem.rightBarButtonItem!.tag:
+            mEditFlag = false
             RemindDetailController.showMessage(MSG_0002, msg:MSG_0001,buttons:[MSG_0003, MSG_0004], delegate: self)
         default:
             println("nothing")

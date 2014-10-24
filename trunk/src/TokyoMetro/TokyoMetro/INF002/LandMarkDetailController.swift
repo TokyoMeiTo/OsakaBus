@@ -104,6 +104,7 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, UITableVi
             stationDetail.stat_id = "\(stations![didSelectRowAtIndexPath.row - 10].item(MSTT02_STAT_ID))"
             stationDetail.cellJPName = "\(stations![didSelectRowAtIndexPath.row - 10].item(MSTT02_STAT_NAME))"
             stationDetail.cellJPNameKana = "\(stations![didSelectRowAtIndexPath.row - 10].item(MSTT02_STAT_NAME_KANA))"
+            stationDetail.ruteLandMarkId = "\(stations![didSelectRowAtIndexPath.row - 10].item(MSTT04_LANDMARK_LMAK_ID))"
             
             var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
             self.navigationItem.backBarButtonItem = backButton
