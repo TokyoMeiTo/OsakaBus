@@ -3663,9 +3663,9 @@ lable</string>
                                 <exclude reference="xyt-dM-kA4"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="VI8-6u-Mfw"/>
-                                <exclude reference="OPw-kH-hcK"/>
                                 <exclude reference="AhS-Aa-o65"/>
+                                <exclude reference="OPw-kH-hcK"/>
+                                <exclude reference="VI8-6u-Mfw"/>
                                 <exclude reference="jOA-tN-LFP"/>
                             </mask>
                         </variation>
@@ -3675,9 +3675,9 @@ lable</string>
                                 <include reference="xyt-dM-kA4"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="VI8-6u-Mfw"/>
-                                <include reference="OPw-kH-hcK"/>
                                 <include reference="AhS-Aa-o65"/>
+                                <include reference="OPw-kH-hcK"/>
+                                <include reference="VI8-6u-Mfw"/>
                                 <include reference="jOA-tN-LFP"/>
                             </mask>
                         </variation>
@@ -3952,6 +3952,7 @@ lable</string>
                         <viewControllerLayoutGuide type="bottom" id="6dg-1m-ktI"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="vUO-yL-SAo">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>

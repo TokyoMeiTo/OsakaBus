@@ -31,7 +31,7 @@
                         INFT03_RESCURE_RESC_CONTENT_JP,
                         INFT03_RESCURE_READ_FLAG,
                         INFT03_RESCURE_READ_TIME,
-                        INFT03_RESCURE_READ_FLAG,
+                        INFT03_RESCURE_FAVO_FLAG,
                         INFT03_RESCURE_FAVO_TIME,
                         nil];
         

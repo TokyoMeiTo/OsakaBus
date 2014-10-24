@@ -268,23 +268,23 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
             lblLandMarkWard.textAlignment = NSTextAlignment.Right
             cell!.contentView.addSubview(lblLandMarkWard)
             
-            var btnFav:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-            btnFav.frame = CGRect(x:15,y:10,width:40,height:40)
-            
-            var mINF002Model:INF002Model = INF002Model()
-            
-            var mINF002Data:UsrT03FavoriteTableData = mINF002Model.findFav("\(landMarks[indexPath.row].item(MSTT04_LANDMARK_LMAK_ID))")
-            
-            var imgFav = UIImage(named: "INF00202")
-            if(mINF002Data.ext4 != ""){
-                imgFav = UIImage(named: "INF00206")
-            }
-            
-            btnFav.setBackgroundImage(imgFav, forState: UIControlState.Normal)
-            btnFav.tag = 101 + indexPath.row
-            
-            btnFav.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
-            cell!.contentView.addSubview(btnFav)
+//            var btnFav:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
+//            btnFav.frame = CGRect(x:15,y:10,width:40,height:40)
+//            
+//            var mINF002Model:INF002Model = INF002Model()
+//            
+//            var mINF002Data:UsrT03FavoriteTableData = mINF002Model.findFav("\(landMarks[indexPath.row].item(MSTT04_LANDMARK_LMAK_ID))")
+//            
+//            var imgFav = UIImage(named: "INF00202")
+//            if(mINF002Data.ext4 != ""){
+//                imgFav = UIImage(named: "INF00206")
+//            }
+//            
+//            btnFav.setBackgroundImage(imgFav, forState: UIControlState.Normal)
+//            btnFav.tag = 101 + indexPath.row
+//            
+//            btnFav.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
+//            cell!.contentView.addSubview(btnFav)
             
             if(landMarks[indexPath.row].item(MSTT04_LANDMARK_RANK) != nil && "\(landMarks[indexPath.row].item(MSTT04_LANDMARK_RANK))" != ""){
                 lblTemp.frame = CGRect(x:0,y:125,width:tableView.frame.width,height:45)

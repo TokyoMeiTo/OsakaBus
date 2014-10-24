@@ -96,6 +96,7 @@ class SearchStationList: UIViewController, UITableViewDelegate, UITableViewDataS
             
             self.navigationController?.pushViewController(detail, animated: true)
         }
+        
     }
 
     
@@ -226,7 +227,7 @@ class SearchStationList: UIViewController, UITableViewDelegate, UITableViewDataS
         
         var table = MstT02StationTable()
         
-        var rows: NSArray = table.excuteQuery("select *, ROWID, count(distinct STAT_NAME_EXT1) from MSTT02_STATION where 1 = 1 and STAT_ID like '280%' and (STAT_NAME_EXT1 like '%\(name)%' or STAT_NAME_EXT2 like '%\(name)%' or STAT_NAME_EXT3 like '%\(name)%' or STAT_NAME_EXT4 like '%\(name)%' or STAT_NAME_EXT5 like '%\(name)%' or STAT_NAME like '%\(name)%' or STAT_NAME_KANA like '%\(name)%' or STAT_NAME_ROME like '%\(name)%' like '%\(name)%') group by STAT_NAME_EXT1")
+        var rows: NSArray = table.excuteQuery("select *, ROWID, count(distinct STAT_NAME_EXT1) from MSTT02_STATION where 1 = 1 and STAT_ID like '280%' and (STAT_NAME_EXT1 like '\(name)%' or STAT_NAME_EXT2 like '\(name)%' or STAT_NAME_EXT3 like '\(name)%' or STAT_NAME_EXT4 like '\(name)%' or STAT_NAME_EXT5 like '\(name)%' or STAT_NAME like '\(name)%' or STAT_NAME_KANA like '\(name)%' or STAT_NAME_ROME like '\(name)%' like '\(name)%' or STAT_SEQ like '\(name)%') group by STAT_NAME_EXT1")
         
         var allRows: NSArray = table.excuteQuery("select *, ROWID from MSTT02_STATION where 1 = 1 and STAT_ID like '280%'")
         

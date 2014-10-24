@@ -55,6 +55,8 @@ class StationDetail: UIViewController, UITableViewDelegate, UITableViewDataSourc
     var stat_id = ""
     // 收藏该条线路的group_id
     var group_id = ""
+    // 传递给路线画面的landmarkid
+    var ruteLandMarkId: String?
     
 /*******************************************************************************
 * Private Properties
@@ -320,6 +322,10 @@ class StationDetail: UIViewController, UITableViewDelegate, UITableViewDataSourc
         var routeSearch: RouteSearch = self.storyboard?.instantiateViewControllerWithIdentifier("RouteSearch") as RouteSearch
         
         routeSearch.endStationText = group_id
+        
+        if (ruteLandMarkId != nil) {
+            
+        }
         var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
         self.navigationItem.backBarButtonItem = backButton
         
@@ -472,25 +478,12 @@ class StationDetail: UIViewController, UITableViewDelegate, UITableViewDataSourc
     func showLnadMarkList(index: Int) {
         var landMark: LandMarkListController = self.storyboard?.instantiateViewControllerWithIdentifier("landmarklist") as LandMarkListController
         
-//        if (index == 0) {
-//            landMarkArr = model!.odbLandMark(group_id, type: "景点")
-//            landMark.title = "PUBLIC_12".localizedString()
-//        } else if (index == 1) {
-//            landMarkArr = model!.odbLandMark(group_id, type: "美食")
-//            landMark.title = "PUBLIC_13".localizedString()
-//        } else {
-//            landMarkArr = model!.odbLandMark(group_id, type: "购物")
-//            landMark.title = "PUBLIC_14".localizedString()
-//        }
-        
         landMark.landMarkType = index
         landMark.landMarkStatId = group_id
         landMark.classType = "stationDetail"
         
         var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
         self.navigationItem.backBarButtonItem = backButton
-        
-//        landMark.landMarks = landMarkArr as? Array<MstT04LandMarkTable>
         
         self.navigationController?.pushViewController(landMark, animated: true)
 
