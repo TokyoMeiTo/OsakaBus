@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="F1F-Fs-9ra">
     <dependencies>
-        <deployment version="1792" defaultVersion="1792" identifier="iOS"/>
+        <deployment version="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <scenes>
@@ -2986,6 +2986,13 @@ lable</string>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="aOv-UZ-17b" id="Hsg-Na-qsC">
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
+                                                        <view tag="9500" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Csx-HS-YmF">
+                                                            <rect key="frame" x="45" y="33" width="250" height="50"/>
+                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                            <variation key="heightClass=regular" fixedFrame="YES">
+                                                                <rect key="frame" x="35" y="13" width="250" height="50"/>
+                                                            </variation>
+                                                        </view>
                                                         <label opaque="NO" userInteractionEnabled="NO" tag="1002" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="原木中山" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2JM-gO-lGe">
                                                             <rect key="frame" x="46" y="8" width="208" height="21"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -3065,6 +3072,16 @@ lable</string>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
+                                                    <variation key="default">
+                                                        <mask key="subviews">
+                                                            <exclude reference="Csx-HS-YmF"/>
+                                                        </mask>
+                                                    </variation>
+                                                    <variation key="heightClass=regular">
+                                                        <mask key="subviews">
+                                                            <include reference="Csx-HS-YmF"/>
+                                                        </mask>
+                                                    </variation>
                                                 </tableViewCellContentView>
                                             </tableViewCell>
                                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="routeTip" rowHeight="38" id="fcq-Hi-rGj">
@@ -4004,7 +4021,7 @@ lable</string>
         <image name="reverse" width="23" height="22"/>
         <image name="ride" width="37" height="37"/>
         <image name="route_stations" width="35" height="35"/>
-        <image name="setting-app-icon" width="125" height="125"/>
+        <image name="setting-app-icon" width="70" height="70"/>
         <image name="start-station-btn" width="93" height="29"/>
         <image name="station_collect" width="160" height="44"/>
         <image name="station_local_btn" width="160" height="44"/>

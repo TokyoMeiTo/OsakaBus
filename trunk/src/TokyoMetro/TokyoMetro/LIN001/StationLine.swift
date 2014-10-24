@@ -251,14 +251,18 @@ class StationLine: UIViewController, UITableViewDataSource, UITableViewDelegate 
         
         for key in rows {
             
+            var statGroupId: String? = key.item(MSTT02_STAT_GROUP_ID) as? String
+            
+            if (statGroupId == nil) {
+                break
+            }
             stationArr.addObject(key)
             
-            var statGroupId = key.item(MSTT02_STAT_GROUP_ID) as String
             var lineArr = [String]()
             for (var i = 0; i < allRows.count; i++) {
                 var map: MstT02StationTable = allRows[i] as MstT02StationTable
                 
-                if ((map.item(MSTT02_STAT_GROUP_ID) as String) == statGroupId) {
+                if ((map.item(MSTT02_STAT_GROUP_ID) as String) == statGroupId!) {
                     lineArr.append(map.item(MSTT02_LINE_ID) as String)
                 }
             }
