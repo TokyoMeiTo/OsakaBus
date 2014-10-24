@@ -22,7 +22,6 @@ class MstT04LandMarkTableData : CommonData {
     var lmakNameExt6 :String = ""
     var lmakType :String = ""
     var lmakSubType :String = ""
-    var lineId :String = ""
     var statId :String = ""
     var statExitId :String = ""
     var statExitTime:String = ""
@@ -76,18 +75,17 @@ class MstT04LandMarkTableData : CommonData {
         lmakNameExt6 = dbNull(dao.item(MSTT04_LANDMARK_LMAK_NAME_EXT6) as? String)
         lmakType     = dbNull(dao.item(MSTT04_LANDMARK_LMAK_TYPE) as? String)
         lmakSubType  = dbNull(dao.item(MSTT04_LANDMARK_LMAK_SUB_TYPE) as? String)
-        lineId       = dbNull(dao.item(MSTT04_LANDMARK_LINE_ID) as? String)
         statId       = dbNull(dao.item(MSTT04_LANDMARK_STAT_ID) as? String)
         statExitId   = dbNull(dao.item(MSTT04_LANDMARK_STAT_EXIT_ID) as? String)
-	statExitTime = dbNull(dao.item(MSTT04_LANDMARK_STAT_EXIT_TIME) as? String)
+        statExitTime = dbNull(dao.item(MSTT04_LANDMARK_STAT_EXIT_TIME) as? String)
         lmakPref     = dbNull(dao.item(MSTT04_LANDMARK_PREF) as? String)
         lmakWard     = dbNull(dao.item(MSTT04_LANDMARK_WARD) as? String)
         lmakRank     = dbNull(dao.item(MSTT04_LANDMARK_RANK) as? String)
         lmakMiciRank = dbNull(dao.item(MSTT04_LANDMARK_MICI_RANK) as? String)
         lmakAvalTime = dbNull(dao.item(MSTT04_LANDMARK_LMAK_AVAL_TIME) as? String)
-	lmakTictPric = dbNull(dao.item(MSTT04_LANDMARK_LMAK_TICL_PRIC) as? String)
-	lmakPricMin  = textToDouble(dao.item(MSTT04_LANDMARK_LMAK_PRIC_MIN) as? String)
-	lmakPricMax  = textToDouble(dao.item(MSTT04_LANDMARK_LMAK_PRIC_MAX) as? String)
+        lmakTictPric = dbNull(dao.item(MSTT04_LANDMARK_LMAK_TICL_PRIC) as? String)
+        lmakPricMin  = textToDouble(dao.item(MSTT04_LANDMARK_LMAK_PRIC_MIN) as? String)
+        lmakPricMax  = textToDouble(dao.item(MSTT04_LANDMARK_LMAK_PRIC_MAX) as? String)
         lmakAddr     = dbNull(dao.item(MSTT04_LANDMARK_LMAK_ADDR) as? String)
         lmakDesp     = dbNull(dao.item(MSTT04_LANDMARK_LMAK_DESP) as? String)
         olimpicFlag  = dbNull(dao.item(MSTT04_LANDMARK_OLIMPIC_FLAG) as? String)
@@ -107,12 +105,12 @@ class MstT04LandMarkTableData : CommonData {
         favoFlag     = textToBool(dao.item(MSTT04_LANDMARK_FAVO_FLAG) as? String)
         favoTime     = dbNull(dao.item(MSTT04_LANDMARK_FAVO_TIME) as? String)
 
-	lmakLonStr   = dbNull(dao.item(MSTT04_LANDMARK_LMAK_LON) as? String)
-	lmakLatStr   = dbNull(dao.item(MSTT04_LANDMARK_LMAK_LAT) as? String)
-	readFlagStr  = dbNull(dao.item(MSTT04_LANDMARK_READ_FLAG) as? String)
-	favoFlagStr  = dbNull(dao.item(MSTT04_LANDMARK_FAVO_FLAG) as? String)
-	lmakPricMinStr = dbNull(dao.item(MSTT04_LANDMARK_LMAK_PRIC_MIN) as? String)
-	lmakPricMaxStr = dbNull(dao.item(MSTT04_LANDMARK_LMAK_PRIC_MAX) as? String)
+        lmakLonStr   = dbNull(dao.item(MSTT04_LANDMARK_LMAK_LON) as? String)
+        lmakLatStr   = dbNull(dao.item(MSTT04_LANDMARK_LMAK_LAT) as? String)
+        readFlagStr  = dbNull(dao.item(MSTT04_LANDMARK_READ_FLAG) as? String)
+        favoFlagStr  = dbNull(dao.item(MSTT04_LANDMARK_FAVO_FLAG) as? String)
+        lmakPricMinStr = dbNull(dao.item(MSTT04_LANDMARK_LMAK_PRIC_MIN) as? String)
+        lmakPricMaxStr = dbNull(dao.item(MSTT04_LANDMARK_LMAK_PRIC_MAX) as? String)
 
         return super.fromDAO(dao);
     }
@@ -132,18 +130,17 @@ class MstT04LandMarkTableData : CommonData {
         dao.item(MSTT04_LANDMARK_LMAK_NAME_EXT6,value:lmakNameExt6)
         dao.item(MSTT04_LANDMARK_LMAK_TYPE,value:lmakType)
         dao.item(MSTT04_LANDMARK_LMAK_SUB_TYPE,value:lmakSubType)
-        dao.item(MSTT04_LANDMARK_LINE_ID,value:lineId)
         dao.item(MSTT04_LANDMARK_STAT_ID,value:statId)
         dao.item(MSTT04_LANDMARK_STAT_EXIT_ID,value:statExitId)
-	dao.item(MSTT04_LANDMARK_STAT_EXIT_TIME,value:statExitTime)
+        dao.item(MSTT04_LANDMARK_STAT_EXIT_TIME,value:statExitTime)
         dao.item(MSTT04_LANDMARK_PREF,value:lmakPref)
         dao.item(MSTT04_LANDMARK_WARD,value:lmakWard)
         dao.item(MSTT04_LANDMARK_RANK,value:lmakRank)
         dao.item(MSTT04_LANDMARK_MICI_RANK,value:lmakMiciRank)
         dao.item(MSTT04_LANDMARK_LMAK_AVAL_TIME,value:lmakAvalTime)
         dao.item(MSTT04_LANDMARK_LMAK_TICL_PRIC,value:lmakTictPric)
-	dao.item(MSTT04_LANDMARK_LMAK_PRIC_MIN,value:lmakPricMinStr)
-	dao.item(MSTT04_LANDMARK_LMAK_PRIC_MAX,value:lmakPricMaxStr)
+        dao.item(MSTT04_LANDMARK_LMAK_PRIC_MIN,value:lmakPricMinStr)
+        dao.item(MSTT04_LANDMARK_LMAK_PRIC_MAX,value:lmakPricMaxStr)
         dao.item(MSTT04_LANDMARK_LMAK_ADDR,value:lmakAddr)
         dao.item(MSTT04_LANDMARK_LMAK_DESP,value:lmakDesp)
         dao.item(MSTT04_LANDMARK_OLIMPIC_FLAG,value:olimpicFlag)
