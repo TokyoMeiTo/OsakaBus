@@ -25,6 +25,7 @@ class LandMarkMapController: UIViewController, MKMapViewDelegate, UIActionSheetD
     * Global
     *******************************************************************************/
 
+    let BTN_Location_TAG:Int = 120
     
     /*******************************************************************************
     * Public Properties
@@ -64,6 +65,10 @@ class LandMarkMapController: UIViewController, MKMapViewDelegate, UIActionSheetD
     *      Implements Of MKMapViewDelegate
     *******************************************************************************/
 
+    func mapView(mapView: MKMapView!, didSelectAnnotationView view: MKAnnotationView!) {
+        
+    }
+    
     func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) ->
         MKAnnotationView!{
             if (annotation is MKUserLocation){
@@ -136,6 +141,16 @@ class LandMarkMapController: UIViewController, MKMapViewDelegate, UIActionSheetD
         mkMap.showsUserLocation = true
 
         var span: MKCoordinateSpan = MKCoordinateSpanMake(0.01, 0.01)
+        
+        // 查询按钮点击事件
+        var searchButtonTemp:UIButton? = UIButton.buttonWithType(UIButtonType.System) as? UIButton
+        searchButtonTemp!.frame = CGRect(x:0,y:0,width:25,height:25)
+        var imgLandMark = UIImage(named: "INF00212")
+        searchButtonTemp!.setBackgroundImage(imgLandMark, forState: UIControlState.Normal)
+        searchButtonTemp!.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
+        searchButtonTemp!.tag = BTN_Location_TAG
+        var searchButton:UIBarButtonItem = UIBarButtonItem(customView: searchButtonTemp!)
+        self.navigationItem.rightBarButtonItem = searchButton
         
         if(landMarkLocation == nil){
             var statLat:Double = ("\(landMark!.item(MSTT04_LANDMARK_LMAK_LAT))" as NSString).doubleValue

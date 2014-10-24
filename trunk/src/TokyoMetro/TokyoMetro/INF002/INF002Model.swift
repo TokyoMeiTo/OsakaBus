@@ -28,4 +28,6 @@ class INF002Model {
         mUsr03Dao.select()
         mUsr03Dao.delete()
     }
+    
+    
 }

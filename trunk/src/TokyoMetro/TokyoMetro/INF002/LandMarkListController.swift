@@ -71,7 +71,7 @@ class LandMarkListController: UIViewController, UITableViewDelegate, UITableView
         // Do any additional setup after loading the view, typically from a nib.
         switch landMarkType{
         case 0:
-            self.title = "INF002_07".localizedString()
+            self.title = "PUBLIC_12".localizedString()
         case 1:
             self.title = "INF002_08".localizedString()
         case 2:
@@ -83,10 +83,12 @@ class LandMarkListController: UIViewController, UITableViewDelegate, UITableView
 //        if(landMarks == nil){
 //            landMarks = selectLandMarkTable(landMarkType)
 //        }
-        self.view.backgroundColor = UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
+        self.view.backgroundColor = UIColor.lightGrayColor()
         tbList.delegate = self
         tbList.dataSource = self
-        //tbList.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+        tbList.separatorColor = UIColor.clearColor()
+        tbList.backgroundColor = UIColor.darkGrayColor()
+
         // 查询按钮点击事件
         var searchButtonTemp:UIButton? = UIButton.buttonWithType(UIButtonType.System) as? UIButton
         searchButtonTemp!.frame = CGRect(x:0,y:0,width:25,height:25)
@@ -121,17 +123,8 @@ class LandMarkListController: UIViewController, UITableViewDelegate, UITableView
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath: NSIndexPath){
         var landMarkDetailController = self.storyboard!.instantiateViewControllerWithIdentifier("landmarkdetail") as LandMarkDetailController
-        switch landMarkType{
-        case 0:
-            landMarkDetailController.title = "INF002_07".localizedString()
-        case 1:
-            landMarkDetailController.title = "INF002_08".localizedString()
-        case 2:
-            landMarkDetailController.title = "PUBLIC_09".localizedString()
-        default:
-            println("nothing")
-        }
         
+        landMarkDetailController.title = landMarks![didSelectRowAtIndexPath.row].lmakNameExt1
         landMarkDetailController.landMark = landMarks![didSelectRowAtIndexPath.row]
         var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
         self.navigationItem.backBarButtonItem = backButton
@@ -319,7 +312,6 @@ class LandMarkListController: UIViewController, UITableViewDelegate, UITableView
                 lmkFavAdd.lmakId = "\(landMarks![sender.tag - BTN_FAV_TAG].item(MSTT04_LANDMARK_LMAK_ID))"
                 lmkFavAdd.favoType = "03"
                 lmkFavAdd.favoTime = RemindDetailController.convertDate2LocalTime(NSDate.date())
-                lmkFavAdd.lineId = "\(landMarks![sender.tag - BTN_FAV_TAG].item(MSTT04_LANDMARK_LINE_ID))"
                 lmkFavAdd.statId = "\(landMarks![sender.tag - BTN_FAV_TAG].item(MSTT04_LANDMARK_STAT_ID))"
                 lmkFavAdd.statExitId = "0"
                 lmkFavAdd.ruteId = "0"

@@ -9,7 +9,6 @@
 import Foundation
 
 extension MstT04LandMarkTable {
-//    let QUERY_STATION = "select * , ROWID from MSTT02_STATION where STAT_GROUP_ID = ?"
   
     func queryLandMarks(lmkNm:String) -> NSArray {
         let QUERY_LANDMARK = "select * , ROWID from MSTT04_LANDMARK where LMAK_TYPE = ? AND LMAK_ID in (select min(LMAK_ID) from MSTT04_LANDMARK group by LMAK_NAME_EXT1) AND IMAG_ID1 IS NOT NULL"
@@ -22,7 +21,6 @@ extension MstT04LandMarkTable {
     
     func queryLandMarksFilter(type: String?, lon:CDouble?, lat:CDouble?, distance: Int?, sataId:String?, specialWard:String?) -> NSArray {
         var queryFiter = "select * , ROWID from MSTT04_LANDMARK where LMAK_TYPE = ? AND LMAK_ID in (select min(LMAK_ID) from MSTT04_LANDMARK group by LMAK_NAME_EXT1) AND IMAG_ID1 IS NOT NULL"
-//        AND (LMAK_LON - ?) * (LMAK_LON - ?) + (LMAK_LAT - ?)*(LMAK_LAT - ?) < ? AND STAT_ID = ? AND LMAK_WARD = ?
 
         var arr:NSMutableArray = NSMutableArray.array();
         arr.addObject(type!);

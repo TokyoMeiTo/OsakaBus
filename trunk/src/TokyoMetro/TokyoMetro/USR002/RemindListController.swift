@@ -201,7 +201,6 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
     
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        tableView.separatorColor = UIColor.clearColor()
         tableView.backgroundColor = UIColor(red: 239/255,
             green: 239/255,
             blue: 244/255,

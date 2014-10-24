@@ -87,9 +87,11 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
         pickerSpecialWard.delegate = self
         
         // 完成按钮点击事件
-        var saveButton:UIBarButtonItem = UIBarButtonItem(title: "INF002_09".localizedString(), style: UIBarButtonItemStyle.Bordered, target:self, action: "buttonAction:")
+        var saveButton:UIBarButtonItem = UIBarButtonItem(title: "筛选", style: UIBarButtonItemStyle.Bordered, target:self, action: "buttonAction:")
         self.navigationItem.rightBarButtonItem = saveButton
         self.navigationItem.rightBarButtonItem!.tag = SAVE_BUTTON_TAG
+        
+        self.title = "条件筛选"
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -397,15 +399,12 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
     *******************************************************************************/
 
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int){
-        if(row == 0){
-            landMarkSpecialWard = ""
-            landMarkShowSpecialWard = "INF002_19".localizedString()
-        }else if(row < 9){
-            landMarkSpecialWard = "0\(row)"
-            landMarkShowSpecialWard = "0\(row)"
+        if(row < 9){
+            landMarkSpecialWard = "0\(row + 1)"
+            landMarkShowSpecialWard = "0\(row + 1)"
         }else{
-            landMarkSpecialWard = "\(row)"
-            landMarkShowSpecialWard = "\(row)"
+            landMarkSpecialWard = "\(row + 1)"
+            landMarkShowSpecialWard = "\(row + 1)"
         }
         loadItems()
         var indexPathSpecialWard = NSIndexPath(forRow: 0, inSection: 1)
