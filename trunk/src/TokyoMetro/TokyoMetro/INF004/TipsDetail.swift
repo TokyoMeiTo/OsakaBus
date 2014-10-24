@@ -77,7 +77,7 @@ class TipsDetail: UIViewController {
 
             if (table.excuteUpdate("update INFT02_TIPS set FAVO_FLAG = '0',FAVO_TIME = \(time) where ROWID = \(rowId)")) {
                 favoFlag == "0"
-                barButton.setBackgroundImage(UIImage(named: "collect-01"), forState: UIControlState.Normal, barMetrics: UIBarMetrics.Default)
+                barButton.setBackgroundImage(UIImage(named: "collect-01"), forState: UIControlState.Normal, style: UIBarButtonItemStyle.Bordered, barMetrics: UIBarMetrics.Default)
             } else {
                 
             }
