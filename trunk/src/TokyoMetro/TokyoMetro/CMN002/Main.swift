@@ -191,6 +191,28 @@ class Main: UIViewController,UIScrollViewDelegate {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+//        
+//        if (mImgLineGraph.image == nil) {
+//            self.mImgLineGraph.image =  "MetroCH".image("LineGraph")
+//            
+//            self.mScrollView.contentSize = CGSizeMake(1722, 1299)
+//            // MainWrapper
+//            self.mMainWrapper.frame = CGRectMake(0, 0, 1722, 1299)
+//            
+//            // MainWrapper
+//            self.mImgLineGraph.frame = CGRectMake(0, 0, 1722, 1299)
+//        }
+//        
+//        
+//        // 接受从站点列表中传递过来的站点ID
+//        if (!stationIdFromStationList.isEmpty){
+//            showPopViewByStationId(stationIdFromStationList)
+//        }
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
         
         if (mImgLineGraph.image == nil) {
             self.mImgLineGraph.image =  "MetroCH".image("LineGraph")
@@ -208,10 +230,6 @@ class Main: UIViewController,UIScrollViewDelegate {
         if (!stationIdFromStationList.isEmpty){
             showPopViewByStationId(stationIdFromStationList)
         }
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
 
     }
     
@@ -534,8 +552,6 @@ class Main: UIViewController,UIScrollViewDelegate {
     }
 
 
-
-
     /*******************************************************************************
     *    Private Methods
     *******************************************************************************/
@@ -572,7 +588,7 @@ class Main: UIViewController,UIScrollViewDelegate {
             popStaionViewLinesImg(stationDataById)
             
             setPopViewInLineGraph(((stationDataById.statFromX + stationDataById.statToX) / 4) , PointY : (stationDataById.statFromY + stationDataById.statToY) / 4)
-            
+            stationIdFromStationList = ""
         }
     }
     

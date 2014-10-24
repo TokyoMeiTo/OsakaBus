@@ -798,26 +798,12 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
     
     
     @IBAction func locatNearlyStation() {
-        
-
         if (btnNearlyStation.tag == 10002) {
-            
-            
             // 定位时打开
-            // loadLocation()
-            // 起点軽度
-            let fromLat = 35.672737//31.23312372 // 天地科技广场1号楼
-            // 起点緯度
-            let fromLon = 139.768898//121.38368547 // 天地科技广场1号楼
-            var testLocation :CLLocation = CLLocation(latitude: 35.672737, longitude: 139.768898)
-            locationUpdateComplete(testLocation)
-            
-            
+            loadLocation()
             btnCollectionStation.tag = 10001
             btnNearlyStation.tag = 10012
-        
         }
-        
     }
     
     
@@ -948,7 +934,6 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
     }
     // 显示所有收藏站点
     func loadCollectedStation(){
-       //  btnCollectionStation.tag == 10001
         loadStation()
         showTipBtn("0")
     }
@@ -979,6 +964,11 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         tbResultView.reloadData()
         mNearlyLogo.image = "route_locate".getImage()
         mCollectionLogo.image = "route_collected".getImage()
+        
+        
+        btnCollectionStation.tag = 10001
+        btnNearlyStation.tag = 10002
+        
         
     }
 
@@ -1049,7 +1039,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         let usrt01Alarms:[UsrT01ArrivalAlarmTableData]? = mUsr002Model.findArrivalAlarm()
         var isAlarmFlag:String = "1"
         for key in usrt01Alarms!{
-            if(key.cancelFlag != "" && key.cancelFlag == "1"){
+            if(key.cancelFlag != "" && key.cancelFlag == "0"){
                 isAlarmFlag = "2"
                 break
             }
@@ -1192,6 +1182,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
     
     // 判断路线是否被收藏
     func routeIsCollected(routeId:String) -> Bool {
+        
         for key in self.allOfCollectedRouteId{
             if (routeId == (key as String)){
                 return true
