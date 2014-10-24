@@ -10,6 +10,8 @@ import UIKit
 
 class HelpContentList: UIViewController, UITableViewDataSource, UITableViewDelegate{
 
+    
+    @IBOutlet weak var tableView: UITableView!
     /*******************************************************************************
     * Private Properties
     *******************************************************************************/
@@ -30,6 +32,7 @@ class HelpContentList: UIViewController, UITableViewDataSource, UITableViewDeleg
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         odbRescure()
+        tableView.reloadData()
     }
     
     override func didReceiveMemoryWarning() {
@@ -65,16 +68,7 @@ class HelpContentList: UIViewController, UITableViewDataSource, UITableViewDeleg
     
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        
-//        var map: InfT03RescureTable = rescArr[indexPath.section][1][indexPath.row] as InfT03RescureTable
-//        var cnString = map.item(INFT03_RESCURE_RESC_CONTENT_CN) as String
-        //        var jpString = map.item(INFT03_RESCURE_RESC_CONTENT_JP) as String
-        
-//        if (textHeight(cnString) + 20 > 55) {
-//            return CGFloat(textHeight(cnString) + 20)
-//        } else {
-            return 55
-//        }
+        return 55
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -103,33 +97,6 @@ class HelpContentList: UIViewController, UITableViewDataSource, UITableViewDeleg
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-//        let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("HelpContentListCell", forIndexPath: indexPath) as UITableViewCell
-//        
-//        var map: InfT03RescureTable = rescArr[indexPath.section][1][indexPath.row] as InfT03RescureTable
-//        
-//        var view = cell.viewWithTag(201) as UIView!
-//        
-//        if (view != nil) {
-//            view.removeFromSuperview()
-//        }
-//        
-//        var rescView: UIView = UIView()
-//        rescView.frame = CGRectMake(15, 0, 290, cell.frame.height)
-//        rescView.tag = 201
-//        
-//        
-//        var chString = map.item(INFT03_RESCURE_RESC_CONTENT_CN) as String
-//        var chText = UILabel()
-//        chText.frame = CGRectMake(0, 10, 290, textHeight(chString))
-//        chText.text = chString
-//        chText.font = UIFont.systemFontOfSize(15)
-//        chText.numberOfLines = 0
-//        
-//        rescView.addSubview(chText)
-//        
-//        cell.addSubview(rescView)
-        
-//        return cell
         
         let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("HelpContentListCell", forIndexPath: indexPath) as UITableViewCell
         
@@ -174,6 +141,8 @@ class HelpContentList: UIViewController, UITableViewDataSource, UITableViewDeleg
             var rows = table.selectAll()
             rescArr.addObject([rescType, rows])
         }
+        
+        
     }
 
     

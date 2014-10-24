@@ -16,6 +16,7 @@ class HelpContentDetail: UIViewController {
     *******************************************************************************/
     @IBOutlet weak var questionCHTitle: UILabel!
     @IBOutlet weak var questionJPTitle: UILabel!
+    @IBOutlet weak var barButtonItem: UIBarButtonItem!
     
     /*******************************************************************************
     * Public Properties
@@ -40,6 +41,10 @@ class HelpContentDetail: UIViewController {
         questionCHTitle.text = chTtile
         questionJPTitle.text = jpTtile
         
+        
+        if (favoFlag == "1") {
+            barButtonItem.tintColor = UIColor(red: 252/255, green: 191/255, blue: 39/255, alpha: 1)
+        }
         readHelpContent()
     }
     
@@ -52,7 +57,7 @@ class HelpContentDetail: UIViewController {
     *******************************************************************************/
     
     // 收藏贴士
-    @IBAction func collectHelpContent() {
+    @IBAction func collectHelpContent(barButton: UIBarButtonItem) {
         
         if (!checkTips(rowId)) {
             return
@@ -62,15 +67,17 @@ class HelpContentDetail: UIViewController {
         var time:String = NSDate().description.dateWithFormat("yyyy-MM-dd HH:mm:ss +0000", target: "yyyyMMddHHmmss")
         if (favoFlag == "1") {
             
-            if (table.excuteUpdate("update INFT02_TIPS set FAVO_FLAG = '0',FAVO_TIME = \(time) where ROWID = \(rowId)")) {
-                favoFlag == "0"
+            if (table.excuteUpdate("update INFT03_RESCURE set FAVO_FLAG = '0',FAVO_TIME = \(time) where ROWID = \(rowId)")) {
+                favoFlag = "0"
+                barButton.tintColor = UIColor.whiteColor()
             } else {
                 
             }
             
         } else {
-            if (table.excuteUpdate("update INFT02_TIPS set FAVO_FLAG = '1',FAVO_TIME = \(time) where ROWID = \(rowId)")) {
-                favoFlag == "1"
+            if (table.excuteUpdate("update INFT03_RESCURE set FAVO_FLAG = '1',FAVO_TIME = \(time) where ROWID = \(rowId)")) {
+                favoFlag = "1"
+                barButton.tintColor = UIColor(red: 252/255, green: 191/255, blue: 39/255, alpha: 1)
             } else {
                 
             }

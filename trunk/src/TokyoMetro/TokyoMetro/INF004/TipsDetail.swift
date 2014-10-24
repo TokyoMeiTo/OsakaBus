@@ -15,6 +15,7 @@ class TipsDetail: UIViewController {
     *******************************************************************************/
     @IBOutlet weak var qTitle: UILabel!
     @IBOutlet weak var qContent: UITextView!
+    @IBOutlet weak var barButtonItem: UIBarButtonItem!
     
     /*******************************************************************************
     * Public Properties
@@ -50,6 +51,10 @@ class TipsDetail: UIViewController {
             rowId = map.rowid
             favoFlag = map.item(INFT02_FAVO_FLAG) as String
             
+            if (favoFlag == "1") {
+                barButtonItem.tintColor = UIColor(red: 252/255, green: 191/255, blue: 39/255, alpha: 1)
+            }
+            
             readTips()
         }
 
@@ -76,16 +81,16 @@ class TipsDetail: UIViewController {
         if (favoFlag == "1") {
 
             if (table.excuteUpdate("update INFT02_TIPS set FAVO_FLAG = '0',FAVO_TIME = \(time) where ROWID = \(rowId)")) {
-                favoFlag == "0"
-                barButton.setBackgroundImage(UIImage(named: "collect-01"), forState: UIControlState.Normal, style: UIBarButtonItemStyle.Bordered, barMetrics: UIBarMetrics.Default)
+                favoFlag = "0"
+                barButton.tintColor = UIColor.whiteColor()
             } else {
                 
             }
 
         } else {
             if (table.excuteUpdate("update INFT02_TIPS set FAVO_FLAG = '1',FAVO_TIME = \(time) where ROWID = \(rowId)")) {
-                favoFlag == "1"
-                barButton.setBackgroundImage(UIImage(named: "route_collectionlight"), forState: UIControlState.Normal, barMetrics: UIBarMetrics.Default)
+                favoFlag = "1"
+                barButton.tintColor = UIColor(red: 252/255, green: 191/255, blue: 39/255, alpha: 1)
             } else {
                 
             }

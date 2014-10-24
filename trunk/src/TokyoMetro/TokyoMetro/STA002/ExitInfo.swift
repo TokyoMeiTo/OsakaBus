@@ -82,12 +82,6 @@ class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource, MK
         return "STA002_19".localizedString()
     }
     
-    //    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    //        var view = UIView(frame: CGRectMake(0, 0, 320, 55))
-    //
-    //        var lblTarget
-    //    }
-    //
     
     
     /*******************************************************************************
@@ -141,7 +135,7 @@ class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource, MK
             
             
             var mapTitle: String! = annotation.title
-            if (mapTitle == statId.station() && annotation.subtitle != nil) {
+            if (mapTitle == statId.station() && annotation.subtitle == "") {
                 pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: statId.station())
                 img = UIImage(named: "STA00301.png")
             } else {
@@ -223,39 +217,9 @@ class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource, MK
         
         var span: MKCoordinateSpan = MKCoordinateSpanMake(0.01, 0.01)
         
-//        if(landMarkLocation == nil){
-//            var statLat:Double = ("\(landMark!.item(MSTT04_LANDMARK_LMAK_LAT))" as NSString).doubleValue
-//            var statLon:Double = ("\(landMark!.item(MSTT04_LANDMARK_LMAK_LON))" as NSString).doubleValue
-//            
-//            landMarkLocation = CLLocation(latitude: statLon, longitude: statLat)
-//        }
-        
-        //var statLocation = CLLocation(latitude: fromLat, longitude: fromLon)
-        
-        // 获取最近的10个站点
-//        stations = StationListController.selectStationTable(landMarkLocation!)
-        
-        
-        
-        // NSInvalidArgumentException 'Invalid Coordinate +139.77180400, +35.68542600'
-        // MKMapView定位到当前位置
         
         var coordinateOnEarth = landMarkLocation!.coordinate
         var annotation = MKPointAnnotation()
-        
-//        if(landMark != nil){
-            // 显示距离最近的10个地铁站
-//            for(var i=0; i < rows.count; i++){
-//                var key = rows[i] as StaT01StationExitTable
-//                var statLat:AnyObject? = key.item(STAT01_STAT_EXIT_LAT)
-//                var statLon:AnyObject? = key.item(STAT01_STAT_EXIT_LON)
-//                var annotation = MKPointAnnotation()
-//                annotation.coordinate = CLLocationCoordinate2D(latitude:statLon as CLLocationDegrees, longitude:statLat as CLLocationDegrees)
-//                annotation.title = "\(key.item(STAT01_STAT_EXIT_ID))".stationExit()
-//                mkMap.addAnnotation(annotation)
-//                var region : MKCoordinateRegion = MKCoordinateRegionMake(annotation.coordinate, span)
-//                mkMap.setRegion(region, animated:true)
-//            }
         
         for(var i=0; i < landMarkArr.count; i++){
             var key = landMarkArr[i] as MstT04LandMarkTable
