@@ -21,6 +21,8 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
     
     /* SegmentedControl控件 */
     @IBOutlet weak var sgmMain: UISegmentedControl!
+    /* contentView控件 */
+    @IBOutlet weak var contentView: UIView!
     /* 最近站点列表UITableView */
     @IBOutlet weak var tbList: UITableView!
     /* 上车UIButton */
@@ -39,6 +41,23 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBOutlet weak var lblArriveInfo: UILabel!
     /* 到达站点信息 */
     @IBOutlet weak var lblArriveStation: UILabel!
+    
+    @IBOutlet weak var lblStart: UILabel!
+    
+    @IBOutlet weak var lblEnd: UILabel!
+    
+    @IBOutlet weak var imageViewStart: UIImageView!
+    
+    @IBOutlet weak var imageViewEnd: UIImageView!
+    
+    @IBOutlet weak var imageViewArrow: UIImageView!
+    
+    /* 到达站点信息 */
+    @IBOutlet weak var lblStep1: UILabel!
+    
+    @IBOutlet weak var lblStep2: UILabel!
+    
+    @IBOutlet weak var lblStep3: UILabel!
     
     
     /*******************************************************************************
@@ -85,15 +104,9 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
     * Private Properties
     *******************************************************************************/
 
+    var imgViewBeep:UIImageView = UIImageView(frame: CGRect(x: 151,y: 260,width: 18,height: 18))
+    
     var mUsr002Model:USR002Model = USR002Model()
-    
-    var lblStart = UILabel(frame: CGRect(x:15,y:210,width:290,height: 35))
-    
-    var lblArrow = UILabel(frame: CGRect(x:15,y:210,width:290,height: 35))
-    
-    var lblEnd = UILabel(frame: CGRect(x:15,y:210,width:290,height: 35))
-    
-    var imageViewBeep = UIImageView(frame: CGRectMake(230, 260, 18, 18))
     
     /* 到站提醒当前条目 */
     var mAlarm:UsrT01ArrivalAlarmTableData?
@@ -165,14 +178,17 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
         remindDetailController.segIndex = NUM_1
         remindDetailController.usrT02Data = mTrainAlarms![didSelectRowAtIndexPath.section]
         
-        // 返回按钮点击事件
-        var bakButtonStyle:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-        bakButtonStyle.frame = CGRectMake(0, 0, 43, 43)
-        bakButtonStyle.setTitle("PUBLIC_05".localizedString(), forState: UIControlState.Normal)
-        bakButtonStyle.addTarget(remindDetailController.self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
+//        // 返回按钮点击事件
+//        var bakButtonStyle:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
+//        bakButtonStyle.frame = CGRectMake(0, 0, 43, 43)
+//        bakButtonStyle.setTitle("PUBLIC_05".localizedString(), forState: UIControlState.Normal)
+//        bakButtonStyle.addTarget(remindDetailController.self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
+//        
+//        var backButton:UIBarButtonItem = UIBarButtonItem(customView: bakButtonStyle)
+//        remindDetailController.navigationItem.leftBarButtonItem = backButton
         
-        var backButton:UIBarButtonItem = UIBarButtonItem(customView: bakButtonStyle)
-        remindDetailController.navigationItem.leftBarButtonItem = backButton
+        var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = backButton
         
         self.navigationController!.pushViewController(remindDetailController, animated:true)
     }
@@ -216,6 +232,9 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
         }
 
         for subview in cell!.contentView.subviews{
+            if(subview.tag == 111){
+                continue
+            }
             if(subview.isKindOfClass(UILabel) || (subview.tag as Int) == 102){
                 subview.removeFromSuperview()
             }
@@ -229,27 +248,23 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
         lblMetroType.text = items[indexPath.section][2][0] as? String
         lblMetroType.textAlignment = NSTextAlignment.Left
         
-        var lblLastMetroTime = UILabel(frame: CGRect(x:15,y:0,width:230,height:50))
-        lblLastMetroTime.tag = 101
-        var fontStyle:UIFont = UIFont.preferredFontForTextStyle("UltraLight")
-        //fontStyle.fontName = "Helvetica Neue"
-        var userFont:UIFontDescriptor = UIFontDescriptor.preferredFontDescriptorWithTextStyle("UltraLight")
-        var font:UIFont = UIFont(descriptor: userFont.fontDescriptorWithFamily("Helvetica Neue"), size: 65)//UIFont(name: "Helvetica Neue", size: userFontSize)
-        
-        lblLastMetroTime.font = UIFont(name: "Helvetica Neue", size: 60)
-        lblLastMetroTime.text = items[indexPath.section][3][indexPath.row] as? String
-        lblLastMetroTime.textAlignment = NSTextAlignment.Left
+        var lblLastMetroTime:UILabel? = cell!.contentView.viewWithTag(111) as? UILabel
+        if(lblLastMetroTime == nil){
+            lblLastMetroTime = UILabel(frame: CGRect(x:15,y:0,width:230,height:50))
+            lblLastMetroTime!.font = UIFont.systemFontOfSize(60)
+        }
+        lblLastMetroTime!.text = items[indexPath.section][3][indexPath.row] as? String
+        lblLastMetroTime!.textAlignment = NSTextAlignment.Left
         
         var lblLastMetroDirt = UILabel(frame: CGRect(x:200,y:50,width:105,height:30))
-        lblLastMetroDirt.tag = 101
         lblLastMetroDirt.font = UIFont.systemFontOfSize(14)
-        lblLastMetroDirt.textColor = UIColor.lightGrayColor()
+        lblLastMetroDirt.textColor = UIColor.blackColor()
         lblLastMetroDirt.text = items[indexPath.section][1][indexPath.row] as? String
         lblLastMetroDirt.textAlignment = NSTextAlignment.Right
         
         var lblStatInfo = UILabel(frame: CGRect(x:75,y:50,width:230,height:30))
         lblStatInfo.font = UIFont.systemFontOfSize(14)
-        lblStatInfo.textColor = UIColor.lightGrayColor()
+        lblStatInfo.textColor = UIColor.blackColor()
         lblStatInfo.text = items[indexPath.section][0] as? String
         lblStatInfo.textAlignment = NSTextAlignment.Left
         
@@ -275,10 +290,17 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
                     green: 239/255,
                     blue: 244/255,
                     alpha: 1.0)
-                lblLastMetroTime.textColor = UIColor.lightGrayColor()
+                lblLastMetroTime!.textColor = UIColor.lightGrayColor()
+                lblMetroType.textColor = UIColor.lightGrayColor()
+                lblLastMetroDirt.textColor = UIColor.lightGrayColor()
+                lblStatInfo.textColor = UIColor.lightGrayColor()
             }else{
                 switchAralm.on = true
                 cell!.backgroundColor = UIColor.whiteColor()
+                lblLastMetroTime!.textColor = UIColor.blackColor()
+                lblMetroType.textColor = UIColor.blackColor()
+                lblLastMetroDirt.textColor = UIColor.blackColor()
+                lblStatInfo.textColor = UIColor.blackColor()
             }
         }else if(indexPath.row == 1){
             var strLast:NSString = mTrainAlarms![indexPath.section].alamFlag
@@ -288,14 +310,13 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
                     green: 255/255,
                     blue: 255/255,
                     alpha: 1.0)
-                lblLastMetroTime.textColor = UIColor.lightGrayColor()
+                lblLastMetroTime!.textColor = UIColor.lightGrayColor()
             }else{
                 switchAralm.on = true
             }
         }
         
         cell!.contentView.addSubview(lblMetroType)
-        cell!.contentView.addSubview(lblLastMetroTime)
         cell!.contentView.addSubview(lblLastMetroDirt)
         cell!.contentView.addSubview(lblStatInfo)
         cell!.contentView.addSubview(switchAralm)
@@ -326,7 +347,10 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
             noAlarm()
             mUsr002Model.deleteAlarm()
             btnEdit.enabled = true
-            imageViewBeep.hidden = true
+            imgViewBeep.hidden = true
+            imageViewStart.hidden = true
+            imageViewEnd.hidden = true
+            imageViewArrow.hidden = true
             
             pushNotification(nil,min: NUM_NEGATIVE_1)
             mAlarm!.cancelFlag = "1"
@@ -374,10 +398,11 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
     func arriveStation(){
         self.navigationItem.rightBarButtonItem = nil
         tbList.hidden = true
-        lblStart.hidden = false
-        lblArrow.hidden = false
-        lblEnd.hidden = false
-        imageViewBeep.hidden = false
+        contentView.hidden = false
+        imgViewBeep.hidden = false
+        imageViewStart.hidden = false
+        imageViewEnd.hidden = false
+        imageViewArrow.hidden = false
         
         // button点击事件
         btnCancel.addTarget(self,
@@ -392,12 +417,18 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
         
         let usrt01Alarms:[UsrT01ArrivalAlarmTableData]? = mUsr002Model.findArrivalAlarm()
         
-        for key in usrt01Alarms!{
-            if(key.cancelFlag != "" && key.cancelFlag != "1"){
-                mAlarm = key
+        let lblSteps:[UILabel] = [lblStep1,lblStep2,lblStep3]
+        for(var i=0;i<usrt01Alarms!.count;i++){
+            if(i >= lblSteps.count){
                 break
             }
+            var mUsrT01Data:UsrT01ArrivalAlarmTableData = usrt01Alarms![i]
+            lblSteps[i].text = "\(i). " + mUsrT01Data.statFromId.station() + "  ->  " + mUsrT01Data.statToId.station()
+            if(mUsrT01Data.cancelFlag != "" && mUsrT01Data.cancelFlag != "1" && mAlarm == nil){
+                mAlarm = mUsrT01Data
+            }
         }
+        
         if(mAlarm == nil || mAlarm!.cancelFlag == "1" || mAlarm!.cancelFlag == ""){
             // 当前没有到站提醒
             noAlarm()
@@ -406,7 +437,11 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
             var alarmStart:UsrT01ArrivalAlarmTableData? = usrt01Alarms![0]
             var alarmEnd:UsrT01ArrivalAlarmTableData? = usrt01Alarms![usrt01Alarms!.count - 1]
             
-            lblArriveStation.text = "USR002_26".localizedString() + mAlarm!.statToId.station() + "USR002_27".localizedString()
+            if(mAlarm!.statToId == alarmEnd!.statToId){
+                lblArriveStation.text = "到" + mAlarm!.statToId.station() + "下车,还需"
+            }else{
+                lblArriveStation.text = "到" + mAlarm!.statToId.station() + "换乘,还需"
+            }
             
             lblStart.backgroundColor = UIColor.clearColor()
             lblStart.font = UIFont.systemFontOfSize(15)
@@ -414,26 +449,20 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
             lblStart.text = alarmStart!.lineFromId.line() + " " + alarmStart!.statFromId.station()
             lblStart.textAlignment = NSTextAlignment.Left
             
-            lblArrow.backgroundColor = UIColor.clearColor()
-            lblArrow.font = UIFont.systemFontOfSize(15)
-            lblArrow.textColor = UIColor.blackColor()
-            lblArrow.text = "->"
-            lblArrow.textAlignment = NSTextAlignment.Center
-            
             lblEnd.backgroundColor = UIColor.clearColor()
             lblEnd.font = UIFont.systemFontOfSize(15)
             lblEnd.textColor = UIColor.blackColor()
             lblEnd.text = alarmEnd!.lineToId.line() + " " + alarmEnd!.statToId.station()
             lblEnd.textAlignment = NSTextAlignment.Right
 
-            lblArriveInfo.text = mAlarm!.lineToId.line() + " " + mAlarm!.traiDirt.station() + "PUBLIC_04".localizedString()
-            
+            lblArriveInfo.text = "上车后,请点击开始"
             var imgBeep = UIImage(named: "usr007")
-            imageViewBeep.image = imgBeep
+            if(mAlarm!.voleFlag == "1"){
+                 imgBeep = UIImage(named: "usr008")
+            }
+            imgViewBeep.image = imgBeep
             
-            self.view.addSubview(lblStart)
-            self.view.addSubview(lblEnd)
-            self.view.addSubview(imageViewBeep)
+            contentView.addSubview(imgViewBeep)
             
             updateTime((mAlarm!.costTime as NSString).integerValue - (mAlarm!.alarmTime as NSString).integerValue)
             
@@ -464,10 +493,7 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
         self.navigationItem.rightBarButtonItem = addButton
         
         tbList.hidden = false
-        lblStart.hidden = true
-        lblArrow.hidden = true
-        lblEnd.hidden = true
-        imageViewBeep.hidden = true
+        contentView.hidden = true
         
         // 查询末班车信息
         mTrainAlarms = mUsr002Model.findTrainAlarmTable()
@@ -588,9 +614,11 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
         lblArriveStation.text = ""
         lblArriveInfo.text = "USR002_24".localizedString()
         lblStart.text = ""
-        lblArrow.text = ""
         lblEnd.text = ""
-        imageViewBeep.hidden = true
+        imgViewBeep.hidden = true
+        imageViewStart.hidden = true
+        imageViewEnd.hidden = true
+        imageViewArrow.hidden = true
     }
     
     /**

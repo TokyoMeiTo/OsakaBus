@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class LocalCacheController: UIViewController{
+class LocalCacheController: UIViewController, UIAlertViewDelegate{
     
     /*******************************************************************************
     * IBOutlets
@@ -29,6 +29,10 @@ class LocalCacheController: UIViewController{
     @IBOutlet weak var lblTip: UILabel!
     /* 缓存信息 */
     @IBOutlet weak var lblProgress: UILabel!
+    /* 缓存信息 */
+    @IBOutlet weak var lblTip2: UILabel!
+    /* 加载进度条ActivityIndicatorView */
+    @IBOutlet weak var gaiLoading: UIActivityIndicatorView!
 
     
     /*******************************************************************************
@@ -62,7 +66,7 @@ class LocalCacheController: UIViewController{
     var downloading:Bool = false
     var UIloading:Bool = false
     var loadProgress:String? = ""
-    var tipText:String = "DLD001_08".localizedString()
+    var tipText:String = "数据下载完成前,您将无法使用本产品。下载数据时,建议使用WIFI方式。若使用3G/2G下载将产生流量费用。资费标准请咨询通讯运营商。"
     
     /*******************************************************************************
     * Overrides From UIViewController
@@ -90,6 +94,21 @@ class LocalCacheController: UIViewController{
     
     
     /*******************************************************************************
+    * Overrides From UIViewController
+    *******************************************************************************/
+
+    // after animation
+    func alertView(alertView: UIAlertView!, didDismissWithButtonIndex buttonIndex: Int){
+        switch buttonIndex{
+        case 0:
+            downloadCompressFile(uri)
+        default:
+            println("nothing")
+        }
+    }
+
+    
+    /*******************************************************************************
     *    Private Methods
     *******************************************************************************/
     
@@ -98,15 +117,18 @@ class LocalCacheController: UIViewController{
         self.navigationItem.rightBarButtonItem = nil
         lblProgress.hidden = true
         lblCacheVersion.text = "DLD001_12".localizedString()
-        lblCacheSize.text = "DLD001_13".localizedString() + "83593KB"
+        lblCacheSize.text = "DLD001_13".localizedString() + "83.5 MB"
         lblMoibleSize.text = "DLD001_14".localizedString() + "\(LocalCacheController.getMemorySize())GB"
         lblTip.text = tipText
         lblTip.numberOfLines = 0
         lblTip.lineBreakMode = NSLineBreakMode.ByCharWrapping
         
+        lblTip2.text = "请耐心等待下载完成,中途退出会中断下载"
+        
+        disMiss(gaiLoading)
+        
         switch classType{
         case 0:
-            
             self.navigationItem.setHidesBackButton(true, animated: false)
         default:
             println("nothing")
@@ -154,7 +176,10 @@ class LocalCacheController: UIViewController{
                 }
             default:
                 if(!downloading){
-                    downloadCompressFile(uri)
+                    RemindDetailController.showMessage("PUBLIC_08".localizedString(),
+                        msg:"确定要重新下载?",
+                        buttons:["PUBLIC_06".localizedString(), "PUBLIC_07".localizedString()],
+                        delegate: self)
                 }
             }
         default:
@@ -171,7 +196,14 @@ class LocalCacheController: UIViewController{
     }
     
     func showDownloadBtn(){
-        btnDownload.setBackgroundImage(UIImage(named: "DLD00101.png"), forState: UIControlState.Normal)
+        switch classType{
+        case 0:
+            btnDownload.setBackgroundImage(UIImage(named: "DLD00101.png"), forState: UIControlState.Normal)
+        case 1:
+            btnDownload.setBackgroundImage(UIImage(named: "dld009.png"), forState: UIControlState.Normal)
+        default:
+            println("nothing")
+        }
         btnDownload.enabled = true
     }
     
@@ -181,7 +213,14 @@ class LocalCacheController: UIViewController{
     }
     
     func hideDownloadBtn(){
-        btnDownload.setBackgroundImage(UIImage(named: "DLD00105.png"), forState: UIControlState.Normal)
+        switch classType{
+        case 0:
+            btnDownload.setBackgroundImage(UIImage(named: "DLD00105.png"), forState: UIControlState.Normal)
+        case 1:
+            btnDownload.setBackgroundImage(UIImage(named: "dld008.png"), forState: UIControlState.Normal)
+        default:
+            println("nothing")
+        }
         btnDownload.enabled = false
     }
 
@@ -203,6 +242,8 @@ class LocalCacheController: UIViewController{
         // 删除文件
         fileManager.removeItemAtPath(unzipPath, error: nil)
         
+        load(gaiLoading)
+        
         var downloadTask = session.downloadTaskWithRequest(request, progress: &progress, destination: {(file, response) in self.pathUrl},
             completionHandler:
             {
@@ -222,6 +263,7 @@ class LocalCacheController: UIViewController{
                         self.loadProgress = "DLD001_04".localizedString()
                         self.lblProgress.text = "DLD001_03".localizedString()
                         self.btnDownload.setBackgroundImage(UIImage(named: "DLD00101.png"), forState: UIControlState.Normal)
+                        self.disMiss(self.gaiLoading)
                     }
                 }
         })
@@ -252,7 +294,7 @@ class LocalCacheController: UIViewController{
                     formatter.positiveFormat = "0.00;"
                     
                     var progressTemp = formatter.stringFromNumber(progress.fractionCompleted * 100) //"\(progress.fractionCompleted * 100)".left(5)
-                    self.loadProgress = "DLD001_09".localizedString() + "\(progressTemp)" + " %"
+                    self.loadProgress = "DLD001_09".localizedString() + ": " + "\(progressTemp)" + " %"
                     //self.tbList.reloadData()
                     self.lblProgress.text = self.loadProgress
                 }
@@ -301,20 +343,25 @@ class LocalCacheController: UIViewController{
                 self.lblProgress.text = "下载成功"
                 if(classType == 0){
                     showUseBtn()
+                    self.disMiss(gaiLoading)
                 }else{
                     showDownloadBtn()
+                    self.disMiss(gaiLoading)
                 }
             }else{
                 println("解压失败")
                 loadProgress = "DLD001_04".localizedString()
                 self.lblProgress.text = "DLD001_03".localizedString()
                 showDownloadBtn()
+                self.disMiss(gaiLoading)
             }
             unzip.UnzipCloseFile()
         }else{
             println("解压失败")
             loadProgress = "DLD001_04".localizedString()
             self.lblProgress.text = "DLD001_03".localizedString()
+            showDownloadBtn()
+            self.disMiss(gaiLoading)
         }
         downloading = false
     }
@@ -347,6 +394,20 @@ class LocalCacheController: UIViewController{
         return formatter.stringFromNumber(("\(freeSpace!)" as NSString).doubleValue/1024.0/1024.0/1024.0)
     }
     
+    func load(gaiLoading: UIActivityIndicatorView) ->
+        Bool{
+            gaiLoading.hidden = false
+            gaiLoading.startAnimating()
+            return false
+    }
+    
+    func disMiss(gaiLoading: UIActivityIndicatorView) ->
+        Bool{
+            gaiLoading.stopAnimating()
+            gaiLoading.hidden = true
+            return false
+    }
+
     
     /*******************************************************************************
     *    Unused Codes

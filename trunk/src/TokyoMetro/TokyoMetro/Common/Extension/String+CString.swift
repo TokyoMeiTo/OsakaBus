@@ -146,7 +146,7 @@ extension String {
                 return UIImage(named: path)
             }
         }
-        return UIImage(named: "")
+        return UIImage(named: "inf00214")
     }
     
     /**

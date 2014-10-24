@@ -145,7 +145,7 @@ class LandMarkMapController: UIViewController, MKMapViewDelegate, UIActionSheetD
         // 查询按钮点击事件
         var searchButtonTemp:UIButton? = UIButton.buttonWithType(UIButtonType.System) as? UIButton
         searchButtonTemp!.frame = CGRect(x:0,y:0,width:25,height:25)
-        var imgLandMark = UIImage(named: "INF00212")
+        var imgLandMark = UIImage(named: "station_local")
         searchButtonTemp!.setBackgroundImage(imgLandMark, forState: UIControlState.Normal)
         searchButtonTemp!.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
         searchButtonTemp!.tag = BTN_Location_TAG
@@ -156,7 +156,7 @@ class LandMarkMapController: UIViewController, MKMapViewDelegate, UIActionSheetD
             var statLat:Double = ("\(landMark!.item(MSTT04_LANDMARK_LMAK_LAT))" as NSString).doubleValue
             var statLon:Double = ("\(landMark!.item(MSTT04_LANDMARK_LMAK_LON))" as NSString).doubleValue
 
-            landMarkLocation = CLLocation(latitude: statLat, longitude: statLon)
+            landMarkLocation = CLLocation(latitude: statLon, longitude: statLat)
         }
         
         //var statLocation = CLLocation(latitude: fromLat, longitude: fromLon)

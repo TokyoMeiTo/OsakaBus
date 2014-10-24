@@ -68,8 +68,8 @@ class StationListController: UIViewController, UITableViewDelegate, UITableViewD
     let MSG_0003:String = "PUBLIC_06".localizedString()
     /* 取消 */
     let MSG_0004:String = "PUBLIC_07".localizedString()
-    /* 取消 */
-    let BUTTON_RIGHT_TAG:Int = 110
+    /* 重新定位 */
+    let BTN_Location_TAG:Int = 120
     /* 路线颜色 */
     let LINE_COLOR = [UIColor.blueColor(),
         UIColor.yellowColor(),
@@ -150,7 +150,10 @@ class StationListController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return mStations!.count
+        if(mStations != nil){
+            return mStations!.count
+        }
+        return 0
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -178,8 +181,9 @@ class StationListController: UIViewController, UITableViewDelegate, UITableViewD
         lblStation.text = statNm
         lblStation.textAlignment = NSTextAlignment.Left
         
-        var lblDetail = UILabel(frame: CGRect(x:15,y:30,width:tableView.frame.width - 30,height:25))
+        var lblDetail = UILabel(frame: CGRect(x:15,y:30,width:(tableView.frame.width - 30)/2,height:25))
         lblDetail.font = UIFont.systemFontOfSize(13)
+        lblDetail.adjustsFontSizeToFitWidth = true
         lblDetail.textColor = UIColor.darkGrayColor()
         lblDetail.text = mMstT02Data.statName + "(" + mMstT02Data.statNameKana + ")"
         lblDetail.textAlignment = NSTextAlignment.Left
@@ -188,7 +192,7 @@ class StationListController: UIViewController, UITableViewDelegate, UITableViewD
         var statLon:Double = (mMstT02Data.statLon as NSString).doubleValue
         var locationStat:CLLocation = CLLocation(latitude: statLat, longitude: statLon)
         
-        var lblDistance = UILabel(frame: CGRect(x:15,y:15,width:tableView.frame.width - 75,height:25))
+        var lblDistance = UILabel(frame: CGRect(x:(tableView.frame.width - 30)/2,y:30,width:(tableView.frame.width - 30)/2,height:25))
         lblDistance.font = UIFont.systemFontOfSize(13)
         lblDistance.textColor = UIColor.darkGrayColor()
         lblDistance.text = STA003_MODEL.convertDistance(STA003_MODEL.calcDistance(mLocation!, statLocation: locationStat))
@@ -224,6 +228,10 @@ class StationListController: UIViewController, UITableViewDelegate, UITableViewD
         
         // 获取最近的10个站点
         mStations = STA003_MODEL.findNearbyStations(location)
+        if(mStations == nil){
+            noData()
+            return
+        }
         // 获得UISegmentedControl索引位置
         if(sgmMain.selectedSegmentIndex == NUM_0){
             // 显示最近站点列表
@@ -315,10 +323,15 @@ class StationListController: UIViewController, UITableViewDelegate, UITableViewD
         sgmMain.setTitle("STA003_06".localizedString(), forSegmentAtIndex: 1)
         sgmMain.selectedSegmentIndex = NUM_0
         sgmMain.addTarget(self, action: "segmentChanged:", forControlEvents: UIControlEvents.ValueChanged)
-        // 定位按钮点击事件
-//        var reLocationButton:UIBarButtonItem = self.navigationItem.rightBarButtonItem!
-//        reLocationButton.target = self
-//        reLocationButton.action = "buttonAction:"
+        // 定位按钮
+        var searchButtonTemp:UIButton? = UIButton.buttonWithType(UIButtonType.System) as? UIButton
+        searchButtonTemp!.frame = CGRect(x:0,y:0,width:25,height:25)
+        var imgLandMark = UIImage(named: "station_local")
+        searchButtonTemp!.setBackgroundImage(imgLandMark, forState: UIControlState.Normal)
+        searchButtonTemp!.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
+        searchButtonTemp!.tag = BTN_Location_TAG
+        var searchButton:UIBarButtonItem = UIBarButtonItem(customView: searchButtonTemp!)
+        self.navigationItem.rightBarButtonItem = searchButton
     }
     
     /**
@@ -351,8 +364,8 @@ class StationListController: UIViewController, UITableViewDelegate, UITableViewD
      */
     func buttonAction(sender: UIButton){
         switch sender.tag{
-        case BUTTON_RIGHT_TAG:
-            RemindDetailController.showMessage(MSG_0002, msg:MSG_0001,buttons:[MSG_0003, MSG_0004], delegate: nil)
+        case BTN_Location_TAG:
+            loadLocation()
         default:
             if(mStations != nil && mStations!.count > 0){
                 var controllers:AnyObject? = self.navigationController!.viewControllers
@@ -374,7 +387,13 @@ class StationListController: UIViewController, UITableViewDelegate, UITableViewD
         mkMap.hidden = true
         tbList.delegate = self
         tbList.dataSource = self
-        //tbList.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+        tbList.backgroundColor = UIColor(red: 239/255,
+            green: 239/255,
+            blue: 244/255,
+            alpha: 1.0)
+        if(mStations == nil){
+            noData()
+        }
         tbList.reloadData()
     }
     
@@ -389,6 +408,10 @@ class StationListController: UIViewController, UITableViewDelegate, UITableViewD
         // 设置地图显示类型
         mkMap.mapType = MKMapType.Standard
         mkMap.showsUserLocation = false
+        
+        if(mLocation == nil){
+            return
+        }
         
         var accuracy : CLLocationAccuracy = mLocation!.horizontalAccuracy
         var span: MKCoordinateSpan = MKCoordinateSpanMake(0.01, 0.01)
@@ -482,6 +505,11 @@ class StationListController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
 
+    func noData(){
+        tbList.separatorColor = UIColor.clearColor()
+        tbList.hidden = true
+    }
+    
     
     /*******************************************************************************
     *    Unused Codes

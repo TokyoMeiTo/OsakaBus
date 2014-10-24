@@ -160,6 +160,11 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
         // Dispose of any resources that can be recreated.
     }
 
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        saveLastMetro()
+    }
+
     
     /*******************************************************************************
     *    Implements Of UITableViewDelegate
@@ -595,6 +600,7 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
      * 编辑到站提醒
      */
     func editArriveStation(){
+        self.title = "编辑"
         self.navigationItem.rightBarButtonItem = nil
         // 完成按钮点击事件
         var saveButton:UIBarButtonItem = UIBarButtonItem(title: "USR002_06".localizedString(), style: UIBarButtonItemStyle.Plain, target:self, action: "buttonAction:")
@@ -604,6 +610,7 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
         self.navigationItem.leftBarButtonItem = nil
         
         if(usrT01Data == nil){
+            self.title = "添加"
             usrT01Data = UsrT01ArrivalAlarmTableData()
             initArriveAlarm(usrT01Data!)
         }
@@ -679,6 +686,7 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
      * 编辑末班车提醒
      */
     func editLastMetro(){
+        self.title = "编辑"
         // 删除按钮点击事件
         var delButton:UIBarButtonItem! = self.navigationItem.rightBarButtonItem
         if(delButton != nil){
@@ -688,6 +696,7 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
         }
         
         if(usrT02Data == nil){
+            self.title = "添加"
             self.navigationItem.rightBarButtonItem = nil
             // 完成按钮点击事件
             var saveButton:UIBarButtonItem = UIBarButtonItem(title: "保存", style: UIBarButtonItemStyle.Plain, target:self, action: "buttonAction:")

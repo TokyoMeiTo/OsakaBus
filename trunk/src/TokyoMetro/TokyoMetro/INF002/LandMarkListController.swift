@@ -80,19 +80,19 @@ class LandMarkListController: UIViewController, UITableViewDelegate, UITableView
             println("nothing")
         }
         
-//        if(landMarks == nil){
-//            landMarks = selectLandMarkTable(landMarkType)
-//        }
         self.view.backgroundColor = UIColor.lightGrayColor()
         tbList.delegate = self
         tbList.dataSource = self
         tbList.separatorColor = UIColor.clearColor()
-        tbList.backgroundColor = UIColor.darkGrayColor()
+        tbList.backgroundColor = UIColor(red: 239/255,
+            green: 239/255,
+            blue: 244/255,
+            alpha: 1.0)
 
         // 查询按钮点击事件
         var searchButtonTemp:UIButton? = UIButton.buttonWithType(UIButtonType.System) as? UIButton
         searchButtonTemp!.frame = CGRect(x:0,y:0,width:25,height:25)
-        var imgLandMark = UIImage(named: "INF00212")
+        var imgLandMark = UIImage(named: "inf00219")
         searchButtonTemp!.setBackgroundImage(imgLandMark, forState: UIControlState.Normal)
         searchButtonTemp!.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
         searchButtonTemp!.tag = BTN_SEARCH_TAG
@@ -163,10 +163,6 @@ class LandMarkListController: UIViewController, UITableViewDelegate, UITableView
         }
         
         for subview in cell!.contentView.subviews{
-            // subview.isKindOfClass(UIButton) ||
-//            if(subview.isKindOfClass(UILabel)){
-//                subview.removeFromSuperview()
-//            }
             subview.removeFromSuperview()
         }
         // cell显示内容
@@ -353,6 +349,7 @@ class LandMarkListController: UIViewController, UITableViewDelegate, UITableView
         }
         
         landMarks = mstT04Table.queryLandMarksFilter(landMarkTypeStr,lon: 0, lat: 0, distance: 0, sataId: landMarkStatId!, specialWard: landMarkSpecialWard!) as? Array<MstT04LandMarkTable>//.queryLandMarks(landMarkTypeStr) as? Array<MstT04LandMarkTable>
+        println(landMarks!.count)
         return landMarks!
     }
     

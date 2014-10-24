@@ -25,6 +25,7 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
     
     let SAVE_BUTTON_TAG:Int = 200201
     let BTN_ALL:Int = 101
+    let BTN_ALL_SPEACIAL:Int = 200202
     
     /*******************************************************************************
     * Public Properties
@@ -288,6 +289,57 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
         return items[section][1].count
     }
     
+    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        var UIHeader:UIView = UIView()
+
+        switch section{
+        case 0:
+            var imgStation = UIImage(named: "dld00106")
+            var imageViewStation = UIImageView(frame: CGRectMake(15, 5, 25, 25))
+            imageViewStation.image = imgStation
+            UIHeader.addSubview(imageViewStation)
+        case 1:
+            var imgAlarm = UIImage(named: "inf00216")
+            var imageViewAlarm = UIImageView(frame: CGRectMake(15, 5, 25, 25))
+            imageViewAlarm.image = imgAlarm
+            UIHeader.addSubview(imageViewAlarm)
+        case 2:
+            var imgAlarm = UIImage(named: "inf00215")
+            var imageViewAlarm = UIImageView(frame: CGRectMake(15, 5, 25, 25))
+            imageViewAlarm.image = imgAlarm
+            UIHeader.addSubview(imageViewAlarm)
+        case 3:
+            var img = UIImage(named: "inf00217")
+            var imageView = UIImageView(frame: CGRectMake(15, 5, 25, 25))
+            imageView.image = img
+            UIHeader.addSubview(imageView)
+        case 4:
+            var img = UIImage(named: "inf00220")
+            var imageView = UIImageView(frame: CGRectMake(15, 5, 25, 25))
+            imageView.image = img
+            UIHeader.addSubview(imageView)
+        case 5:
+            var img = UIImage(named: "inf00218")
+            var imageView = UIImageView(frame: CGRectMake(15, 5, 25, 25))
+            imageView.image = img
+            UIHeader.addSubview(imageView)
+        case 6:
+            var img = UIImage(named: "inf0021")
+            var imageView = UIImageView(frame: CGRectMake(15, 5, 25, 25))
+            imageView.image = img
+            UIHeader.addSubview(imageView)
+        default:
+            println("nothing")
+        }
+        var lblText = UILabel(frame: CGRect(x:50,y:5,width:tableView.frame.width - 100,height:25))
+        lblText.textColor = UIColor.lightGrayColor()
+        lblText.font = UIFont.systemFontOfSize(15)
+        lblText.text = items[section][0] as? String
+        lblText.textAlignment = NSTextAlignment.Left
+        UIHeader.addSubview(lblText)
+        
+        return UIHeader
+    }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cellIdentifier:String = "LandMarkSearchCell"
@@ -313,7 +365,8 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
             if("\(items[indexPath.section][1][indexPath.row])" != "INF002_19".localizedString()){
                 var btnAll:UIButton = UIButton.buttonWithType(UIButtonType.Custom) as UIButton
                 btnAll.frame = CGRect(x:tableView.frame.size.width - 75,y:0,width:60,height:43)
-                btnAll.setTitle("INF002_19".localizedString(), forState: UIControlState.Normal)
+                //btnAll.setTitle("INF002_19".localizedString(), forState: UIControlState.Normal)
+                btnAll.setBackgroundImage(UIImage(named: "btnDecImg"), forState: UIControlState.Normal)
                 btnAll.tag = BTN_ALL
                 
                 btnAll.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
@@ -329,8 +382,17 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
                 if(pickerViewIsOpen){
                     cell!.contentView.addSubview(pickerSpecialWard)
                 }
-            }else if(indexPath.row == 2 && landMarkSpecialWard == ""){
-                cell!.accessoryType = UITableViewCellAccessoryType.Checkmark
+            }else if(indexPath.row == 0){
+                if("\(items[indexPath.section][1][indexPath.row])" != "INF002_19".localizedString()){
+                    var btnAll:UIButton = UIButton.buttonWithType(UIButtonType.Custom) as UIButton
+                    btnAll.frame = CGRect(x:tableView.frame.size.width - 75,y:0,width:60,height:43)
+                    //btnAll.setTitle("INF002_19".localizedString(), forState: UIControlState.Normal)
+                    btnAll.setBackgroundImage(UIImage(named: "btnDecImg"), forState: UIControlState.Normal)
+                    btnAll.tag = BTN_ALL_SPEACIAL
+                    
+                    btnAll.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
+                    cell!.contentView.addSubview(btnAll)
+                }
             }
             
         case 2:
@@ -465,6 +527,11 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
             landMarkShowStatId = "INF002_19".localizedString()
             loadItems()
             tbList.reloadData()
+        case BTN_ALL_SPEACIAL:
+            landMarkSpecialWard = ""
+            landMarkShowSpecialWard = "INF002_19".localizedString()
+            loadItems()
+            tbList.reloadData()
         default:
             println("nothing")
         }
@@ -474,14 +541,14 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
         switch landMarkType{
         case 1:
             items = NSMutableArray.array()
-            if(landMarkStatId != ""){
+            if(landMarkStatId != "" && landMarkStatId != nil){
                 landMarkShowStatId = landMarkStatId!
                 items.addObject(["PUBLIC_03".localizedString(),[landMarkShowStatId.station()]])
             }else{
                 items.addObject(["PUBLIC_03".localizedString(),["INF002_19".localizedString()]])
             }
             
-            if(landMarkSpecialWard == ""){
+            if(landMarkSpecialWard == "" && landMarkStatId != nil){
                 items.addObject(["INF002_12".localizedString(),["INF002_19".localizedString(),""]])
             }else{
                 items.addObject(["INF002_12".localizedString(),[landMarkShowSpecialWard.specialWard(),""]])
