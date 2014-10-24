@@ -766,9 +766,7 @@ class Main: UIViewController,UIScrollViewDelegate {
             } else if (viewTag == 2004) {
                 mlblShowCount.frame = CGRectMake(211,156,11,11)
             }
-            
             self.mPopupStationView.addSubview(mlblShowCount)
-
         }
 
     }

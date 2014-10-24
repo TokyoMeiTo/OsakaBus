@@ -80,13 +80,11 @@ class Setting : UIViewController, UITableViewDelegate, UITableViewDataSource, OA
             self.navigationItem.backBarButtonItem = backButton
             self.navigationController?.pushViewController(localCacheController, animated:true)
         case 1:
-            // webLinkAction("CMN009_05".localizedString(), webSite:"http://www.baidu.com")
-            let url = NSURL.URLWithString("http://itunes.apple.com/cn/app/id416048305?mt=8")
+            let url = NSURL.URLWithString("https://itunes.apple.com/cn/app/id928756102?mt=8")
             UIApplication.sharedApplication().openURL(url)
-            
-            
         case 2:
-             webLinkAction("CMN009_06".localizedString(), webSite:"http://www.google.com")
+            let url = NSURL.URLWithString("https://itunes.apple.com/cn/app/id928756102?mt=8")
+            UIApplication.sharedApplication().openURL(url)
         default:
         
             var appservers : LocalCacheController = self.storyboard?.instantiateViewControllerWithIdentifier("localcache") as LocalCacheController
@@ -140,7 +138,7 @@ class Setting : UIViewController, UITableViewDelegate, UITableViewDataSource, OA
             self.navigationController?.pushViewController(appservers, animated:true)
             
         default:
-            webLinkAction("CMN009_07".localizedString(), webSite:"http://www.google.com")
+            webLinkAction("CMN009_07".localizedString(), webSite:"http://www.ohs-sys.com/")
         }
 
     }

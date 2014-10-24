@@ -482,9 +482,9 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             resultCellIvStaionIcon.image = "route_end".getImage()
             resultCelllblStationName.text = self.endStationText.station()
             
+            
             if (!endStationLandMarkId.isEmpty) {
-                 var exitInfoDic = landMarkExitInfo("21")
-                //var exitInfoDic = landMarkExitInfo(endStationLandMarkId)
+                var exitInfoDic = landMarkExitInfo(endStationLandMarkId)
                 resultCelllblStationEixtInfo = mViewExitInfo(exitInfoDic!, viewInfo: resultCelllblStationEixtInfo, cell:cell)
                 endStationLandMarkId = ""
 
@@ -812,12 +812,12 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
     
     
     @IBAction func locatNearlyStation() {
-        if (btnNearlyStation.tag == 10002) {
+        //if (btnNearlyStation.tag == 10002) {
             // 定位时打开
             loadLocation()
             btnCollectionStation.tag = 10001
-            btnNearlyStation.tag = 10012
-        }
+            //btnNearlyStation.tag = 10012
+        //}
     }
     
     
@@ -1146,6 +1146,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             
             btnCollectionStation.tag = 10011
             btnNearlyStation.tag = 10002
+            println("loadStation     btnNearlyStation.tag     \(btnNearlyStation.tag)")
         }
         
         
@@ -1313,12 +1314,9 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         
         mNearlyLogo.image = "route_locatelight".getImage()
         mCollectionLogo.image = "route_collected".getImage()
-//        
-//        btnCollectionStation.tag = 10001
-//        btnNearlyStation.tag = 10012
-//        
-//        btnCollectionStation.tag = 10001
-//        btnNearlyStation.tag = 10012
+
+        btnCollectionStation.tag = 10001
+        btnNearlyStation.tag = 10012
         
         
     }
@@ -1437,11 +1435,11 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
                 lblNameBefore?.removeFromSuperview()
                 }
                 var lblExitNameBefor : UILabel = UILabel()
-                lblExitNameBefor.font = UIFont.systemFontOfSize(13)
+                lblExitNameBefor.font = UIFont.systemFontOfSize(11)
                 lblExitNameBefor.textColor = UIColor.lightGrayColor()
                 lblExitNameBefor.text = "从"
                 lblExitNameBefor.tag = 4501
-                lblExitNameBefor.frame = CGRectMake(10, 0, 30, 33)
+                lblExitNameBefor.frame = CGRectMake(0, 17, 15, 33)
                 
                 var mlblExitName = viewInfo.viewWithTag(4502)
                 if (mlblExitName != nil ){
@@ -1450,7 +1448,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
                 var lblExitName : UILabel = UILabel()
                 lblExitName.tag = 4502
                 lblExitName.font = UIFont.systemFontOfSize(15)
-                lblExitName.frame = CGRectMake(30, 0, 90, 33)
+                lblExitName.frame = CGRectMake(15, 17, 190, 33)
                 lblExitName.textAlignment = NSTextAlignment.Center
                 lblExitName.text = exitId!.stationExit()
                 var mlblExitNameAfter = viewInfo.viewWithTag(4503)
@@ -1459,9 +1457,9 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
                 }
                 var lblExitNameAfter : UILabel = UILabel()
                 lblExitNameAfter.tag = 4503
-                lblExitNameAfter.font = UIFont.systemFontOfSize(13)
+                lblExitNameAfter.font = UIFont.systemFontOfSize(11)
                 lblExitNameAfter.textColor = UIColor.lightGrayColor()
-                lblExitNameAfter.frame = CGRectMake(120, 0, 30, 33)
+                lblExitNameAfter.frame = CGRectMake(205, 17, 25, 33)
                 lblExitNameAfter.text = "出发"
                 
                 viewInfo.addSubview(lblExitNameBefor)
@@ -1477,11 +1475,11 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
                     lblTimeBefore?.removeFromSuperview()
                 }
                 var lblExitTimeBefor : UILabel = UILabel()
-                lblExitTimeBefor.font = UIFont.systemFontOfSize(13)
+                lblExitTimeBefor.font = UIFont.systemFontOfSize(11)
                 lblExitTimeBefor.textColor = UIColor.lightGrayColor()
                 lblExitTimeBefor.text = "步行大约"
                 lblExitTimeBefor.tag = 5501
-                lblExitTimeBefor.frame = CGRectMake(150, 0, 60, 33)
+                lblExitTimeBefor.frame = CGRectMake(140, 0, 50, 22)
                 
                 var mlblTimeName = viewInfo.viewWithTag(5502)
                 if (mlblTimeName != nil ){
@@ -1490,7 +1488,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
                 var lblExitTime : UILabel = UILabel()
                 lblExitTime.tag = 5502
                 lblExitTime.font = UIFont.systemFontOfSize(15)
-                lblExitTime.frame = CGRectMake(210, 0, 40, 33)
+                lblExitTime.frame = CGRectMake(190, 0, 20, 22)
                 lblExitTime.textAlignment = NSTextAlignment.Center
                 lblExitTime.text = exitMoveTime
                 var mlblExitTimeAfter = viewInfo.viewWithTag(5503)
@@ -1499,9 +1497,9 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
                 }
                 var lblExitTimeAfter : UILabel = UILabel()
                 lblExitTimeAfter.tag = 5503
-                lblExitTimeAfter.font = UIFont.systemFontOfSize(13)
+                lblExitTimeAfter.font = UIFont.systemFontOfSize(11)
                 lblExitTimeAfter.textColor = UIColor.lightGrayColor()
-                lblExitTimeAfter.frame = CGRectMake(250, 0, 30, 33)
+                lblExitTimeAfter.frame = CGRectMake(220, 0, 25, 22)
                 lblExitTimeAfter.text = "分钟"
                 viewInfo.addSubview(lblExitTimeBefor)
                 viewInfo.addSubview(lblExitTime)
