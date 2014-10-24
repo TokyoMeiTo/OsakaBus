@@ -22,7 +22,6 @@
 #define MSTT04_LANDMARK_LMAK_NAME_EXT6      @"LMAK_NAME_EXT6"
 #define MSTT04_LANDMARK_LMAK_TYPE           @"LMAK_TYPE"
 #define MSTT04_LANDMARK_LMAK_SUB_TYPE       @"LMAK_SUB_TYPE"
-#define MSTT04_LANDMARK_LINE_ID             @"LINE_ID"
 #define MSTT04_LANDMARK_STAT_ID             @"STAT_ID"
 #define MSTT04_LANDMARK_STAT_EXIT_ID        @"STAT_EXIT_ID"
 #define MSTT04_LANDMARK_STAT_EXIT_TIME		@"STAT_EXIT_TIME"
@@ -33,7 +32,7 @@
 #define MSTT04_LANDMARK_LMAK_AVAL_TIME      @"LMAK_AVAL_TIME"
 #define MSTT04_LANDMARK_LMAK_TICL_PRIC      @"LMAK_TICT_PRIC"
 #define MSTT04_LANDMARK_LMAK_PRIC_MIN		@"LMAK_PRIC_MIN"
-#define MSTT04_LANDMARK_LMAK_RPIC_MAX		@"LMAK_PRIC_MAX"
+#define MSTT04_LANDMARK_LMAK_PRIC_MAX		@"LMAK_PRIC_MAX"
 #define MSTT04_LANDMARK_LMAK_ADDR           @"LMAK_ADDR"
 #define MSTT04_LANDMARK_LMAK_DESP           @"LMAK_DESP"
 #define MSTT04_LANDMARK_OLIMPIC_FLAG        @"OLIMPIC_FLAG"
@@ -69,10 +68,9 @@
 @property(copy,nonatomic) NSString* lmakNameExt6;
 @property(copy,nonatomic) NSString* lmakType;
 @property(copy,nonatomic) NSString* lmakSubType;
-@property(copy,nonatomic) NSString* lineId;
 @property(copy,nonatomic) NSString* statId;
 @property(copy,nonatomic) NSString* statExitId;
-@property(copt,nonatomic) NSString* statExitTime;
+@property(copy,nonatomic) NSString* statExitTime;
 @property(copy,nonatomic) NSString* lmakPref;
 @property(copy,nonatomic) NSString* lmakWard;
 @property(copy,nonatomic) NSString* lmakRank;
