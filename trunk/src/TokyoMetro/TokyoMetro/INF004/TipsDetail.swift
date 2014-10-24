@@ -65,29 +65,32 @@ class TipsDetail: UIViewController {
     *******************************************************************************/
     
     // 收藏贴士
-    @IBAction func collectTips() {
+    @IBAction func collectTips(barButton: UIBarButtonItem) {
         
-        var table = InfT02TipsTable()
-        
-        if (favoFlag == "1") {
-            var sureBtn: UIAlertView = UIAlertView(title: "", message: "该贴士已收藏！", delegate: self, cancelButtonTitle: "PUBLIC_06".localizedString())
-            
-            sureBtn.show()
-            
+        if (!checkTips(rowId)) {
             return
         }
+        var table = InfT02TipsTable()
         
         var time:String = NSDate().description.dateWithFormat("yyyy-MM-dd HH:mm:ss +0000", target: "yyyyMMddHHmmss")
-        
-        if (table.excuteUpdate("update INFT02_TIPS set FAVO_FLAG = '1',FAVO_TIME = \(time) where ROWID = \(rowId)")) {
-            var sureBtn: UIAlertView = UIAlertView(title: "", message: "CMN003_21".localizedString(), delegate: self, cancelButtonTitle: "PUBLIC_06".localizedString())
-            
-            sureBtn.show()
+        if (favoFlag == "1") {
+
+            if (table.excuteUpdate("update INFT02_TIPS set FAVO_FLAG = '0',FAVO_TIME = \(time) where ROWID = \(rowId)")) {
+                favoFlag == "0"
+                barButton.setBackgroundImage(UIImage(named: "collect-01"), forState: UIControlState.Normal, barMetrics: UIBarMetrics.Default)
+            } else {
+                
+            }
+
         } else {
-            var sureBtn: UIAlertView = UIAlertView(title: "", message: "CMN003_20".localizedString(), delegate: self, cancelButtonTitle: "PUBLIC_06".localizedString())
-            
-            sureBtn.show()
+            if (table.excuteUpdate("update INFT02_TIPS set FAVO_FLAG = '1',FAVO_TIME = \(time) where ROWID = \(rowId)")) {
+                favoFlag == "1"
+                barButton.setBackgroundImage(UIImage(named: "route_collectionlight"), forState: UIControlState.Normal, barMetrics: UIBarMetrics.Default)
+            } else {
+                
+            }
         }
+
     }
 
     /*******************************************************************************
@@ -98,6 +101,21 @@ class TipsDetail: UIViewController {
         var table = InfT02TipsTable()
         table.tipsId = tips_id
         rows = table.selectAll()
+    }
+    
+    func checkTips(rowid: String?) -> Bool{
+        if (rowid == nil || rowid == "") {
+            return false
+        } else {
+            var table = InfT02TipsTable()
+            table.rowid = rowid!
+            var rowIdArr = table.selectAll()
+            if (rowIdArr.count > 0) {
+                return true
+            } else {
+                return false
+            }
+        }
     }
     
     // 标记已阅读的贴士
