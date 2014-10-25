@@ -182,6 +182,8 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         // 显示附近站点时 tag ＝ 10002 否则为10012
         btnCollectionStation.tag = 10001
         btnNearlyStation.tag = 10002
+        btnCollect1.tag = 1133
+        btnCollect2.tag = 2133
         loadStation()
         reloadCollectedRouteId()
         
@@ -197,7 +199,9 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         setSationIdCache()
         
         btnCollect1.setBackgroundImage("searchroute_collection".getImage(), forState: UIControlState.Normal)
+
         btnCollect2.setBackgroundImage("searchroute_collection".getImage(), forState: UIControlState.Normal)
+        
         
         if (startStationText != "" && statIsCollected(startStationText)){
             btnCollect1.setBackgroundImage("route_collectionlight".getImage(), forState: UIControlState.Normal)
@@ -889,7 +893,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         }
         
         
-        if (btnCollect1.tag == 1233) {
+        if ((btnCollect1.tag == 1233) && (sender == btnCollect1)) {
             
             var  isDeleteStat = cmn003Model.removeUserFavorite(insertStationId, deleteType: "01")
             if isDeleteStat {
@@ -900,7 +904,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             }
             
             
-        } else {
+        } else if ((btnCollect1.tag == 1133) && (sender == btnCollect1)){
             var  isInsertStat = cmn003Model.addUserFavoriteStat(insertStationId)
             if isInsertStat {
                 btnCollectionStation.tag = 10001
@@ -911,7 +915,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             }
         }
         
-        if (btnCollect2.tag == 2233) {
+        if ((btnCollect2.tag == 2233) && (sender == btnCollect2)) {
             
             var  isDeleteStat = cmn003Model.removeUserFavorite(insertStationId, deleteType: "01")
             if isDeleteStat {
@@ -922,7 +926,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             }
             
             
-        } else {
+        } else if ((btnCollect2.tag == 2133) && (sender == btnCollect2)){
             var  isInsertStat = cmn003Model.addUserFavoriteStat(insertStationId)
             if isInsertStat {
                 btnCollectionStation.tag = 10001

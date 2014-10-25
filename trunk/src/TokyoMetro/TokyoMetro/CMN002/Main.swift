@@ -121,14 +121,14 @@ class Main: UIViewController,UIScrollViewDelegate {
         // ScrollView
         self.mScrollView.minimumZoomScale = 0.5
         self.mScrollView.maximumZoomScale = 1.5
-        self.mScrollView.zoomScale = self.mScrollView.minimumZoomScale
-        self.mScrollView.contentSize = CGSizeMake(1722, 1299)
+        self.mScrollView.zoomScale = 1 // self.mScrollView.minimumZoomScale
+        self.mScrollView.contentSize = CGSizeMake(1772, 1299)
         
         // MainWrapper
-        self.mMainWrapper.frame = CGRectMake(0, 0, 1722, 1299)
+        self.mMainWrapper.frame = CGRectMake(0, 0, 1772, 1299)
         
         // MainWrapper
-        self.mImgLineGraph.frame = CGRectMake(0, 0, 1722, 1299)
+        self.mImgLineGraph.frame = CGRectMake(0, 0, 1772, 1299)
         
         self.mStationInfoLayerView.hidden = false
         self.mStationInfoLayerView.alpha = 0.5
@@ -195,12 +195,12 @@ class Main: UIViewController,UIScrollViewDelegate {
         if (mImgLineGraph.image == nil) {
             self.mImgLineGraph.image =  "MetroCH".image("LineGraph")
             
-            self.mScrollView.contentSize = CGSizeMake(1722, 1299)
+            self.mScrollView.contentSize = CGSizeMake(1772, 1299)
             // MainWrapper
-            self.mMainWrapper.frame = CGRectMake(0, 0, 1722, 1299)
+            self.mMainWrapper.frame = CGRectMake(0, 0, 1772, 1299)
             
             // MainWrapper
-            self.mImgLineGraph.frame = CGRectMake(0, 0, 1722, 1299)
+            self.mImgLineGraph.frame = CGRectMake(0, 0, 1772, 1299)
         }
         
         
@@ -212,16 +212,22 @@ class Main: UIViewController,UIScrollViewDelegate {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-//        
-//        if (mImgLineGraph.image == nil) {
-//            self.mImgLineGraph.image =  "MetroCH".image("LineGraph")
-//            
-//            self.mScrollView.contentSize = CGSizeMake(1722, 1299)
-//            // MainWrapper
-//            self.mMainWrapper.frame = CGRectMake(0, 0, 1722, 1299)
-//            
-//            // MainWrapper
-//            self.mImgLineGraph.frame = CGRectMake(0, 0, 1722, 1299)
+       
+        if (mImgLineGraph.image == nil) {
+            self.mImgLineGraph.image =  "MetroCH".image("LineGraph")
+            
+            self.mScrollView.contentSize = CGSizeMake(1772, 1299)
+            // MainWrapper
+            self.mMainWrapper.frame = CGRectMake(0, 0, 1772, 1299)
+            
+            // MainWrapper
+            self.mImgLineGraph.frame = CGRectMake(0, 0, 1772, 1299)
+        }
+        
+        
+//        // 接受从站点列表中传递过来的站点ID
+//        if (!stationIdFromStationList.isEmpty){
+//            showPopViewByStationId(stationIdFromStationList)
 //        }
     }
     
@@ -618,9 +624,6 @@ class Main: UIViewController,UIScrollViewDelegate {
         var ptX1:CGFloat=(locatPoint.x * mScrollView.zoomScale - mScrollView.contentOffset.x ) - mPopupStationView.frame.size.width / 2
         var ptY1:CGFloat=(locatPoint.y * mScrollView.zoomScale - mScrollView.contentOffset.y) - mPopupStationView.frame.size.height / 2
         
-        
-        
-        println("\(locatPoint.y)     ?      \(mScrollView.zoomScale)  ?  \(mScrollView.contentOffset.y)")
         
         var height1:CGFloat=mPopupStationView.frame.size.height
         var width1:CGFloat=mPopupStationView.frame.size.width
