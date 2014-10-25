@@ -119,11 +119,12 @@ class Main: UIViewController,UIScrollViewDelegate {
         self.mScreenSize = UIScreen.mainScreen().bounds.size
         
         // ScrollView
-        self.mScrollView.minimumZoomScale = 0.5
+        self.mScrollView.minimumZoomScale = 0.3
         self.mScrollView.maximumZoomScale = 1.5
-        self.mScrollView.zoomScale = 1 // self.mScrollView.minimumZoomScale
-        self.mScrollView.contentSize = CGSizeMake(1772, 1299)
-        
+        self.mScrollView.zoomScale = 1
+        self.mScrollView.contentSize = CGSizeMake(1773, 1300)
+        var initPoint : CGPoint = CGPoint(x: 850, y: 500)
+        self.mScrollView.setContentOffset(initPoint, animated: false)
         // MainWrapper
         self.mMainWrapper.frame = CGRectMake(0, 0, 1772, 1299)
         
@@ -208,23 +209,31 @@ class Main: UIViewController,UIScrollViewDelegate {
         if (!stationIdFromStationList.isEmpty){
             showPopViewByStationId(stationIdFromStationList)
         }
+        
+        
+        var doubleOffsetX:CGFloat = (mScrollView.bounds.size.width >
+            mScrollView.contentSize.width) ? (mScrollView.bounds.size.width - mScrollView.contentSize.width)/2 : 0.0
+        var doubleOffsetY:CGFloat = (mScrollView.bounds.size.height >
+            mScrollView.contentSize.height) ? (mScrollView.bounds.size.height - mScrollView.contentSize.height)/2 : 0.0
+        
+        self.mMainWrapper.center = CGPointMake(mScrollView.contentSize.width * 0.5 + doubleOffsetX , mScrollView.contentSize.height * 0.5 + doubleOffsetY)
+        self.mScrollView.zoomScale = 1.1
+        
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
        
-        if (mImgLineGraph.image == nil) {
-            self.mImgLineGraph.image =  "MetroCH".image("LineGraph")
-            
-            self.mScrollView.contentSize = CGSizeMake(1772, 1299)
-            // MainWrapper
-            self.mMainWrapper.frame = CGRectMake(0, 0, 1772, 1299)
-            
-            // MainWrapper
-            self.mImgLineGraph.frame = CGRectMake(0, 0, 1772, 1299)
-        }
-        
-        
+//        if (mImgLineGraph.image == nil) {
+//            self.mImgLineGraph.image =  "MetroCH".image("LineGraph")
+//            
+//            self.mScrollView.contentSize = CGSizeMake(1772, 1299)
+//            // MainWrapper
+//            self.mMainWrapper.frame = CGRectMake(0, 0, 1772, 1299)
+//            
+//            // MainWrapper
+//            self.mImgLineGraph.frame = CGRectMake(0, 0, 1772, 1299)
+//        }
 //        // 接受从站点列表中传递过来的站点ID
 //        if (!stationIdFromStationList.isEmpty){
 //            showPopViewByStationId(stationIdFromStationList)
@@ -271,6 +280,9 @@ class Main: UIViewController,UIScrollViewDelegate {
     
     // 控制图片放大和缩小
     @IBAction func ControllImage(sender:UIButton) {
+        
+        
+        println(" Before    ========== \(self.mScrollView.contentSize)")
         var btnOffsetX:CGFloat = (mScrollView.bounds.size.width >
             mScrollView.contentSize.width) ? (mScrollView.bounds.size.width - mScrollView.contentSize.width)/2 : 0.0
         var btnOffsetY:CGFloat = (mScrollView.bounds.size.height >
@@ -291,7 +303,7 @@ class Main: UIViewController,UIScrollViewDelegate {
             self.mBtnImgDec.enabled = true
         case self.mBtnImgDec:
             
-            if (self.mScrollView.zoomScale > 0.5) {
+            if (self.mScrollView.zoomScale > 0.3) {
                 UIView.animateWithDuration(0.3, animations: { () -> Void in
                     self.mScrollView.zoomScale = (self.mScrollView.zoomScale - 0.3)
                 })
@@ -304,6 +316,9 @@ class Main: UIViewController,UIScrollViewDelegate {
             self.mScrollView.zoomScale = self.mScrollView.zoomScale
             
         }
+        
+        
+         println(" After    ========== \(self.mScrollView.contentSize)")
         
     }
     
@@ -467,7 +482,6 @@ class Main: UIViewController,UIScrollViewDelegate {
         
         routeSearch.startStationText = self.setStationStartId
         routeSearch.endStationText = self.setStationEndId
-        
         setSationIdCache()
         
         var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
@@ -623,7 +637,6 @@ class Main: UIViewController,UIScrollViewDelegate {
         
         var ptX1:CGFloat=(locatPoint.x * mScrollView.zoomScale - mScrollView.contentOffset.x ) - mPopupStationView.frame.size.width / 2
         var ptY1:CGFloat=(locatPoint.y * mScrollView.zoomScale - mScrollView.contentOffset.y) - mPopupStationView.frame.size.height / 2
-        
         
         var height1:CGFloat=mPopupStationView.frame.size.height
         var width1:CGFloat=mPopupStationView.frame.size.width
