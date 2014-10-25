@@ -232,7 +232,7 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
         }
 
         for subview in cell!.contentView.subviews{
-            if(subview.tag == 111){
+            if(subview.tag as Int == 111){
                 continue
             }
             if(subview.isKindOfClass(UILabel) || (subview.tag as Int) == 102){

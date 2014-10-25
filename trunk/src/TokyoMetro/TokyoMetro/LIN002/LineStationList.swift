@@ -159,6 +159,9 @@ class LineStationList: UIViewController, UITableViewDelegate, UITableViewDataSou
         var allRows: NSArray = table.excuteQuery("select *, ROWID from MSTT02_STATION where 1 = 1 and STAT_ID like '280%'")
         
         for key in rows {
+            if(key.item(MSTT02_STAT_SEQ) == nil || key.item(MSTT02_STAT_GROUP_ID) == nil || key.item(MSTT02_STAT_ID) == nil){
+                continue
+            }
             
             key as MstT02StationTable
             // statSeq 判断车站是否在m段
@@ -173,6 +176,10 @@ class LineStationList: UIViewController, UITableViewDelegate, UITableViewDataSou
                 var lineArr = [String]()
                 for (var i = 0; i < allRows.count; i++) {
                     var map: MstT02StationTable = allRows[i] as MstT02StationTable
+                    
+                    if(map.item(MSTT02_STAT_GROUP_ID) == nil || map.item(MSTT02_STAT_ID) == nil){
+                        continue
+                    }
                     
                     if ((map.item(MSTT02_STAT_GROUP_ID) as String) == statGroupId && (map.item(MSTT02_STAT_ID) as String) != statId) {
                         lineArr.append(map.item(MSTT02_LINE_ID) as String)

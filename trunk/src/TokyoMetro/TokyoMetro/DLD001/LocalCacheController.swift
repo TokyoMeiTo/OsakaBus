@@ -250,9 +250,9 @@ class LocalCacheController: UIViewController, UIAlertViewDelegate{
                 response, localfile, error in
                 if(error == nil){
                     println("下载成功解压文件")
-//                    dispatch_async(dispatch_get_main_queue()) { () -> Void in
-//                        self.lblProgress.text = "下载成功解压文件..."
-//                    }
+                    dispatch_async(dispatch_get_main_queue()) { () -> Void in
+                        self.lblProgress.text = "DLD001_02".localizedString()
+                    }
                     self.unzipFile()
                 }else{
                     println("下载失败")
@@ -261,8 +261,9 @@ class LocalCacheController: UIViewController, UIAlertViewDelegate{
                     dispatch_async(dispatch_get_main_queue()) { () -> Void in
                         self.downloading = false
                         self.loadProgress = "DLD001_04".localizedString()
-                        self.lblProgress.text = "DLD001_03".localizedString()
+                        self.lblProgress.text = self.loadProgress
                         self.btnDownload.setBackgroundImage(UIImage(named: "DLD00101.png"), forState: UIControlState.Normal)
+                        self.showDownloadBtn()
                         self.disMiss(self.gaiLoading)
                     }
                 }

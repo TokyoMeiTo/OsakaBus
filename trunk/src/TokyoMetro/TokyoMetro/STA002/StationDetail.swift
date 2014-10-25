@@ -324,7 +324,7 @@ class StationDetail: UIViewController, UITableViewDelegate, UITableViewDataSourc
         routeSearch.endStationText = group_id
         
         if (ruteLandMarkId != nil) {
-            
+            routeSearch.endStationLandMarkId = ruteLandMarkId!
         }
         var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
         self.navigationItem.backBarButtonItem = backButton

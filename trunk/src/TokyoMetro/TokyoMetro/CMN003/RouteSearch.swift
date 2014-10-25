@@ -1,4 +1,4 @@
-//
+ //
 //  SESearch.swift
 //  TokyoMetro
 //
@@ -492,10 +492,11 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
 //            ////////////// test 
             
             if (!endStationLandMarkId.isEmpty) {
-                var exitInfoDic = landMarkExitInfo(endStationLandMarkId)
-                resultCelllblStationEixtInfo = mViewExitInfo(exitInfoDic!, viewInfo: resultCelllblStationEixtInfo, cell:cell)
-                endStationLandMarkId = ""
-
+                if(landMarkExitInfo(endStationLandMarkId) != nil){
+                    var exitInfoDic = landMarkExitInfo(endStationLandMarkId)
+                    resultCelllblStationEixtInfo = mViewExitInfo(exitInfoDic!, viewInfo: resultCelllblStationEixtInfo, cell:cell)
+                    endStationLandMarkId = ""
+                }
             }
             
             

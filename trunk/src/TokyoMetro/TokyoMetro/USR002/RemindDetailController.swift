@@ -635,7 +635,7 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
 //            tableUsrT01!.statFromId = selectStationId
 //        }
         
-        if(fromRoute()){
+        if(fromRoute() && routeStatTable01!.item(MSTT02_STAT_ID) != nil && routeStatTable02!.item(MSTT02_STAT_ID) != nil){
             usrT01Data!.statFromId = "\(routeStatTable01!.item(MSTT02_STAT_ID))"
             usrT01Data!.statToId = "\(routeStatTable02!.item(MSTT02_STAT_ID))"
         }
