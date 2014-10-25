@@ -204,20 +204,10 @@ class Main: UIViewController,UIScrollViewDelegate {
             self.mImgLineGraph.frame = CGRectMake(0, 0, 1772, 1299)
         }
         
-        
         // 接受从站点列表中传递过来的站点ID
         if (!stationIdFromStationList.isEmpty){
             showPopViewByStationId(stationIdFromStationList)
         }
-        
-        
-        var doubleOffsetX:CGFloat = (mScrollView.bounds.size.width >
-            mScrollView.contentSize.width) ? (mScrollView.bounds.size.width - mScrollView.contentSize.width)/2 : 0.0
-        //var doubleOffsetY:CGFloat = (mScrollView.bounds.size.height >
-        //    mScrollView.contentSize.height) ? (mScrollView.bounds.size.height - mScrollView.contentSize.height)/2 : 0.0
-        
-        self.mMainWrapper.center = CGPointMake(mScrollView.contentSize.width * 0.5 + doubleOffsetX , mScrollView.contentSize.height * 0.5 )
-        
     }
     
     override func viewDidLayoutSubviews() {

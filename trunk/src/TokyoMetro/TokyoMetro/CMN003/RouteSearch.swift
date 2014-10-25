@@ -1375,7 +1375,6 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             SearchButton?.enabled = true
         } else {
             SearchButton?.enabled = false
-            
         }
     }
     
