@@ -70,9 +70,13 @@ class SearchStationList: UIViewController, UITableViewDelegate, UITableViewDataS
             
             var map: MstT02StationTable = stationArr[indexPath.row] as MstT02StationTable
             if (focusNumber == "1") {
-                routeSearch!.startStationText = map.item(MSTT02_STAT_GROUP_ID) as String
+                if(routeSearch != nil && map.item(MSTT02_STAT_GROUP_ID) != nil){
+                    routeSearch!.startStationText = map.item(MSTT02_STAT_GROUP_ID) as String
+                }
             } else {
-                routeSearch!.endStationText = map.item(MSTT02_STAT_GROUP_ID) as String
+                if(routeSearch != nil && map.item(MSTT02_STAT_GROUP_ID) != nil){
+                    routeSearch!.endStationText = map.item(MSTT02_STAT_GROUP_ID) as String
+                }
             }
             
             self.dismissViewControllerAnimated(true, completion: nil)
@@ -204,14 +208,21 @@ class SearchStationList: UIViewController, UITableViewDelegate, UITableViewDataS
         var allRows: NSArray = table.excuteQuery("select *, ROWID from MSTT02_STATION where 1 = 1 and STAT_ID like '280%'")
         
         for key in rows {
+            if(key.item(MSTT02_STAT_GROUP_ID) == nil){
+                continue
+            }
             
             stationArr.addObject(key)
             
             var statGroupId = key.item(MSTT02_STAT_GROUP_ID) as String
-            var lineArr = [String]()
+            var lineArr = Array<String>()
             for (var i = 0; i < allRows.count; i++) {
+                
                 var map: MstT02StationTable = allRows[i] as MstT02StationTable
                 
+                if(map.item(MSTT02_STAT_GROUP_ID) == nil || map.item(MSTT02_LINE_ID) == nil){
+                    continue
+                }
                 if ((map.item(MSTT02_STAT_GROUP_ID) as String) == statGroupId) {
                     lineArr.append(map.item(MSTT02_LINE_ID) as String)
                 }
