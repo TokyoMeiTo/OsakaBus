@@ -796,6 +796,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         var searchAllStation : SearchStationList = self.storyboard?.instantiateViewControllerWithIdentifier("SearchStationList") as SearchStationList
         searchAllStation.focusNumber = self.focusNumber
         searchAllStation.classType = "routeSearch"
+        searchAllStation.routeSearch = self
         self.navigationController?.pushViewController(searchAllStation, animated: true)
         
         btnCollectionStation.tag == 10001
