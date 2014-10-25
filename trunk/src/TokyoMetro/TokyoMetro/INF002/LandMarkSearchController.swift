@@ -188,11 +188,11 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
         case 4:
             switch didSelectRowAtIndexPath.row{
             case 0:
-                landMarkPrice = 5000
+                landMarkPrice = 1
             case 1:
-                landMarkPrice = 1000
+                landMarkPrice = 2
             case 2:
-                landMarkPrice = 500
+                landMarkPrice = 3
             default:
                 landMarkPrice = 0
             }
@@ -214,7 +214,7 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
             case 2:
                 landMarkMiciRank = "3"
             default:
-                landMarkMiciRank = "0"
+                landMarkMiciRank = ""
             }
             for(var i=0; i < items[didSelectRowAtIndexPath.section][1].count;i++){
                 var indexPath = NSIndexPath(forRow: i, inSection: 5)
@@ -228,15 +228,15 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
         case 6:
             switch didSelectRowAtIndexPath.row{
             case 0:
-                landMarkMiciRank = "2"
+                landMarkRank = "2"
             case 1:
-                landMarkMiciRank = "3"
+                landMarkRank = "3"
             case 2:
-                landMarkMiciRank = "4"
+                landMarkRank = "4"
             case 3:
-                landMarkMiciRank = "5"
+                landMarkRank = "5"
             default:
-                landMarkMiciRank = "1"
+                landMarkRank = ""
             }
             for(var i=0; i < items[didSelectRowAtIndexPath.section][1].count;i++){
                 var indexPath = NSIndexPath(forRow: i, inSection: 6)

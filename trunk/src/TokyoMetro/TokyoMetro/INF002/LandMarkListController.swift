@@ -98,6 +98,7 @@ class LandMarkListController: UIViewController, UITableViewDelegate, UITableView
         searchButtonTemp!.tag = BTN_SEARCH_TAG
         var searchButton:UIBarButtonItem = UIBarButtonItem(customView: searchButtonTemp!)
         self.navigationItem.rightBarButtonItem = searchButton
+        
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -212,10 +213,11 @@ class LandMarkListController: UIViewController, UITableViewDelegate, UITableView
         
         if(landMarks![indexPath.row].item(MSTT04_LANDMARK_RANK) != nil && "\(landMarks![indexPath.row].item(MSTT04_LANDMARK_RANK))" != ""){
             lblTemp.frame = CGRect(x:0,y:125,width:tableView.frame.width,height:45)
-            ("\(landMarks![indexPath.row].item(MSTT04_LANDMARK_RANK))" as NSString).integerValue
-            for(var i=0;i < 4; i++){
-                var xFloat:CGFloat = 15//100
-                
+            var mLandMarkRank:Int = ("\(landMarks![indexPath.row].item(MSTT04_LANDMARK_RANK))" as NSString).integerValue
+            var mIntRank = mLandMarkRank/100
+            var xFloat:CGFloat = 15
+            for(var i=0;i < mIntRank; i++){
+                xFloat = 15
                 for(var j=0;j<i;j++){
                     xFloat = xFloat + 20
                 }
@@ -224,6 +226,15 @@ class LandMarkListController: UIViewController, UITableViewDelegate, UITableView
                 var imageStar = UIImage(named: "INF00209.png")
                 imageViewStar.image = imageStar
                 cell!.contentView.addSubview(imageViewStar)
+            }
+            
+            var mSurplus:Int = ("\(landMarks![indexPath.row].item(MSTT04_LANDMARK_RANK))" as NSString).integerValue % 100
+            var mSurplusRank:Double = ("\(mSurplus)" as NSString).doubleValue/100.0
+            if(mSurplusRank > 0.5){
+                xFloat = xFloat + 20
+                var imageViewHalfStar = UIImageView(frame: CGRectMake(xFloat, 130, 15, 15))
+                imageViewHalfStar.image = UIImage(named: "INF00210.png")
+                cell!.contentView.addSubview(imageViewHalfStar)
             }
         }
         

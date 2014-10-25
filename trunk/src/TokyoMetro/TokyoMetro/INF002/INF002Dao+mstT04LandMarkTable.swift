@@ -102,18 +102,31 @@ extension MstT04LandMarkTable {
         }
         
         if(price != 0){
-            arr.addObject(price);
-            queryFiter = queryFiter + " AND LMAK_TICT_PRIC = ?"
+            switch price{
+            case 1:
+                queryFiter = queryFiter + " AND LMAK_PRIC_MIN IS NOT NULL"
+                queryFiter = queryFiter + " AND LMAK_PRIC_MIN >= 5000"
+            case 2:
+                queryFiter = queryFiter + " AND LMAK_PRIC_MIN IS NOT NULL"
+                queryFiter = queryFiter + " AND LMAK_PRIC_MIN >= 1000"
+            case 3:
+                queryFiter = queryFiter + " AND LMAK_PRIC_MAX IS NOT NULL"
+                queryFiter = queryFiter + " AND LMAK_PRIC_MAX < 1000"
+            default:
+                println("nothing")
+            }
         }
         
         if(miciRank != ""){
-            arr.addObject(miciRank);
-            queryFiter = queryFiter + " AND LMAK_MICI_RANK = ?"
+            queryFiter = queryFiter + " AND LMAK_MICI_RANK IS NOT NULL"
+            queryFiter = queryFiter + " AND LMAK_MICI_RANK = " + miciRank
         }
         
         if(rank != ""){
             arr.addObject(rank);
-            queryFiter = queryFiter + " AND LMAK_RANK = ?"
+            var mRank:Int = (rank as NSString).integerValue
+            queryFiter = queryFiter + " AND LMAK_RANK IS NOT NULL"
+            queryFiter = queryFiter + " AND " + "LMAK_RANK >= " + "\(mRank - 1)" + " AND " + "LMAK_RANK < " + "\(mRank)"
         }
         
         return self.excuteQuery( queryFiter, withArgumentsInArray: arr);

@@ -280,6 +280,9 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if(section == 0){
+            return 54
+        }
         return 44
     }
     
@@ -306,7 +309,7 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
         if(segIndex == NUM_0){
             if(section == 0){
                 var imgStationTo = UIImage(named: "USR00204")
-                var imageViewStationTo = UIImageView(frame: CGRectMake(15, 5, 25, 25))
+                var imageViewStationTo = UIImageView(frame: CGRectMake(15, 15, 25, 25))
                 imageViewStationTo.image = imgStationTo
                 UIHeader.addSubview(imageViewStationTo)
             }else if(section == 1){
@@ -323,7 +326,7 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
         }else if(segIndex == NUM_1){
             if(section == 0){
                 var imgStationTo = UIImage(named: "USR00204")
-                var imageViewStationTo = UIImageView(frame: CGRectMake(15, 5, 25, 25))
+                var imageViewStationTo = UIImageView(frame: CGRectMake(15, 15, 25, 25))
                 imageViewStationTo.image = imgStationTo
                 UIHeader.addSubview(imageViewStationTo)
             }else{

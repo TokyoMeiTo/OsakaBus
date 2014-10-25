@@ -381,16 +381,28 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, UITableVi
                 lblInfoTitle.font = UIFont.systemFontOfSize(LABEL_TEXT_SIZE)
                 lblInfoTitle.textAlignment = NSTextAlignment.Left
                 cell!.contentView.addSubview(lblInfoTitle)
-                for(var i=0;i<("\(landMark!.item(MSTT04_LANDMARK_RANK))" as NSString).integerValue; i++){
-                    var xFloat:CGFloat = 15//100
-                    
+                var mLandMarkRank:Int = ("\(landMark!.item(MSTT04_LANDMARK_RANK))" as NSString).integerValue
+                var mIntRank = mLandMarkRank/100
+                var xFloat:CGFloat = 15
+                for(var i=0;i < mIntRank; i++){
+                    xFloat = 15
                     for(var j=0;j<i;j++){
                         xFloat = xFloat + 20
                     }
+                    
                     var imageViewStar = UIImageView(frame: CGRectMake(xFloat, 40, 15, 15))
                     var imageStar = UIImage(named: "INF00209.png")
                     imageViewStar.image = imageStar
                     cell!.contentView.addSubview(imageViewStar)
+                }
+                
+                var mSurplus:Int = ("\(landMark!.item(MSTT04_LANDMARK_RANK))" as NSString).integerValue % 100
+                var mSurplusRank:Double = ("\(mSurplus)" as NSString).doubleValue/100.0
+                if(mSurplusRank > 0.5){
+                    xFloat = xFloat + 20
+                    var imageViewHalfStar = UIImageView(frame: CGRectMake(xFloat, 40, 15, 15))
+                    imageViewHalfStar.image = UIImage(named: "INF00210.png")
+                    cell!.contentView.addSubview(imageViewHalfStar)
                 }
             }
             // 地址
