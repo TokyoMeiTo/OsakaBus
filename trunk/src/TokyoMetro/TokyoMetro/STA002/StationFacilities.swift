@@ -93,7 +93,7 @@ class StationFacilities: UIViewController, UITableViewDelegate, NSObjectProtocol
         
         // cell显示内容
         var imgCompiner: UIImageView = UIImageView(frame: CGRectMake(5, 8, 100, 100))
-        imgCompiner.image = UIImage(named: (facilities![indexPath.row].item(STAT03_COME_INSI_IMAGE) as String).getStationInnerComPath())
+        imgCompiner.image = (facilities![indexPath.row].item(STAT03_COME_INSI_IMAGE) as String).image("StationInnerCom")
         
         cell.addSubview(imgCompiner)
         

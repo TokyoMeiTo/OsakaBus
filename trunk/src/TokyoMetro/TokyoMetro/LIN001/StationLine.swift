@@ -16,7 +16,7 @@ class StationLine: UIViewController, UITableViewDataSource, UITableViewDelegate 
     *******************************************************************************/
     @IBOutlet weak var table: UITableView!
     @IBOutlet weak var segment: UISegmentedControl!
-    @IBOutlet weak var lineView: UIView!
+//    @IBOutlet weak var lineView: UIView!
     
     /*******************************************************************************
     * Private Properties
@@ -39,7 +39,7 @@ class StationLine: UIViewController, UITableViewDataSource, UITableViewDelegate 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        lineView.hidden = true
+//        lineView.hidden = true
         
         if (segmentIndex == 0) {
             segment.selectedSegmentIndex = 0
@@ -78,7 +78,7 @@ class StationLine: UIViewController, UITableViewDataSource, UITableViewDelegate 
         
         if (segment.selectedSegmentIndex == 0) {
             var lineList: LineStationList = self.storyboard?.instantiateViewControllerWithIdentifier("LineStationList") as LineStationList
-            
+                        
             let map = LineArr[indexPath.row] as MstT01LineTable
             lineList.line_id = map.item(MSTT01_LINE_ID) as String
             lineList.line_name = (map.item(MSTT01_LINE_ID) as String).line()
@@ -152,6 +152,7 @@ class StationLine: UIViewController, UITableViewDataSource, UITableViewDelegate 
                 
                 var imgLine = cell.viewWithTag(301) as UIImageView
                 
+                
                 imgLine.image = (lineMap.item(MSTT01_LINE_ID) as String).getLineImage()
                 
                 var lineName = cell.viewWithTag(302) as UILabel
@@ -218,12 +219,12 @@ class StationLine: UIViewController, UITableViewDataSource, UITableViewDelegate 
         if (sender.selectedSegmentIndex == 1) {
             
             table.hidden = false
-            lineView.hidden = true
+//            lineView.hidden = true
             table.reloadData()
         } else {
         
             table.hidden = false
-            lineView.hidden = true
+//            lineView.hidden = true
             table.reloadData()
 //            lineView.hidden = false
 //            table.hidden = true
@@ -251,23 +252,23 @@ class StationLine: UIViewController, UITableViewDataSource, UITableViewDelegate 
         
         for key in rows {
             
-            var statGroupId: String? = key.item(MSTT02_STAT_GROUP_ID) as? String
-            
-            if (statGroupId == nil) {
-                break
-            }
-            stationArr.addObject(key)
-            
-            var lineArr = [String]()
-            for (var i = 0; i < allRows.count; i++) {
-                var map: MstT02StationTable = allRows[i] as MstT02StationTable
+            if ((key.item(MSTT02_STAT_GROUP_ID) as? String) != nil) {
+                var statGroupId: String = key.item(MSTT02_STAT_GROUP_ID) as String
                 
-                if ((map.item(MSTT02_STAT_GROUP_ID) as String) == statGroupId!) {
-                    lineArr.append(map.item(MSTT02_LINE_ID) as String)
+                stationArr.addObject(key)
+                
+                var lineArr = [String]()
+                for (var i = 0; i < allRows.count; i++) {
+                    var map: MstT02StationTable = allRows[i] as MstT02StationTable
+                    
+                    if ((map.item(MSTT02_STAT_GROUP_ID) as? String) == statGroupId) {
+                        lineArr.append(map.item(MSTT02_LINE_ID) as String)
+                    }
                 }
+                
+                changeLineArr.addObject(lineArr)
             }
             
-            changeLineArr.addObject(lineArr)
         }
     }
     
@@ -279,7 +280,6 @@ class StationLine: UIViewController, UITableViewDataSource, UITableViewDelegate 
         
         for key in rows {
             LineArr.addObject(key)
-
         }
         
     }

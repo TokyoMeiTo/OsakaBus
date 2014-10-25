@@ -40,174 +40,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="V00-98-vy0">
-                                <rect key="frame" x="0.0" y="124" width="320" height="384"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bRl-M9-EQ0">
-                                        <rect key="frame" x="120" y="0.0" width="80" height="98"/>
-                                        <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ouf-zG-xBa">
-                                                <rect key="frame" x="12" y="0.0" width="56" height="56"/>
-                                                <state key="normal" backgroundImage="menu12">
-                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                </state>
-                                            </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="丸之内线" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ghM-jP-syw">
-                                                <rect key="frame" x="0.0" y="68" width="80" height="30"/>
-                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    </view>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xob-eJ-6ZX">
-                                        <rect key="frame" x="20" y="143" width="80" height="98"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="东西线" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lfZ-xV-aLm">
-                                                <rect key="frame" x="0.0" y="68" width="80" height="30"/>
-                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="plR-iZ-h0K">
-                                                <rect key="frame" x="12" y="0.0" width="56" height="56"/>
-                                                <state key="normal" backgroundImage="tablecell_lineicon_t">
-                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                </state>
-                                            </button>
-                                        </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    </view>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HtY-ot-Hzo">
-                                        <rect key="frame" x="120" y="143" width="80" height="98"/>
-                                        <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZTG-uR-2Xw">
-                                                <rect key="frame" x="12" y="0.0" width="56" height="56"/>
-                                                <state key="normal" backgroundImage="tablecell_lineicon_c">
-                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                </state>
-                                            </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="千代田线" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sf6-cd-wJf">
-                                                <rect key="frame" x="0.0" y="68" width="80" height="30"/>
-                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    </view>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PWP-9X-raX">
-                                        <rect key="frame" x="220" y="0.0" width="80" height="98"/>
-                                        <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XnA-7f-G0b">
-                                                <rect key="frame" x="12" y="0.0" width="56" height="56"/>
-                                                <state key="normal" backgroundImage="tablecell_lineicon_h">
-                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                </state>
-                                            </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="日比谷线" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SIC-UW-wE8">
-                                                <rect key="frame" x="0.0" y="68" width="80" height="30"/>
-                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    </view>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="c96-8m-ePs">
-                                        <rect key="frame" x="220" y="143" width="80" height="98"/>
-                                        <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xUO-L1-kX1">
-                                                <rect key="frame" x="12" y="0.0" width="56" height="56"/>
-                                                <state key="normal" backgroundImage="tablecell_lineicon_y">
-                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                </state>
-                                            </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="有乐町线" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dNO-uQ-tDi">
-                                                <rect key="frame" x="0.0" y="68" width="80" height="30"/>
-                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    </view>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mwz-Pw-Kwy">
-                                        <rect key="frame" x="120" y="286" width="80" height="98"/>
-                                        <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="03n-oW-TCF">
-                                                <rect key="frame" x="12" y="0.0" width="56" height="56"/>
-                                                <state key="normal" backgroundImage="tablecell_lineicon_n">
-                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                </state>
-                                            </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="南北线" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Wb-8Y-Up7">
-                                                <rect key="frame" x="0.0" y="68" width="80" height="30"/>
-                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    </view>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="emV-Oa-zpO">
-                                        <rect key="frame" x="220" y="286" width="80" height="98"/>
-                                        <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="asN-4r-hE7">
-                                                <rect key="frame" x="12" y="0.0" width="56" height="56"/>
-                                                <state key="normal" backgroundImage="tablecell_lineicon_f">
-                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                </state>
-                                            </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="副都心线" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VzF-fu-wEA">
-                                                <rect key="frame" x="0.0" y="68" width="80" height="30"/>
-                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    </view>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="l22-Ks-ga0">
-                                        <rect key="frame" x="20" y="286" width="80" height="98"/>
-                                        <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bme-Fu-cW6">
-                                                <rect key="frame" x="12" y="0.0" width="56" height="56"/>
-                                                <state key="normal" backgroundImage="tablecell_lineicon_z">
-                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                </state>
-                                            </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="半藏门线" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="awj-V8-Dmt">
-                                                <rect key="frame" x="0.0" y="68" width="80" height="30"/>
-                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    </view>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RvE-Ud-mG6">
-                                        <rect key="frame" x="20" y="0.0" width="80" height="98"/>
-                                        <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pGd-4E-DCR">
-                                                <rect key="frame" x="12" y="0.0" width="56" height="56"/>
-                                                <state key="normal" backgroundImage="tablecell_lineicon_g">
-                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                </state>
-                                            </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="银座线" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B2U-j0-OZ6">
-                                                <rect key="frame" x="0.0" y="68" width="80" height="30"/>
-                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    </view>
-                                </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="5UD-QF-wdm">
                                 <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -243,7 +75,7 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Bxh-P2-iNU" id="kKm-rQ-tX5">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" tag="301" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="tablecell_lineicon_g" translatesAutoresizingMaskIntoConstraints="NO" id="2UR-K9-ss5">
+                                                <imageView userInteractionEnabled="NO" tag="301" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2UR-K9-ss5">
                                                     <rect key="frame" x="5" y="21" width="44" height="44"/>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" tag="304" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="涉谷 - 浅草" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="11" translatesAutoresizingMaskIntoConstraints="NO" id="T6F-1U-h6k">
@@ -330,11 +162,27 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="5UD-QF-wdm" firstAttribute="leading" secondItem="Ix7-4B-6qw" secondAttribute="leading" id="45t-sO-Vnf"/>
-                            <constraint firstAttribute="bottom" secondItem="5UD-QF-wdm" secondAttribute="bottom" id="4Bq-0V-S4d"/>
-                            <constraint firstAttribute="trailing" secondItem="5UD-QF-wdm" secondAttribute="trailing" id="6ml-mB-jXD"/>
-                            <constraint firstItem="5UD-QF-wdm" firstAttribute="top" secondItem="Ix7-4B-6qw" secondAttribute="top" constant="64" id="qRO-fM-6Hy"/>
+                            <constraint firstItem="5UD-QF-wdm" firstAttribute="leading" secondItem="Ix7-4B-6qw" secondAttribute="leading" id="2pt-0B-5BN"/>
+                            <constraint firstAttribute="trailing" secondItem="5UD-QF-wdm" secondAttribute="trailing" id="WdG-XB-2dT"/>
+                            <constraint firstItem="5UD-QF-wdm" firstAttribute="top" secondItem="Ix7-4B-6qw" secondAttribute="top" id="lzK-7r-Qon"/>
+                            <constraint firstAttribute="bottom" secondItem="5UD-QF-wdm" secondAttribute="bottom" id="mAG-b7-JCO"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="2pt-0B-5BN"/>
+                                <exclude reference="WdG-XB-2dT"/>
+                                <exclude reference="lzK-7r-Qon"/>
+                                <exclude reference="mAG-b7-JCO"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=regular">
+                            <mask key="constraints">
+                                <include reference="2pt-0B-5BN"/>
+                                <include reference="WdG-XB-2dT"/>
+                                <include reference="lzK-7r-Qon"/>
+                                <include reference="mAG-b7-JCO"/>
+                            </mask>
+                        </variation>
                     </view>
                     <navigationItem key="navigationItem" id="Ci8-6T-rAG">
                         <nil key="title"/>
@@ -358,7 +206,6 @@
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
-                        <outlet property="lineView" destination="V00-98-vy0" id="Jvn-y5-2OY"/>
                         <outlet property="segment" destination="gkF-KM-DVE" id="FX1-p1-5Ef"/>
                         <outlet property="table" destination="5UD-QF-wdm" id="8LR-w4-PNQ"/>
                     </connections>
@@ -1323,7 +1170,7 @@ lable</string>
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="tablecell_lineicon_g" translatesAutoresizingMaskIntoConstraints="NO" id="i9o-tK-uqg">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="i9o-tK-uqg">
                                 <rect key="frame" x="15" y="77" width="44" height="44"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="银座" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="11" translatesAutoresizingMaskIntoConstraints="NO" id="wDu-8T-OXt">
@@ -1887,7 +1734,7 @@ lable</string>
                         <constraints>
                             <constraint firstItem="fdV-rK-KVZ" firstAttribute="top" secondItem="bQV-cy-gvk" secondAttribute="top" id="76z-SC-7Kh"/>
                             <constraint firstItem="fdV-rK-KVZ" firstAttribute="leading" secondItem="bQV-cy-gvk" secondAttribute="leading" id="Wey-4S-7g3"/>
-                            <constraint firstAttribute="bottom" secondItem="fdV-rK-KVZ" secondAttribute="bottom" constant="20" id="inF-Uj-fnL"/>
+                            <constraint firstAttribute="bottom" secondItem="fdV-rK-KVZ" secondAttribute="bottom" id="inF-Uj-fnL"/>
                             <constraint firstAttribute="trailing" secondItem="fdV-rK-KVZ" secondAttribute="trailing" id="mcw-aU-jcz"/>
                         </constraints>
                         <variation key="default">
@@ -4023,7 +3870,6 @@ lable</string>
         <image name="menu-22" width="42" height="42"/>
         <image name="menu-23" width="42" height="42"/>
         <image name="menu-24" width="42" height="42"/>
-        <image name="menu12" width="34" height="33"/>
         <image name="menu_01" width="80" height="40"/>
         <image name="menu_02" width="80" height="40"/>
         <image name="menu_03" width="80" height="40"/>
@@ -4042,14 +3888,6 @@ lable</string>
         <image name="station_collect" width="160" height="44"/>
         <image name="station_local_btn" width="160" height="44"/>
         <image name="tablecell_lineicon_28002" width="44" height="44"/>
-        <image name="tablecell_lineicon_c" width="44" height="44"/>
-        <image name="tablecell_lineicon_f" width="44" height="44"/>
-        <image name="tablecell_lineicon_g" width="44" height="44"/>
-        <image name="tablecell_lineicon_h" width="44" height="44"/>
-        <image name="tablecell_lineicon_n" width="44" height="44"/>
-        <image name="tablecell_lineicon_t" width="44" height="44"/>
-        <image name="tablecell_lineicon_y" width="44" height="44"/>
-        <image name="tablecell_lineicon_z" width="44" height="44"/>
         <image name="usr002014" width="15" height="14"/>
         <image name="usr002015" width="15" height="14"/>
         <image name="usr009" width="90" height="91"/>

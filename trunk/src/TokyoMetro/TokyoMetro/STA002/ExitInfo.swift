@@ -131,23 +131,23 @@ class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource, MK
             var pinView:MKPinAnnotationView?
             
             // 4'3'5
-            var img = UIImage(named: "INF00204.png")
+            var img = UIImage(named: "INF00204")
             
             
             var mapTitle: String! = annotation.title
             if (mapTitle == statId.station() && annotation.subtitle == "") {
                 pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: statId.station())
-                img = UIImage(named: "STA00301.png")
+                img = UIImage(named: "STA00301")
             } else {
                 pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: annotation.title!)
                 
                 switch (annotation.subtitle! as String) {
                 case "景点":
-                    img = UIImage(named: "INF00204.png")
+                    img = UIImage(named: "INF00204")
                 case "美食":
-                    img = UIImage(named: "INF00203.png")
+                    img = UIImage(named: "INF00203")
                 case "购物":
-                    img = UIImage(named: "INF00205.png")
+                    img = UIImage(named: "INF00205")
                 default:
                     println("nothing")
                 }
