@@ -374,7 +374,7 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
         sgmMain.addTarget(self,
             action: "segmentChanged:",
             forControlEvents: UIControlEvents.ValueChanged)
-        sgmMain.setTitle("USR002_29".localizedString(), forSegmentAtIndex: 1)
+        sgmMain.setTitle("USR001_29".localizedString(), forSegmentAtIndex: 1)
     }
     
     /**
@@ -438,7 +438,7 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
             var alarmEnd:UsrT01ArrivalAlarmTableData? = usrt01Alarms![usrt01Alarms!.count - 1]
             
             if(mAlarm!.statToId == alarmEnd!.statToId){
-                lblArriveStation.text = "USR002_16".localizedString() + mAlarm!.statToId.station() +  "USR001_17".localizedString() + "," + "USR002_27".localizedString()
+                lblArriveStation.text = "USR002_16".localizedString() + mAlarm!.statToId.station() +  "USR002_17".localizedString() + "," + "USR002_27".localizedString()
             }else{
                 lblArriveStation.text = "USR002_16".localizedString() + mAlarm!.statToId.station() + "CMN003_01".localizedString() + "," + "USR002_27".localizedString()
             }

@@ -279,6 +279,10 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
         return 43
     }
     
+    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 44
+    }
+    
     
     /*******************************************************************************
     *      Implements Of UITableViewDataSource
@@ -422,6 +426,7 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
                 }else if(segIndex == NUM_1){
                     usrT02Data!.lineId = mLines![row].lineId
                     usrT02Data!.statId = stations[NUM_0].statId
+                    usrT02Data!.traiDirt = "\(stationsDirt[1].item(MSTT02_STAT_ID))"
                 }
             }else{
                 if(row < stations.count){
@@ -867,7 +872,7 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
         var trainAlarms:Array<UsrT02TrainAlarmTable>? = selectTrainAlarmTable()
         var usr002Dao:USR002DAO = USR002DAO()
         usrT02Data!.alamTime = usr002Dao.queryDepaTime(usrT02Data!.lineId, statId: "\((selectStationTableOne(usrT02Data!.statId) as MstT02StationTable).item(MSTT02_STAT_GROUP_ID))", destId: usrT02Data!.traiDirt, trainFlag: usrT02Data!.alamType, scheType: "1")
-        if(usrT02Data!.alamTime == "" || usrT02Data!.alamTime == "nil"){
+        if(usrT02Data!.alamTime == ""){
             RemindDetailController.showMessage(MSG_0002, msg:"USR002_05".localizedString(),buttons:[MSG_0003], delegate: nil)
             mEditFlag = false
             self.navigationController!.popViewControllerAnimated(true)
@@ -932,11 +937,11 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
      */
     func loadLastMetroItems(){
         items = NSMutableArray.array()
-        items.addObject(["提醒站点：",[station,""]])
-        items.addObject(["方向：",[stationDirt0 + "方向",stationDirt1 + "方向"]])
-        items.addObject(["早末班车：",["USR002_03".localizedString(), "USR002_04".localizedString()]])
-        items.addObject(["USR002_16".localizedString(),remindsMethod])
-        items.addObject(["USR002_17".localizedString(),remindsTime])
+        items.addObject(["USR002_12".localizedString(),[station,""]])
+        items.addObject(["PUBLIC_04".localizedString() + ":",[stationDirt0 + "PUBLIC_04".localizedString(),stationDirt1 + "PUBLIC_04".localizedString()]])
+        items.addObject(["USR002_07".localizedString(),["USR002_03".localizedString(), "USR002_04".localizedString()]])
+        items.addObject(["USR002_14".localizedString(),remindsMethod])
+        items.addObject(["USR002_15".localizedString(),remindsTime])
     }
     
     /**

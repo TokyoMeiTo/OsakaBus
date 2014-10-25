@@ -165,9 +165,9 @@ class USR002Model{
      * s2hh:mm:ss
      * 0000 -> 00:00
      */
-    func convertTrainTime(time:String) -> String{
-        if(countElements(time) < 4){
-            return time
+    func convertTrainTime(time:String?) -> String{
+        if(countElements(time!) < 4 || time == nil){
+            return ""
         }
         
         var tempStr = "0123"
@@ -175,7 +175,7 @@ class USR002Model{
         var indexHourTo = tempStr.rangeOfString("1")
         var indexMinFrom = tempStr.rangeOfString("2")
         
-        return "  " + time.substringToIndex(indexHourTo!.endIndex) + ":" + time.substringFromIndex(indexMinFrom!.startIndex) + "  "
+        return "  " + time!.substringToIndex(indexHourTo!.endIndex) + ":" + time!.substringFromIndex(indexMinFrom!.startIndex) + "  "
     }
     
     /**

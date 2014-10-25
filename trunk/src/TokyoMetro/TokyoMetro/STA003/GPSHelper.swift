@@ -93,6 +93,7 @@ class GPSHelper: UIViewController, CLLocationManagerDelegate{
     func locationManager(manager: CLLocationManager!, didFailWithError error: NSError!){
         println(error.code)
         delegate!.locationUpdateComplete(currentLocation)
+        manager.stopUpdatingLocation()
     }
     
     func locationManager(manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {

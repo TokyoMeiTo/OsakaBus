@@ -271,6 +271,10 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
         }
     }
 
+    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 44
+    }
+    
     
     /*******************************************************************************
     *      Implements Of UITableViewDataSource
@@ -324,7 +328,7 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
             imageView.image = img
             UIHeader.addSubview(imageView)
         case 6:
-            var img = UIImage(named: "inf0021")
+            var img = UIImage(named: "inf00221")
             var imageView = UIImageView(frame: CGRectMake(15, 5, 25, 25))
             imageView.image = img
             UIHeader.addSubview(imageView)
