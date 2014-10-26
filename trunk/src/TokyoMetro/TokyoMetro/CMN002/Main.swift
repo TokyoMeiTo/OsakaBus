@@ -512,7 +512,7 @@ class Main: UIViewController,UIScrollViewDelegate {
         switch sender {
         case mPopupBtnStart:
             self.setStationStartId = self.mCuttentStationID
-            
+            self.appDelegate.startStatId = self.setStationStartId
             self.mPopupStationView.hidden = true
             addUStartITag()
             
@@ -524,6 +524,7 @@ class Main: UIViewController,UIScrollViewDelegate {
             
         case mPopupBtnEnd:
             self.setStationEndId = self.mCuttentStationID
+            self.appDelegate.endStatId = self.setStationEndId
             self.mPopupStationView.hidden = true
             addUEndITag()
             
