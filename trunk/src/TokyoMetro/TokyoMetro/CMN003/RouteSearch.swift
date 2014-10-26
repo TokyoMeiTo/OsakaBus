@@ -419,7 +419,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         var resultTipCelllblStationTimeTip : UILabel = cellTip.viewWithTag(9006) as UILabel
         var resultTipCelllblStationTimeTipAfter : UILabel = cellTip.viewWithTag(9106) as UILabel
         
-        if ((routeDetial.count - 2) != 0){
+        if ((routeDetial.count - 2) >= 0){
             resultTipCelllblStationExchange.text = "EXCHANGE_TYPE_1".localizedString()
             resultTipCelllblStationExchangeTip.text = (routeDetial.count - 2).description
             resultTipCelllblStationExchangeTipAfter.text = "CMN003_23".localizedString()
@@ -429,12 +429,23 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             resultTipCelllblStationExchangeTipAfter.hidden = true
         }
         
-        resultTipCelllblStationFare.text = "PUBLIC_10".localizedString()
-        resultTipCelllblStationFareTip.text = getFare()
-        resultTipCelllblStationFareTipAfter.text = "CMN003_26".localizedString()
-        resultTipCelllblStationTime.text = "CMN003_27".localizedString()
-        resultTipCelllblStationTimeTip.text = String(self.totalTime)
-        resultTipCelllblStationTimeTipAfter.text = "CMN003_03".localizedString()
+        
+        if(self.totalTime > 0) {
+            resultTipCelllblStationFare.text = "PUBLIC_10".localizedString()
+            resultTipCelllblStationFareTip.text = getFare()
+            resultTipCelllblStationFareTipAfter.text = "CMN003_26".localizedString()
+            resultTipCelllblStationTime.text = "CMN003_27".localizedString()
+            resultTipCelllblStationTimeTip.text = String(self.totalTime)
+            resultTipCelllblStationTimeTipAfter.text = "CMN003_03".localizedString()
+        } else {
+            resultTipCelllblStationFareTipAfter.hidden = true
+            resultTipCelllblStationFareTip.hidden = true
+            resultTipCelllblStationFare.hidden = true
+            resultTipCelllblStationTimeTipAfter.hidden = true
+            resultTipCelllblStationTimeTip.hidden = true
+            resultTipCelllblStationTime.hidden = true
+        }
+        
 
     }
     
