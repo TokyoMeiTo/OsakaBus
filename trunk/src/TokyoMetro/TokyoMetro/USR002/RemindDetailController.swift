@@ -892,7 +892,7 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
         if(usrT02Data!.alamTime == ""){
             RemindDetailController.showMessage(MSG_0002, msg:"USR002_05".localizedString(),buttons:[MSG_0003], delegate: nil)
             mEditFlag = false
-            self.navigationController!.popViewControllerAnimated(true)
+            //self.navigationController!.popViewControllerAnimated(true)
             return
         }
         if(trainAlarms!.count > 0){

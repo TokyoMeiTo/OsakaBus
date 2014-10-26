@@ -29,5 +29,4 @@ class INF002Model {
         mUsr03Dao.delete()
     }
     
-    
 }

@@ -181,7 +181,7 @@ class LandMarkListController: UIViewController, UITableViewDelegate, UITableView
         lblLandMark.backgroundColor = UIColor.clearColor()
         lblLandMark.font = UIFont.boldSystemFontOfSize(16)
         lblLandMark.textColor = UIColor.whiteColor()
-        lblLandMark.text = "\(landMarks![indexPath.row].item(MSTT04_LANDMARK_LMAK_NAME_EXT1))"
+        lblLandMark.text = "\(landMarks![indexPath.row].item(MSTT04_LANDMARK_LMAK_NAME))"
         lblLandMark.textAlignment = NSTextAlignment.Left
         cell!.contentView.addSubview(lblLandMark)
         

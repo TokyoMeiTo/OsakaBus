@@ -20,7 +20,7 @@ extension MstT04LandMarkTable {
     }
     
     func queryLandMarksFilter(type: String?, lon:CDouble?, lat:CDouble?, distance: Int?, sataId:String?, specialWard:String?) -> NSArray {
-        var queryFiter = "select * , ROWID from MSTT04_LANDMARK where LMAK_TYPE = ? AND LMAK_ID in (select min(LMAK_ID) from MSTT04_LANDMARK group by LMAK_NAME_EXT1) AND IMAG_ID1 IS NOT NULL"
+        var queryFiter = "select * , ROWID from MSTT04_LANDMARK where LMAK_TYPE = ? AND LMAK_NAME IS NOT NULL AND LMAK_ID in (select min(LMAK_ID) from MSTT04_LANDMARK group by LMAK_NAME) AND IMAG_ID1 IS NOT NULL"
 
         var arr:NSMutableArray = NSMutableArray.array();
         arr.addObject(type!);
@@ -52,10 +52,10 @@ extension MstT04LandMarkTable {
     }
     
     func queryLandMarkStations(landMark:MstT04LandMarkTable) -> Array<MstT02StationTable> {
-        let QUERY_ALL_STATION = "select * , ROWID from MSTT04_LANDMARK where LMAK_NAME_EXT1 = ?"
+        let QUERY_ALL_STATION = "select * , ROWID from MSTT04_LANDMARK where LMAK_NAME = ?"
 
         var arr:NSMutableArray = NSMutableArray.array();
-        arr.addObject(landMark.item(MSTT04_LANDMARK_LMAK_NAME_EXT1))
+        arr.addObject(landMark.item(MSTT04_LANDMARK_LMAK_NAME))
         
         var landMarkStats:Array<MstT04LandMarkTable>? = self.excuteQuery( QUERY_ALL_STATION, withArgumentsInArray:arr) as? Array<MstT04LandMarkTable>
         
@@ -73,7 +73,7 @@ extension MstT04LandMarkTable {
     }
     
     func queryLandMarksFilter(type: String?, lon:CDouble?, lat:CDouble?, distance: Int?, sataId:String?, specialWard:String?, subType:String, price:Int, miciRank:String, rank:String) -> NSArray {
-        var queryFiter = "select * , ROWID from MSTT04_LANDMARK where LMAK_TYPE = ? AND LMAK_ID in (select min(LMAK_ID) from MSTT04_LANDMARK group by LMAK_NAME_EXT1) AND IMAG_ID1 IS NOT NULL"
+        var queryFiter = "select * , ROWID from MSTT04_LANDMARK where LMAK_TYPE = ? AND LMAK_NAME IS NOT NULL AND LMAK_ID in (select min(LMAK_ID) from MSTT04_LANDMARK group by LMAK_NAME) AND IMAG_ID1 IS NOT NULL"
         //        AND (LMAK_LON - ?) * (LMAK_LON - ?) + (LMAK_LAT - ?)*(LMAK_LAT - ?) < ? AND STAT_ID = ? AND LMAK_WARD = ?
         
         var arr:NSMutableArray = NSMutableArray.array();
