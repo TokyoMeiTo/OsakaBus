@@ -272,7 +272,11 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
     }
 
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 44
+        if(section == 0){
+            return 54
+        }else{
+            return 44
+        }
     }
     
     
@@ -299,7 +303,7 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
         switch section{
         case 0:
             var imgStation = UIImage(named: "dld00106")
-            var imageViewStation = UIImageView(frame: CGRectMake(15, 5, 25, 25))
+            var imageViewStation = UIImageView(frame: CGRectMake(15, 15, 25, 25))
             imageViewStation.image = imgStation
             UIHeader.addSubview(imageViewStation)
         case 1:
@@ -336,6 +340,11 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
             println("nothing")
         }
         var lblText = UILabel(frame: CGRect(x:50,y:5,width:tableView.frame.width - 100,height:25))
+        if(section == 0){
+            lblText.frame = CGRect(x:50,y:15,width:tableView.frame.width - 100,height:25)
+        }else{
+            lblText.frame = CGRect(x:50,y:5,width:tableView.frame.width - 100,height:25)
+        }
         lblText.textColor = UIColor.lightGrayColor()
         lblText.font = UIFont.systemFontOfSize(15)
         lblText.text = items[section][0] as? String
@@ -517,7 +526,7 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
             case 0:
                 lastController.landMarks = mstT04Table.queryLandMarksFilter("PUBLIC_12".localizedString(),lon: 0, lat: 0, distance: 0, sataId: landMarkStatId!, specialWard: landMarkSpecialWard!) as? Array<MstT04LandMarkTable>
             case 1:
-                lastController.landMarks = mstT04Table.queryLandMarksFilter("INF002_08".localizedString(),lon: 0, lat: 0, distance: 0, sataId: landMarkStatId!, specialWard: landMarkSpecialWard!, subType:landMarkSubType, price:0, miciRank:landMarkMiciRank, rank:landMarkRank) as? Array<MstT04LandMarkTable>
+                lastController.landMarks = mstT04Table.queryLandMarksFilter("INF002_08".localizedString(),lon: 0, lat: 0, distance: 0, sataId: landMarkStatId!, specialWard: landMarkSpecialWard!, subType:landMarkSubType, price:landMarkPrice, miciRank:landMarkMiciRank, rank:landMarkRank) as? Array<MstT04LandMarkTable>
             case 2:
                 lastController.landMarks = mstT04Table.queryLandMarksFilter("PUBLIC_09".localizedString(),lon: 0, lat: 0, distance: 0, sataId: landMarkStatId!, specialWard: landMarkSpecialWard!) as? Array<MstT04LandMarkTable>
             default:
@@ -562,7 +571,6 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
             var priceStr:String = "INF002_24".localizedString()
             items.addObject(["INF002_25".localizedString(),["5000" + priceStr,"1000" + priceStr,"INF002_26".localizedString(),"INF002_19".localizedString()]])
             items.addObject(["INF002_27".localizedString(), ["INF002_28".localizedString(),"INF002_29".localizedString(),"INF002_30".localizedString(),"INF002_19".localizedString()]])
-            var PointStr:String = "分及以上"
             items.addObject(["INF002_10".localizedString(),["1-2分","2-3分","3-4分","4-5分","INF002_19".localizedString()]])
         default:
             items = NSMutableArray.array()

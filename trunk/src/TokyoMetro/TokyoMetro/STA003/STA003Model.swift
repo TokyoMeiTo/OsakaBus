@@ -49,7 +49,7 @@ class STA003Model{
      */
     func convertDistance(distance: CDouble) -> String{
         if(distance < 1000){
-            return "\(distance)" + " m"
+            return "\(distance)".decimal(2) + " m"
         }
         return "\(distance / 1000)".decimal(2) + " km"
     }

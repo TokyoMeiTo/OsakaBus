@@ -101,10 +101,15 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, UITableVi
     func tableView(tableView: UITableView, didSelectRowAtIndexPath: NSIndexPath){
         if(didSelectRowAtIndexPath.row > 9 && didSelectRowAtIndexPath.row < itemCount - 2){
             var stationDetail = self.storyboard!.instantiateViewControllerWithIdentifier("StationDetail") as StationDetail
+            if(didSelectRowAtIndexPath.row - 10 >= stations!.count){
+                return
+            }
             stationDetail.stat_id = "\(stations![didSelectRowAtIndexPath.row - 10].item(MSTT02_STAT_ID))"
             stationDetail.cellJPName = "\(stations![didSelectRowAtIndexPath.row - 10].item(MSTT02_STAT_NAME))"
             stationDetail.cellJPNameKana = "\(stations![didSelectRowAtIndexPath.row - 10].item(MSTT02_STAT_NAME_KANA))"
-            stationDetail.ruteLandMarkId = "\(stations![didSelectRowAtIndexPath.row - 10].item(MSTT04_LANDMARK_LMAK_ID))"
+            if(landMark != nil && landMark!.item(MSTT04_LANDMARK_LMAK_ID) != nil){
+                stationDetail.ruteLandMarkId = "\(landMark!.item(MSTT04_LANDMARK_LMAK_ID))"
+            }
             
             var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
             self.navigationItem.backBarButtonItem = backButton

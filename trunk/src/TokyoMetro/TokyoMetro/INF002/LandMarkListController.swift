@@ -254,8 +254,7 @@ class LandMarkListController: UIViewController, UITableViewDelegate, UITableView
         }
         
         if("\(landMarks![indexPath.row].item(MSTT04_LANDMARK_OLIMPIC_FLAG))" == "1"){
-            
-            var imageViewOlimpic = UIImageView(frame: CGRectMake(80, 20, 30, 30))
+            var imageViewOlimpic = UIImageView(frame: CGRectMake(65, 15, 30, 30))
             var imageOlimpic = UIImage(named: "inf00213")
             imageViewOlimpic.image = imageOlimpic
             cell!.contentView.addSubview(imageViewOlimpic)
@@ -360,7 +359,10 @@ class LandMarkListController: UIViewController, UITableViewDelegate, UITableView
         }
         
         landMarks = mstT04Table.queryLandMarksFilter(landMarkTypeStr,lon: 0, lat: 0, distance: 0, sataId: landMarkStatId!, specialWard: landMarkSpecialWard!) as? Array<MstT04LandMarkTable>//.queryLandMarks(landMarkTypeStr) as? Array<MstT04LandMarkTable>
-        println(landMarks!.count)
+        for key in landMarks!{
+            key as MstT04LandMarkTable
+            println(key.item(MSTT04_LANDMARK_MICI_RANK))
+        }
         return landMarks!
     }
     

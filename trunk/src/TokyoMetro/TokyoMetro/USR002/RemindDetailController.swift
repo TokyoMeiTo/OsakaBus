@@ -337,7 +337,12 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
             }
         }
         
-        var lblText = UILabel(frame: CGRect(x:50,y:5,width:tableView.frame.width - 100,height:25))
+        var lblText = UILabel(frame: CGRect(x:50,y:15,width:tableView.frame.width - 100,height:25))
+        if(section == 0){
+            lblText.frame = CGRect(x:50,y:15,width:tableView.frame.width - 100,height:25)
+        }else{
+            lblText.frame = CGRect(x:50,y:5,width:tableView.frame.width - 100,height:25)
+        }
         lblText.textColor = UIColor.lightGrayColor()
         lblText.font = UIFont.systemFontOfSize(15)
         lblText.text = items[section][0] as? String
@@ -825,10 +830,18 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
                 initArriveAlarm(mUsrT01ArriveData!)
                 
                 mUsrT01ArriveData!.arriAlamId = "\(alarm!.item(USRT01_ARRIVAL_ALARM_ARRI_ALAM_ID).integerValue + 1)"
-                mUsrT01ArriveData!.lineFromId = routeDetails![i-1].exchLineId
-                mUsrT01ArriveData!.statFromId = routeDetails![i].exchStatId
-                mUsrT01ArriveData!.lineToId = routeDetails![i].exchLineId
-                mUsrT01ArriveData!.traiDirt = routeDetails![i].exchDestId
+                if(routeDetails![i-1].exchLineId != nil){
+                    mUsrT01ArriveData!.lineFromId = routeDetails![i-1].exchLineId
+                }
+                if(routeDetails![i].exchStatId != nil){
+                    mUsrT01ArriveData!.statFromId = routeDetails![i].exchStatId
+                }
+                if(routeDetails![i].exchLineId != nil){
+                    mUsrT01ArriveData!.lineToId = routeDetails![i].exchLineId
+                }
+                if(routeDetails![i].exchDestId != nil){
+                    mUsrT01ArriveData!.traiDirt = routeDetails![i].exchDestId
+                }
                 mUsrT01ArriveData!.statToId = statToId
                 mUsrT01ArriveData!.costTime = "\(costTime)"
                 mUsr002Model.insertUsrT01(mUsrT01ArriveData!)
@@ -874,7 +887,8 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
     func saveLastMetro(){
         var trainAlarms:Array<UsrT02TrainAlarmTable>? = selectTrainAlarmTable()
         var usr002Dao:USR002DAO = USR002DAO()
-        usrT02Data!.alamTime = usr002Dao.queryDepaTime(usrT02Data!.lineId, statId: "\((selectStationTableOne(usrT02Data!.statId) as MstT02StationTable).item(MSTT02_STAT_ID))", destId: usrT02Data!.traiDirt, trainFlag: usrT02Data!.alamType, scheType: "1")
+        // "\((selectStationTableOne(usrT02Data!.statId) as MstT02StationTable).item(MSTT02_STAT_ID))"
+        usrT02Data!.alamTime = usr002Dao.queryDepaTime(usrT02Data!.lineId, statId: usrT02Data!.statId, destId: usrT02Data!.traiDirt, trainFlag: usrT02Data!.alamType, scheType: "1")
         if(usrT02Data!.alamTime == ""){
             RemindDetailController.showMessage(MSG_0002, msg:"USR002_05".localizedString(),buttons:[MSG_0003], delegate: nil)
             mEditFlag = false
