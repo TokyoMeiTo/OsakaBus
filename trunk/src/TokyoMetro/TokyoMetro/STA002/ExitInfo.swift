@@ -223,10 +223,20 @@ class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource, MK
         
         for(var i=0; i < landMarkArr.count; i++){
             var key = landMarkArr[i] as MstT04LandMarkTable
+            
+            if(key.item(MSTT04_LANDMARK_LMAK_LAT) == nil || key.item(MSTT04_LANDMARK_LMAK_LON) == nil){
+                continue
+            }
+            
             var statLat:AnyObject? = key.item(MSTT04_LANDMARK_LMAK_LAT)
             var statLon:AnyObject? = key.item(MSTT04_LANDMARK_LMAK_LON)
             
             var annotation = MKPointAnnotation()
+            
+            if((statLat as NSString).doubleValue < 0 || (statLat as NSString).doubleValue > 90 || (statLon as NSString).doubleValue < 0 || (statLon as NSString).doubleValue > 180){
+                continue
+            }
+            
             annotation.coordinate = CLLocation(latitude: (statLat as NSString).doubleValue, longitude: (statLon as NSString).doubleValue).coordinate
             annotation.title = "\(key.item(MSTT04_LANDMARK_LMAK_NAME_EXT1))"
             annotation.subtitle = "\(key.item(MSTT04_LANDMARK_LMAK_ADDR))"
