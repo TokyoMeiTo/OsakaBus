@@ -986,12 +986,8 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         tbResultView.reloadData()
         mNearlyLogo.image = "route_locate".getImage()
         mCollectionLogo.image = "route_collected".getImage()
-        
-        
         btnCollectionStation.tag = 10001
         btnNearlyStation.tag = 10002
-        
-        
     }
 
     /**
@@ -1122,7 +1118,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
                     var stationNameKanatemp = key.item(MSTT02_STAT_NAME_KANA) as String
                     
                     
-                    var statSeqArr = mst02table.excuteQuery("select LINE_ID from MSTT02_STATION where 1 = 1 and STAT_GROUP_ID = \(statGroupId)")
+                    var statSeqArr = mst02table.excuteQuery("select LINE_ID, ROWID from MSTT02_STATION where 1 = 1 and STAT_GROUP_ID = \(statGroupId)")
                     
                     // var statSeqArr = Cmn003Dao.queryLineIdByGroupId(statGroupId)
                     self.allOflineImageItems.addObject(statSeqArr)
@@ -1294,7 +1290,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
                 var stationId:AnyObject = key.item(MSTT02_STAT_ID)
                 var statGroupId = key.item(MSTT02_STAT_GROUP_ID) as String
                 var stationNameKanatemp = key.item(MSTT02_STAT_NAME_KANA) as String
-                var statSeqArr = mst02table.excuteQuery("select LINE_ID from MSTT02_STATION where 1 = 1 and STAT_GROUP_ID = \(statGroupId)")
+                var statSeqArr = mst02table.excuteQuery("select LINE_ID, ROWID from MSTT02_STATION where 1 = 1 and STAT_GROUP_ID = \(statGroupId)")
                 
                 self.allOfNearlylineImageItems.addObject(statSeqArr)
                 self.allOfNearlyStationItemsJP.addObject(stationNameJP)
@@ -1509,7 +1505,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             lblExitTimeAfter.font = UIFont.systemFontOfSize(11)
             lblExitTimeAfter.textColor = UIColor.lightGrayColor()
             lblExitTimeAfter.frame = CGRectMake(220, 0, 25, 22)
-            lblExitTimeAfter.text = "分钟"
+            lblExitTimeAfter.text = "CMN003_03".localizedString()
             viewInfoFunc.addSubview(lblExitTimeBefor)
             viewInfoFunc.addSubview(lblExitTime)
             viewInfoFunc.addSubview(lblExitTimeAfter)

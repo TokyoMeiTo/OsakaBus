@@ -20,6 +20,8 @@ class Setting : UIViewController, UITableViewDelegate, UITableViewDataSource, OA
     @IBOutlet weak var mlblAppIntroduce: UILabel!
     let BTNLINKACTION : Selector = "btnLinkAction:"
     
+    var setImagArr : Array<String> = ["setting1","setting2","setting3"]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         mlblAppName.text = "东京美途"
@@ -52,7 +54,7 @@ class Setting : UIViewController, UITableViewDelegate, UITableViewDataSource, OA
         var celllblItemsName : UILabel = cell.viewWithTag(102) as UILabel!
         var celllblItemIamge : UIImageView = cell.viewWithTag(101) as UIImageView!
         celllblItemsName.text = self.arrList.objectAtIndex(indexPath.row) as? String
-        celllblItemIamge.image = getItemImage(indexPath.row)
+        celllblItemIamge.image = setImagArr[indexPath.row].getImage()
         
         if(indexPath.row == 2){
             var lblVersion : UILabel = UILabel(frame: CGRect(x: 250,y: 0,width: 100,height: 55))
@@ -95,24 +97,6 @@ class Setting : UIViewController, UITableViewDelegate, UITableViewDataSource, OA
 
         }
 
-    }
-    
-    // 获取图片
-    func getItemImage(index : Int) -> UIImage {
-        
-        var image = UIImage(named: "setting1.png")
-        switch (index) {
-            
-        case 0:
-            image = UIImage(named: "setting1.png")
-        case 1:
-            image = UIImage(named: "setting2.png")
-        case 2:
-            image = UIImage(named: "setting3.png")
-        default:
-            image = UIImage(named: "setting1.png")
-        }
-        return image
     }
     
     // 设定页面下角跳转
