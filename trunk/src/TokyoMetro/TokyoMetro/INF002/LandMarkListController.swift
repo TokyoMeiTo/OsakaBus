@@ -200,9 +200,9 @@ class LandMarkListController: UIViewController, UITableViewDelegate, UITableView
         
         var mINF002Data:UsrT03FavoriteTableData = mINF002Model.findFav("\(landMarks![indexPath.row].item(MSTT04_LANDMARK_LMAK_ID))")
         
-        var imgFav = UIImage(named: "INF00202.png")
+        var imgFav = UIImage(named: "INF00202")
         if(mINF002Data.ext4 != ""){
-            imgFav = UIImage(named: "INF00206.png")
+            imgFav = UIImage(named: "INF00206")
         }
         
         btnFav.setBackgroundImage(imgFav, forState: UIControlState.Normal)
@@ -223,7 +223,7 @@ class LandMarkListController: UIViewController, UITableViewDelegate, UITableView
                 }
                 
                 var imageViewStar = UIImageView(frame: CGRectMake(xFloat, 130, 15, 15))
-                var imageStar = UIImage(named: "INF00209.png")
+                var imageStar = UIImage(named: "INF00209")
                 imageViewStar.image = imageStar
                 cell!.contentView.addSubview(imageViewStar)
             }
@@ -233,21 +233,21 @@ class LandMarkListController: UIViewController, UITableViewDelegate, UITableView
             if(mSurplusRank > 0.5){
                 xFloat = xFloat + 20
                 var imageViewHalfStar = UIImageView(frame: CGRectMake(xFloat, 130, 15, 15))
-                imageViewHalfStar.image = UIImage(named: "INF00210.png")
+                imageViewHalfStar.image = UIImage(named: "INF00210")
                 cell!.contentView.addSubview(imageViewHalfStar)
             }
         }
         
         if(landMarks![indexPath.row].item(MSTT04_LANDMARK_MICI_RANK) != nil && "\(landMarks![indexPath.row].item(MSTT04_LANDMARK_MICI_RANK))" != ""){
             for(var i=0;i<("\(landMarks![indexPath.row].item(MSTT04_LANDMARK_MICI_RANK))" as NSString).integerValue; i++){
-                var xFloat:CGFloat = 60//100
+                var xFloat:CGFloat = 60
                 
                 for(var j=0;j<i;j++){
                     xFloat = xFloat + 20
                 }
                 
                 var imageViewStar = UIImageView(frame: CGRectMake(xFloat, 20, 20, 20))
-                var imageStar = UIImage(named: "INF00211.png")
+                var imageStar = UIImage(named: "INF00211")
                 imageViewStar.image = imageStar
                 cell!.contentView.addSubview(imageViewStar)
             }
@@ -256,7 +256,7 @@ class LandMarkListController: UIViewController, UITableViewDelegate, UITableView
         if("\(landMarks![indexPath.row].item(MSTT04_LANDMARK_OLIMPIC_FLAG))" == "1"){
             
             var imageViewOlimpic = UIImageView(frame: CGRectMake(80, 20, 30, 30))
-            var imageOlimpic = UIImage(named: "inf00213.png")
+            var imageOlimpic = UIImage(named: "inf00213")
             imageViewOlimpic.image = imageOlimpic
             cell!.contentView.addSubview(imageViewOlimpic)
         }

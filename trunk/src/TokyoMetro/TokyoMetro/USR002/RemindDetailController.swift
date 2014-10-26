@@ -874,7 +874,7 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
     func saveLastMetro(){
         var trainAlarms:Array<UsrT02TrainAlarmTable>? = selectTrainAlarmTable()
         var usr002Dao:USR002DAO = USR002DAO()
-        usrT02Data!.alamTime = usr002Dao.queryDepaTime(usrT02Data!.lineId, statId: "\((selectStationTableOne(usrT02Data!.statId) as MstT02StationTable).item(MSTT02_STAT_GROUP_ID))", destId: usrT02Data!.traiDirt, trainFlag: usrT02Data!.alamType, scheType: "1")
+        usrT02Data!.alamTime = usr002Dao.queryDepaTime(usrT02Data!.lineId, statId: "\((selectStationTableOne(usrT02Data!.statId) as MstT02StationTable).item(MSTT02_STAT_ID))", destId: usrT02Data!.traiDirt, trainFlag: usrT02Data!.alamType, scheType: "1")
         if(usrT02Data!.alamTime == ""){
             RemindDetailController.showMessage(MSG_0002, msg:"USR002_05".localizedString(),buttons:[MSG_0003], delegate: nil)
             mEditFlag = false

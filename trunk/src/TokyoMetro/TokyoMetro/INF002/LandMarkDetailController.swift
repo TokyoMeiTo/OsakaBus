@@ -367,7 +367,7 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, UITableVi
                         xFloat = xFloat + 20
                     }
                     var imageViewStar = UIImageView(frame: CGRectMake(xFloat, 40, 15, 15))
-                    var imageStar = UIImage(named: "INF00211.png")
+                    var imageStar = UIImage(named: "INF00211")
                     imageViewStar.image = imageStar
                     cell!.contentView.addSubview(imageViewStar)
                 }
@@ -391,7 +391,7 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, UITableVi
                     }
                     
                     var imageViewStar = UIImageView(frame: CGRectMake(xFloat, 40, 15, 15))
-                    var imageStar = UIImage(named: "INF00209.png")
+                    var imageStar = UIImage(named: "INF00209")
                     imageViewStar.image = imageStar
                     cell!.contentView.addSubview(imageViewStar)
                 }
@@ -401,7 +401,7 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, UITableVi
                 if(mSurplusRank > 0.5){
                     xFloat = xFloat + 20
                     var imageViewHalfStar = UIImageView(frame: CGRectMake(xFloat, 40, 15, 15))
-                    imageViewHalfStar.image = UIImage(named: "INF00210.png")
+                    imageViewHalfStar.image = UIImage(named: "INF00210")
                     cell!.contentView.addSubview(imageViewHalfStar)
                 }
             }

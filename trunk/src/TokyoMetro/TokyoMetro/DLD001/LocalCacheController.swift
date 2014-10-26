@@ -50,6 +50,8 @@ class LocalCacheController: UIViewController, UIAlertViewDelegate{
     
     var classType:Int = 0
 
+    var mainController:Main?
+    
     
     /*******************************************************************************
     * Private Properties
@@ -163,6 +165,9 @@ class LocalCacheController: UIViewController, UIAlertViewDelegate{
                 downloadCompressFile(uri)
             }
         case 102:
+            if(mainController != nil){
+                mainController!.viewDidLoad()
+            }
             self.dismissViewControllerAnimated(true, completion: nil)
         case 103:
             self.dismissViewControllerAnimated(true, completion: nil)
@@ -172,6 +177,9 @@ class LocalCacheController: UIViewController, UIAlertViewDelegate{
                 if(!downloading && !updateComplete){
                     downloadCompressFile(uri)
                 }else if(!downloading && updateComplete){
+                    if(mainController != nil){
+                        mainController!.viewDidLoad()
+                    }
                     self.dismissViewControllerAnimated(true, completion: nil)
                 }
             default:
@@ -198,9 +206,9 @@ class LocalCacheController: UIViewController, UIAlertViewDelegate{
     func showDownloadBtn(){
         switch classType{
         case 0:
-            btnDownload.setBackgroundImage(UIImage(named: "DLD00101.png"), forState: UIControlState.Normal)
+            btnDownload.setBackgroundImage(UIImage(named: "DLD00101"), forState: UIControlState.Normal)
         case 1:
-            btnDownload.setBackgroundImage(UIImage(named: "dld009.png"), forState: UIControlState.Normal)
+            btnDownload.setBackgroundImage(UIImage(named: "dld009"), forState: UIControlState.Normal)
         default:
             println("nothing")
         }
@@ -208,16 +216,16 @@ class LocalCacheController: UIViewController, UIAlertViewDelegate{
     }
     
     func showUseBtn(){
-        btnDownload.setBackgroundImage(UIImage(named: "DLD00102.png"), forState: UIControlState.Normal)
+        btnDownload.setBackgroundImage(UIImage(named: "DLD00102"), forState: UIControlState.Normal)
         btnDownload.enabled = true
     }
     
     func hideDownloadBtn(){
         switch classType{
         case 0:
-            btnDownload.setBackgroundImage(UIImage(named: "DLD00105.png"), forState: UIControlState.Normal)
+            btnDownload.setBackgroundImage(UIImage(named: "DLD00105"), forState: UIControlState.Normal)
         case 1:
-            btnDownload.setBackgroundImage(UIImage(named: "dld008.png"), forState: UIControlState.Normal)
+            btnDownload.setBackgroundImage(UIImage(named: "dld008"), forState: UIControlState.Normal)
         default:
             println("nothing")
         }
@@ -262,7 +270,7 @@ class LocalCacheController: UIViewController, UIAlertViewDelegate{
                         self.downloading = false
                         self.loadProgress = "DLD001_04".localizedString()
                         self.lblProgress.text = self.loadProgress
-                        self.btnDownload.setBackgroundImage(UIImage(named: "DLD00101.png"), forState: UIControlState.Normal)
+                        self.btnDownload.setBackgroundImage(UIImage(named: "DLD00101"), forState: UIControlState.Normal)
                         self.showDownloadBtn()
                         self.disMiss(self.gaiLoading)
                     }
@@ -365,20 +373,6 @@ class LocalCacheController: UIViewController, UIAlertViewDelegate{
             self.disMiss(gaiLoading)
         }
         downloading = false
-    }
-    
-    /**
-     * 读取文件
-     */
-    class func readFile(name:String) -> String {
-        let folder = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String
-        let path = folder.stringByAppendingPathComponent("/TokyoMetroCache/Resource/Landmark/" + name)//  + ".png"
-        var fileExists = NSFileManager().fileExistsAtPath(path)
-        var file:UnsafeMutablePointer<FILE>?
-        if(fileExists){
-            file = fopen(path, "")
-        }
-        return path
     }
     
     class func getMemorySize() -> String {

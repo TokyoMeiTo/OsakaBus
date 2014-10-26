@@ -110,6 +110,7 @@ class Main: UIViewController,UIScrollViewDelegate {
         if(!fileExists){
             var localCacheController = self.storyboard!.instantiateViewControllerWithIdentifier("localcache") as LocalCacheController
             localCacheController.classType = 0
+            localCacheController.mainController = self
             self.navigationController!.presentViewController(localCacheController, animated: true, completion: nil)
         }else{
             self.mImgLineGraph.image =  "MetroCH".image("LineGraph")
@@ -204,7 +205,7 @@ class Main: UIViewController,UIScrollViewDelegate {
             self.mImgLineGraph.frame = CGRectMake(0, 0, 1772, 1299)
         }
         
-        // 接受从站点列表中传递过来的站点ID
+        //接受从站点列表中传递过来的站点ID
         if (!stationIdFromStationList.isEmpty){
             showPopViewByStationId(stationIdFromStationList)
         }
@@ -212,7 +213,7 @@ class Main: UIViewController,UIScrollViewDelegate {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-       
+//       
 //        if (mImgLineGraph.image == nil) {
 //            self.mImgLineGraph.image =  "MetroCH".image("LineGraph")
 //            
