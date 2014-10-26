@@ -246,9 +246,9 @@ class StationLine: UIViewController, UITableViewDataSource, UITableViewDelegate 
     *******************************************************************************/
     func odbStation(){
         var table = MstT02StationTable()
-        var rows: NSArray = table.excuteQuery("select *, ROWID, count(distinct STAT_NAME_EXT1) from MSTT02_STATION where 1 = 1 and STAT_ID like '280%' group by STAT_NAME_EXT1")
+        var rows: NSArray = table.excuteQuery("select *, ROWID, count(distinct STAT_NAME_EXT1) from MSTT02_STATION where 1 = 1 and substr(STAT_ID,1,3)='280' group by STAT_NAME_EXT1")
         
-        var allRows: NSArray = table.excuteQuery("select *, ROWID from MSTT02_STATION where 1 = 1 and STAT_ID like '280%'")
+        var allRows: NSArray = table.excuteQuery("select *, ROWID from MSTT02_STATION where 1 = 1 and substr(STAT_ID,1,3)='280'")
         
         for key in rows {
             

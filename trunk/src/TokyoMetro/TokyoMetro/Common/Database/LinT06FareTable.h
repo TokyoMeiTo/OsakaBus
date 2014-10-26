@@ -13,8 +13,8 @@
 #define LINT06_FARE_RUTE_ID                 @"RUTE_ID"
 #define LINT06_FARE_FARE_ADULT              @"FARE_ADULT"
 #define LINT06_FARE_FARE_CHILD              @"FARE_CHILD"
-#define LINT06_FARE_FARE_ID_ADULT           @"FARE_ID_ADULT"
-#define LINT06_FARE_FARE_ID_CHILD           @"FARE_ID_CHILD"
+#define LINT06_FARE_FARE_ID_ADULT           @"FARE_IC_ADULT"
+#define LINT06_FARE_FARE_ID_CHILD           @"FARE_IC_CHILD"
 @interface LinT06FareTable : ODBDataTable{
 }
 

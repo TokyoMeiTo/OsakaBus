@@ -376,7 +376,7 @@ class StationDetail: UIViewController, UITableViewDelegate, UITableViewDataSourc
             key as MstT02StationTable
             
             group_id = key.item(MSTT02_STAT_GROUP_ID) as String
-            statSeqArr = table.excuteQuery("select *, ROWID from MSTT02_STATION where 1 = 1 and STAT_GROUP_ID = \(group_id) and LINE_ID like '280%'")
+            statSeqArr = table.excuteQuery("select *, ROWID from MSTT02_STATION where 1 = 1 and STAT_GROUP_ID = \(group_id) and substr(LINE_ID,1,3)='280'")
         }
     }
 

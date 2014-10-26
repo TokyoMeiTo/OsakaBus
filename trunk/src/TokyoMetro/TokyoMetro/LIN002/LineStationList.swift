@@ -156,7 +156,7 @@ class LineStationList: UIViewController, UITableViewDelegate, UITableViewDataSou
         table.lineId = line_id
         var rows: NSArray = table.selectWithOrder(MSTT02_STAT_SEQ, desc: false)
         
-        var allRows: NSArray = table.excuteQuery("select *, ROWID from MSTT02_STATION where 1 = 1 and STAT_ID like '280%'")
+        var allRows: NSArray = table.excuteQuery("select *, ROWID from MSTT02_STATION where 1 = 1 and substr(STAT_ID,1,3)='280'")
         
         for key in rows {
             if(key.item(MSTT02_STAT_SEQ) == nil || key.item(MSTT02_STAT_GROUP_ID) == nil || key.item(MSTT02_STAT_ID) == nil){

@@ -11,7 +11,7 @@ import Foundation
 extension MstT02StationTable {
 
     func queryNearbyStations(lon:CDouble, lat:CDouble) -> NSArray {
-        let QUERY_MINI_DISTANCE = "select * , ROWID from MSTT02_STATION where LINE_ID LIKE '280%%' order by (STAT_LON - ?) * (STAT_LON - ?) + (STAT_LAT - ?)*(STAT_LAT - ?) limit 0,10"
+        let QUERY_MINI_DISTANCE = "select * , ROWID from MSTT02_STATION where substr(LINE_ID,1,3)='280' order by (STAT_LON - ?) * (STAT_LON - ?) + (STAT_LAT - ?)*(STAT_LAT - ?) limit 0,10"
 
         var arr:NSMutableArray = NSMutableArray.array();
         arr.addObject(lon);

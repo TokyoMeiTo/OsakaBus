@@ -391,7 +391,7 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
         table.favoType = "01"
         var rows: NSArray = table.selectAll()
         
-        var allRows: NSArray = stationTable.excuteQuery("select *, ROWID from MSTT02_STATION where 1 = 1 and STAT_ID like '280%'")
+        var allRows: NSArray = stationTable.excuteQuery("select *, ROWID from MSTT02_STATION where 1 = 1 and substr(STAT_ID,1,3)='280'")
         
         for key in rows {
             

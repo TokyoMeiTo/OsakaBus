@@ -10,7 +10,7 @@ import Foundation
 
 class Cmn003Dao:MstT02StationTable {
     
-    let QUERY_MINI_DISTANCE = "select *, ROWID, COUNT(STAT_NAME_EXT1) from MSTT02_STATION where LINE_ID LIKE '280%%' group by STAT_NAME_EXT1 order by (STAT_LON - ?) * (STAT_LON - ?) + (STAT_LAT - ?)*(STAT_LAT - ?) limit 0,10"
+    let QUERY_MINI_DISTANCE = "select *, ROWID, COUNT(STAT_NAME_EXT1) from MSTT02_STATION where substr(LINE_ID,1,3)='280' group by STAT_NAME_EXT1 order by (STAT_LON - ?) * (STAT_LON - ?) + (STAT_LAT - ?)*(STAT_LAT - ?) limit 0,10"
 
     func queryMiniDistance(lon:CDouble, lat:CDouble) -> NSArray {
         var arr:NSMutableArray = NSMutableArray.array();
