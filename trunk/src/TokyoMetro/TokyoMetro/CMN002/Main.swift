@@ -262,6 +262,21 @@ class Main: UIViewController,UIScrollViewDelegate {
         }
     }
     
+    func scrollViewDidEndZooming(scrollView: UIScrollView, withView view: UIView!, atScale scale: CGFloat) {
+        if ((self.mScrollView.zoomScale > 0.3) && (self.mScrollView.zoomScale < 1.5)) {
+           
+            self.mBtnImgDec.enabled = true
+            self.mBtnImgAdd.enabled = true
+        } else if (self.mScrollView.zoomScale >= 1.5) {
+            self.mBtnImgDec.enabled = true
+            self.mBtnImgAdd.enabled = false
+        } else {
+            self.mBtnImgDec.enabled = false
+            self.mBtnImgAdd.enabled = true
+        }
+        
+    }
+    
 
     
     /*******************************************************************************
@@ -272,7 +287,6 @@ class Main: UIViewController,UIScrollViewDelegate {
     @IBAction func ControllImage(sender:UIButton) {
         
         
-        println(" Before    ========== \(self.mScrollView.contentSize)")
         var btnOffsetX:CGFloat = (mScrollView.bounds.size.width >
             mScrollView.contentSize.width) ? (mScrollView.bounds.size.width - mScrollView.contentSize.width)/2 : 0.0
         var btnOffsetY:CGFloat = (mScrollView.bounds.size.height >
