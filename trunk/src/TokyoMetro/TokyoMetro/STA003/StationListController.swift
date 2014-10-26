@@ -29,6 +29,8 @@ class StationListController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet weak var tbList: UITableView!
     /* 地图MKMapView */
     @IBOutlet weak var mkMap: MKMapView!
+    /* 地图MKMapView */
+    @IBOutlet weak var tempView: UIView!
     
     
     /*******************************************************************************
@@ -341,6 +343,7 @@ class StationListController: UIViewController, UITableViewDelegate, UITableViewD
         ActivityIndicatorController.show(gaiLoading)
         GPS_HELPER.delegate = self
         GPS_HELPER.updateLocation()
+        tempView.hidden = true
     }
 
     /**
@@ -508,6 +511,7 @@ class StationListController: UIViewController, UITableViewDelegate, UITableViewD
     func noData(){
         tbList.separatorColor = UIColor.clearColor()
         tbList.hidden = true
+        tempView.hidden = false
     }
     
     

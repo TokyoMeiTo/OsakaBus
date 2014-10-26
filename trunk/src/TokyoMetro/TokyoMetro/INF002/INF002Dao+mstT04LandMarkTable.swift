@@ -52,7 +52,7 @@ extension MstT04LandMarkTable {
     }
     
     func queryLandMarkStations(landMark:MstT04LandMarkTable) -> Array<MstT02StationTable> {
-        let QUERY_ALL_STATION = "select * , ROWID from MSTT04_LANDMARK where LMAK_NAME = ?"
+        let QUERY_ALL_STATION = "select * , ROWID from MSTT04_LANDMARK where LMAK_NAME IS NOT NULL AND LMAK_NAME = ?"
 
         var arr:NSMutableArray = NSMutableArray.array();
         arr.addObject(landMark.item(MSTT04_LANDMARK_LMAK_NAME))
@@ -67,7 +67,14 @@ extension MstT04LandMarkTable {
             landMarkStat as MstT04LandMarkTable
             var mstT02Table:MstT02StationTable = MstT02StationTable()
             mstT02Table.statGroupId = "\(landMarkStat.item(MSTT04_LANDMARK_STAT_ID))"
-            stats.append(mstT02Table.select() as MstT02StationTable)
+            var mMst02Tables:[MstT02StationTable] = mstT02Table.selectAll() as [MstT02StationTable]
+            for key in mMst02Tables{
+                if(key.lineId == nil || key.lineId == "" || key.statNameKana == nil || key.statNameKana == ""){
+                    continue
+                }
+                stats.append(key)
+            }
+            break
         }
         return stats;
     }

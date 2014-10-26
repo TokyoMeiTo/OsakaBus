@@ -19,7 +19,8 @@ class LandMarkListController: UIViewController, UITableViewDelegate, UITableView
     
     /* 最近站点列表UITableView */
     @IBOutlet weak var tbList: UITableView!
-    
+    /* 地图MKMapView */
+    @IBOutlet weak var tempView: UIView!
     
     /*******************************************************************************
     * Global
@@ -60,6 +61,7 @@ class LandMarkListController: UIViewController, UITableViewDelegate, UITableView
     
     /* 地标一览 */
     var landMarks:Array<MstT04LandMarkTable>?
+    var mLocation:CLLocation?
     
     
     /*******************************************************************************
@@ -69,6 +71,7 @@ class LandMarkListController: UIViewController, UITableViewDelegate, UITableView
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        tempView.hidden = true
         switch landMarkType{
         case 0:
             self.title = "PUBLIC_12".localizedString()
@@ -104,6 +107,14 @@ class LandMarkListController: UIViewController, UITableViewDelegate, UITableView
     override func viewWillAppear(animated: Bool) {
         if(landMarks == nil){
             landMarks = selectLandMarkTable(landMarkType)
+        }
+        if(landMarks == nil){
+            tbList.hidden = true
+            tempView.hidden = false
+        }
+        if(landMarks!.count < 1){
+            tbList.hidden = true
+            tempView.hidden = false
         }
         tbList.reloadData()
     }
@@ -277,7 +288,7 @@ class LandMarkListController: UIViewController, UITableViewDelegate, UITableView
      * 位置定位完成
      */
     func locationUpdateComplete(location: CLLocation){
-        
+        mLocation = location
     }
 
     
@@ -359,10 +370,6 @@ class LandMarkListController: UIViewController, UITableViewDelegate, UITableView
         }
         
         landMarks = mstT04Table.queryLandMarksFilter(landMarkTypeStr,lon: 0, lat: 0, distance: 0, sataId: landMarkStatId!, specialWard: landMarkSpecialWard!) as? Array<MstT04LandMarkTable>//.queryLandMarks(landMarkTypeStr) as? Array<MstT04LandMarkTable>
-        for key in landMarks!{
-            key as MstT04LandMarkTable
-            println(key.item(MSTT04_LANDMARK_MICI_RANK))
-        }
         return landMarks!
     }
     

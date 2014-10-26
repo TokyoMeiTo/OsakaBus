@@ -810,8 +810,12 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
                 usrT01Data!.costTime = "\(costTime)"
                 usrT01Data!.arriAlamId = "1"
                 if(routeDetails!.count > 2){
-                    usrT01Data!.statToId = routeDetails![i+1].exchStatId
-                    usrT01Data!.lineToId = routeDetails![i].exchLineId
+                    if(routeDetails![i+1].exchStatId != nil){
+                        usrT01Data!.statToId = routeDetails![i+1].exchStatId
+                    }
+                    if(routeDetails![i].exchLineId != nil){
+                        usrT01Data!.lineToId = routeDetails![i].exchLineId
+                    }
                     mUsr002Model.insertUsrT01(usrT01Data!)
                 }else{
                     mUsr002Model.insertUsrT01(usrT01Data!)
@@ -868,12 +872,21 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
                 var mUsrT01Data:UsrT01ArrivalAlarmTableData? = UsrT01ArrivalAlarmTableData()
                 
                 initArriveAlarm(mUsrT01Data!)
-                
-                mUsrT01Data!.arriAlamId = "\(alarm!.item(USRT01_ARRIVAL_ALARM_ARRI_ALAM_ID).integerValue + 1)"
-                mUsrT01Data!.lineFromId = routeDetails![i-1].exchLineId
-                mUsrT01Data!.statFromId = routeDetails![i].exchStatId
-                mUsrT01Data!.lineToId = routeDetails![i].exchLineId
-                mUsrT01Data!.statToId = routeDetails![i+1].exchStatId
+                if(alarm!.item(USRT01_ARRIVAL_ALARM_ARRI_ALAM_ID) != nil){
+                     mUsrT01Data!.arriAlamId = "\(alarm!.item(USRT01_ARRIVAL_ALARM_ARRI_ALAM_ID).integerValue + 1)"
+                }
+                if(routeDetails![i-1].exchLineId != nil){
+                    mUsrT01Data!.lineFromId = routeDetails![i-1].exchLineId
+                }
+                if(routeDetails![i].exchStatId != nil){
+                    mUsrT01Data!.statFromId = routeDetails![i].exchStatId
+                }
+                if(routeDetails![i].exchLineId != nil){
+                    mUsrT01Data!.lineToId = routeDetails![i].exchLineId
+                }
+                if(routeDetails![i+1].exchStatId != nil){
+                    mUsrT01Data!.statToId = routeDetails![i+1].exchStatId
+                }
                 mUsrT01Data!.costTime = "\(costTime)"
                 mUsr002Model.insertUsrT01(mUsrT01Data!)
             }

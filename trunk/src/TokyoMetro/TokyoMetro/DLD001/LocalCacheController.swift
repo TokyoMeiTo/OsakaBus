@@ -39,7 +39,7 @@ class LocalCacheController: UIViewController, UIAlertViewDelegate{
     * Global
     *******************************************************************************/
 
-    let uri:String = "http://192.168.1.84/Resource.zip"//"http://www.okasan.net/Resource.zip"//"http://osakabus.sinaapp.com/Resource.zip"
+    let uri:String = "http://www.okasan.net/Resource.zip"//"http://192.168.1.84/Resource.zip"//"http://osakabus.sinaapp.com/Resource.zip"
     let filePath:String = "Resource.zip"
     let unZipPath:String = "TokyoMetroCache"
 
@@ -258,9 +258,9 @@ class LocalCacheController: UIViewController, UIAlertViewDelegate{
                 response, localfile, error in
                 if(error == nil){
                     println("下载成功解压文件")
-                    dispatch_async(dispatch_get_main_queue()) { () -> Void in
-                        self.lblProgress.text = "DLD001_02".localizedString()
-                    }
+//                    dispatch_async(dispatch_get_main_queue()) { () -> Void in
+//                        self.lblProgress.text = "DLD001_02".localizedString()
+//                    }
                     self.unzipFile()
                 }else{
                     println("下载失败")

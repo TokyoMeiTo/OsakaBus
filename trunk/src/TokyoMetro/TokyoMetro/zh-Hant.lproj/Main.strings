@@ -1,507 +1,471 @@
 
-/* Class = "IBUISegmentedControl"; 0FX-yu-VeU.segmentTitles[0] = "First"; ObjectID = "0FX-yu-VeU"; */
-"0FX-yu-VeU.segmentTitles[0]" = "First";
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "0mk-Ia-umh"; */
+"0mk-Ia-umh.text" = "Label";
 
-/* Class = "IBUISegmentedControl"; 0FX-yu-VeU.segmentTitles[1] = "Second"; ObjectID = "0FX-yu-VeU"; */
-"0FX-yu-VeU.segmentTitles[1]" = "Second";
+/* Class = "IBUILabel"; text = "往"; ObjectID = "1BT-ef-SR4"; */
+"1BT-ef-SR4.text" = "往";
 
-/* Class = "IBUILabel"; text = "1.0.1"; ObjectID = "0aj-wI-j8w"; */
-"0aj-wI-j8w.text" = "1.0.1";
+/* Class = "IBUILabel"; text = "9999"; ObjectID = "1Nd-rP-dgY"; */
+"1Nd-rP-dgY.text" = "9999";
 
-/* Class = "IBUILabel"; text = "分钟，"; ObjectID = "1Mg-99-ueE"; */
-"1Mg-99-ueE.text" = "分钟，";
+/* Class = "IBUINavigationItem"; title = "路線"; ObjectID = "1QS-74-7Kb"; */
+"1QS-74-7Kb.title" = "路線";
 
-/* Class = "IBUILabel"; text = "银座"; ObjectID = "1ll-Pm-cPh"; */
-"1ll-Pm-cPh.text" = "银座";
+/* Class = "IBUILabel"; text = "原木中山"; ObjectID = "2JM-gO-lGe"; */
+"2JM-gO-lGe.text" = "原木中山";
+
+/* Class = "IBUILabel"; text = "景點"; ObjectID = "2Lo-gh-mE0"; */
+"2Lo-gh-mE0.text" = "景點";
 
 /* Class = "IBUILabel"; text = "Label"; ObjectID = "2YC-gY-4PM"; */
 "2YC-gY-4PM.text" = "Label";
 
-/* Class = "IBUINavigationItem"; title = "旅游攻略"; ObjectID = "2jy-tI-1Ny"; */
-"2jy-tI-1Ny.title" = "旅游攻略";
+/* Class = "IBUILabel"; text = "銀座"; ObjectID = "2io-mb-UW6"; */
+"2io-mb-UW6.text" = "銀座";
 
-/* Class = "IBUIBarButtonItem"; title = "Back"; ObjectID = "3GM-EM-0Z0"; */
-"3GM-EM-0Z0.title" = "Back";
+/* Class = "IBUIButton"; normalTitle = "車站詳細"; ObjectID = "3HE-kE-hZ7"; */
+"3HE-kE-hZ7.normalTitle" = "車站詳細";
 
-/* Class = "IBUILabel"; text = "南北线"; ObjectID = "3Wb-8Y-Up7"; */
-"3Wb-8Y-Up7.text" = "南北线";
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "3Qo-bZ-LdX"; */
+"3Qo-bZ-LdX.text" = "Label";
 
-/* Class = "IBUILabel"; text = "振动"; ObjectID = "3Wq-gE-xnx"; */
-"3Wq-gE-xnx.text" = "振动";
+/* Class = "IBUILabel"; text = "購物"; ObjectID = "3dJ-C1-wpy"; */
+"3dJ-C1-wpy.text" = "購物";
 
-/* Class = "IBUISegmentedControl"; 3ly-0I-lrU.segmentTitles[0] = "路线"; ObjectID = "3ly-0I-lrU"; */
-"3ly-0I-lrU.segmentTitles[0]" = "路线";
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "4aS-fo-HpM"; */
+"4aS-fo-HpM.text" = "Label";
 
-/* Class = "IBUISegmentedControl"; 3ly-0I-lrU.segmentTitles[1] = "站点"; ObjectID = "3ly-0I-lrU"; */
-"3ly-0I-lrU.segmentTitles[1]" = "站点";
+/* Class = "IBUILabel"; text = "都營大江戶線"; ObjectID = "4oI-sD-Mj8"; */
+"4oI-sD-Mj8.text" = "都營大江戶線";
 
-/* Class = "IBUISegmentedControl"; 3ly-0I-lrU.segmentTitles[2] = "足迹"; ObjectID = "3ly-0I-lrU"; */
-"3ly-0I-lrU.segmentTitles[2]" = "足迹";
+/* Class = "IBUILabel"; text = "00"; ObjectID = "5Gu-eu-BLG"; */
+"5Gu-eu-BLG.text" = "00";
 
-/* Class = "IBUILabel"; text = "Label"; ObjectID = "4Bk-pc-fdJ"; */
-"4Bk-pc-fdJ.text" = "Label";
+/* Class = "IBUILabel"; text = "2"; ObjectID = "5NN-NZ-8e6"; */
+"5NN-NZ-8e6.text" = "2";
 
-/* Class = "IBUINavigationItem"; title = "搜索"; ObjectID = "4IH-uf-IjI"; */
-"4IH-uf-IjI.title" = "搜索";
+/* Class = "IBUILabel"; text = "lable\nlable\nlable"; ObjectID = "5yO-T1-NLy"; */
+"5yO-T1-NLy.text" = "lable\nlable\nlable";
 
-/* Class = "IBUIButton"; normalTitle = "运行\n状况"; ObjectID = "4Nm-FP-g66"; */
-"4Nm-FP-g66.normalTitle" = "运行\n状况";
+/* Class = "IBUIViewController"; title = "地標地圖"; ObjectID = "6Gf-nb-bws"; */
+"6Gf-nb-bws.title" = "地標地圖";
 
-/* Class = "IBUIButton"; normalTitle = "数码产品"; ObjectID = "4fU-Kp-6qe"; */
-"4fU-Kp-6qe.normalTitle" = "数码产品";
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "6u6-GO-CAG"; */
+"6u6-GO-CAG.text" = "Label";
 
-/* Class = "IBUILabel"; text = ",         末班车"; ObjectID = "51a-pC-yoa"; */
-"51a-pC-yoa.text" = ",         末班车";
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "7IR-m2-WBR"; */
+"7IR-m2-WBR.text" = "Label";
 
-/* Class = "IBUILabel"; text = "Label"; ObjectID = "5yO-T1-NLy"; */
-"5yO-T1-NLy.text" = "Label";
+/* Class = "IBUINavigationItem"; title = "地標明細"; ObjectID = "7wT-8R-7i6"; */
+"7wT-8R-7i6.title" = "地標明細";
 
-/* Class = "IBUILabel"; text = "消息通知"; ObjectID = "6GP-aE-ruQ"; */
-"6GP-aE-ruQ.text" = "消息通知";
+/* Class = "IBUILabel"; text = "起點："; ObjectID = "8FD-4K-iSN"; */
+"8FD-4K-iSN.text" = "起點：";
 
-/* Class = "IBUIViewController"; title = "地标地图"; ObjectID = "6Gf-nb-bws"; */
-"6Gf-nb-bws.title" = "地标地图";
+/* Class = "IBUILabel"; text = "分鍾"; ObjectID = "8Lp-pb-cYi"; */
+"8Lp-pb-cYi.text" = "分鍾";
 
-/* Class = "IBUIButton"; normalTitle = "哟扣哟扣"; ObjectID = "6SZ-Ey-nMQ"; */
-"6SZ-Ey-nMQ.normalTitle" = "哟扣哟扣";
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "A00-a5-9JS"; */
+"A00-a5-9JS.text" = "Label";
 
-/* Class = "IBUIButton"; normalTitle = "车站结构图"; ObjectID = "74Y-YF-QNc"; */
-"74Y-YF-QNc.normalTitle" = "车站结构图";
+/* Class = "IBUILabel"; text = "約"; ObjectID = "A0b-hl-v2R"; */
+"A0b-hl-v2R.text" = "約";
 
-/* Class = "IBUIButton"; normalTitle = "向下"; ObjectID = "8Jx-eh-l7O"; */
-"8Jx-eh-l7O.normalTitle" = "向下";
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "APN-Jn-fbl"; */
+"APN-Jn-fbl.text" = "Label";
 
-/* Class = "IBUILabel"; text = "047-495-5773"; ObjectID = "A7j-Jr-Txr"; */
-"A7j-Jr-Txr.text" = "047-495-5773";
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "AhI-vG-hoq"; */
+"AhI-vG-hoq.text" = "Label";
 
-/* Class = "IBUILabel"; text = "站"; ObjectID = "AYJ-4x-bBj"; */
-"AYJ-4x-bBj.text" = "站";
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "BZh-SS-gIP"; */
+"BZh-SS-gIP.text" = "Label";
 
-/* Class = "IBUILabel"; text = "关键字"; ObjectID = "AsP-rP-WLz"; */
-"AsP-rP-WLz.text" = "关键字";
+/* Class = "IBUILabel"; text = "分鍾"; ObjectID = "BlM-pf-uSG"; */
+"BlM-pf-uSG.text" = "分鍾";
 
-/* Class = "IBUILabel"; text = "银座线"; ObjectID = "B2U-j0-OZ6"; */
-"B2U-j0-OZ6.text" = "银座线";
+/* Class = "IBUILabel"; text = "所有車站"; ObjectID = "Bws-gw-4Nd"; */
+"Bws-gw-4Nd.text" = "所有車站";
 
-/* Class = "IBUINavigationItem"; title = "主界面"; ObjectID = "BeE-Zr-pbu"; */
-"BeE-Zr-pbu.title" = "主界面";
+/* Class = "IBUILabel"; text = "幫助"; ObjectID = "C4c-8h-Brh"; */
+"C4c-8h-Brh.text" = "幫助";
 
-/* Class = "IBUILabel"; text = "00"; ObjectID = "CBS-As-Xmb"; */
-"CBS-As-Xmb.text" = "00";
+/* Class = "IBUILabel"; text = "2300"; ObjectID = "C6k-qv-979"; */
+"C6k-qv-979.text" = "2300";
 
-/* Class = "IBUIButton"; normalTitle = "车站位置图"; ObjectID = "CRp-vW-9Kv"; */
-"CRp-vW-9Kv.normalTitle" = "车站位置图";
+/* Class = "IBUIButton"; normalTitle = "設爲起點"; ObjectID = "CRp-vW-9Kv"; */
+"CRp-vW-9Kv.normalTitle" = "設爲起點";
 
-/* Class = "IBUILabel"; text = "    (*可以搜索某个站点附近的关键字)"; ObjectID = "ClT-Ag-gDp"; */
-"ClT-Ag-gDp.text" = "    (*可以搜索某个站点附近的关键字)";
+/* Class = "IBUILabel"; text = "暫無數據"; ObjectID = "D2H-YV-YSD"; */
+"D2H-YV-YSD.text" = "暫無數據";
 
-/* Class = "IBUILabel"; text = "关于我们"; ObjectID = "DAp-52-Nt0"; */
-"DAp-52-Nt0.text" = "关于我们";
+/* Class = "IBUITextView"; text = "准時運行列車的後續列車出現晚點情況時，先行列車和後續列車之間的間隔加大，晚點到達車站的列車通常會有大量的乘客乘車，擁擠程度增大。同時，上下車時間也隨之延長，從而導致晚點時間更長。爲了防止此類情況的發生，在列車出現晚點情況時，對先行列車進行停車時間的調整，使大量的乘客能夠上車，以防止擁擠程度的偏差和晚點。這樣，通過對列車停站時間的調整，不僅防止了列車由于晚點出現擁擠和順延，而且防止了線路整體的晚點。希望廣大乘客給予理解和支持。 "; ObjectID = "DN0-hn-0Ju"; */
+"DN0-hn-0Ju.text" = "准時運行列車的後續列車出現晚點情況時，先行列車和後續列車之間的間隔加大，晚點到達車站的列車通常會有大量的乘客乘車，擁擠程度增大。同時，上下車時間也隨之延長，從而導致晚點時間更長。爲了防止此類情況的發生，在列車出現晚點情況時，對先行列車進行停車時間的調整，使大量的乘客能夠上車，以防止擁擠程度的偏差和晚點。這樣，通過對列車停站時間的調整，不僅防止了列車由于晚點出現擁擠和順延，而且防止了線路整體的晚點。希望廣大乘客給予理解和支持。 ";
 
-/* Class = "IBUITextView"; text = "       准时运行列车的后续列车出现晚点情况时，先行列车和后续列车之间的间隔加大，晚点到达车站的列车通常会有大量的乘客乘车，拥挤程度增大。同时，上下车时间也随之延长，从而导致晚点时间更长。为了防止此类情况的发生，在列车出现晚点情况时，对先行列车进行停车时间的调整，使大量的乘客能够上车，以防止拥挤程度的偏差和晚点。这样，通过对列车停站时间的调整，不仅防止了列车由于晚点出现拥挤和顺延，而且防止了线路整体的晚点。希望广大乘客给予理解和支持。 "; ObjectID = "DN0-hn-0Ju"; */
-"DN0-hn-0Ju.text" = "       准时运行列车的后续列车出现晚点情况时，先行列车和后续列车之间的间隔加大，晚点到达车站的列车通常会有大量的乘客乘车，拥挤程度增大。同时，上下车时间也随之延长，从而导致晚点时间更长。为了防止此类情况的发生，在列车出现晚点情况时，对先行列车进行停车时间的调整，使大量的乘客能够上车，以防止拥挤程度的偏差和晚点。这样，通过对列车停站时间的调整，不仅防止了列车由于晚点出现拥挤和顺延，而且防止了线路整体的晚点。希望广大乘客给予理解和支持。 ";
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "Dom-bh-6vF"; */
+"Dom-bh-6vF.text" = "Label";
 
-/* Class = "IBUILabel"; text = "离线数据管理"; ObjectID = "Dqs-h9-HHT"; */
-"Dqs-h9-HHT.text" = "离线数据管理";
+/* Class = "IBUILabel"; text = "東京美途"; ObjectID = "EOf-QD-9kC"; */
+"EOf-QD-9kC.text" = "東京美途";
 
-/* Class = "IBUINavigationItem"; title = "地标明细"; ObjectID = "EfJ-bU-gCk"; */
-"EfJ-bU-gCk.title" = "地标明细";
+/* Class = "IBUIButton"; normalTitle = "服務條款"; ObjectID = "GUU-cq-BE1"; */
+"GUU-cq-BE1.normalTitle" = "服務條款";
 
-/* Class = "IBUIButton"; normalTitle = "提醒"; ObjectID = "EtS-Wk-Xg7"; */
-"EtS-Wk-Xg7.normalTitle" = "提醒";
-
-/* Class = "IBUILabel"; text = "Label"; ObjectID = "FyI-ki-Buh"; */
-"FyI-ki-Buh.text" = "Label";
-
-/* Class = "IBUIButton"; normalTitle = "设为终点"; ObjectID = "G3F-uo-7VQ"; */
-"G3F-uo-7VQ.normalTitle" = "设为终点";
-
-/* Class = "IBUISegmentedControl"; HGt-Pf-Iba.segmentTitles[0] = "工作日"; ObjectID = "HGt-Pf-Iba"; */
-"HGt-Pf-Iba.segmentTitles[0]" = "工作日";
+/* Class = "IBUISegmentedControl"; HGt-Pf-Iba.segmentTitles[0] = "平日"; ObjectID = "HGt-Pf-Iba"; */
+"HGt-Pf-Iba.segmentTitles[0]" = "平日";
 
 /* Class = "IBUISegmentedControl"; HGt-Pf-Iba.segmentTitles[1] = "周末"; ObjectID = "HGt-Pf-Iba"; */
 "HGt-Pf-Iba.segmentTitles[1]" = "周末";
 
-/* Class = "IBUIButton"; normalTitle = "更多"; ObjectID = "HHL-Cn-SGk"; */
-"HHL-Cn-SGk.normalTitle" = "更多";
+/* Class = "IBUISegmentedControl"; HGt-Pf-Iba.segmentTitles[2] = "假日"; ObjectID = "HGt-Pf-Iba"; */
+"HGt-Pf-Iba.segmentTitles[2]" = "假日";
 
-/* Class = "IBUIBarButtonItem"; title = "查询"; ObjectID = "HUh-mU-Jkj"; */
-"HUh-mU-Jkj.title" = "查询";
+/* Class = "IBUILabel"; text = "美食"; ObjectID = "HqC-fu-fVn"; */
+"HqC-fu-fVn.text" = "美食";
 
-/* Class = "IBUISegmentedControl"; Hgl-lK-QjM.segmentTitles[0] = "到站提醒"; ObjectID = "Hgl-lK-QjM"; */
-"Hgl-lK-QjM.segmentTitles[0]" = "到站提醒";
+/* Class = "IBUIBarButtonItem"; title = "查詢"; ObjectID = "Hvh-5Q-m80"; */
+"Hvh-5Q-m80.title" = "查詢";
 
-/* Class = "IBUISegmentedControl"; Hgl-lK-QjM.segmentTitles[1] = "末班车提醒"; ObjectID = "Hgl-lK-QjM"; */
-"Hgl-lK-QjM.segmentTitles[1]" = "末班车提醒";
+/* Class = "IBUITextView"; text = "服務使用條款\n\n一、服務條款的確認和接納\n\n       TokyoMetro平台涉及的産品、相關軟件的所有權和運作權歸上海岡三華大計算機系統有限公司所有，所有用戶自願接受本服務條款的所有內容和相關使用流程。\n\n二、服務的終止\n\n        在下列情況下，TokyoMetro平台有權終止向用戶提供服務：\n\n在用戶違反本服務協議相關規定時，TokyoMetro平台有權終止向該用戶提供服務；\n本服務條款終止或更新時，用戶明示不願接受新的服務條款的。"; ObjectID = "IAU-Bj-PPF"; */
+"IAU-Bj-PPF.text" = "服務使用條款\n\n一、服務條款的確認和接納\n\n       TokyoMetro平台涉及的産品、相關軟件的所有權和運作權歸上海岡三華大計算機系統有限公司所有，所有用戶自願接受本服務條款的所有內容和相關使用流程。\n\n二、服務的終止\n\n        在下列情況下，TokyoMetro平台有權終止向用戶提供服務：\n\n在用戶違反本服務協議相關規定時，TokyoMetro平台有權終止向該用戶提供服務；\n本服務條款終止或更新時，用戶明示不願接受新的服務條款的。";
 
-/* Class = "IBUILabel"; text = "优衣库"; ObjectID = "Hh7-OM-Fpw"; */
-"Hh7-OM-Fpw.text" = "优衣库";
-
-/* Class = "IBUIButton"; normalTitle = "广播"; ObjectID = "I40-5A-vu4"; */
-"I40-5A-vu4.normalTitle" = "广播";
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "IHx-KW-CQh"; */
+"IHx-KW-CQh.text" = "Label";
 
 /* Class = "IBUILabel"; text = "Label"; ObjectID = "IcK-FJ-Fzr"; */
 "IcK-FJ-Fzr.text" = "Label";
 
-/* Class = "IBUIButton"; normalTitle = "编辑"; ObjectID = "JeT-d7-99Y"; */
-"JeT-d7-99Y.normalTitle" = "编辑";
+/* Class = "IBUILabel"; text = "10"; ObjectID = "Imz-59-nxY"; */
+"Imz-59-nxY.text" = "10";
 
-/* Class = "IBUIButton"; normalTitle = "Button"; ObjectID = "K6p-am-Lnx"; */
-"K6p-am-Lnx.normalTitle" = "Button";
+/* Class = "IBUINavigationItem"; title = "車站商業設施"; ObjectID = "J8H-H0-nzO"; */
+"J8H-H0-nzO.title" = "車站商業設施";
+
+/* Class = "IBUILabel"; text = "押上（晴空塔）"; ObjectID = "JDM-BG-pQ6"; */
+"JDM-BG-pQ6.text" = "押上（晴空塔）";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "JRq-FH-6sl"; */
+"JRq-FH-6sl.text" = "Label";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "LFt-fS-RdH"; */
+"LFt-fS-RdH.text" = "Label";
 
 /* Class = "IBUILabel"; text = "Label"; ObjectID = "LQ2-JX-1Xp"; */
 "LQ2-JX-1Xp.text" = "Label";
 
-/* Class = "IBUIButton"; normalTitle = "景点\n地标"; ObjectID = "Lcv-HS-h29"; */
-"Lcv-HS-h29.normalTitle" = "景点\n地标";
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "M5E-XF-SIg"; */
+"M5E-XF-SIg.text" = "Label";
 
-/* Class = "IBUIButton"; normalTitle = "动漫"; ObjectID = "MSk-7d-HEN"; */
-"MSk-7d-HEN.normalTitle" = "动漫";
+/* Class = "IBUIViewController"; title = "地標檢索"; ObjectID = "M6X-vf-4rj"; */
+"M6X-vf-4rj.title" = "地標檢索";
 
-/* Class = "IBUIViewController"; title = "地标检索"; ObjectID = "N21-LT-zSh"; */
-"N21-LT-zSh.title" = "地标检索";
+/* Class = "IBUIButton"; normalTitle = "設爲起點"; ObjectID = "MHC-ZB-Ree"; */
+"MHC-ZB-Ree.normalTitle" = "設爲起點";
 
-/* Class = "IBUIButton"; normalTitle = "便利店"; ObjectID = "NEQ-ra-kYG"; */
-"NEQ-ra-kYG.normalTitle" = "便利店";
+/* Class = "IBUIButton"; normalTitle = "購物"; ObjectID = "MPT-mP-HV5"; */
+"MPT-mP-HV5.normalTitle" = "購物";
 
-/* Class = "IBUILabel"; text = "线路：银座线    方向：浅草"; ObjectID = "O27-B8-Nok"; */
-"O27-B8-Nok.text" = "线路：银座线    方向：浅草";
+/* Class = "IBUILabel"; text = "總計時間"; ObjectID = "N4w-Se-IxX"; */
+"N4w-Se-IxX.text" = "總計時間";
 
-/* Class = "IBUIButton"; normalTitle = "SOS"; ObjectID = "O4v-di-cPG"; */
-"O4v-di-cPG.normalTitle" = "SOS";
+/* Class = "IBUILabel"; text = "涉谷 - 淺草"; ObjectID = "Nso-4h-zpQ"; */
+"Nso-4h-zpQ.text" = "涉谷 - 淺草";
 
-/* Class = "IBUIBarButtonItem"; title = "Back"; ObjectID = "PGq-2p-IHb"; */
-"PGq-2p-IHb.title" = "Back";
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "P69-6a-88B"; */
+"P69-6a-88B.text" = "Label";
 
-/* Class = "IBUIButton"; normalTitle = "取消"; ObjectID = "R55-Fl-a1q"; */
-"R55-Fl-a1q.normalTitle" = "取消";
+/* Class = "IBUIButton"; normalTitle = "官方網站"; ObjectID = "PbF-5D-bJl"; */
+"PbF-5D-bJl.normalTitle" = "官方網站";
 
-/* Class = "IBUILabel"; text = "StationName"; ObjectID = "RIX-1k-9pA"; */
-"RIX-1k-9pA.text" = "StationName";
+/* Class = "IBUILabel"; text = "票價"; ObjectID = "Pfm-vS-neR"; */
+"Pfm-vS-neR.text" = "票價";
 
-/* Class = "IBUILabel"; text = "站   名"; ObjectID = "SDR-qg-QAq"; */
-"SDR-qg-QAq.text" = "站   名";
+/* Class = "IBUILabel"; text = "20"; ObjectID = "PyH-bo-eX0"; */
+"PyH-bo-eX0.text" = "20";
 
-/* Class = "IBUILabel"; text = "日比谷线"; ObjectID = "SIC-UW-wE8"; */
-"SIC-UW-wE8.text" = "日比谷线";
+/* Class = "IBUIViewController"; title = "地標明細"; ObjectID = "R8R-pk-v2Y"; */
+"R8R-pk-v2Y.title" = "地標明細";
 
-/* Class = "IBUILabel"; text = "下一班次时间："; ObjectID = "SyX-mw-eDs"; */
-"SyX-mw-eDs.text" = "下一班次时间：";
+/* Class = "IBUILabel"; text = "終點"; ObjectID = "RGr-w0-T4f"; */
+"RGr-w0-T4f.text" = "終點";
 
-/* Class = "IBUILabel"; text = "涉谷 - 浅草"; ObjectID = "T6F-1U-h6k"; */
-"T6F-1U-h6k.text" = "涉谷 - 浅草";
+/* Class = "IBUINavigationItem"; title = "編輯到站提醒"; ObjectID = "SSS-gf-ZNo"; */
+"SSS-gf-ZNo.title" = "編輯到站提醒";
 
-/* Class = "IBUILabel"; text = "次，"; ObjectID = "TUW-Ij-42H"; */
-"TUW-Ij-42H.text" = "次，";
+/* Class = "IBUILabel"; text = "00"; ObjectID = "Soy-Th-HDt"; */
+"Soy-Th-HDt.text" = "00";
 
-/* Class = "IBUIButton"; normalTitle = "寿司"; ObjectID = "TXx-TB-4tT"; */
-"TXx-TB-4tT.normalTitle" = "寿司";
+/* Class = "IBUIButton"; normalTitle = "設爲終點"; ObjectID = "T0b-O8-XX6"; */
+"T0b-O8-XX6.normalTitle" = "設爲終點";
 
-/* Class = "IBUINavigationItem"; title = "路径查询"; ObjectID = "TkS-Av-bmr"; */
-"TkS-Av-bmr.title" = "路径查询";
+/* Class = "IBUILabel"; text = "涉谷 - 淺草"; ObjectID = "T6F-1U-h6k"; */
+"T6F-1U-h6k.text" = "涉谷 - 淺草";
 
-/* Class = "IBUILabel"; text = "円， 换乘"; ObjectID = "UEK-P6-qTC"; */
-"UEK-P6-qTC.text" = "円， 换乘";
+/* Class = "IBUILabel"; text = "涉谷 - 淺草"; ObjectID = "TKy-L5-xRY"; */
+"TKy-L5-xRY.text" = "涉谷 - 淺草";
 
-/* Class = "IBUIButton"; normalTitle = "旅行\n贴士"; ObjectID = "Uy2-xs-RFq"; */
-"Uy2-xs-RFq.normalTitle" = "旅行\n贴士";
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "U2O-8n-dPP"; */
+"U2O-8n-dPP.text" = "Label";
 
-/* Class = "IBUILabel"; text = " 22:30"; ObjectID = "VHy-OG-zlW"; */
-"VHy-OG-zlW.text" = " 22:30";
+/* Class = "IBUILabel"; text = "m"; ObjectID = "V5u-Z1-uOu"; */
+"V5u-Z1-uOu.text" = "m";
 
-/* Class = "IBUISegmentedControl"; Vaa-E3-6Mj.segmentTitles[0] = "工作日"; ObjectID = "Vaa-E3-6Mj"; */
-"Vaa-E3-6Mj.segmentTitles[0]" = "工作日";
+/* Class = "IBUISegmentedControl"; Vaa-E3-6Mj.segmentTitles[0] = "平日"; ObjectID = "Vaa-E3-6Mj"; */
+"Vaa-E3-6Mj.segmentTitles[0]" = "平日";
 
 /* Class = "IBUISegmentedControl"; Vaa-E3-6Mj.segmentTitles[1] = "周末"; ObjectID = "Vaa-E3-6Mj"; */
 "Vaa-E3-6Mj.segmentTitles[1]" = "周末";
 
-/* Class = "IBUIButton"; normalTitle = "人气景点"; ObjectID = "Vda-PG-p4q"; */
-"Vda-PG-p4q.normalTitle" = "人气景点";
+/* Class = "IBUISegmentedControl"; Vaa-E3-6Mj.segmentTitles[2] = "假日"; ObjectID = "Vaa-E3-6Mj"; */
+"Vaa-E3-6Mj.segmentTitles[2]" = "假日";
 
-/* Class = "IBUILabel"; text = "Label"; ObjectID = "Vvt-WI-awv"; */
-"Vvt-WI-awv.text" = "Label";
-
-/* Class = "IBUILabel"; text = "副都心线"; ObjectID = "VzF-fu-wEA"; */
-"VzF-fu-wEA.text" = "副都心线";
-
-/* Class = "IBUILabel"; text = ":"; ObjectID = "WFZ-Nk-hKW"; */
-"WFZ-Nk-hKW.text" = ":";
+/* Class = "IBUILabel"; text = "貼士"; ObjectID = "Vhb-CB-UWb"; */
+"Vhb-CB-UWb.text" = "貼士";
 
 /* Class = "IBUILabel"; text = "Label"; ObjectID = "WIT-IW-FZ5"; */
 "WIT-IW-FZ5.text" = "Label";
 
-/* Class = "IBUINavigationItem"; title = "地标一览"; ObjectID = "WmQ-iL-XFL"; */
-"WmQ-iL-XFL.title" = "地标一览";
+/* Class = "IBUIButton"; normalTitle = "美食"; ObjectID = "XKx-8o-PuH"; */
+"XKx-8o-PuH.normalTitle" = "美食";
 
-/* Class = "IBUIButton"; normalTitle = "居酒屋"; ObjectID = "X63-Fq-j4i"; */
-"X63-Fq-j4i.normalTitle" = "居酒屋";
+/* Class = "IBUIViewController"; title = "標志通識"; ObjectID = "XNj-WP-7cZ"; */
+"XNj-WP-7cZ.title" = "標志通識";
 
-/* Class = "IBUILabel"; text = "Label"; ObjectID = "XuK-sM-pgv"; */
-"XuK-sM-pgv.text" = "Label";
+/* Class = "IBUILabel"; text = "涉谷 - 淺草"; ObjectID = "XXS-DR-nBM"; */
+"XXS-DR-nBM.text" = "涉谷 - 淺草";
 
 /* Class = "IBUIBarButtonItem"; title = "Back"; ObjectID = "Y6W-VS-IQ4"; */
 "Y6W-VS-IQ4.title" = "Back";
 
-/* Class = "IBUILabel"; text = "1"; ObjectID = "YNp-1m-wLW"; */
-"YNp-1m-wLW.text" = "1";
+/* Class = "IBUILabel"; text = "等待"; ObjectID = "Yi4-96-umA"; */
+"Yi4-96-umA.text" = "等待";
 
 /* Class = "IBUILabel"; text = "Label"; ObjectID = "ZdP-nv-Gce"; */
 "ZdP-nv-Gce.text" = "Label";
 
-/* Class = "IBUIButton"; normalTitle = "站点"; ObjectID = "Zj6-o9-rk7"; */
-"Zj6-o9-rk7.normalTitle" = "站点";
+/* Class = "IBUILabel"; text = "都營半藏門線"; ObjectID = "a1D-fo-hCP"; */
+"a1D-fo-hCP.text" = "都營半藏門線";
 
-/* Class = "IBUILabel"; text = "都营半藏门线"; ObjectID = "a1D-fo-hCP"; */
-"a1D-fo-hCP.text" = "都营半藏门线";
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "a6H-7o-W6m"; */
+"a6H-7o-W6m.text" = "Label";
+
+/* Class = "IBUIButton"; normalTitle = "景點"; ObjectID = "aBn-3W-7w7"; */
+"aBn-3W-7w7.normalTitle" = "景點";
 
 /* Class = "IBUIButton"; normalTitle = "出口信息"; ObjectID = "aDw-BK-sxL"; */
 "aDw-BK-sxL.normalTitle" = "出口信息";
 
-/* Class = "IBUILabel"; text = "人气搜索"; ObjectID = "aER-o2-wEe"; */
-"aER-o2-wEe.text" = "人气搜索";
+/* Class = "IBUILabel"; text = "方向"; ObjectID = "aFL-uQ-YuW"; */
+"aFL-uQ-YuW.text" = "方向";
 
-/* Class = "IBUINavigationItem"; title = "广播"; ObjectID = "aUz-P7-Tvx"; */
-"aUz-P7-Tvx.title" = "广播";
+/* Class = "IBUILabel"; text = "次"; ObjectID = "aKS-Aj-g3g"; */
+"aKS-Aj-g3g.text" = "次";
 
-/* Class = "IBUILabel"; text = "半藏门线"; ObjectID = "awj-V8-Dmt"; */
-"awj-V8-Dmt.text" = "半藏门线";
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "aOP-a1-qyX"; */
+"aOP-a1-qyX.text" = "Label";
 
-/* Class = "IBUILabel"; text = "终点:"; ObjectID = "b2D-65-qDC"; */
-"b2D-65-qDC.text" = "终点:";
+/* Class = "IBUILabel"; text = "分鍾"; ObjectID = "ahN-Gn-89I"; */
+"ahN-Gn-89I.text" = "分鍾";
 
-/* Class = "IBUILabel"; text = "4"; ObjectID = "bKc-sM-CuX"; */
-"bKc-sM-CuX.text" = "4";
+/* Class = "IBUILabel"; text = "05:28"; ObjectID = "bPP-YD-y89"; */
+"bPP-YD-y89.text" = "05:28";
 
-/* Class = "IBUILabel"; text = "上海儿童医学中心"; ObjectID = "bcn-W0-sv7"; */
-"bcn-W0-sv7.text" = "上海儿童医学中心";
+/* Class = "IBUILabel"; text = "上海兒童醫學中心"; ObjectID = "bcn-W0-sv7"; */
+"bcn-W0-sv7.text" = "上海兒童醫學中心";
 
-/* Class = "IBUILabel"; text = "银座"; ObjectID = "beA-oH-FtX"; */
-"beA-oH-FtX.text" = "银座";
+/* Class = "IBUILabel"; text = "3"; ObjectID = "bgR-yZ-dWe"; */
+"bgR-yZ-dWe.text" = "3";
 
-/* Class = "IBUILabel"; text = "起点:"; ObjectID = "cj2-mo-s5X"; */
-"cj2-mo-s5X.text" = "起点:";
+/* Class = "IBUILabel"; text = "20"; ObjectID = "cid-93-jZB"; */
+"cid-93-jZB.text" = "20";
 
-/* Class = "IBUISegmentedControl"; ctL-Rv-Thm.segmentTitles[0] = "最近站点"; ObjectID = "ctL-Rv-Thm"; */
-"ctL-Rv-Thm.segmentTitles[0]" = "最近站点";
+/* Class = "IBUISegmentedControl"; cl0-6b-zDa.segmentTitles[0] = "車站"; ObjectID = "cl0-6b-zDa"; */
+"cl0-6b-zDa.segmentTitles[0]" = "車站";
 
-/* Class = "IBUISegmentedControl"; ctL-Rv-Thm.segmentTitles[1] = "地图定位"; ObjectID = "ctL-Rv-Thm"; */
-"ctL-Rv-Thm.segmentTitles[1]" = "地图定位";
+/* Class = "IBUISegmentedControl"; cl0-6b-zDa.segmentTitles[1] = "路線"; ObjectID = "cl0-6b-zDa"; */
+"cl0-6b-zDa.segmentTitles[1]" = "路線";
 
-/* Class = "IBUILabel"; text = "营业时间："; ObjectID = "d0h-lT-gR9"; */
-"d0h-lT-gR9.text" = "营业时间：";
+/* Class = "IBUISegmentedControl"; cl0-6b-zDa.segmentTitles[2] = "景點"; ObjectID = "cl0-6b-zDa"; */
+"cl0-6b-zDa.segmentTitles[2]" = "景點";
 
-/* Class = "IBUILabel"; text = "00"; ObjectID = "d6B-CG-T6p"; */
-"d6B-CG-T6p.text" = "00";
+/* Class = "IBUISegmentedControl"; cl0-6b-zDa.segmentTitles[3] = "美食"; ObjectID = "cl0-6b-zDa"; */
+"cl0-6b-zDa.segmentTitles[3]" = "美食";
 
-/* Class = "IBUILabel"; text = "有乐町线"; ObjectID = "dNO-uQ-tDi"; */
-"dNO-uQ-tDi.text" = "有乐町线";
+/* Class = "IBUISegmentedControl"; cl0-6b-zDa.segmentTitles[4] = "購物"; ObjectID = "cl0-6b-zDa"; */
+"cl0-6b-zDa.segmentTitles[4]" = "購物";
 
-/* Class = "IBUISegmentedControl"; dPp-KX-ZvN.segmentTitles[0] = "全部"; ObjectID = "dPp-KX-ZvN"; */
-"dPp-KX-ZvN.segmentTitles[0]" = "全部";
+/* Class = "IBUINavigationItem"; title = "地標一覽"; ObjectID = "cr2-rA-vGU"; */
+"cr2-rA-vGU.title" = "地標一覽";
 
-/* Class = "IBUISegmentedControl"; dPp-KX-ZvN.segmentTitles[1] = "景点"; ObjectID = "dPp-KX-ZvN"; */
-"dPp-KX-ZvN.segmentTitles[1]" = "景点";
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "dQa-JI-bCy"; */
+"dQa-JI-bCy.text" = "Label";
 
-/* Class = "IBUISegmentedControl"; dPp-KX-ZvN.segmentTitles[2] = "购物"; ObjectID = "dPp-KX-ZvN"; */
-"dPp-KX-ZvN.segmentTitles[2]" = "购物";
+/* Class = "IBUISegmentedControl"; dbL-xY-Wgm.segmentTitles[0] = "到站提醒"; ObjectID = "dbL-xY-Wgm"; */
+"dbL-xY-Wgm.segmentTitles[0]" = "到站提醒";
 
-/* Class = "IBUISegmentedControl"; dPp-KX-ZvN.segmentTitles[3] = "餐厅"; ObjectID = "dPp-KX-ZvN"; */
-"dPp-KX-ZvN.segmentTitles[3]" = "餐厅";
+/* Class = "IBUISegmentedControl"; dbL-xY-Wgm.segmentTitles[1] = "末班車提醒"; ObjectID = "dbL-xY-Wgm"; */
+"dbL-xY-Wgm.segmentTitles[1]" = "末班車提醒";
 
-/* Class = "IBUISegmentedControl"; dPp-KX-ZvN.segmentTitles[4] = "住宿"; ObjectID = "dPp-KX-ZvN"; */
-"dPp-KX-ZvN.segmentTitles[4]" = "住宿";
+/* Class = "IBUILabel"; text = ":"; ObjectID = "dvu-su-gsp"; */
+"dvu-su-gsp.text" = ":";
 
-/* Class = "IBUILabel"; text = "time"; ObjectID = "dSw-1w-4Ae"; */
-"dSw-1w-4Ae.text" = "time";
+/* Class = "IBUILabel"; text = "涉谷 - 淺草"; ObjectID = "dwz-Jo-T6d"; */
+"dwz-Jo-T6d.text" = "涉谷 - 淺草";
 
-/* Class = "IBUIButton"; normalTitle = "40*40"; ObjectID = "dU3-dC-jIT"; */
-"dU3-dC-jIT.normalTitle" = "40*40";
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "eFx-eG-6NX"; */
+"eFx-eG-6NX.text" = "Label";
 
-/* Class = "IBUISegmentedControl"; df4-x9-Vd6.segmentTitles[0] = "全部"; ObjectID = "df4-x9-Vd6"; */
-"df4-x9-Vd6.segmentTitles[0]" = "全部";
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "eWG-IX-EBW"; */
+"eWG-IX-EBW.text" = "Label";
 
-/* Class = "IBUISegmentedControl"; df4-x9-Vd6.segmentTitles[1] = "景点"; ObjectID = "df4-x9-Vd6"; */
-"df4-x9-Vd6.segmentTitles[1]" = "景点";
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "efn-be-0qx"; */
+"efn-be-0qx.text" = "Label";
 
-/* Class = "IBUISegmentedControl"; df4-x9-Vd6.segmentTitles[2] = "购物"; ObjectID = "df4-x9-Vd6"; */
-"df4-x9-Vd6.segmentTitles[2]" = "购物";
+/* Class = "IBUILabel"; text = "11"; ObjectID = "emP-PZ-3EH"; */
+"emP-PZ-3EH.text" = "11";
 
-/* Class = "IBUISegmentedControl"; df4-x9-Vd6.segmentTitles[3] = "餐厅"; ObjectID = "df4-x9-Vd6"; */
-"df4-x9-Vd6.segmentTitles[3]" = "餐厅";
+/* Class = "IBUILabel"; text = "線路：銀座線    方向：淺草"; ObjectID = "ew9-by-H77"; */
+"ew9-by-H77.text" = "線路：銀座線    方向：淺草";
 
-/* Class = "IBUISegmentedControl"; df4-x9-Vd6.segmentTitles[4] = "住宿"; ObjectID = "df4-x9-Vd6"; */
-"df4-x9-Vd6.segmentTitles[4]" = "住宿";
+/* Class = "IBUINavigationItem"; title = "地標地圖"; ObjectID = "f2V-1y-2Cz"; */
+"f2V-1y-2Cz.title" = "地標地圖";
 
-/* Class = "IBUIBarButtonItem"; title = "查询"; ObjectID = "ds3-5g-V5r"; */
-"ds3-5g-V5r.title" = "查询";
+/* Class = "IBUILabel"; text = ":"; ObjectID = "fDs-iJ-US0"; */
+"fDs-iJ-US0.text" = ":";
 
-/* Class = "IBUIButton"; normalTitle = "东京观光"; ObjectID = "eCp-0C-nbI"; */
-"eCp-0C-nbI.normalTitle" = "东京观光";
+/* Class = "IBUILabel"; text = "暫無收藏內容"; ObjectID = "fMC-oa-9r1"; */
+"fMC-oa-9r1.text" = "暫無收藏內容";
 
-/* Class = "IBUIButton"; normalTitle = "站内\n求助"; ObjectID = "edi-Yc-cor"; */
-"edi-Yc-cor.normalTitle" = "站内\n求助";
-
-/* Class = "IBUIBarButtonItem"; title = "反向"; ObjectID = "egS-Ag-hms"; */
-"egS-Ag-hms.title" = "反向";
-
-/* Class = "IBUILabel"; text = "position"; ObjectID = "ejI-oh-oiG"; */
-"ejI-oh-oiG.text" = "position";
-
-/* Class = "IBUILabel"; text = "年中无休(1月1日除外)"; ObjectID = "ejS-aQ-7x8"; */
-"ejS-aQ-7x8.text" = "年中无休(1月1日除外)";
-
-/* Class = "IBUISegmentedControl"; epq-wz-iPK.segmentTitles[0] = "出口一览"; ObjectID = "epq-wz-iPK"; */
-"epq-wz-iPK.segmentTitles[0]" = "出口一览";
-
-/* Class = "IBUISegmentedControl"; epq-wz-iPK.segmentTitles[1] = "周边地图"; ObjectID = "epq-wz-iPK"; */
-"epq-wz-iPK.segmentTitles[1]" = "周边地图";
-
-/* Class = "IBUILabel"; text = "日本桥"; ObjectID = "exk-ea-bsH"; */
-"exk-ea-bsH.text" = "日本桥";
-
-/* Class = "IBUIButton"; normalTitle = "旅行\n攻略"; ObjectID = "eyL-Rl-Fx3"; */
-"eyL-Rl-Fx3.normalTitle" = "旅行\n攻略";
-
-/* Class = "IBUINavigationItem"; title = "地标地图"; ObjectID = "f2V-1y-2Cz"; */
-"f2V-1y-2Cz.title" = "地标地图";
-
-/* Class = "IBUIButton"; normalTitle = "定位"; ObjectID = "fGj-nb-EGC"; */
-"fGj-nb-EGC.normalTitle" = "定位";
-
-/* Class = "IBUILabel"; text = "8:30 ~ 22:00"; ObjectID = "fZE-DO-MFp"; */
-"fZE-DO-MFp.text" = "8:30 ~ 22:00";
-
-/* Class = "IBUIButton"; normalTitle = "拉面"; ObjectID = "fgB-4V-5AW"; */
-"fgB-4V-5AW.normalTitle" = "拉面";
-
-/* Class = "IBUILabel"; text = "版本检查"; ObjectID = "gH0-rP-aVg"; */
-"gH0-rP-aVg.text" = "版本检查";
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "gHA-BB-ugd"; */
+"gHA-BB-ugd.text" = "Label";
 
 /* Class = "IBUILabel"; text = "Label"; ObjectID = "gP2-fc-yxM"; */
 "gP2-fc-yxM.text" = "Label";
 
-/* Class = "IBUINavigationItem"; title = "设定"; ObjectID = "gR6-cS-Fby"; */
-"gR6-cS-Fby.title" = "设定";
-
 /* Class = "IBUILabel"; text = "Label"; ObjectID = "gd7-WV-eu6"; */
 "gd7-WV-eu6.text" = "Label";
 
-/* Class = "IBUILabel"; text = "丸之内线"; ObjectID = "ghM-jP-syw"; */
-"ghM-jP-syw.text" = "丸之内线";
+/* Class = "IBUINavigationItem"; title = "編輯到站提醒"; ObjectID = "giE-x0-Yvp"; */
+"giE-x0-Yvp.title" = "編輯到站提醒";
 
-/* Class = "IBUINavigationItem"; title = "编辑到站提醒"; ObjectID = "giE-x0-Yvp"; */
-"giE-x0-Yvp.title" = "编辑到站提醒";
+/* Class = "IBUISegmentedControl"; gkF-KM-DVE.segmentTitles[0] = "按路線"; ObjectID = "gkF-KM-DVE"; */
+"gkF-KM-DVE.segmentTitles[0]" = "按路線";
 
-/* Class = "IBUISegmentedControl"; gkF-KM-DVE.segmentTitles[0] = "按路线"; ObjectID = "gkF-KM-DVE"; */
-"gkF-KM-DVE.segmentTitles[0]" = "按路线";
+/* Class = "IBUISegmentedControl"; gkF-KM-DVE.segmentTitles[1] = "按車站"; ObjectID = "gkF-KM-DVE"; */
+"gkF-KM-DVE.segmentTitles[1]" = "按車站";
 
-/* Class = "IBUISegmentedControl"; gkF-KM-DVE.segmentTitles[1] = "按站点"; ObjectID = "gkF-KM-DVE"; */
-"gkF-KM-DVE.segmentTitles[1]" = "按站点";
+/* Class = "IBUISegmentedControl"; gzb-kM-ikJ.segmentTitles[0] = "代代木上原方向"; ObjectID = "gzb-kM-ikJ"; */
+"gzb-kM-ikJ.segmentTitles[0]" = "代代木上原方向";
 
-/* Class = "IBUISegmentedControl"; gzb-kM-ikJ.segmentTitles[0] = "涉谷方向"; ObjectID = "gzb-kM-ikJ"; */
-"gzb-kM-ikJ.segmentTitles[0]" = "涉谷方向";
+/* Class = "IBUISegmentedControl"; gzb-kM-ikJ.segmentTitles[1] = "淺草方向"; ObjectID = "gzb-kM-ikJ"; */
+"gzb-kM-ikJ.segmentTitles[1]" = "淺草方向";
 
-/* Class = "IBUISegmentedControl"; gzb-kM-ikJ.segmentTitles[1] = "浅草方向"; ObjectID = "gzb-kM-ikJ"; */
-"gzb-kM-ikJ.segmentTitles[1]" = "浅草方向";
+/* Class = "IBUILabel"; text = "1"; ObjectID = "jGt-l5-iOb"; */
+"jGt-l5-iOb.text" = "1";
 
-/* Class = "IBUILabel"; text = "定休日："; ObjectID = "hGP-a4-sd0"; */
-"hGP-a4-sd0.text" = "定休日：";
+/* Class = "IBUILabel"; text = "換乘"; ObjectID = "k4n-4n-env"; */
+"k4n-4n-env.text" = "換乘";
 
-/* Class = "IBUILabel"; text = "00"; ObjectID = "ivu-39-nkE"; */
-"ivu-39-nkE.text" = "00";
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "kAC-dO-GF8"; */
+"kAC-dO-GF8.text" = "Label";
 
-/* Class = "IBUIBarButtonItem"; title = "Back"; ObjectID = "jNP-Ci-3xS"; */
-"jNP-Ci-3xS.title" = "Back";
+/* Class = "IBUILabel"; text = "設定"; ObjectID = "kDo-ia-S4m"; */
+"kDo-ia-S4m.text" = "設定";
 
-/* Class = "IBUILabel"; text = "自动更新"; ObjectID = "kTY-tN-EW1"; */
-"kTY-tN-EW1.text" = "自动更新";
+/* Class = "IBUILabel"; text = "円"; ObjectID = "kZs-xN-EOv"; */
+"kZs-xN-EOv.text" = "円";
 
-/* Class = "IBUILabel"; text = "Label"; ObjectID = "lOV-ci-myc"; */
-"lOV-ci-myc.text" = "Label";
+/* Class = "IBUILabel"; text = "暫無數據"; ObjectID = "kgk-ON-u3S"; */
+"kgk-ON-u3S.text" = "暫無數據";
 
-/* Class = "IBUILabel"; text = "东西线"; ObjectID = "lfZ-xV-aLm"; */
-"lfZ-xV-aLm.text" = "东西线";
+/* Class = "IBUILabel"; text = "00"; ObjectID = "lUy-je-GEL"; */
+"lUy-je-GEL.text" = "00";
 
-/* Class = "IBUIButton"; normalTitle = "温泉"; ObjectID = "lye-iN-W7h"; */
-"lye-iN-W7h.normalTitle" = "温泉";
+/* Class = "IBUILabel"; text = "攻略"; ObjectID = "mlL-A6-fqU"; */
+"mlL-A6-fqU.text" = "攻略";
 
-/* Class = "IBUILabel"; text = ":"; ObjectID = "mYU-DS-MMU"; */
-"mYU-DS-MMU.text" = ":";
+/* Class = "IBUILabel"; text = "起點"; ObjectID = "nmn-xm-TSs"; */
+"nmn-xm-TSs.text" = "起點";
 
-/* Class = "IBUIButton"; normalTitle = "车站结构图"; ObjectID = "oAz-bk-RHd"; */
-"oAz-bk-RHd.normalTitle" = "车站结构图";
+/* Class = "IBUILabel"; text = "換乘"; ObjectID = "nrg-pu-ksi"; */
+"nrg-pu-ksi.text" = "換乘";
 
-/* Class = "IBUILabel"; text = "电话号码："; ObjectID = "pJG-f2-el2"; */
-"pJG-f2-el2.text" = "电话号码：";
+/* Class = "IBUILabel"; text = "涉谷 - 淺草"; ObjectID = "nvh-co-ABd"; */
+"nvh-co-ABd.text" = "涉谷 - 淺草";
 
-/* Class = "IBUINavigationItem"; title = "地标检索"; ObjectID = "pOs-Kw-jDR"; */
-"pOs-Kw-jDR.title" = "地标检索";
+/* Class = "IBUIButton"; normalTitle = "設爲終點"; ObjectID = "oAz-bk-RHd"; */
+"oAz-bk-RHd.normalTitle" = "設爲終點";
 
-/* Class = "IBUILabel"; text = "230"; ObjectID = "pqs-ry-xdg"; */
-"pqs-ry-xdg.text" = "230";
+/* Class = "IBUILabel"; text = "收藏車站"; ObjectID = "oCk-P5-jK8"; */
+"oCk-P5-jK8.text" = "收藏車站";
 
-/* Class = "IBUILabel"; text = "06:00"; ObjectID = "qPB-ey-Dlt"; */
-"qPB-ey-Dlt.text" = "06:00";
+/* Class = "IBUILabel"; text = "暫無商業設施"; ObjectID = "orK-TK-Mcg"; */
+"orK-TK-Mcg.text" = "暫無商業設施";
 
-/* Class = "IBUINavigationItem"; title = "路线"; ObjectID = "qYn-mF-ifj"; */
-"qYn-mF-ifj.title" = "路线";
+/* Class = "IBUILabel"; text = "最近車站"; ObjectID = "qDp-Uw-SJo"; */
+"qDp-Uw-SJo.text" = "最近車站";
 
-/* Class = "IBUILabel"; text = "日本旅游网站友情链接"; ObjectID = "rj5-PI-Upa"; */
-"rj5-PI-Upa.text" = "日本旅游网站友情链接";
+/* Class = "IBUIViewController"; title = "地標一覽"; ObjectID = "r20-r6-R63"; */
+"r20-r6-R63.title" = "地標一覽";
 
-/* Class = "IBUILabel"; text = "    (*链接网站为日文)"; ObjectID = "ryE-ig-iAu"; */
-"ryE-ig-iAu.text" = "    (*链接网站为日文)";
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "r5q-of-ooF"; */
+"r5q-of-ooF.text" = "Label";
 
-/* Class = "IBUILabel"; text = "32"; ObjectID = "sEL-YZ-V3U"; */
-"sEL-YZ-V3U.text" = "32";
+/* Class = "IBUILabel"; text = "終點："; ObjectID = "rGy-7S-h7d"; */
+"rGy-7S-h7d.text" = "終點：";
 
-/* Class = "IBUILabel"; text = "千代田线"; ObjectID = "sf6-cd-wJf"; */
-"sf6-cd-wJf.text" = "千代田线";
+/* Class = "IBUIButton"; normalTitle = "免責聲明"; ObjectID = "rWF-iI-uID"; */
+"rWF-iI-uID.normalTitle" = "免責聲明";
 
-/* Class = "IBUIButton"; normalTitle = "日本旅游"; ObjectID = "sgV-D4-ZRl"; */
-"sgV-D4-ZRl.normalTitle" = "日本旅游";
+/* Class = "IBUIBarButtonItem"; title = "Back"; ObjectID = "rzc-Cp-1oK"; */
+"rzc-Cp-1oK.title" = "Back";
 
-/* Class = "IBUIButton"; normalTitle = "设为起点"; ObjectID = "tlK-mR-2ef"; */
-"tlK-mR-2ef.normalTitle" = "设为起点";
+/* Class = "IBUIBarButtonItem"; title = "Back"; ObjectID = "sfh-kl-UnG"; */
+"sfh-kl-UnG.title" = "Back";
 
-/* Class = "IBUIButton"; normalTitle = "地图表示"; ObjectID = "tul-9E-GZW"; */
-"tul-9E-GZW.normalTitle" = "地图表示";
+/* Class = "IBUIBarButtonItem"; title = "Back"; ObjectID = "tZO-ig-nO6"; */
+"tZO-ig-nO6.title" = "Back";
 
-/* Class = "IBUIButton"; normalTitle = "50*100"; ObjectID = "uTg-87-OYj"; */
-"uTg-87-OYj.normalTitle" = "50*100";
+/* Class = "IBUISegmentedControl"; uBq-vJ-LVZ.segmentTitles[0] = "最近站點"; ObjectID = "uBq-vJ-LVZ"; */
+"uBq-vJ-LVZ.segmentTitles[0]" = "最近站點";
 
-/* Class = "IBUIViewController"; title = "地标明细"; ObjectID = "ura-vv-qi2"; */
-"ura-vv-qi2.title" = "地标明细";
+/* Class = "IBUISegmentedControl"; uBq-vJ-LVZ.segmentTitles[1] = "地圖定位"; ObjectID = "uBq-vJ-LVZ"; */
+"uBq-vJ-LVZ.segmentTitles[1]" = "地圖定位";
 
-/* Class = "IBUILabel"; text = "12:24"; ObjectID = "w72-yo-a51"; */
-"w72-yo-a51.text" = "12:24";
+/* Class = "IBUILabel"; text = "乘車"; ObjectID = "usO-jr-Lx6"; */
+"usO-jr-Lx6.text" = "乘車";
 
-/* Class = "IBUILabel"; text = "银座"; ObjectID = "wDu-8T-OXt"; */
-"wDu-8T-OXt.text" = "银座";
+/* Class = "IBUILabel"; text = "求助"; ObjectID = "vY6-UP-70t"; */
+"vY6-UP-70t.text" = "求助";
+
+/* Class = "IBUINavigationItem"; title = "線路圖"; ObjectID = "vlu-3s-9GQ"; */
+"vlu-3s-9GQ.title" = "線路圖";
+
+/* Class = "IBUILabel"; text = "銀座"; ObjectID = "wDu-8T-OXt"; */
+"wDu-8T-OXt.text" = "銀座";
+
+/* Class = "IBUISegmentedControl"; wPN-ge-w3x.segmentTitles[0] = "改劄內"; ObjectID = "wPN-ge-w3x"; */
+"wPN-ge-w3x.segmentTitles[0]" = "改劄內";
+
+/* Class = "IBUISegmentedControl"; wPN-ge-w3x.segmentTitles[1] = "改劄外"; ObjectID = "wPN-ge-w3x"; */
+"wPN-ge-w3x.segmentTitles[1]" = "改劄外";
 
 /* Class = "IBUILabel"; text = "Label"; ObjectID = "wbw-qT-3YR"; */
 "wbw-qT-3YR.text" = "Label";
 
-/* Class = "IBUILabel"; text = "首班车 "; ObjectID = "x1e-qm-jdf"; */
-"x1e-qm-jdf.text" = "首班车 ";
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "wtQ-zv-mlP"; */
+"wtQ-zv-mlP.text" = "Label";
 
-/* Class = "IBUIButton"; normalTitle = "使用\n帮助"; ObjectID = "xKB-4w-Tfi"; */
-"xKB-4w-Tfi.normalTitle" = "使用\n帮助";
+/* Class = "IBUINavigationItem"; title = "地標檢索"; ObjectID = "xGD-4U-diP"; */
+"xGD-4U-diP.title" = "地標檢索";
 
-/* Class = "IBUIButton"; normalTitle = "上车"; ObjectID = "yU0-Jd-lwE"; */
-"yU0-Jd-lwE.normalTitle" = "上车";
+/* Class = "IBUINavigationItem"; title = "設定"; ObjectID = "xma-AY-iIy"; */
+"xma-AY-iIy.title" = "設定";
 
-/* Class = "IBUIButton"; normalTitle = "歌伎厅"; ObjectID = "yvd-Od-M3t"; */
-"yvd-Od-M3t.normalTitle" = "歌伎厅";
+/* Class = "IBUIBarButtonItem"; title = "Back"; ObjectID = "xpA-gh-6hp"; */
+"xpA-gh-6hp.title" = "Back";
 
-/* Class = "IBUISegmentedControl"; zBJ-AA-SQ2.segmentTitles[0] = "中国时间"; ObjectID = "zBJ-AA-SQ2"; */
-"zBJ-AA-SQ2.segmentTitles[0]" = "中国时间";
+/* Class = "IBUILabel"; text = "都營半藏門線"; ObjectID = "xxD-zz-tnQ"; */
+"xxD-zz-tnQ.text" = "都營半藏門線";
 
-/* Class = "IBUISegmentedControl"; zBJ-AA-SQ2.segmentTitles[1] = "日本时间"; ObjectID = "zBJ-AA-SQ2"; */
-"zBJ-AA-SQ2.segmentTitles[1]" = "日本时间";
-
-/* Class = "IBUIViewController"; title = "地标一览"; ObjectID = "zEQ-SQ-S9Y"; */
-"zEQ-SQ-S9Y.title" = "地标一览";
-
-/* Class = "IBUIBarButtonItem"; title = "查询"; ObjectID = "zc4-BT-2MX"; */
-"zc4-BT-2MX.title" = "查询";
+/* Class = "IBUITextView"; text = "免責與賠償聲明\n\n       若TokyoMetro平台已經明示其服務提供方式發生變更並提醒用戶應當注意事項，用戶未按要求操作所産生的一切後果由用戶自行承擔。\n用戶明確同意其使用TokyoMetro平台服務所存在的風險將完全由其自己承擔；因其使用TokyoMetro平台服務而産生的一切後果也由其自己承擔。\n以上條款的解釋權歸上海岡三華大計算機系統有限公司所最終所有"; ObjectID = "y6V-gS-pBJ"; */
+"y6V-gS-pBJ.text" = "免責與賠償聲明\n\n       若TokyoMetro平台已經明示其服務提供方式發生變更並提醒用戶應當注意事項，用戶未按要求操作所産生的一切後果由用戶自行承擔。\n用戶明確同意其使用TokyoMetro平台服務所存在的風險將完全由其自己承擔；因其使用TokyoMetro平台服務而産生的一切後果也由其自己承擔。\n以上條款的解釋權歸上海岡三華大計算機系統有限公司所最終所有";
