@@ -78,8 +78,7 @@ class SearchStationList: UIViewController, UITableViewDelegate, UITableViewDataS
                     routeSearch!.endStationText = map.item(MSTT02_STAT_GROUP_ID) as String
                 }
             }
-            
-            self.dismissViewControllerAnimated(true, completion: nil)
+            self.navigationController?.popViewControllerAnimated(true)
 
         } else if (classType == "landMarkSearchController") {
             var landMarkSearchController: LandMarkSearchController? = self.navigationController!.viewControllers[self.navigationController!.viewControllers.count - 2] as? LandMarkSearchController

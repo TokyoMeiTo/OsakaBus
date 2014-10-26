@@ -214,8 +214,6 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         } else {
             btnCollect2.setBackgroundImage("searchroute_collection".getImage(), forState: UIControlState.Normal)
         }
-        viewStatStartText.backgroundColor = UIColor(patternImage: "btnText_focus".getImage())
-        viewStatEndText.backgroundColor = UIColor(patternImage: "btnText_normal".getImage())
         viewStatStartText.layer.cornerRadius = 4
         viewStatEndText.layer.cornerRadius = 4
         searchWayAction()
@@ -1081,7 +1079,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
     // 获取所有站的站名和图标
     func loadStation() {
         
-        //if (btnCollectionStation.tag == 10001){
+        if (btnCollectionStation.tag == 10001){
             self.pageTag = "1"
             allStationlineGroup.removeAllObjects()
             allOfStationItemsId.removeAllObjects()
@@ -1140,8 +1138,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             
             btnCollectionStation.tag = 10011
             btnNearlyStation.tag = 10002
-            println("loadStation     btnNearlyStation.tag     \(btnNearlyStation.tag)")
-       // }
+        }
         
         
         
@@ -1305,14 +1302,10 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         vtbView.hidden = false
         tbView.reloadData()
         showTipBtn("0")
-        
         mNearlyLogo.image = "route_locatelight".getImage()
         mCollectionLogo.image = "route_collected".getImage()
-
         btnCollectionStation.tag = 10001
         btnNearlyStation.tag = 10012
-        
-        
     }
     
     // 放置本地数据
@@ -1373,6 +1366,17 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         } else {
             SearchButton?.enabled = false
         }
+        
+        if (self.focusNumber == "1") {
+            viewStatStartText.backgroundColor = UIColor(patternImage: "btnText_focus".getImage())
+            viewStatEndText.backgroundColor = UIColor(patternImage: "btnText_normal".getImage())
+        } else {
+            viewStatStartText.backgroundColor = UIColor(patternImage: "btnText_normal".getImage())
+            viewStatEndText.backgroundColor = UIColor(patternImage: "btnText_focus".getImage())
+        
+        }
+        
+        
     }
     
 
