@@ -124,6 +124,8 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
     
     // 总时间
     var totalTime : Int = 0
+    // 总时间
+    var totalExchangeTimes : Int = -1
     
     // 存放全局变量
     var appDelegate: AppDelegate!
@@ -419,9 +421,9 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         var resultTipCelllblStationTimeTip : UILabel = cellTip.viewWithTag(9006) as UILabel
         var resultTipCelllblStationTimeTipAfter : UILabel = cellTip.viewWithTag(9106) as UILabel
         
-        if ((routeDetial.count - 2) >= 0){
+        if (self.totalExchangeTimes > 0){
             resultTipCelllblStationExchange.text = "EXCHANGE_TYPE_1".localizedString()
-            resultTipCelllblStationExchangeTip.text = (routeDetial.count - 2).description
+            resultTipCelllblStationExchangeTip.text = String(self.totalExchangeTimes)
             resultTipCelllblStationExchangeTipAfter.text = "CMN003_23".localizedString()
         } else {
             resultTipCelllblStationExchange.hidden = true
@@ -776,9 +778,6 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         
         viewStatStartText.backgroundColor = UIColor(patternImage: "btnText_focus".getImage())
         viewStatEndText.backgroundColor = UIColor(patternImage: "btnText_normal".getImage())
-        
-        
-        
     }
     
     @IBAction func foucsChangeTo2 () {
@@ -1178,6 +1177,11 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         self.totalTime = self.totalTime + tempTime
     }
     
+    // 获取换乘的次数
+    func getTotalExchangeTimes(){
+        self.totalExchangeTimes = self.totalExchangeTimes + 1
+    }
+    
     // 判断站点是否已经被收藏
     func statIsCollected(statID:String) -> Bool {
         for key in allOfStationItemsId {
@@ -1238,6 +1242,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
     func getRouteline() {
         
         self.totalTime = 0
+        self.totalExchangeTimes = -1
         
         self.routeDetial.removeAllObjects()
         routeDetial05table.ruteId = self.routeID
@@ -1261,6 +1266,10 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             
             getTotalTime(resultExchMoveTime.description as NSString)
             getTotalTime(resultExchWaitTime.description as NSString)
+            
+            if (resultExchType == "8"){
+                getTotalExchangeTimes()
+            }
         }
     }
 
