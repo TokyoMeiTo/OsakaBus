@@ -52,7 +52,7 @@ class LandMarkListController: UIViewController, UITableViewDelegate, UITableView
     /* 站点 */
     var landMarkStatId:String? = ""
     
-    var classType = ""
+    var classType:String?
 
     
     /*******************************************************************************
@@ -108,11 +108,7 @@ class LandMarkListController: UIViewController, UITableViewDelegate, UITableView
         if(landMarks == nil){
             landMarks = selectLandMarkTable(landMarkType)
         }
-        if(landMarks == nil){
-            tbList.hidden = true
-            tempView.hidden = false
-        }
-        if(landMarks!.count < 1){
+        if(landMarks == nil || landMarks!.count < 1){
             tbList.hidden = true
             tempView.hidden = false
         }
@@ -136,7 +132,7 @@ class LandMarkListController: UIViewController, UITableViewDelegate, UITableView
     func tableView(tableView: UITableView, didSelectRowAtIndexPath: NSIndexPath){
         var landMarkDetailController = self.storyboard!.instantiateViewControllerWithIdentifier("landmarkdetail") as LandMarkDetailController
         
-        landMarkDetailController.title = landMarks![didSelectRowAtIndexPath.row].lmakNameExt1
+        landMarkDetailController.title = landMarks![didSelectRowAtIndexPath.row].lmakName
         landMarkDetailController.landMark = landMarks![didSelectRowAtIndexPath.row]
         var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
         self.navigationItem.backBarButtonItem = backButton
@@ -312,6 +308,11 @@ class LandMarkListController: UIViewController, UITableViewDelegate, UITableView
             landMarkSearchController.landMarkStatId = self.landMarkStatId
             landMarkSearchController.classType = self.classType
             
+            if(!(classType == nil)){
+                landMarkSearchController.landMarkSpecialWard = "\(landMarks![0].item(MSTT04_LANDMARK_WARD))"
+                landMarkSearchController.landMarkShowSpecialWard = "\(landMarks![0].item(MSTT04_LANDMARK_WARD))"
+            }
+            
             var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
             self.navigationItem.backBarButtonItem = backButton
 
@@ -360,11 +361,11 @@ class LandMarkListController: UIViewController, UITableViewDelegate, UITableView
         var landMarkTypeStr:String = ""
         switch type{
         case 0:
-            landMarkTypeStr = "PUBLIC_12".localizedString()
+            landMarkTypeStr = "1"
         case 1:
-            landMarkTypeStr = "INF002_08".localizedString()
+            landMarkTypeStr = "2"
         case 2:
-            landMarkTypeStr = "PUBLIC_09".localizedString()
+            landMarkTypeStr = "3"
         default:
             println("nothing")
         }

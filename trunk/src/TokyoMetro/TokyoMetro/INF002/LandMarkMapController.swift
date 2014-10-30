@@ -41,11 +41,11 @@ class LandMarkMapController: UIViewController, MKMapViewDelegate, UIActionSheetD
     *******************************************************************************/
     
     /* 起点軽度   */
-    var fromLat:CDouble = 35.683618//31.23312372 // 天地科技广场1号楼
+    var defaultLat:CDouble = 35.683618//31.23312372 // 天地科技广场1号楼
     /* 起点緯度 */
-    var fromLon:CDouble = 139.766453//121.38368547 // 天地科技广场1号楼
+    var defaultLon:CDouble = 139.766453//121.38368547 // 天地科技广场1号楼
 
-    var landMarkType:String = "景点"
+    var landMarkType:String = "1"
     
     var landMarkLocation:CLLocation?
     
@@ -81,19 +81,19 @@ class LandMarkMapController: UIViewController, MKMapViewDelegate, UIActionSheetD
             var img = UIImage(named: "INF00204")
             
             if(landMark != nil){
-                pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "\(landMark!.item(MSTT04_LANDMARK_LMAK_NAME_EXT1))")
+                pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "\(landMark!.item(MSTT04_LANDMARK_LMAK_NAME_EXT1))\n(landMark!.item(MSTT04_LANDMARK_LMAK_ADDR))")
                 landMarkType = "\(landMark!.item(MSTT04_LANDMARK_LMAK_TYPE))"
                 switch landMarkType{
-                case "景点":
+                case "1":
                     img = UIImage(named: "INF00204")
-                case "美食":
+                case "2":
                     img = UIImage(named: "INF00203")
-                case "购物":
+                case "3":
                     img = UIImage(named: "INF00205")
                 default:
                     println("nothing")
                 }
-                if(annotation.title != "\(landMark!.item(MSTT04_LANDMARK_LMAK_NAME_EXT1))"){
+                if(annotation.title != "\(landMark!.item(MSTT04_LANDMARK_LMAK_NAME))"){
                     img = UIImage(named: "STA00301")
                 }
             }else if(statId != nil){
@@ -105,11 +105,11 @@ class LandMarkMapController: UIViewController, MKMapViewDelegate, UIActionSheetD
                 } else {
                     
                     switch (annotation.subtitle! as String) {
-                    case "景点":
+                    case "1":
                         img = UIImage(named: "INF00204")
-                    case "美食":
+                    case "2":
                         img = UIImage(named: "INF00203")
-                    case "购物":
+                    case "3":
                         img = UIImage(named: "INF00205")
                     default:
                         println("nothing")
@@ -155,11 +155,14 @@ class LandMarkMapController: UIViewController, MKMapViewDelegate, UIActionSheetD
         if(landMarkLocation == nil){
             var statLat:Double = ("\(landMark!.item(MSTT04_LANDMARK_LMAK_LAT))" as NSString).doubleValue
             var statLon:Double = ("\(landMark!.item(MSTT04_LANDMARK_LMAK_LON))" as NSString).doubleValue
-
-            landMarkLocation = CLLocation(latitude: statLat, longitude: statLon)
+            if(checkLocation(statLat, longitude: statLon)){
+                landMarkLocation = CLLocation(latitude: statLat, longitude: statLon)
+            }
         }
         
-        //var statLocation = CLLocation(latitude: fromLat, longitude: fromLon)
+        if(landMarkLocation == nil){
+            landMarkLocation = CLLocation(latitude: defaultLat, longitude: defaultLon)
+        }
         
         var sta003_Model:STA003Model = STA003Model()
         // 获取最近的10个站点
@@ -177,13 +180,15 @@ class LandMarkMapController: UIViewController, MKMapViewDelegate, UIActionSheetD
                 var statLon:Double? = (key.statLon as NSString).doubleValue
                 var annotation = MKPointAnnotation()
                 annotation.coordinate = CLLocationCoordinate2D(latitude:statLat! as CLLocationDegrees, longitude:statLon! as CLLocationDegrees)
-                annotation.title = key.statId.station() + "\n" + key.statAddr
+
+                annotation.title = key.statId.station()
                 mkMap.addAnnotation(annotation)
                 var region : MKCoordinateRegion = MKCoordinateRegionMake(annotation.coordinate, span)
                 mkMap.setRegion(region, animated:true)
             }
             
-            annotation.title = "\(landMark!.item(MSTT04_LANDMARK_LMAK_NAME_EXT1))"
+            annotation.title = "\(landMark!.item(MSTT04_LANDMARK_LMAK_NAME))"
+            annotation.subtitle = "\(landMark!.item(MSTT04_LANDMARK_LMAK_ADDR))"
         } else if(statId != nil) {
             annotation.title = statId!.station()
             
@@ -195,7 +200,7 @@ class LandMarkMapController: UIViewController, MKMapViewDelegate, UIActionSheetD
                     
                     var annotation = MKPointAnnotation()
                     annotation.coordinate = CLLocation(latitude: (statLat as NSString).doubleValue, longitude: (statLon as NSString).doubleValue).coordinate
-                    annotation.title = "\(key.item(MSTT04_LANDMARK_LMAK_NAME_EXT1))"
+                    annotation.title = "\(key.item(MSTT04_LANDMARK_LMAK_NAME))"
                     annotation.subtitle = "\(key.item(MSTT04_LANDMARK_LMAK_TYPE))"
                     mkMap.addAnnotation(annotation)
                     var region : MKCoordinateRegion = MKCoordinateRegionMake(annotation.coordinate, span)
@@ -205,19 +210,18 @@ class LandMarkMapController: UIViewController, MKMapViewDelegate, UIActionSheetD
         }
         
         annotation.coordinate = coordinateOnEarth
+        mkMap.addAnnotation(annotation)
         
         mkMap.setCenterCoordinate(coordinateOnEarth, animated:true)
-        
-        mkMap.addAnnotation(annotation)
         
         var region : MKCoordinateRegion = MKCoordinateRegionMake(coordinateOnEarth, span)
         mkMap.setRegion(region, animated:true)
     }
     
     /**
-    * ボタン点击事件
-    * @param sender
-    */
+     * ボタン点击事件
+     * @param sender
+     */
     func buttonAction(sender: UIButton){
         switch sender.tag{
         case BTN_Location_TAG:
@@ -225,6 +229,15 @@ class LandMarkMapController: UIViewController, MKMapViewDelegate, UIActionSheetD
         default:
             println("nothing")
         }
+    }
+    
+    /**
+     * checkLocation
+     * @param latitude,longitude
+     *  -> Bool
+     */
+    func checkLocation(latitude: Double, longitude: Double) -> Bool{
+        return latitude > 0 && latitude < 90 && longitude > 0 && longitude < 180
     }
     
     

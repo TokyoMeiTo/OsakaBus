@@ -357,6 +357,8 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
         
         var cell:UITableViewCell? = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as? UITableViewCell
         
+        cell!.selectionStyle = UITableViewCellSelectionStyle.None
+        
         if(cell == nil){
             cell = UITableViewCell(style: UITableViewCellStyle.Default,
                 reuseIdentifier:cellIdentifier)
@@ -438,7 +440,7 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
                 }
             }else{
                 if(row < stations.count){
-                    station = line + "\(stations[row].statId)".station()
+                    station = line + " " + "\(stations[row].statId)".station()
                     if(segIndex == NUM_0){
                         statToId = stations[row].statId
                         usrT01Data!.statToId = stations[row].statId
@@ -566,7 +568,7 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
 //        bakButtonStyle.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
 //        let backButton:UIBarButtonItem =  UIBarButtonItem(customView: bakButtonStyle)
 //        self.navigationItem.leftBarButtonItem = backButton
-        
+ 
         // 查询线路
         mLines = USR002_MODEL.findLineTable()
 

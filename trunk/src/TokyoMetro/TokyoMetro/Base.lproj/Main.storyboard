@@ -2527,7 +2527,7 @@ lable</string>
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="XgB-4d-G9w">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="XgB-4d-G9w">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <inset key="separatorInset" minX="15" minY="0.0" maxX="15" maxY="0.0"/>
@@ -2829,18 +2829,33 @@ lable</string>
                                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
+                                                <variation key="heightClass=regular" fixedFrame="YES">
+                                                    <rect key="frame" x="133" y="41" width="60" height="22"/>
+                                                </variation>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="所有车站" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bws-gw-4Nd" userLabel="所有车站">
                                                 <rect key="frame" x="242" y="41" width="60" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
+                                                <variation key="heightClass=regular" fixedFrame="YES">
+                                                    <rect key="frame" x="239" y="41" width="60" height="21"/>
+                                                </variation>
                                             </label>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VOO-ck-Wiw">
                                                 <rect key="frame" x="148" y="10" width="35" height="35"/>
+                                                <variation key="heightClass=regular" fixedFrame="YES">
+                                                    <rect key="frame" x="145" y="10" width="35" height="35"/>
+                                                </variation>
                                             </imageView>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="route_stations" translatesAutoresizingMaskIntoConstraints="NO" id="omd-1X-bU6">
                                                 <rect key="frame" x="255" y="10" width="35" height="35"/>
+                                                <variation key="heightClass=regular" fixedFrame="YES">
+                                                    <rect key="frame" x="252" y="10" width="35" height="35"/>
+                                                </variation>
+                                            </imageView>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vu2-Rf-ngU">
+                                                <rect key="frame" x="35" y="10" width="35" height="35"/>
                                             </imageView>
                                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zj1-7H-rEs">
                                                 <rect key="frame" x="215" y="10" width="105" height="55"/>
@@ -2851,9 +2866,6 @@ lable</string>
                                                     <action selector="isPopToStationList" destination="SAD-6A-lpZ" eventType="touchUpInside" id="JnL-uy-jcN"/>
                                                 </connections>
                                             </button>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vu2-Rf-ngU">
-                                                <rect key="frame" x="35" y="10" width="35" height="35"/>
-                                            </imageView>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </view>
@@ -3143,7 +3155,7 @@ lable</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hWD-LQ-qaj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-312" y="-563"/>
+            <point key="canvasLocation" x="-312" y="-563.25"/>
         </scene>
         <!--设定-->
         <scene sceneID="1ri-hG-Y2K">
@@ -3497,28 +3509,22 @@ lable</string>
                                             <rect key="frame" x="180" y="190" width="25" height="25"/>
                                         </variation>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="起点" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nmn-xm-TSs">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="起点" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="nmn-xm-TSs">
                                         <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                         <variation key="heightClass=regular" fixedFrame="YES">
-                                            <rect key="frame" x="40" y="185" width="100" height="35"/>
+                                            <rect key="frame" x="40" y="190" width="140" height="25"/>
                                         </variation>
                                     </label>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="usr013" translatesAutoresizingMaskIntoConstraints="NO" id="3Q6-Xu-7HL">
-                                        <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
-                                        <variation key="heightClass=regular" fixedFrame="YES">
-                                            <rect key="frame" x="135" y="198" width="40" height="10"/>
-                                        </variation>
-                                    </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="终点" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RGr-w0-T4f">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="终点" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="RGr-w0-T4f">
                                         <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                         <variation key="heightClass=regular" fixedFrame="YES">
-                                            <rect key="frame" x="205" y="185" width="100" height="35"/>
+                                            <rect key="frame" x="205" y="190" width="110" height="25"/>
                                         </variation>
                                     </label>
                                 </subviews>
@@ -3541,7 +3547,6 @@ lable</string>
                                         <exclude reference="svk-zJ-F0B"/>
                                         <exclude reference="JP6-ts-7dJ"/>
                                         <exclude reference="nmn-xm-TSs"/>
-                                        <exclude reference="3Q6-Xu-7HL"/>
                                         <exclude reference="RGr-w0-T4f"/>
                                     </mask>
                                 </variation>
@@ -3563,7 +3568,6 @@ lable</string>
                                         <include reference="svk-zJ-F0B"/>
                                         <include reference="JP6-ts-7dJ"/>
                                         <include reference="nmn-xm-TSs"/>
-                                        <include reference="3Q6-Xu-7HL"/>
                                         <include reference="RGr-w0-T4f"/>
                                     </mask>
                                 </variation>
@@ -3656,7 +3660,6 @@ lable</string>
                         <outlet property="btnEdit" destination="GJh-oi-FnW" id="QjH-zt-UU4"/>
                         <outlet property="btnStart" destination="NQ7-A6-txL" id="WZB-81-DPK"/>
                         <outlet property="contentView" destination="qPY-YS-y9P" id="TSh-vb-Xst"/>
-                        <outlet property="imageViewArrow" destination="3Q6-Xu-7HL" id="XRK-Ob-ehO"/>
                         <outlet property="imageViewEnd" destination="JP6-ts-7dJ" id="DXD-Si-whT"/>
                         <outlet property="imageViewStart" destination="svk-zJ-F0B" id="i1j-Ec-Q1u"/>
                         <outlet property="lblArriveInfo" destination="ew9-by-H77" id="Rjm-yr-7xn"/>
@@ -3926,6 +3929,7 @@ lable</string>
                         <viewControllerLayoutGuide type="bottom" id="DOO-uW-F5C"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="tzD-es-QtK">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -3986,6 +3990,5 @@ lable</string>
         <image name="usr009" width="90" height="91"/>
         <image name="usr010" width="90" height="91"/>
         <image name="usr011" width="90" height="91"/>
-        <image name="usr013" width="67" height="7"/>
     </resources>
 </document>

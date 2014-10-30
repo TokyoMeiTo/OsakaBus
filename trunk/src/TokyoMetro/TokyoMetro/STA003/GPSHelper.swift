@@ -22,6 +22,10 @@ class GPSHelper: UIViewController, CLLocationManagerDelegate{
     /* 当前位置 */
     var currentLocation : CLLocation = CLLocation()
     
+    let MSG_0001:String = "PUBLIC_08".localizedString()
+    let MSG_0002:String = "请在设置->隐私中打开定位服务"
+    let MSG_0003:String = "PUBLIC_06".localizedString()
+    
     /**
      * 定位到当前位置
      */
@@ -36,11 +40,37 @@ class GPSHelper: UIViewController, CLLocationManagerDelegate{
             //for ios 8
             if (locationManager.respondsToSelector("requestAlwaysAuthorization")){
                 locationManager.requestWhenInUseAuthorization()
+            }else{
+                // 未打开定位服务
+                RemindDetailController.showMessage(MSG_0001,
+                    msg:MSG_0002,
+                    buttons:[MSG_0003],
+                    delegate: self)
             }
         case CLAuthorizationStatus.Restricted:
             GPSEnabled = false
+            //for ios 8
+            if (locationManager.respondsToSelector("requestAlwaysAuthorization")){
+                locationManager.requestWhenInUseAuthorization()
+            }else{
+                // 未打开定位服务
+                RemindDetailController.showMessage(MSG_0001,
+                    msg:MSG_0002,
+                    buttons:[MSG_0003],
+                    delegate: self)
+            }
         case CLAuthorizationStatus.Denied:
             GPSEnabled = false
+            //for ios 8
+            if (locationManager.respondsToSelector("requestAlwaysAuthorization")){
+                locationManager.requestWhenInUseAuthorization()
+            }else{
+                // 未打开定位服务
+                RemindDetailController.showMessage(MSG_0001,
+                    msg:MSG_0002,
+                    buttons:[MSG_0003],
+                    delegate: self)
+            }
         case CLAuthorizationStatus.Authorized:
             GPSEnabled = true
             
@@ -79,8 +109,11 @@ class GPSHelper: UIViewController, CLLocationManagerDelegate{
         }
         // 经纬度获取成功
         currentLocation = locations[locations.count - 1] as CLLocation
-
-        delegate!.locationUpdateComplete(currentLocation)
+        
+        if(checkLocation(currentLocation.coordinate.latitude, longitude: currentLocation.coordinate.longitude)){
+            delegate!.locationUpdateComplete(currentLocation)
+        }
+        
         manager.stopUpdatingLocation()
     }
     
@@ -102,6 +135,15 @@ class GPSHelper: UIViewController, CLLocationManagerDelegate{
             locationManager.desiredAccuracy = kCLLocationAccuracyBest
             locationManager.startUpdatingLocation()
         }
+    }
+
+    /**
+     * checkLocation
+     * @param latitude,longitude
+     *  -> Bool
+     */
+    func checkLocation(latitude: Double, longitude: Double) -> Bool{
+        return latitude > 0 && latitude < 90 && longitude > 0 && longitude < 180
     }
 
 }

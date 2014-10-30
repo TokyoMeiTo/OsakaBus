@@ -50,8 +50,6 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
     
     @IBOutlet weak var imageViewEnd: UIImageView!
     
-    @IBOutlet weak var imageViewArrow: UIImageView!
-    
     /* 到达站点信息 */
     @IBOutlet weak var lblStep1: UILabel!
     
@@ -240,7 +238,11 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
             }
         }
         
-//        pushNotificationLastMetro("\(items[indexPath.section][0])的\(items[indexPath.section][3][indexPath.row])即将发车", notifyTime:"\(items[indexPath.section][3][indexPath.row])")
+        if(mTrainAlarms![indexPath.section].alamFlag == "1" && mTrainAlarms![indexPath.section].voleFlag == "1"){
+             pushNotificationLastMetro("\(items[indexPath.section][0])的\(items[indexPath.section][3][indexPath.row])即将发车", notifyTime:"\(items[indexPath.section][3][indexPath.row])",soundId:1)
+        }else if(mTrainAlarms![indexPath.section].alamFlag == "1" && mTrainAlarms![indexPath.section].voleFlag == "0"){
+            pushNotificationLastMetro("\(items[indexPath.section][0])的\(items[indexPath.section][3][indexPath.row])即将发车", notifyTime:"\(items[indexPath.section][3][indexPath.row])",soundId:0)
+        }
         
         var lblMetroType = UILabel(frame: CGRect(x:15,y:50,width:230,height:30))
         lblMetroType.font = UIFont.systemFontOfSize(14)
@@ -350,7 +352,6 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
             imgViewBeep.hidden = true
             imageViewStart.hidden = true
             imageViewEnd.hidden = true
-            imageViewArrow.hidden = true
             
             pushNotification(nil,min: NUM_NEGATIVE_1,soundId: 0)
             mAlarm!.cancelFlag = "1"
@@ -402,7 +403,6 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
         imgViewBeep.hidden = false
         imageViewStart.hidden = false
         imageViewEnd.hidden = false
-        imageViewArrow.hidden = false
         
         // button点击事件
         btnCancel.addTarget(self,
@@ -465,7 +465,6 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
             contentView.addSubview(imgViewBeep)
             
             updateTime((mAlarm!.costTime as NSString).integerValue - (mAlarm!.alarmTime as NSString).integerValue)
-            
             // 开启线程计时
             var timerThread = TimerThread.shareInstance()
             timerThread.sender = self
@@ -552,6 +551,7 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
                 mAlarm!.onboardTime = RemindDetailController.convertDate2LocalTime(NSDate.date())
                 mUsr002Model.updateUsrT01(mAlarm!)
                 queue.addOperation(timerThread)
+                runInBackground()
             }else{
                 // 线程已经运行,显示当前剩余时间
                 showTime(mUsr002Model.convertTime(timerThread.surplusTime))
@@ -611,6 +611,7 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
     func noAlarm(){
         btnCancel.enabled = false
         btnStart.enabled = false
+        btnEdit.enabled = true
         lblArriveStation.text = ""
         lblArriveInfo.text = "USR002_24".localizedString()
         lblStart.text = ""
@@ -618,7 +619,6 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
         imgViewBeep.hidden = true
         imageViewStart.hidden = true
         imageViewEnd.hidden = true
-        imageViewArrow.hidden = true
     }
     
     /**
@@ -663,6 +663,17 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     /**
+     * 在后台执行
+     */
+    func runInBackground(){
+        let app = UIApplication.sharedApplication()
+        var controller:RemindListController = self
+        var backgroundTask = app.beginBackgroundTaskWithExpirationHandler { () -> Void in
+            println("run in background...Over")
+        }
+    }
+    
+    /**
      * 本地推送消息
      */
     func pushNotification(Msg: String?, min:Int?, soundId: UInt32){
@@ -696,12 +707,12 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
     /**
      * 本地推送消息(首末班车提醒)
      */
-    func pushNotificationLastMetro(Msg: String?, notifyTime:String){
+    func pushNotificationLastMetro(Msg: String?, notifyTime:String,soundId: UInt32){
         if(countElements(notifyTime) < 4){
             return
         }
         var fromDate:NSDate = NSDate()
-        var calendar:NSCalendar = NSCalendar()// identifier: NSGregorianCalendar
+        var calendar:NSCalendar = NSCalendar.currentCalendar()// identifier: NSGregorianCalendar
         calendar.timeZone = NSTimeZone.systemTimeZone()
         var dateComp:NSDateComponents = calendar.components((NSCalendarUnit.CalendarUnitYear | NSCalendarUnit.CalendarUnitMonth | NSCalendarUnit.CalendarUnitDay | NSCalendarUnit.CalendarUnitHour | NSCalendarUnit.CalendarUnitMinute | NSCalendarUnit.CalendarUnitSecond), fromDate: fromDate)
         
@@ -715,7 +726,7 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
         }
         dateToComp.setValue((notifyTime.left(2) as NSString).integerValue, forComponent: NSCalendarUnit.CalendarUnitHour)
         dateToComp.setValue((notifyTime.right(2) as NSString).integerValue, forComponent: NSCalendarUnit.CalendarUnitMinute)
-        var calendarTo:NSCalendar = NSCalendar()// identifier: NSGregorianCalendar
+        var calendarTo:NSCalendar = NSCalendar.currentCalendar()// identifier: NSGregorianCalendar
         var toDate:NSDate = calendarTo.dateFromComponents(dateToComp)!
         
         var mDeviceVersion:Double = (UIDevice.currentDevice().systemVersion as NSString).doubleValue
@@ -733,8 +744,9 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
         var localNotif:UILocalNotification = UILocalNotification()
         localNotif.fireDate = toDate
         localNotif.timeZone = NSTimeZone.localTimeZone()
-        AudioServicesPlaySystemSound(1007 as SystemSoundID)
-//        AudioServicesPlaySystemSound(4095 as SystemSoundID)
+        if(soundId != 0){
+            AudioServicesPlaySystemSound(soundId as SystemSoundID)// 1007,4095
+        }
         localNotif.soundName = UILocalNotificationDefaultSoundName
         if(Msg != nil){
             localNotif.alertBody = Msg

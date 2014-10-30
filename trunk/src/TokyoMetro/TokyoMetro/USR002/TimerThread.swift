@@ -24,8 +24,8 @@ class TimerThread: NSOperation{
     }
     
     /**
-    * 创建单例
-    */
+     * 创建单例
+     */
     class func shareInstance()->TimerThread{
         struct qzSingle{
             static var predicate:dispatch_once_t = 0;
@@ -48,10 +48,9 @@ class TimerThread: NSOperation{
             var surplusTime = arriveTime - i
             self.surplusTime = surplusTime
             sender!.updateTime(surplusTime)
-            
+            println(surplusTime)
             sleep(1)
         }
-        println("NSOperation over.")
     }
     
     override func cancel() {

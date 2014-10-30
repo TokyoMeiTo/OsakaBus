@@ -480,7 +480,7 @@ class StationDetail: UIViewController, UITableViewDelegate, UITableViewDataSourc
         
         landMark.landMarkType = index
         landMark.landMarkStatId = group_id
-        landMark.classType = "stationDetail"
+        landMark.classType = "1"
         
         var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
         self.navigationItem.backBarButtonItem = backButton

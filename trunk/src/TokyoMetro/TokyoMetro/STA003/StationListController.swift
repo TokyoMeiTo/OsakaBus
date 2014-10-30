@@ -230,7 +230,7 @@ class StationListController: UIViewController, UITableViewDelegate, UITableViewD
         
         // 获取最近的10个站点
         mStations = STA003_MODEL.findNearbyStations(location)
-        if(mStations == nil){
+        if(mStations == nil || mStations!.count < 1){
             noData()
             return
         }
@@ -427,6 +427,8 @@ class StationListController: UIViewController, UITableViewDelegate, UITableViewD
         var longitude : CDouble = coordinateOnMars.longitude
         
         var fromLocation = mLocation//CLLocation(latitude: testLat, longitude: testLon)
+        
+        mkMap.removeAnnotations(mkMap.annotations)
         
         // 显示距离最近的10个地铁站
         for key in mStations!{

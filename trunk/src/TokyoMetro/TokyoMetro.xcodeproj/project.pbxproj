@@ -73,6 +73,7 @@
 		3BED8F6A19F746D300F64277 /* UsrT02TrainAlarmTableData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BED8F5919F746D300F64277 /* UsrT02TrainAlarmTableData.swift */; };
 		3BED8F6B19F746D300F64277 /* UsrT03FavoriteTableData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BED8F5A19F746D300F64277 /* UsrT03FavoriteTableData.swift */; };
 		3BF0B88319EE5D2000150782 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3BF0B88519EE5D2000150782 /* InfoPlist.strings */; };
+		3F9907011A00EA7F00B72632 /* DownloadThread.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F9907001A00EA7F00B72632 /* DownloadThread.swift */; };
 		A10408D119F7D2AC002FC91A /* Sta002TimeTableModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10408D019F7D2AC002FC91A /* Sta002TimeTableModel.swift */; };
 		A10408D319F7DF49002FC91A /* Usr001AddSubwayModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10408D219F7DF49002FC91A /* Usr001AddSubwayModel.swift */; };
 		A158ACF819E9581500E63C03 /* SelectRaiders.swift in Sources */ = {isa = PBXBuildFile; fileRef = A158ACF719E9581500E63C03 /* SelectRaiders.swift */; };
@@ -317,6 +318,7 @@
 		3BF0B88419EE5D2000150782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		3BF0B88619EE5D2400150782 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		3BF0B88819EE5D3B00150782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
+		3F9907001A00EA7F00B72632 /* DownloadThread.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadThread.swift; sourceTree = "<group>"; };
 		3FAD459E19FD1225004D2340 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
 		A10408D019F7D2AC002FC91A /* Sta002TimeTableModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sta002TimeTableModel.swift; sourceTree = "<group>"; };
 		A10408D219F7DF49002FC91A /* Usr001AddSubwayModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Usr001AddSubwayModel.swift; sourceTree = "<group>"; };
@@ -841,6 +843,7 @@
 			isa = PBXGroup;
 			children = (
 				A17EDA9D19E8C0FE00D58386 /* LocalCacheController.swift */,
+				3F9907001A00EA7F00B72632 /* DownloadThread.swift */,
 			);
 			path = DLD001;
 			sourceTree = "<group>";
@@ -1307,6 +1310,7 @@
 				A1ECD47D19D2D41F00D5A0E2 /* InfT02TipsTable.m in Sources */,
 				A158ACFA19E9583100E63C03 /* RaidersDetail.swift in Sources */,
 				A1ECD47919D2D41F00D5A0E2 /* Main.swift in Sources */,
+				3F9907011A00EA7F00B72632 /* DownloadThread.swift in Sources */,
 				A1F1FC9719E96E74004A59C9 /* mztools.c in Sources */,
 				A1ECD48619D2D41F00D5A0E2 /* UsrT01ArrivalAlarmTable.m in Sources */,
 				3BCD2A6819F755AC00C792E5 /* InfT02TipsTableData.swift in Sources */,
@@ -1564,13 +1568,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Shanghai Okasan-Huada computer System CO.,LTD. (ATMPA4PSH3)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: zhourr zhourr (59HJ955NL8)";
 				DEFINES_MODULE = YES;
 				INFOPLIST_FILE = TokyoMetro/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "6991520f-c459-4cff-83ba-663cd84b37a2";
+				PROVISIONING_PROFILE = "1a214118-613d-4997-ac46-072714dec573";
 				SWIFT_OBJC_BRIDGING_HEADER = "TokyoMetro/TokyoMetro-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -1582,13 +1586,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Shanghai Okasan-Huada computer System CO.,LTD. (ATMPA4PSH3)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: zhourr zhourr (59HJ955NL8)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: zhourr zhourr (59HJ955NL8)";
 				DEFINES_MODULE = YES;
 				INFOPLIST_FILE = TokyoMetro/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "6991520f-c459-4cff-83ba-663cd84b37a2";
+				PROVISIONING_PROFILE = "1a214118-613d-4997-ac46-072714dec573";
 				SWIFT_OBJC_BRIDGING_HEADER = "TokyoMetro/TokyoMetro-Bridging-Header.h";
 			};
 			name = Release;

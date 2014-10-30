@@ -468,11 +468,11 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
         landMarkIdStr = ""
         switch type{
         case 2:
-            landMarkTypeStr = "景点"
+            landMarkTypeStr = "1"
         case 3:
-            landMarkTypeStr = "美食"
+            landMarkTypeStr = "2"
         case 4:
-            landMarkTypeStr = "购物"
+            landMarkTypeStr = "3"
         default:
             println("nothing")
         }

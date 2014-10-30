@@ -111,7 +111,13 @@ class Main: UIViewController,UIScrollViewDelegate {
             var localCacheController = self.storyboard!.instantiateViewControllerWithIdentifier("localcache") as LocalCacheController
             localCacheController.classType = 0
             localCacheController.mainController = self
-            self.navigationController!.presentViewController(localCacheController, animated: true, completion: nil)
+            
+            var nav:UINavigationController = UINavigationController(rootViewController: localCacheController)
+            nav.navigationBar.barTintColor = UIColor(red: 86/255, green: 127/255, blue: 188/255, alpha: 1)
+            let mDictColor = ["TextColor": UIColor.whiteColor()]
+            nav.navigationBar.titleTextAttributes = mDictColor
+            
+            self.navigationController!.presentViewController(nav, animated: true, completion: nil)
         }else{
             self.mImgLineGraph.image =  "MetroCH".image("LineGraph")
         }
@@ -497,15 +503,15 @@ class Main: UIViewController,UIScrollViewDelegate {
         
         var landTypeTemp : Int = 0
         if (sender == mPopupBtnTravle) {
-            odbLandMark("PUBLIC_12".localizedString())
+            odbLandMark("1")
             landTypeTemp = 0
             landMark.title = "INF002_11".localizedString()
         } else if (sender == mPopupBtnFood) {
-            odbLandMark("PUBLIC_13".localizedString())
+            odbLandMark("2")
             landTypeTemp = 1
             landMark.title = "INF002_09".localizedString()
         } else {
-            odbLandMark("PUBLIC_09".localizedString())
+            odbLandMark("3")
             landTypeTemp = 2
             landMark.title = "PUBLIC_09".localizedString()
         }
@@ -516,6 +522,7 @@ class Main: UIViewController,UIScrollViewDelegate {
             landMark.landMarks = landMarkArr as? Array<MstT04LandMarkTable>
             landMark.landMarkStatId = self.selectStationGroupId
             landMark.landMarkType = landTypeTemp
+            landMark.classType = "0"
             self.navigationController?.pushViewController(landMark, animated: true)
         }
         
@@ -672,20 +679,20 @@ class Main: UIViewController,UIScrollViewDelegate {
         mPopupViewSetImage.addSubview(mPopupLineView)
 
         // 添加相应的地表个数
-         odbLandMark("PUBLIC_09".localizedString())
+         odbLandMark("3")
          if (landMarkArr.count > 0 ){
             mViewShowLandMark(landMarkArr.count, viewTag : 2004)
          } else {
             mViewShowLandMark(0, viewTag : 2004)
         }
         
-         odbLandMark("PUBLIC_12".localizedString())
+         odbLandMark("1")
          if (landMarkArr.count > 0 ){
             mViewShowLandMark(landMarkArr.count, viewTag : 2002)
          } else {
             mViewShowLandMark(0, viewTag : 2002)
          }
-         odbLandMark("PUBLIC_13".localizedString())
+         odbLandMark("2")
          if (landMarkArr.count > 0 ){
             mViewShowLandMark(landMarkArr.count, viewTag : 2003)
          } else {

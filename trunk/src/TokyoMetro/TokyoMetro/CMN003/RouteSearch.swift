@@ -1276,6 +1276,10 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
     // 位置定位到最近站点
     func locationUpdateComplete(location: CLLocation){
         
+        if(!checkLocation(location.coordinate.latitude, longitude: location.coordinate.longitude)){
+            return
+        }
+        
         self.pageTag = "3"
         allOfNearlyStationItemsId.removeAllObjects()
         allOfNearlyStationItemsJP.removeAllObjects()
@@ -1537,6 +1541,15 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
 
     }
 
+    /**
+     * checkLocation
+     * @param latitude,longitude
+     *  -> Bool
+     */
+    func checkLocation(latitude: Double, longitude: Double) -> Bool{
+        return latitude > 0 && latitude < 90 && longitude > 0 && longitude < 180
+    }
+    
 
     /*******************************************************************************
     *    Unused Codes

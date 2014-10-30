@@ -38,8 +38,11 @@ class LocalCacheController: UIViewController, UIAlertViewDelegate{
     /*******************************************************************************
     * Global
     *******************************************************************************/
-
-    let uri:String = "http://www.okasan.net/Resource.zip"//"http://192.168.1.84/Resource.zip"//"http://osakabus.sinaapp.com/Resource.zip"
+    // "http://osakabus.sinaapp.com/Resource.zip"
+    // "http://192.168.1.84/Resource.zip"
+    // "http://www.okasan.net/Resource.zip"
+    let uri:String = "http://192.168.1.84/Resource.zip"
+    
     let filePath:String = "Resource.zip"
     let unZipPath:String = "TokyoMetroCache"
 
@@ -63,8 +66,6 @@ class LocalCacheController: UIViewController, UIAlertViewDelegate{
     var updateComplete:Bool = false
     var canUpdate:Bool = false
     
-    /* TableView条目 */
-    var items: NSMutableArray = NSMutableArray.array()
     var downloading:Bool = false
     var UIloading:Bool = false
     var loadProgress:String? = ""
@@ -94,9 +95,32 @@ class LocalCacheController: UIViewController, UIAlertViewDelegate{
         // Dispose of any resources that can be recreated.
     }
     
+    /**
+     * NSProgress监听事件
+     */
+    override func observeValueForKeyPath(keyPath: String!, ofObject object: AnyObject!, change: [NSObject : AnyObject]!, context: UnsafeMutablePointer<Void>) {
+        if (keyPath=="fractionCompleted") {
+            var progress:NSProgress = object as NSProgress;
+            if(countElements("\(progress.fractionCompleted)") > 5 && progress.fractionCompleted > 0.0001){
+                // 在子线程中更新UI
+                dispatch_async(dispatch_get_main_queue()) { () -> Void in
+                    self.showProgress()
+                    
+                    if(progress.fractionCompleted > 0.99){
+                        self.lblProgress.text = "DLD001_02".localizedString()
+                    }else{
+                        var progressTemp = "\(progress.fractionCompleted * 100)".decimal(2)
+                        self.loadProgress = "DLD001_09".localizedString() + ": " + "\(progressTemp)" + " %"
+                        self.lblProgress.text = self.loadProgress
+                    }
+                }
+            }
+        }
+    }
+    
     
     /*******************************************************************************
-    * Overrides From UIViewController
+    * Overrides From UIAlertViewDelegate
     *******************************************************************************/
 
     // after animation
@@ -139,24 +163,9 @@ class LocalCacheController: UIViewController, UIAlertViewDelegate{
         showDownloadBtn()
     }
     
-    func loadItems(){
-        switch classType{
-        case 0:
-            items = NSMutableArray.array()
-            items.addObject(["",[""]])
-            items.addObject(["",[""]])
-            items.addObject(["",[""]])
-        default:
-            items = NSMutableArray.array()
-            items.addObject(["",[""]])
-            items.addObject(["",[""]])
-            items.addObject(["",[""]])
-        }
-    }
-    
     /**
      * ボタン点击事件
-     * @param sender
+     * @param sender UIButton
      */
     func buttonAction(sender: UIButton){
         switch sender.tag{
@@ -195,14 +204,23 @@ class LocalCacheController: UIViewController, UIAlertViewDelegate{
         }
     }
     
+    /**
+     * 显示进度
+     */
     func showProgress(){
         lblProgress.hidden = false
     }
     
+    /**
+     * 隐藏进度
+     */
     func dimisProgress(){
         lblProgress.hidden = true
     }
     
+    /**
+     * 显示 开始下载/重新下载
+     */
     func showDownloadBtn(){
         switch classType{
         case 0:
@@ -215,11 +233,17 @@ class LocalCacheController: UIViewController, UIAlertViewDelegate{
         btnDownload.enabled = true
     }
     
+    /**
+     * 显示 立即使用
+     */
     func showUseBtn(){
         btnDownload.setBackgroundImage(UIImage(named: "DLD00102"), forState: UIControlState.Normal)
         btnDownload.enabled = true
     }
     
+    /**
+     * 隐藏 开始下载/重新下载
+     */
     func hideDownloadBtn(){
         switch classType{
         case 0:
@@ -244,6 +268,7 @@ class LocalCacheController: UIViewController, UIAlertViewDelegate{
 
         downloading = true
         updateComplete = false
+        self.lblProgress.text = ""
         
         let folder = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String
         let unzipPath = folder.stringByAppendingPathComponent(filePath)
@@ -252,28 +277,21 @@ class LocalCacheController: UIViewController, UIAlertViewDelegate{
         
         load(gaiLoading)
         
+        self.showProgress()
         var downloadTask = session.downloadTaskWithRequest(request, progress: &progress, destination: {(file, response) in self.pathUrl},
-            completionHandler:
-            {
+            completionHandler:{
                 response, localfile, error in
                 if(error == nil){
                     println("下载成功解压文件")
-//                    dispatch_async(dispatch_get_main_queue()) { () -> Void in
-//                        self.lblProgress.text = "DLD001_02".localizedString()
-//                    }
                     self.unzipFile()
                 }else{
                     println("下载失败")
                     println(error)
-                    // 在子线程中更新UI
-                    dispatch_async(dispatch_get_main_queue()) { () -> Void in
-                        self.downloading = false
-                        self.loadProgress = "DLD001_04".localizedString()
-                        self.lblProgress.text = self.loadProgress
-                        self.btnDownload.setBackgroundImage(UIImage(named: "DLD00101"), forState: UIControlState.Normal)
-                        self.showDownloadBtn()
-                        self.disMiss(self.gaiLoading)
-                    }
+                    self.downloading = false
+                    self.loadProgress = "DLD001_03".localizedString()
+                    self.lblProgress.text = self.loadProgress
+                    self.showDownloadBtn()
+                    self.disMiss(self.gaiLoading)
                 }
         })
         downloadTask.resume()
@@ -281,7 +299,7 @@ class LocalCacheController: UIViewController, UIAlertViewDelegate{
         hideDownloadBtn()
         
         // 设置这个progress的唯一标示符
-        progress?.setUserInfoObject("DO SOME", forKey: "11111")
+        progress!.setUserInfoObject("DO SOME", forKey: "11111")
         downloadTask.resume()
         
         // 给这个progress添加监听任务
@@ -289,41 +307,9 @@ class LocalCacheController: UIViewController, UIAlertViewDelegate{
     }
     
     /**
-     * NSProgress监听事件
+     * 获取文件路径
      */
-    override func observeValueForKeyPath(keyPath: String!, ofObject object: AnyObject!, change: [NSObject : AnyObject]!, context: UnsafeMutablePointer<Void>) {
-        if (keyPath=="fractionCompleted") {
-            var progress:NSProgress = object as NSProgress;
-            if(countElements("\(progress.fractionCompleted)") > 5 && progress.fractionCompleted > 0.0001){
-                // 在子线程中更新UI
-                dispatch_sync(dispatch_get_main_queue()) { () -> Void in
-                    self.showProgress()
-                    var formatter:NSNumberFormatter = NSNumberFormatter()
-                    formatter.formatterBehavior = NSNumberFormatterBehavior.Behavior10_4
-                    formatter.positiveFormat = "0.00;"
-                    
-                    var progressTemp = formatter.stringFromNumber(progress.fractionCompleted * 100) //"\(progress.fractionCompleted * 100)".left(5)
-                    self.loadProgress = "DLD001_09".localizedString() + ": " + "\(progressTemp)" + " %"
-                    //self.tbList.reloadData()
-                    self.lblProgress.text = self.loadProgress
-                }
-            }
-        }
-    }
-    
-    func convertProgress(progress:String?) -> String{
-        var tempStr = "01234"
-        
-        var indexTo = tempStr.rangeOfString("4")
-        
-        if(progress == nil){
-            return ""
-        }
-        return progress!.substringToIndex(indexTo!.endIndex) + "%"
-    }
-    
-    var pathUrl: NSURL
-        {
+    var pathUrl: NSURL{
         let folder = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String
             let path = folder.stringByAppendingPathComponent(filePath)
             let url = NSURL(fileURLWithPath: path)
@@ -347,34 +333,44 @@ class LocalCacheController: UIViewController, UIAlertViewDelegate{
             var result = unzip.UnzipFileTo(unzipPath, overWrite:true);
             if(result){
                 println("解压成功")
-                loadProgress = "DLD001_06".localizedString()
+                loadProgress = "DLD001_05".localizedString()
                 updateComplete = true
-                self.lblProgress.text = "下载成功"
                 if(classType == 0){
                     showUseBtn()
-                    self.disMiss(gaiLoading)
                 }else{
                     showDownloadBtn()
-                    self.disMiss(gaiLoading)
                 }
             }else{
                 println("解压失败")
-                loadProgress = "DLD001_04".localizedString()
-                self.lblProgress.text = "DLD001_03".localizedString()
+                loadProgress = "DLD001_07".localizedString()
                 showDownloadBtn()
-                self.disMiss(gaiLoading)
             }
+            self.disMiss(gaiLoading)
+            self.lblProgress.text = loadProgress
             unzip.UnzipCloseFile()
         }else{
             println("解压失败")
-            loadProgress = "DLD001_04".localizedString()
-            self.lblProgress.text = "DLD001_03".localizedString()
+            loadProgress = "DLD001_07".localizedString()
+            self.lblProgress.text = loadProgress
             showDownloadBtn()
             self.disMiss(gaiLoading)
         }
         downloading = false
     }
     
+    /**
+     * 在后台执行
+     */
+    func runInBackground(){
+        let app = UIApplication.sharedApplication()
+        var backgroundTask = app.beginBackgroundTaskWithExpirationHandler { () -> Void in
+            println("run in background...Over")
+        }
+    }
+    
+    /**
+     * 获取设备剩余存储空间
+     */
     class func getMemorySize() -> String {
         let folder = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String
         var fileManager:NSFileManager = NSFileManager.defaultManager()
