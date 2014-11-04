@@ -20,7 +20,7 @@ class SelectRaiders: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.title = "东京攻略"
+        self.title = "INF005_04".localizedString()
         
         onlineBtn1.addTarget(self, action: "onlineClick:", forControlEvents: UIControlEvents.TouchUpInside)
         onlineBtn2.addTarget(self, action: "onlineClick:", forControlEvents: UIControlEvents.TouchUpInside)

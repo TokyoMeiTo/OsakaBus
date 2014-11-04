@@ -15,4 +15,8 @@ protocol GPSDelegate : NSObjectProtocol{
      * 位置定位完成
      */
     func locationUpdateComplete(location: CLLocation)
+    /**
+     * 位置定位完成
+     */
+    func locationUpdateError()
 }

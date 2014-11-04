@@ -141,6 +141,8 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
     
     // 区分查询前页面和查询后结果页面。 1 为查询前页面。 2为查询后结果页面 3为附近站点
     var pageTag : String = "1"
+    // 路线是否被收藏的tag, 1 未收藏，2 已经收藏
+    var isAlarmFlag:String = "1"
     let SEARCHWAYACTION : Selector  = "searchWayAction"
     let ADDUSERFAVORITE : Selector  = "addUserfavorite:"
     let COLLECTEDSTATION : Selector  = "loadCollectedStation"
@@ -281,15 +283,24 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
+        
+        //TODO:判空
         if (self.pageTag == "2" && tableView == tbResultView) {
-            return self.routeDetial.count + 1
+          //  if self.routeDetial == nil {
+                return self.routeDetial.count + 1
+           // }
         } else if (self.pageTag == "3" && tableView == tbView) {
-            return self.allOfNearlyStationItemsId.count
+           // if self.allOfNearlyStationItemsId == nil {
+                return self.allOfNearlyStationItemsId.count
+           // }
         }else if (self.pageTag == "1" && tableView == tbView){
-            return self.allOfStationItemsId.count
+           // if self.allOfStationItemsId == nil {
+                return self.allOfStationItemsId.count
+            //}
         } else {
-            return 0
+
         }
+        return 0
     }
     
     /*******************************************************************************
@@ -436,7 +447,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             resultTipCelllblStationFare.text = "PUBLIC_10".localizedString()
             resultTipCelllblStationFareTip.text = getFare()
             resultTipCelllblStationFareTipAfter.text = "CMN003_26".localizedString()
-            resultTipCelllblStationTime.text = "CMN003_27".localizedString()
+            resultTipCelllblStationTime.text = "预计耗时"
             resultTipCelllblStationTimeTip.text = String(self.totalTime)
             resultTipCelllblStationTimeTipAfter.text = "CMN003_03".localizedString()
         } else {
@@ -496,11 +507,6 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             
             resultCellIvStaionIcon.image = "route_end".getImage()
             resultCelllblStationName.text = self.endStationText.station()
-            
-//            /////    test
-//            var exitInfoDic = landMarkExitInfo("12")
-//            resultCelllblStationEixtInfo = mViewExitInfo(exitInfoDic!, viewInfo: resultCelllblStationEixtInfo, cell:cell)
-//            ////////////// test 
             
             if (!endStationLandMarkId.isEmpty) {
                 if(landMarkExitInfo(endStationLandMarkId) != nil){
@@ -850,6 +856,17 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             btnCollect2.setBackgroundImage("searchroute_collection".getImage(), forState: UIControlState.Normal)
             btnCollect2.tag == 2133
         }
+        
+        if (self.startStationText != "" && self.endStationText != ""){
+            var tempRoute = getRouteIdByStationId(startStationText as NSString, endStationId: endStationText as NSString)
+            if (routeIsCollected(tempRoute)) {
+                
+                btnCollectRoute.setBackgroundImage("route_collectionRoutelight".getImage(), forState: UIControlState.Normal)
+            } else {
+                btnCollectRoute.setBackgroundImage("route_collectionRoute".getImage(), forState: UIControlState.Normal)
+            }
+        }
+        
     }
     
     // 搜索路线
@@ -864,12 +881,20 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
     }
     
      @IBAction func isPopToAlarm() {
+        // 7512 表示已经设置过提醒 7511 表示还没设置提醒 btnSetAlarm.tag = 7511
+   
+        if (isAlarmFlag == "2") {
+            // 弹信息： 表示已经设置过提醒，无法跳转，需要跳转。需要去线路页面取消现在的提醒
+            errAlertView("CMN003_12".localizedString(), errMgs: "请先取消已存在的提醒", errBtnTitle: "PUBLIC_06".localizedString())
+        } else {
+            var remindDetailController : RemindDetailController = self.storyboard?.instantiateViewControllerWithIdentifier("reminddetail") as RemindDetailController
+            remindDetailController.routeStatTable01 = cmn003Model.getStationDetialById(routeStartStationId)
+            remindDetailController.routeStatTable02 = cmn003Model.getStationDetialById(routeEndStationId)
+            remindDetailController.segIndex = 0
+            self.navigationController?.pushViewController(remindDetailController, animated:true)
+        }
         
-        var remindDetailController : RemindDetailController = self.storyboard?.instantiateViewControllerWithIdentifier("reminddetail") as RemindDetailController
-        remindDetailController.routeStatTable01 = cmn003Model.getStationDetialById(routeStartStationId)
-        remindDetailController.routeStatTable02 = cmn003Model.getStationDetialById(routeEndStationId)
-        remindDetailController.segIndex = 0
-        self.navigationController?.pushViewController(remindDetailController, animated:true)
+       
         
     }
     
@@ -1014,18 +1039,24 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
     }
 
     /**
-    * 到DB中查找最近的站点
-    */
-    func selectStationTable(fromLocation: CLLocation) -> Array<MstT02StationTable>{
-        var stations:Array<MstT02StationTable> = Array<MstT02StationTable>()
+     * 到DB中查找最近的站点
+     */
+    func selectStationTable(currentLocation: CLLocation) -> Array<MstT02StationTableData>?{
+        let mMstT02Dao:MstT02StationTable = MstT02StationTable()
         
-        var dao = Cmn003Dao()
-        var coordinateOnMars: CLLocationCoordinate2D = fromLocation.coordinate
+        var coordinateOnMars: CLLocationCoordinate2D = currentLocation.coordinate
         var lon:CDouble = coordinateOnMars.longitude
         var lat:CDouble = coordinateOnMars.latitude
-        stations = dao.queryMiniDistance(lon,lat: lat) as Array<MstT02StationTable>
-        return stations
         
+        var mMst02Tables:Array<MstT02StationTable> = mMstT02Dao.queryNearbyStations(lon,lat: lat) as Array<MstT02StationTable>
+        
+        var mMst02Datas:Array<MstT02StationTableData> = Array<MstT02StationTableData>()
+        for mMst02Table in mMst02Tables{
+            var mMst02Data:MstT02StationTableData = MstT02StationTableData()
+            mMst02Datas.append(mMst02Data.fromDAO(mMst02Table) as MstT02StationTableData)
+        }
+        
+        return mMst02Datas
     }
     
     // 收藏路径和提醒UIView
@@ -1038,24 +1069,29 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         btnCollectRoute.addTarget(self, action: "addUserfavoriteRoute", forControlEvents: UIControlEvents.TouchUpInside)
         if (routeIsCollected(self.routeID)){
             btnCollectRoute.setBackgroundImage("route_collectionRoutelight".getImage(), forState: UIControlState.Normal)
+            
+            btnCollectRoute.tag = 235
         } else {
             btnCollectRoute.setBackgroundImage("route_collectionRoute".getImage(), forState: UIControlState.Normal)
+            btnCollectRoute.tag = 255
         }
         self.testView.addSubview(btnCollectRoute)
         
         let usrt01Alarms:[UsrT01ArrivalAlarmTableData]? = mUsr002Model.findArrivalAlarm()
-        var isAlarmFlag:String = "1"
+//        var isAlarmFlag:String = "1"
         for key in usrt01Alarms!{
             if(key.cancelFlag != "" && key.cancelFlag == "0"){
                 isAlarmFlag = "2"
                 break
             }
         }
-        
+        // 7512 表示已经设置过提醒 7511 表示还没设置提醒 btnSetAlarm.tag = 7511
         if (isAlarmFlag == "2"){
             btnSetAlarm.setBackgroundImage("route_routeAlarmlight".getImage(), forState: UIControlState.Normal)
+            btnSetAlarm.tag = 7511
         } else {
             btnSetAlarm.setBackgroundImage("route_routeAlarm".getImage(), forState: UIControlState.Normal)
+            btnSetAlarm.tag = 7512
         }
         
         btnSetAlarm.addTarget(self, action: "isPopToAlarm", forControlEvents: UIControlEvents.TouchUpInside)
@@ -1275,61 +1311,63 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
 
     // 位置定位到最近站点
     func locationUpdateComplete(location: CLLocation){
-        
-        if(!checkLocation(location.coordinate.latitude, longitude: location.coordinate.longitude)){
-            return
-        }
-        
+        println("UpdateComplete")
         self.pageTag = "3"
-        allOfNearlyStationItemsId.removeAllObjects()
-        allOfNearlyStationItemsJP.removeAllObjects()
-        allOfNearlylineImageItems.removeAllObjects()
-        allOfNearlyStationItemsJpKana.removeAllObjects()
-        allNearlyStationlineGroup.removeAllObjects()
+        self.allOfNearlyStationItemsId = NSMutableArray.array()
+        self.allOfNearlyStationItemsJP = NSMutableArray.array()
+        self.allOfNearlylineImageItems = NSMutableArray.array()
+        self.allOfNearlyStationItemsJpKana = NSMutableArray.array()
+        self.allNearlyStationlineGroup = NSMutableArray.array()
         self.vtbResultView.hidden = true
         self.tbResultView.hidden = true
         self.tbView.hidden = false
         self.vtbView.hidden = false
         self.tbView.reloadData()
-        
-        var locationTest : CLLocation = CLLocation(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
         // 获取最近的10个站点
-        var nearlyStations : Array<MstT02StationTable> = selectStationTable(location)
-        
-        // 显示唯10条
-        for nearlystationId in nearlyStations{
-            var mMst02tableNearlyStation = MstT02StationTable()
-            
-            mMst02tableNearlyStation.statId = nearlystationId.statId as String
-            
-            var mst02StationID:NSArray = mMst02tableNearlyStation.selectAll()
-            
-            for key in mst02StationID {
+        var nearlyStations : Array<MstT02StationTableData>? = selectStationTable(location)
+
+        if(!(nearlyStations == nil) && nearlyStations!.count > 0){
+            // 显示唯10条
+            for nearlystation in nearlyStations!{
+                var stationNameJP:AnyObject = nearlystation.statId.station()
+                var stationId:AnyObject = nearlystation.statId
+                var statSeqArr:NSArray = NSArray.array()
                 
-                key as MstT02StationTable
-                var stationNameJP:AnyObject = key.item(MSTT02_STAT_NAME)
-                var stationId:AnyObject = key.item(MSTT02_STAT_ID)
-                var statGroupId = key.item(MSTT02_STAT_GROUP_ID) as String
-                var stationNameKanatemp = key.item(MSTT02_STAT_NAME_KANA) as String
-                var statSeqArr = mst02table.excuteQuery("select LINE_ID, ROWID from MSTT02_STATION where 1 = 1 and STAT_GROUP_ID = \(statGroupId)")
-                
+                var mst02table:MstT02StationTable = MstT02StationTable()
+                statSeqArr = mst02table.excuteQuery("select LINE_ID, ROWID from MSTT02_STATION where 1 = 1 and STAT_GROUP_ID = \(nearlystation.statGroupId)")
+                var stationNameKanatemp:AnyObject = nearlystation.statNameKana
+
                 self.allOfNearlylineImageItems.addObject(statSeqArr)
                 self.allOfNearlyStationItemsJP.addObject(stationNameJP)
                 self.allOfNearlyStationItemsId.addObject(stationId)
                 self.allOfNearlyStationItemsJpKana.addObject(stationNameKanatemp)
+                
+//                var mMst02tableNearlyStation = MstT02StationTable()
+//                
+//                mMst02tableNearlyStation.statId = nearlystationId.statId as String
+//                
+//                var mst02StationID:NSArray = mMst02tableNearlyStation.selectAll()
+                
+                
+                
+                
+//                for key in nearlystationId {
+                
+//                    key as MstT02StationTable
+//                }
+                
             }
-            
+            self.vtbResultView.hidden = true
+            self.tbResultView.hidden = true
+            self.tbView.hidden = false
+            self.vtbView.hidden = false
+            self.tbView.reloadData()
         }
-        vtbResultView.hidden = true
-        tbResultView.hidden = true
-        tbView.hidden = false
-        vtbView.hidden = false
-        tbView.reloadData()
-        showTipBtn("0")
-        mNearlyLogo.image = "route_locatelight".getImage()
-        mCollectionLogo.image = "route_collected".getImage()
-        btnCollectionStation.tag = 10001
-        btnNearlyStation.tag = 10012
+        self.showTipBtn("0")
+        self.mNearlyLogo.image = "route_locatelight".getImage()
+        self.mCollectionLogo.image = "route_collected".getImage()
+        self.btnCollectionStation.tag = 10001
+        self.btnNearlyStation.tag = 10012
     }
     
     // 放置本地数据
@@ -1345,6 +1383,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
                 
             } else {
                 btnCollect1.setBackgroundImage("searchroute_collection".getImage(), forState: UIControlState.Normal)
+                btnCollect1.tag = 1133
             }
         } else if (focusNumber == "2"){
             
@@ -1353,6 +1392,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
                 btnCollect2.tag = 2233
             } else {
                 btnCollect2.setBackgroundImage("searchroute_collection".getImage(), forState: UIControlState.Normal)
+                btnCollect2.tag = 2133
             }
         }
         
@@ -1422,6 +1462,8 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         var exitMoveTime: String = ""
         var exitInfo: String = ""
         
+        var lmakName:String = ""
+        
         if (!lmakId.isEmpty) {
             var mst04LandMarkTable : MstT04LandMarkTable = MstT04LandMarkTable()
             mst04LandMarkTable.lmakId = lmakId
@@ -1434,6 +1476,11 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
                 if (lmak04SearchResult[0].statExitTime.description != "nil") {
                         exitMoveTime = lmak04SearchResult[0].statExitTime.description
                     }
+                if (lmak04SearchResult[0].lmakName.description != "nil") {
+                    lmakName = lmak04SearchResult[0].lmakName.description
+                    
+                }
+
              
                 
             } else {
@@ -1442,7 +1489,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         
         }
         
-        var exitInfoDic : Dictionary = ["exitId":exitId, "exitMoveTime":exitMoveTime]
+        var exitInfoDic : Dictionary = ["exitId":exitId, "exitMoveTime":exitMoveTime,"lmakName":lmakName]
 
         return exitInfoDic
     
@@ -1471,9 +1518,9 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         var lblExitNameBefor : UILabel = UILabel()
         lblExitNameBefor.font = UIFont.systemFontOfSize(11)
         lblExitNameBefor.textColor = UIColor.lightGrayColor()
-        lblExitNameBefor.text = "从"
+        lblExitNameBefor.text = "请从"
         lblExitNameBefor.tag = 4501
-        lblExitNameBefor.frame = CGRectMake(0, 17, 15, 33)
+        lblExitNameBefor.frame = CGRectMake(0, 10, 25, 33)
         
         var mlblExitName = viewInfoFunc.viewWithTag(4502)
         if (mlblExitName != nil ){
@@ -1482,7 +1529,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         var lblExitName : UILabel = UILabel()
         lblExitName.tag = 4502
         lblExitName.font = UIFont.systemFontOfSize(15)
-        lblExitName.frame = CGRectMake(15, 17, 190, 33)
+        lblExitName.frame = CGRectMake(25, 10, 190, 33)
         lblExitName.textAlignment = NSTextAlignment.Center
         lblExitName.text = exitIdFunc.stationExit()
         var mlblExitNameAfter = viewInfoFunc.viewWithTag(4503)
@@ -1493,8 +1540,8 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         lblExitNameAfter.tag = 4503
         lblExitNameAfter.font = UIFont.systemFontOfSize(11)
         lblExitNameAfter.textColor = UIColor.lightGrayColor()
-        lblExitNameAfter.frame = CGRectMake(205, 17, 25, 33)
-        lblExitNameAfter.text = "出发"
+        lblExitNameAfter.frame = CGRectMake(205, 10, 25, 33)
+        lblExitNameAfter.text = "出站"
         
         viewInfoFunc.addSubview(lblExitNameBefor)
         viewInfoFunc.addSubview(lblExitName)
@@ -1502,43 +1549,83 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         
         
         var exitMoveTimeFunc: String? = exitInfoDicFunc["exitMoveTime"] as String!
-        if ((exitMoveTimeFunc != nil) && (exitMoveTimeFunc != "0") && (exitMoveTimeFunc != "") ) {
-            var lblTimeBefore = viewInfoFunc.viewWithTag(5501)
-            if (lblTimeBefore != nil ){
-                lblTimeBefore?.removeFromSuperview()
-            }
-            var lblExitTimeBefor : UILabel = UILabel()
-            lblExitTimeBefor.font = UIFont.systemFontOfSize(11)
-            lblExitTimeBefor.textColor = UIColor.lightGrayColor()
-            lblExitTimeBefor.text = "步行大约"
-            lblExitTimeBefor.tag = 5501
-            lblExitTimeBefor.frame = CGRectMake(140, 0, 50, 22)
+        if ((exitMoveTimeFunc != nil)) {
             
-            var mlblTimeName = viewInfoFunc.viewWithTag(5502)
-            if (mlblTimeName != nil ){
-                mlblTimeName?.removeFromSuperview()
-            }
-            var lblExitTime : UILabel = UILabel()
-            lblExitTime.tag = 5502
-            lblExitTime.font = UIFont.systemFontOfSize(15)
-            lblExitTime.frame = CGRectMake(190, 0, 20, 22)
-            lblExitTime.textAlignment = NSTextAlignment.Center
-            lblExitTime.text = exitMoveTimeFunc
-            var mlblExitTimeAfter = viewInfoFunc.viewWithTag(5503)
-            if (mlblExitTimeAfter != nil ){
-                mlblExitTimeAfter?.removeFromSuperview()
-            }
-            var lblExitTimeAfter : UILabel = UILabel()
-            lblExitTimeAfter.tag = 5503
-            lblExitTimeAfter.font = UIFont.systemFontOfSize(11)
-            lblExitTimeAfter.textColor = UIColor.lightGrayColor()
-            lblExitTimeAfter.frame = CGRectMake(220, 0, 25, 22)
-            lblExitTimeAfter.text = "CMN003_03".localizedString()
-            viewInfoFunc.addSubview(lblExitTimeBefor)
-            viewInfoFunc.addSubview(lblExitTime)
-            viewInfoFunc.addSubview(lblExitTimeAfter)
-        }
+            
+            if ((exitMoveTimeFunc != "0") && (exitMoveTimeFunc != "")) {
+                var lblTimeBefore = viewInfoFunc.viewWithTag(5501)
+                if (lblTimeBefore != nil ){
+                    lblTimeBefore?.removeFromSuperview()
+                }
+                var lblExitTimeBefor : UILabel = UILabel()
+                lblExitTimeBefor.font = UIFont.systemFontOfSize(11)
+                lblExitTimeBefor.textColor = UIColor.lightGrayColor()
+                lblExitTimeBefor.text = "步行大约"
+                lblExitTimeBefor.tag = 5501
+                lblExitTimeBefor.frame = CGRectMake(0, 33, 50, 22)
+                
+                var mlblTimeName = viewInfoFunc.viewWithTag(5502)
+                if (mlblTimeName != nil ){
+                    mlblTimeName?.removeFromSuperview()
+                }
+                var lblExitTime : UILabel = UILabel()
+                lblExitTime.tag = 5502
+                lblExitTime.font = UIFont.systemFontOfSize(15)
+                lblExitTime.frame = CGRectMake(50, 33, 15, 22)
+                lblExitTime.textAlignment = NSTextAlignment.Center
+                lblExitTime.text = exitMoveTimeFunc
+                var mlblExitTimeAfter = viewInfoFunc.viewWithTag(5503)
+                if (mlblExitTimeAfter != nil ){
+                    mlblExitTimeAfter?.removeFromSuperview()
+                }
+                var lblExitTimeAfter : UILabel = UILabel()
+                lblExitTimeAfter.tag = 5503
+                lblExitTimeAfter.font = UIFont.systemFontOfSize(11)
+                lblExitTimeAfter.textColor = UIColor.lightGrayColor()
+                lblExitTimeAfter.frame = CGRectMake(70, 33, 60, 22)
+                lblExitTimeAfter.text = "CMN003_03".localizedString() + ",到达"
+                viewInfoFunc.addSubview(lblExitTimeBefor)
+                viewInfoFunc.addSubview(lblExitTime)
+                viewInfoFunc.addSubview(lblExitTimeAfter)
+        
+            } else {
+                var mlblGoStraight = viewInfoFunc.viewWithTag(7501)
+                if (mlblGoStraight != nil ){
+                    mlblGoStraight?.removeFromSuperview()
+                }
+                var lblGoStraight : UILabel = UILabel()
+                lblGoStraight.font = UIFont.systemFontOfSize(11)
+                lblGoStraight.textColor = UIColor.lightGrayColor()
+                lblGoStraight.text = "直接到达"
+                lblGoStraight.tag = 7501
+                lblGoStraight.frame = CGRectMake(0, 33, 120, 22)
+                viewInfoFunc.addSubview(lblGoStraight)
 
+            }
+                
+            
+            
+        
+        }
+ 
+        var endStationLandMarkName: String? = exitInfoDicFunc["lmakName"] as String!
+        if ((endStationLandMarkName != nil) && (endStationLandMarkName != "") ) {
+
+            
+            var mlblLandName = viewInfoFunc.viewWithTag(6502)
+            if (mlblLandName != nil ){
+                mlblLandName?.removeFromSuperview()
+            }
+            var lblLandName : UILabel = UILabel()
+            lblLandName.tag = 6502
+            lblLandName.font = UIFont.systemFontOfSize(15)
+            lblLandName.frame = CGRectMake(130, 33, 150, 22)
+            lblLandName.textAlignment = NSTextAlignment.Left
+            lblLandName.text = endStationLandMarkName
+            
+            viewInfoFunc.addSubview(lblLandName)
+        }
+        
     }
 
     /**
@@ -1546,8 +1633,8 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
      * @param latitude,longitude
      *  -> Bool
      */
-    func checkLocation(latitude: Double, longitude: Double) -> Bool{
-        return latitude > 0 && latitude < 90 && longitude > 0 && longitude < 180
+    func checkLocation(latitude: Double?, longitude: Double?) -> Bool{
+        return !(latitude == nil) && !(longitude == nil) && latitude > 0 && latitude < 90 && longitude > 0 && longitude < 180
     }
     
 
@@ -1572,7 +1659,12 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             
         }
     }
-
+    
+    /**
+     * 位置定位完成
+     */
+    func locationUpdateError(){
+    }
     
 }
 

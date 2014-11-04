@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 import CoreLocation
 
-class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource, MKMapViewDelegate, UIActionSheetDelegate {
+class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource, MKMapViewDelegate, UIActionSheetDelegate, GPSDelegate {
 
     /*******************************************************************************
     * IBOutlets
@@ -20,12 +20,18 @@ class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource, MK
     /* 地图MKMapView */
     @IBOutlet weak var mkMap: MKMapView!
     
+    
+    /* GPSHelper */
+    let GPS_HELPER:GPSHelper = GPSHelper()
+    let BTN_LOCATION_TAG:Int = 120
+    
 
     /*******************************************************************************
     * Public Properties
     *******************************************************************************/
     
     var statId: String = ""
+    var statAddr: String = ""
     
     var landMarkArr: NSArray = NSArray.array()
     
@@ -54,6 +60,10 @@ class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource, MK
 //    var stationLength: String = ""
     
     var targetLocation: CLLocation?
+    var mLandMarkType:String?
+    /* 当前位置 */
+    var currentLocation:CLLocation?
+    var mAnnotation:MKPointAnnotation?
     
     /*******************************************************************************
     * Overrides From UIViewController
@@ -63,6 +73,16 @@ class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource, MK
         super.viewDidLoad()
         
         self.title = "STA002_19".localizedString()
+        
+        var searchButtonTemp:UIButton? = UIButton.buttonWithType(UIButtonType.System) as? UIButton
+        searchButtonTemp!.frame = CGRect(x:0,y:0,width:25,height:25)
+        var imgLandMark = UIImage(named: "sta00303")
+        searchButtonTemp!.setBackgroundImage(imgLandMark, forState: UIControlState.Normal)
+        searchButtonTemp!.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
+        searchButtonTemp!.tag = BTN_LOCATION_TAG
+        var searchButton:UIBarButtonItem = UIBarButtonItem(customView: searchButtonTemp!)
+        self.navigationItem.rightBarButtonItem = searchButton
+        
         odbExitInfo()
     }
     
@@ -135,23 +155,26 @@ class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource, MK
             
             
             var mapTitle: String! = annotation.title
-            if (mapTitle == statId.station() && annotation.subtitle == "") {
+            if (mapTitle == statId.station() && annotation.subtitle == statAddr) {
                 pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: statId.station())
                 img = UIImage(named: "STA00301")
-            } else {
+            }else if(annotation.subtitle == ""){
                 pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: annotation.title!)
-                
-                switch (annotation.subtitle! as String) {
-                case "景点":
-                    img = UIImage(named: "INF00204")
-                case "美食":
-                    img = UIImage(named: "INF00203")
-                case "购物":
-                    img = UIImage(named: "INF00205")
-                default:
-                    println("nothing")
+                img = UIImage(named: "STA00302")
+            }else {
+                pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: annotation.title!)
+                if(!(mLandMarkType == nil)){
+                    switch ("\(mLandMarkType)" as NSString).integerValue{
+                    case 1:
+                        img = UIImage(named: "INF00204")
+                    case 2:
+                        img = UIImage(named: "INF00203")
+                    case 3:
+                        img = UIImage(named: "INF00205")
+                    default:
+                        println("nothing")
+                   }
                 }
-                
             }
             
             pinView!.pinColor = .Red
@@ -164,6 +187,10 @@ class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource, MK
 
     func mapView(mapView: MKMapView!, didSelectAnnotationView view: MKAnnotationView!){
         if(view.annotation.subtitle == nil){
+            return
+        }else if(view.annotation.subtitle == statAddr){
+            targetLocation = nil
+            exitTable.reloadData()
             return
         }
 //        if(locatonArr.count > 0 && locatonArr.count < 2) {
@@ -192,7 +219,47 @@ class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource, MK
         
         return renderer
     }
-
+    /*******************************************************************************
+    *      Implements Of GPSDelegate
+    *******************************************************************************/
+    
+    /**
+     * 位置定位完成
+     */
+    func locationUpdateComplete(location: CLLocation){
+        currentLocation = location
+        
+        if(!checkLocation(currentLocation!.coordinate.latitude, longitude: currentLocation!.coordinate.longitude)){
+            return
+        }
+        if(mAnnotation == nil){
+            mAnnotation = MKPointAnnotation()
+        }else{
+            mkMap.removeAnnotation(mAnnotation!)
+        }
+        
+        var coordinateOnEarth = currentLocation!.coordinate
+        
+        mAnnotation!.title = "STA003_02".localizedString()
+        mAnnotation!.subtitle = ""
+        
+        mAnnotation!.coordinate = coordinateOnEarth
+        mkMap.addAnnotation(mAnnotation!)
+        
+        mkMap.setCenterCoordinate(coordinateOnEarth, animated:true)
+        
+        var span: MKCoordinateSpan = MKCoordinateSpanMake(0.01, 0.01)
+        var region : MKCoordinateRegion = MKCoordinateRegionMake(coordinateOnEarth, span)
+        mkMap.setRegion(region, animated:true)
+    }
+    
+    /**
+     * 位置定位完成
+     */
+    func locationUpdateError(){
+    }
+    
+    
     /*******************************************************************************
     *    Private Methods
     *******************************************************************************/
@@ -207,13 +274,13 @@ class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource, MK
     
     
     /**
-    * 显示地图
-    */
+     * 显示地图
+     */
     func initMap(){
         mkMap.delegate = self
         // 设置地图显示类型
         mkMap.mapType = MKMapType.Standard
-        mkMap.showsUserLocation = true
+        //mkMap.showsUserLocation = true
         
         var span: MKCoordinateSpan = MKCoordinateSpanMake(0.01, 0.01)
         
@@ -240,6 +307,7 @@ class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource, MK
             annotation.coordinate = CLLocation(latitude: (statLat as NSString).doubleValue, longitude: (statLon as NSString).doubleValue).coordinate
             annotation.title = "\(key.item(MSTT04_LANDMARK_LMAK_NAME_EXT1))"
             annotation.subtitle = "\(key.item(MSTT04_LANDMARK_LMAK_ADDR))"
+            mLandMarkType = "\(key.item(MSTT04_LANDMARK_LMAK_TYPE))"
             mkMap.addAnnotation(annotation)
             var region : MKCoordinateRegion = MKCoordinateRegionMake(annotation.coordinate, span)
             mkMap.setRegion(region, animated:true)
@@ -247,7 +315,11 @@ class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource, MK
 
         
         annotation.title = "\(statId.station())"
-        annotation.subtitle = ""
+        
+        var mMstT02Dao:MstT02StationTable = MstT02StationTable()
+        mMstT02Dao.statId = statId
+        statAddr = "\((mMstT02Dao.select() as MstT02StationTable).item(MSTT02_STAT_ADDR))"
+        annotation.subtitle = statAddr
         
         annotation.coordinate = coordinateOnEarth
         
@@ -309,4 +381,35 @@ class ExitInfo: UIViewController, UITableViewDelegate, UITableViewDataSource, MK
         return distance
     }
     
+    /**
+     * Button点击事件
+     */
+    func buttonAction(sender: UIButton){
+        switch sender.tag{
+        case BTN_LOCATION_TAG:
+            loadLocation()
+        default:
+            println("nothing")
+        }
+    }
+    
+    
+    /**
+     * checkLocation
+     * @param latitude,longitude
+     *  -> Bool
+     */
+    func checkLocation(latitude: Double, longitude: Double) -> Bool{
+        return latitude > 0 && latitude < 90 && longitude > 0 && longitude < 180
+    }
+
+    /**
+     * 加载当前位置
+     */
+    func loadLocation(){
+        if(GPS_HELPER.delegate == nil){
+            GPS_HELPER.delegate = self
+        }
+        GPS_HELPER.updateLocation()
+    }
 }

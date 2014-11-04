@@ -211,4 +211,16 @@ extension String {
         }
         return specialWards
     }
+    
+    /**
+     * 获取本地语言
+     */
+    func localLanguage() -> String {
+        var languages:[AnyObject] = NSLocale.preferredLanguages()
+        if(languages.count > 0){
+            return "\(languages[0])"
+        }else{
+            return ""
+        }
+    }
 }

@@ -47,13 +47,19 @@ class LandMarkListController: UIViewController, UITableViewDelegate, UITableView
     var landMarkType:Int = 0
     /* 地区 */
     var landMarkSpecialWard:String? = ""
+    var landMarkShowSpecialWard:String? = ""
     /* 距离 */
     var landMarkRange:Int = 100000
     /* 站点 */
     var landMarkStatId:String? = ""
+    var landMarkSubType:String = "INF002_19".localizedString()
+    var landMarkPrice:Int = 0
+    var landMarkMiciRank:String = ""
+    var landMarkRank:String = ""
     
     var classType:String?
-
+    /* 当前位置 */
+    var currentLocation:CLLocation?
     
     /*******************************************************************************
     * Private Properties
@@ -61,7 +67,6 @@ class LandMarkListController: UIViewController, UITableViewDelegate, UITableView
     
     /* 地标一览 */
     var landMarks:Array<MstT04LandMarkTable>?
-    var mLocation:CLLocation?
     
     
     /*******************************************************************************
@@ -91,7 +96,7 @@ class LandMarkListController: UIViewController, UITableViewDelegate, UITableView
             green: 239/255,
             blue: 244/255,
             alpha: 1.0)
-
+        
         // 查询按钮点击事件
         var searchButtonTemp:UIButton? = UIButton.buttonWithType(UIButtonType.System) as? UIButton
         searchButtonTemp!.frame = CGRect(x:0,y:0,width:25,height:25)
@@ -105,6 +110,9 @@ class LandMarkListController: UIViewController, UITableViewDelegate, UITableView
     }
     
     override func viewWillAppear(animated: Bool) {
+        tbList.hidden = false
+        tempView.hidden = true
+
         if(landMarks == nil){
             landMarks = selectLandMarkTable(landMarkType)
         }
@@ -132,7 +140,7 @@ class LandMarkListController: UIViewController, UITableViewDelegate, UITableView
     func tableView(tableView: UITableView, didSelectRowAtIndexPath: NSIndexPath){
         var landMarkDetailController = self.storyboard!.instantiateViewControllerWithIdentifier("landmarkdetail") as LandMarkDetailController
         
-        landMarkDetailController.title = landMarks![didSelectRowAtIndexPath.row].lmakName
+        landMarkDetailController.title = landMarks![didSelectRowAtIndexPath.row].lmakNameExt1
         landMarkDetailController.landMark = landMarks![didSelectRowAtIndexPath.row]
         var backButton = UIBarButtonItem(title: "PUBLIC_05".localizedString(), style: UIBarButtonItemStyle.Bordered, target: nil, action: nil)
         self.navigationItem.backBarButtonItem = backButton
@@ -188,7 +196,7 @@ class LandMarkListController: UIViewController, UITableViewDelegate, UITableView
         lblLandMark.backgroundColor = UIColor.clearColor()
         lblLandMark.font = UIFont.boldSystemFontOfSize(16)
         lblLandMark.textColor = UIColor.whiteColor()
-        lblLandMark.text = "\(landMarks![indexPath.row].item(MSTT04_LANDMARK_LMAK_NAME))"
+        lblLandMark.text = "\(landMarks![indexPath.row].item(MSTT04_LANDMARK_LMAK_NAME_EXT1))"
         lblLandMark.textAlignment = NSTextAlignment.Left
         cell!.contentView.addSubview(lblLandMark)
         
@@ -284,7 +292,13 @@ class LandMarkListController: UIViewController, UITableViewDelegate, UITableView
      * 位置定位完成
      */
     func locationUpdateComplete(location: CLLocation){
-        mLocation = location
+        currentLocation = location
+    }
+
+    /**
+     * 位置定位完成
+     */
+    func locationUpdateError(){
     }
 
     
@@ -299,13 +313,23 @@ class LandMarkListController: UIViewController, UITableViewDelegate, UITableView
     func buttonAction(sender: UIButton){
         switch sender.tag{
         case BTN_SEARCH_TAG:
+            if((landMarks == nil || landMarks!.count < 1) && !(classType == nil)){
+                return
+            }
+            
             var landMarkSearchController = self.storyboard!.instantiateViewControllerWithIdentifier("landmarksearch") as LandMarkSearchController
-            landMarkSearchController.fromLat = self.fromLat
-            landMarkSearchController.fromLon = self.fromLon
+            landMarkSearchController.currentLocation = self.currentLocation
+            
             landMarkSearchController.landMarkType = self.landMarkType
             landMarkSearchController.landMarkSpecialWard = self.landMarkSpecialWard
+            landMarkSearchController.landMarkShowSpecialWard = self.landMarkShowSpecialWard!
             landMarkSearchController.landMarkRange = self.landMarkRange
             landMarkSearchController.landMarkStatId = self.landMarkStatId
+            landMarkSearchController.landMarkSubType = self.landMarkSubType
+            landMarkSearchController.landMarkPrice = self.landMarkPrice
+            landMarkSearchController.landMarkMiciRank = self.landMarkMiciRank
+            landMarkSearchController.landMarkRank = self.landMarkRank
+            
             landMarkSearchController.classType = self.classType
             
             if(!(classType == nil)){
@@ -340,16 +364,6 @@ class LandMarkListController: UIViewController, UITableViewDelegate, UITableView
             }
 
         }
-    }
-    
-    /**
-     * 加载当前位置
-     */
-    func loadLocation(){
-        if(GPShelper.delegate == nil){
-            GPShelper.delegate = self
-        }
-        GPShelper.updateLocation()
     }
     
     /**

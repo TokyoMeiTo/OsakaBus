@@ -37,39 +37,33 @@ class GPSHelper: UIViewController, CLLocationManagerDelegate{
         case CLAuthorizationStatus.NotDetermined:
             GPSEnabled = false
             locationManager.delegate = self
+            delegate!.locationUpdateError()
             //for ios 8
             if (locationManager.respondsToSelector("requestAlwaysAuthorization")){
                 locationManager.requestWhenInUseAuthorization()
             }else{
                 // 未打开定位服务
-                RemindDetailController.showMessage(MSG_0001,
-                    msg:MSG_0002,
-                    buttons:[MSG_0003],
-                    delegate: self)
+                alertGPSTip()
             }
         case CLAuthorizationStatus.Restricted:
             GPSEnabled = false
+            delegate!.locationUpdateError()
             //for ios 8
             if (locationManager.respondsToSelector("requestAlwaysAuthorization")){
                 locationManager.requestWhenInUseAuthorization()
             }else{
                 // 未打开定位服务
-                RemindDetailController.showMessage(MSG_0001,
-                    msg:MSG_0002,
-                    buttons:[MSG_0003],
-                    delegate: self)
+                alertGPSTip()
             }
         case CLAuthorizationStatus.Denied:
             GPSEnabled = false
+            delegate!.locationUpdateError()
             //for ios 8
             if (locationManager.respondsToSelector("requestAlwaysAuthorization")){
                 locationManager.requestWhenInUseAuthorization()
             }else{
                 // 未打开定位服务
-                RemindDetailController.showMessage(MSG_0001,
-                    msg:MSG_0002,
-                    buttons:[MSG_0003],
-                    delegate: self)
+                alertGPSTip()
             }
         case CLAuthorizationStatus.Authorized:
             GPSEnabled = true
@@ -92,6 +86,37 @@ class GPSHelper: UIViewController, CLLocationManagerDelegate{
         }
     }
     
+    func checkGPSStatus() -> Bool{
+        var authStatus = CLLocationManager.authorizationStatus()
+        
+        var GPSEnabled = false
+        switch authStatus {
+        case CLAuthorizationStatus.NotDetermined:
+            GPSEnabled = false
+            
+        case CLAuthorizationStatus.Restricted:
+            GPSEnabled = false
+            
+        case CLAuthorizationStatus.Denied:
+            GPSEnabled = false
+            
+        case CLAuthorizationStatus.Authorized:
+            GPSEnabled = true
+            
+        case CLAuthorizationStatus.AuthorizedWhenInUse:
+            GPSEnabled = true
+        }
+        return GPSEnabled
+    }
+    
+    func alertGPSTip(){
+        // 未打开定位服务
+        RemindDetailController.showMessage(MSG_0001,
+            msg:MSG_0002,
+            buttons:[MSG_0003],
+            delegate: self)
+    }
+    
     /*
      *  locationManager:didUpdateLocations:
      *
@@ -103,17 +128,12 @@ class GPSHelper: UIViewController, CLLocationManagerDelegate{
      *    locations is an array of CLLocation objects in chronological order.
      */
     func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!){
-        // 没有获取到位置信息
-        if(locations.isEmpty){
-            return
-        }
         // 经纬度获取成功
         currentLocation = locations[locations.count - 1] as CLLocation
         
         if(checkLocation(currentLocation.coordinate.latitude, longitude: currentLocation.coordinate.longitude)){
             delegate!.locationUpdateComplete(currentLocation)
         }
-        
         manager.stopUpdatingLocation()
     }
     

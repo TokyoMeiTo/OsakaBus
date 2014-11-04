@@ -41,7 +41,7 @@ class LocalCacheController: UIViewController, UIAlertViewDelegate{
     // "http://osakabus.sinaapp.com/Resource.zip"
     // "http://192.168.1.84/Resource.zip"
     // "http://www.okasan.net/Resource.zip"
-    let uri:String = "http://192.168.1.84/Resource.zip"
+    let uri:String = "http://www.okasan.net/Resource.zip"
     
     let filePath:String = "Resource.zip"
     let unZipPath:String = "TokyoMetroCache"
@@ -62,7 +62,7 @@ class LocalCacheController: UIViewController, UIAlertViewDelegate{
     
     /* NSFileManager */
     let fileManager = NSFileManager()
-    var progress:NSProgress?
+    var mProgress:NSProgress?
     var updateComplete:Bool = false
     var canUpdate:Bool = false
     
@@ -70,6 +70,8 @@ class LocalCacheController: UIViewController, UIAlertViewDelegate{
     var UIloading:Bool = false
     var loadProgress:String? = ""
     var tipText:String = "DLD001_08".localizedString()
+    /* 线程池 */
+    var mQueue:NSOperationQueue = NSOperationQueue()
     
     /*******************************************************************************
     * Overrides From UIViewController
@@ -128,6 +130,16 @@ class LocalCacheController: UIViewController, UIAlertViewDelegate{
         switch buttonIndex{
         case 0:
             downloadCompressFile(uri)
+//            var mDownloadThread = DownloadThread.shareInstance()
+//            mDownloadThread.controller = self
+//            if(!(mDownloadThread.isRun == nil)){
+//                if(mDownloadThread.isRun!){
+//                    threadIsRunning(mDownloadThread)
+//                }else{
+//                    threadIsNoRunning(mDownloadThread)
+//                }
+//            }
+            runInBackground()
         default:
             println("nothing")
         }
@@ -143,8 +155,8 @@ class LocalCacheController: UIViewController, UIAlertViewDelegate{
         self.navigationItem.rightBarButtonItem = nil
         lblProgress.hidden = true
         lblCacheVersion.text = "DLD001_12".localizedString()
-        lblCacheSize.text = "DLD001_13".localizedString() + "83.5 MB"
-        lblMoibleSize.text = "DLD001_14".localizedString() + "\(LocalCacheController.getMemorySize())GB"
+        lblCacheSize.text = "DLD001_13".localizedString() + "81.1 MB"
+        lblMoibleSize.text = "DLD001_14".localizedString() + "\(LocalCacheController.getMemorySize()) GB"
         lblTip.text = tipText
         lblTip.numberOfLines = 0
         lblTip.lineBreakMode = NSLineBreakMode.ByCharWrapping
@@ -185,6 +197,16 @@ class LocalCacheController: UIViewController, UIAlertViewDelegate{
             case 0:
                 if(!downloading && !updateComplete){
                     downloadCompressFile(uri)
+//                    var mDownloadThread = DownloadThread.shareInstance()
+//                    mDownloadThread.controller = self
+//                    if(!(mDownloadThread.isRun == nil)){
+//                        if(mDownloadThread.isRun!){
+//                            threadIsRunning(mDownloadThread)
+//                        }else{
+//                            threadIsNoRunning(mDownloadThread)
+//                        }
+//                    }
+                    runInBackground()
                 }else if(!downloading && updateComplete){
                     if(mainController != nil){
                         mainController!.viewDidLoad()
@@ -202,6 +224,30 @@ class LocalCacheController: UIViewController, UIAlertViewDelegate{
         default:
             println("nothing")
         }
+    }
+    
+    func threadIsRunning(mDownloadThread: DownloadThread){
+        mProgress = mDownloadThread.progress!
+        downloading = true
+        updateComplete = false
+        lblProgress.text = ""
+        load(gaiLoading)
+        showProgress()
+        hideDownloadBtn()
+        if(!(mProgress == nil)){
+            mProgress!.setUserInfoObject("DO SOME", forKey: "11111")
+            mProgress!.addObserver(self, forKeyPath: "fractionCompleted", options: NSKeyValueObservingOptions.New | NSKeyValueObservingOptions.Old, context: nil)
+        }
+    }
+    
+    func threadIsNoRunning(mDownloadThread: DownloadThread){
+        mDownloadThread.progress = NSProgress(totalUnitCount: 1)
+        mProgress = mDownloadThread.progress!
+        mQueue.addOperation(mDownloadThread)
+//        if(!(mProgress == nil)){
+//            mProgress!.setUserInfoObject("DO SOME", forKey: "11111")
+//            mProgress!.addObserver(self, forKeyPath: "fractionCompleted", options: NSKeyValueObservingOptions.New | NSKeyValueObservingOptions.Old, context: nil)
+//        }
     }
     
     /**
@@ -264,7 +310,7 @@ class LocalCacheController: UIViewController, UIAlertViewDelegate{
         
         let session = AFHTTPSessionManager()
         
-        progress = NSProgress(totalUnitCount: 1)
+        mProgress = NSProgress(totalUnitCount: 1)
 
         downloading = true
         updateComplete = false
@@ -278,7 +324,7 @@ class LocalCacheController: UIViewController, UIAlertViewDelegate{
         load(gaiLoading)
         
         self.showProgress()
-        var downloadTask = session.downloadTaskWithRequest(request, progress: &progress, destination: {(file, response) in self.pathUrl},
+        var downloadTask = session.downloadTaskWithRequest(request, progress: &mProgress, destination: {(file, response) in self.pathUrl},
             completionHandler:{
                 response, localfile, error in
                 if(error == nil){
@@ -299,11 +345,11 @@ class LocalCacheController: UIViewController, UIAlertViewDelegate{
         hideDownloadBtn()
         
         // 设置这个progress的唯一标示符
-        progress!.setUserInfoObject("DO SOME", forKey: "11111")
+        mProgress!.setUserInfoObject("DO SOME", forKey: "11111")
         downloadTask.resume()
         
         // 给这个progress添加监听任务
-        progress!.addObserver(self, forKeyPath: "fractionCompleted", options: NSKeyValueObservingOptions.New | NSKeyValueObservingOptions.Old, context: nil)
+        mProgress!.addObserver(self, forKeyPath: "fractionCompleted", options: NSKeyValueObservingOptions.New | NSKeyValueObservingOptions.Old, context: nil)
     }
     
     /**

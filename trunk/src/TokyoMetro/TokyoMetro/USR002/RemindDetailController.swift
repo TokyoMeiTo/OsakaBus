@@ -48,9 +48,9 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
     /* 通知 */
     let MSG_0002 = "USR002_18".localizedString()
     /* 确定 */
-    let MSG_0003 = "USR002_20".localizedString()
+    let MSG_0003 = "PUBLIC_06".localizedString()
     /* 取消 */
-    let MSG_0004 = "USR002_21".localizedString()
+    let MSG_0004 = "PUBLIC_07".localizedString()
     /* 确定添加本条提醒？ */
     let MSG_0005 = "USR002_10".localizedString()
     /* 确定添加本条提醒？ */
@@ -78,6 +78,9 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
     var usrT01Data: UsrT01ArrivalAlarmTableData?
     /* UsrT02TrainAlarmTable 参数 */
     var usrT02Data: UsrT02TrainAlarmTableData?
+    
+    var endLineId:String?
+    var endStationId:String?
     
     /*******************************************************************************
     * Private Properties
@@ -109,15 +112,15 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
     /* 提醒时间 */
     var remindsTime:Array<String> = ["5分钟","15分钟","20分钟","25分钟","30分钟"]
     /* line */
-    var line:String = "東西線"
+    var line:String = "LINE_28001".localizedString()
     /* station */
-    var station:String = "浅草"
+    var station:String = "STATION_2800101".localizedString()
     /* fromStation */
-    var fromStation:String = "浅草"
+    var fromStation:String = "STATION_2800101".localizedString()
     /* station */
-    var stationDirt0:String = "浅草"
+    var stationDirt0:String = "STATION_2800101".localizedString()
     /* station */
-    var stationDirt1:String = "涉谷"
+    var stationDirt1:String = "STATION_2800119".localizedString()
     /* station */
     var stationDirtFlag:Int = 0
     /* station */
@@ -134,6 +137,9 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
     var pickerViewSection:Int = 0
     /* 选择的线路站点id */
     var statToId:String = "2800101"
+    
+    var mLineshow01:String = "LINE_28001".localizedString()
+    var mLineshow02:String = "LINE_28001".localizedString()
     
     var mEditFlag:Bool = false
     
@@ -423,7 +429,8 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
                 stations = selectStationTable(mLines![row].lineId)
                 pickerView.reloadComponent(NUM_1)
                 pickerView.selectRow(NUM_0, inComponent: NUM_1, animated: true)
-                station = line + " " + "\(stations[NUM_0].statId)".station()
+                mLineshow01 = line
+                station = "\(stations[NUM_0].statId)".station()
                 var stationsDirt = selectStationTableDirt(mLines![row].lineId)
                 stationDirt0 = "\(stationsDirt[0].item(MSTT02_STAT_ID))".station()
                 stationDirt1 = "\(stationsDirt[1].item(MSTT02_STAT_ID))".station()
@@ -440,7 +447,8 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
                 }
             }else{
                 if(row < stations.count){
-                    station = line + " " + "\(stations[row].statId)".station()
+                    mLineshow01 = line
+                    station = "\(stations[row].statId)".station()
                     if(segIndex == NUM_0){
                         statToId = stations[row].statId
                         usrT01Data!.statToId = stations[row].statId
@@ -458,11 +466,13 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
                 fromStations = selectStationTable(mLines![row].lineId)
                 pickerView.reloadComponent(NUM_1)
                 pickerView.selectRow(NUM_0, inComponent: NUM_1, animated: true)
-                fromStation = mLines![row].lineId.line() + " " + fromStations[NUM_0].statId.station()
+                mLineshow02 =  mLines![row].lineId.line()
+                fromStation = fromStations[NUM_0].statId.station()
                 usrT01Data!.statFromId = stations[NUM_0].statId
             }else{
                 if(row < fromStations.count){
-                    fromStation = line + " " + "\(fromStations[row].statId)".station()
+                    mLineshow02 = line
+                    fromStation = "\(fromStations[row].statId)".station()
                     usrT01Data!.statFromId = stations[row].statId
                 }
             }
@@ -561,13 +571,6 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
      */
     func intitValue(){
         self.navigationItem.leftBarButtonItem = nil
-        // 返回按钮点击事件
-//        var bakButtonStyle:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-//        bakButtonStyle.frame = CGRectMake(0, 0, 43, 43)
-//        bakButtonStyle.setTitle("PUBLIC_05".localizedString(), forState: UIControlState.Normal)
-//        bakButtonStyle.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
-//        let backButton:UIBarButtonItem =  UIBarButtonItem(customView: bakButtonStyle)
-//        self.navigationItem.leftBarButtonItem = backButton
  
         // 查询线路
         mLines = USR002_MODEL.findLineTable()
@@ -634,17 +637,18 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
             initArriveAlarm(usrT01Data!)
         }
         
-//        if(isSearsh && pickerViewSection == 0){
-//            tableUsrT01!.lineToId = selectLineId
-//            tableUsrT01!.statToId = selectStationId
-//        }else if(isSearsh && pickerViewSection == 1){
-//            tableUsrT01!.lineFromId = selectLineId
-//            tableUsrT01!.statFromId = selectStationId
-//        }
+        if(!(endLineId == nil) && !(endStationId == nil)){
+            usrT01Data!.lineToId = endLineId!
+            usrT01Data!.statToId = endStationId!
+            // 线路
+            line = endLineId!.line()
+            statToId = endStationId!
+        }
         
         if(fromRoute() && routeStatTable01!.item(MSTT02_STAT_ID) != nil && routeStatTable02!.item(MSTT02_STAT_ID) != nil){
             usrT01Data!.statFromId = "\(routeStatTable01!.item(MSTT02_STAT_ID))"
             usrT01Data!.statToId = "\(routeStatTable02!.item(MSTT02_STAT_ID))"
+            statToId = "\(routeStatTable02!.item(MSTT02_STAT_ID))"
         }
         
         if(usrT01Data!.statToId != ""){
@@ -664,6 +668,10 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
         
         // 到达站点
         stations = selectStationTable(usrT01Data!.lineToId)
+        
+        mLineshow01 = usrT01Data!.lineToId.line()
+        
+        mLineshow02 = usrT01Data!.lineFromId.line()
         // 上车站点
         fromStations = selectStationTable(usrT01Data!.lineFromId)
         
@@ -685,10 +693,10 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
         pickLineStations.append(pickFromStations)
         
         // 查询线路
-        var lineIndexTo: Int = getLineIndex(usrT01Data!.lineToId)
+        var lineIndexTo:Int = getLineIndex(usrT01Data!.lineToId)
         // 查询站点
         var stationIndexTo:Int = getStationIndex(usrT01Data!.lineToId, statId: usrT01Data!.statToId)
-        println(stationIndexTo)
+        
         pickStations.selectRow(lineIndexTo, inComponent: NUM_0, animated: false)
         pickStations.selectRow(stationIndexTo, inComponent: NUM_1, animated: false)
         
@@ -745,7 +753,7 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
             remindType = 1
         }
         if(usrT02Data!.alarmTime != "0"){
-            remindTime = (usrT02Data!.alarmTime as NSString).integerValue / 60 - 1
+            remindTime = (usrT02Data!.alarmTime as NSString).integerValue / 600 - 1
         }
         
         var stationsDirt = selectStationTableDirt(usrT02Data!.lineId)
@@ -790,6 +798,7 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
      * 保存到站提醒
      */
     func saveArriveStation(){
+        println(usrT01Data!.statToId)
         if(usrT01Data!.statFromId == "2800101" && usrT01Data!.statToId == "2800101"){
             self.navigationController!.popViewControllerAnimated(true)
             return
@@ -958,8 +967,8 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
      */
     func loadArriveStationItems(){
         items = NSMutableArray.array()
-        items.addObject(["USR002_12".localizedString(),[station,""]])
-        items.addObject(["USR002_13".localizedString(),[fromStation,""]])
+        items.addObject(["USR002_12".localizedString(),[mLineshow01 + " " + station,""]])
+        items.addObject(["USR002_13".localizedString(),[mLineshow02 + " " + fromStation,""]])
         items.addObject(["USR002_14".localizedString(),remindsMethod])
         items.addObject(["USR002_15".localizedString(),remindsTimeArrive])
     }
@@ -969,7 +978,7 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
      */
     func loadLastMetroItems(){
         items = NSMutableArray.array()
-        items.addObject(["USR002_12".localizedString(),[station,""]])
+        items.addObject(["USR002_12".localizedString(),[mLineshow01 + " " + station,""]])
         items.addObject(["PUBLIC_04".localizedString() + ":",[stationDirt0 + "PUBLIC_04".localizedString(),stationDirt1 + "PUBLIC_04".localizedString()]])
         items.addObject(["USR002_07".localizedString(),["USR002_03".localizedString(), "USR002_04".localizedString()]])
         items.addObject(["USR002_14".localizedString(),remindsMethod])
@@ -981,7 +990,6 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
     * @param sender
     */
     func buttonAction(sender: UIButton){
-        println(sender.tag)
         switch sender.tag{
         case SAVE_BUTTON_TAG:
             // 保存末班车提醒

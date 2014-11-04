@@ -56,6 +56,11 @@ class AddSubway: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         model = Usr001AddSubwayModel()
         
+        table.separatorColor = UIColor.clearColor()
+        table.backgroundColor = UIColor(red: 239/255,
+            green: 239/255,
+            blue: 244/255,
+            alpha: 1.0)
     }
     
     override func didReceiveMemoryWarning() {

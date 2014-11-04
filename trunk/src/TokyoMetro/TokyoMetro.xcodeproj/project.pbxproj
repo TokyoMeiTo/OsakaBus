@@ -87,7 +87,6 @@
 		A15CA4AA19D57BDD00716A00 /* UsrT03FavoriteTable.m in Sources */ = {isa = PBXBuildFile; fileRef = A15CA4A219D57BDD00716A00 /* UsrT03FavoriteTable.m */; };
 		A15CA4B419D57BF400716A00 /* String+Encrypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15CA4AF19D57BF400716A00 /* String+Encrypto.swift */; };
 		A1629E6419EE98E800DC54B1 /* INF002Dao+mstT04LandMarkTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1629E6319EE98E800DC54B1 /* INF002Dao+mstT04LandMarkTable.swift */; };
-		A1629E6619EEA43B00DC54B1 /* Cmn003Dao.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1629E6519EEA43B00DC54B1 /* Cmn003Dao.swift */; };
 		A16DB61519F915B900F0D219 /* INF002Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16DB61419F915B900F0D219 /* INF002Model.swift */; };
 		A17527E819F7592900A9E656 /* STA003DAO+MstT02StationTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17527E619F7592900A9E656 /* STA003DAO+MstT02StationTable.swift */; };
 		A17527E919F7592900A9E656 /* STA003Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17527E719F7592900A9E656 /* STA003Model.swift */; };
@@ -340,7 +339,6 @@
 		A15CA4A219D57BDD00716A00 /* UsrT03FavoriteTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UsrT03FavoriteTable.m; sourceTree = "<group>"; };
 		A15CA4AF19D57BF400716A00 /* String+Encrypto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Encrypto.swift"; sourceTree = "<group>"; };
 		A1629E6319EE98E800DC54B1 /* INF002Dao+mstT04LandMarkTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "INF002Dao+mstT04LandMarkTable.swift"; sourceTree = "<group>"; };
-		A1629E6519EEA43B00DC54B1 /* Cmn003Dao.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cmn003Dao.swift; sourceTree = "<group>"; };
 		A16DB61419F915B900F0D219 /* INF002Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = INF002Model.swift; sourceTree = "<group>"; };
 		A17527E619F7592900A9E656 /* STA003DAO+MstT02StationTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "STA003DAO+MstT02StationTable.swift"; sourceTree = "<group>"; };
 		A17527E719F7592900A9E656 /* STA003Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = STA003Model.swift; sourceTree = "<group>"; };
@@ -872,7 +870,6 @@
 			children = (
 				A1EE754119D445490064BC90 /* RouteSearch.swift */,
 				A192FF0319F8C9D100422DF0 /* CMN003Model.swift */,
-				A1629E6519EEA43B00DC54B1 /* Cmn003Dao.swift */,
 			);
 			path = CMN003;
 			sourceTree = "<group>";
@@ -1216,9 +1213,15 @@
 					3B241FEE19B5A5CF00DAE392 = {
 						CreatedOnToolsVersion = 6.0;
 						DevelopmentTeam = ATMPA4PSH3;
+						SystemCapabilities = {
+							com.apple.Maps.iOS = {
+								enabled = 0;
+							};
+						};
 					};
 					3B24200019B5A5CF00DAE392 = {
 						CreatedOnToolsVersion = 6.0;
+						DevelopmentTeam = ATMPA4PSH3;
 						TestTargetID = 3B241FEE19B5A5CF00DAE392;
 					};
 				};
@@ -1373,7 +1376,6 @@
 				A1831B2119DA54C5002639DB /* MstT04LandMarkTable.m in Sources */,
 				A192FF0419F8C9D100422DF0 /* CMN003Model.swift in Sources */,
 				A1ECD47F19D2D41F00D5A0E2 /* InfT04StatKnowledgeTable.m in Sources */,
-				A1629E6619EEA43B00DC54B1 /* Cmn003Dao.swift in Sources */,
 				A1ECD49919D2D41F00D5A0E2 /* FacilityList.swift in Sources */,
 				A1F1FC8519E96E74004A59C9 /* AFHTTPRequestOperation.m in Sources */,
 				3BCD2A6A19F758FB00C792E5 /* MstT01LineTableData.swift in Sources */,
@@ -1502,7 +1504,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Shanghai Okasan-Huada computer System CO.,LTD. (ATMPA4PSH3)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Shanghai Okasan-Huada computer System CO.,LTD. (ATMPA4PSH3)";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1522,6 +1525,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				PROVISIONING_PROFILE = "6991520f-c459-4cff-83ba-663cd84b37a2";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -1544,7 +1548,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Shanghai Okasan-Huada computer System CO.,LTD. (ATMPA4PSH3)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Shanghai Okasan-Huada computer System CO.,LTD. (ATMPA4PSH3)";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1557,6 +1562,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				PROVISIONING_PROFILE = "6991520f-c459-4cff-83ba-663cd84b37a2";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -1568,13 +1574,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: zhourr zhourr (59HJ955NL8)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Shanghai Okasan-Huada computer System CO.,LTD. (ATMPA4PSH3)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Shanghai Okasan-Huada computer System CO.,LTD. (ATMPA4PSH3)";
 				DEFINES_MODULE = YES;
 				INFOPLIST_FILE = TokyoMetro/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "1a214118-613d-4997-ac46-072714dec573";
+				PROVISIONING_PROFILE = "6991520f-c459-4cff-83ba-663cd84b37a2";
 				SWIFT_OBJC_BRIDGING_HEADER = "TokyoMetro/TokyoMetro-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -1586,14 +1593,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: zhourr zhourr (59HJ955NL8)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: zhourr zhourr (59HJ955NL8)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Shanghai Okasan-Huada computer System CO.,LTD. (ATMPA4PSH3)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Shanghai Okasan-Huada computer System CO.,LTD. (ATMPA4PSH3)";
 				DEFINES_MODULE = YES;
 				INFOPLIST_FILE = TokyoMetro/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "1a214118-613d-4997-ac46-072714dec573";
+				PROVISIONING_PROFILE = "6991520f-c459-4cff-83ba-663cd84b37a2";
 				SWIFT_OBJC_BRIDGING_HEADER = "TokyoMetro/TokyoMetro-Bridging-Header.h";
 			};
 			name = Release;
@@ -1602,6 +1609,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -1613,6 +1622,7 @@
 				INFOPLIST_FILE = TokyoMetroTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TokyoMetro.app/TokyoMetro";
 			};
 			name = Debug;
@@ -1621,6 +1631,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -1628,6 +1640,7 @@
 				INFOPLIST_FILE = TokyoMetroTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TokyoMetro.app/TokyoMetro";
 			};
 			name = Release;

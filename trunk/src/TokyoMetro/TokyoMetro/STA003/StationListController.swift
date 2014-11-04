@@ -246,6 +246,13 @@ class StationListController: UIViewController, UITableViewDelegate, UITableViewD
         ActivityIndicatorController.disMiss(gaiLoading)
     }
 
+    /**
+     * 位置定位完成
+     */
+    func locationUpdateError(){
+        noData()
+    }
+    
     
     /*******************************************************************************
     *      Implements Of MKMapViewDelegate
@@ -328,7 +335,7 @@ class StationListController: UIViewController, UITableViewDelegate, UITableViewD
         // 定位按钮
         var searchButtonTemp:UIButton? = UIButton.buttonWithType(UIButtonType.System) as? UIButton
         searchButtonTemp!.frame = CGRect(x:0,y:0,width:25,height:25)
-        var imgLandMark = UIImage(named: "station_local")
+        var imgLandMark = UIImage(named: "sta00303")
         searchButtonTemp!.setBackgroundImage(imgLandMark, forState: UIControlState.Normal)
         searchButtonTemp!.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
         searchButtonTemp!.tag = BTN_Location_TAG
@@ -394,10 +401,10 @@ class StationListController: UIViewController, UITableViewDelegate, UITableViewD
             green: 239/255,
             blue: 244/255,
             alpha: 1.0)
+        tbList.reloadData()
         if(mStations == nil){
             noData()
         }
-        tbList.reloadData()
     }
     
     /**
@@ -441,6 +448,7 @@ class StationListController: UIViewController, UITableViewDelegate, UITableViewD
             var annotation = MKPointAnnotation()
             annotation.coordinate = CLLocationCoordinate2D(latitude:statLat! as CLLocationDegrees, longitude:statLon! as CLLocationDegrees)
             annotation.title = statNm as String
+            annotation.subtitle = key.statAddr
             mkMap.addAnnotation(annotation)
             var region : MKCoordinateRegion = MKCoordinateRegionMake(annotation.coordinate, span)
             mkMap.setRegion(region, animated:true)
@@ -512,8 +520,8 @@ class StationListController: UIViewController, UITableViewDelegate, UITableViewD
 
     func noData(){
         tbList.separatorColor = UIColor.clearColor()
-        tbList.hidden = true
-        tempView.hidden = false
+//        tbList.hidden = true
+//        tempView.hidden = false
     }
     
     

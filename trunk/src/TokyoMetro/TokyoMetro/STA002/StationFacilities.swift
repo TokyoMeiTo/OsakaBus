@@ -93,11 +93,21 @@ class StationFacilities: UIViewController, UITableViewDelegate, NSObjectProtocol
         
         // cell显示内容
         var imgCompiner: UIImageView = UIImageView(frame: CGRectMake(5, 8, 100, 100))
-        imgCompiner.image = (facilities![indexPath.row].item(STAT03_COME_INSI_IMAGE) as String).image("StationInnerCom")
+        
+        var imgId:String = ""
+        if(!(facilities![indexPath.row].item(STAT03_COME_INSI_IMAGE) == nil)){
+            imgId = "\(facilities![indexPath.row].item(STAT03_COME_INSI_IMAGE))"
+        }
+        
+        imgCompiner.image = imgId.image("StationInnerCom")
         
         cell.addSubview(imgCompiner)
         
-        var strName = facilities![indexPath.row].item(STAT03_COME_INSI_NAME) as String
+        var strName:String = ""
+        if(!(facilities![indexPath.row].item(STAT03_COME_INSI_NAME) == nil)){
+            strName = "\(facilities![indexPath.row].item(STAT03_COME_INSI_NAME))"
+        }
+        
         var lblName = UILabel(frame: CGRectMake(115, 5, 200, 21))
         lblName.adjustsFontSizeToFitWidth = true
         lblName.font = UIFont.boldSystemFontOfSize(16)
@@ -108,7 +118,10 @@ class StationFacilities: UIViewController, UITableViewDelegate, NSObjectProtocol
         imageTime.image = UIImage(named: "station_time")
         cell.addSubview(imageTime)
         
-        var strTime = (facilities![indexPath.row].item(STAT03_COME_INSI_BISI_HOUR) as String).relpaceAll("\\n", target: "\n")
+        var strTime:String = ""
+        if(!(facilities![indexPath.row].item(STAT03_COME_INSI_BISI_HOUR) == nil)){
+            strTime = ("\(facilities![indexPath.row].item(STAT03_COME_INSI_BISI_HOUR))").relpaceAll("\\n", target: "\n")
+        }
         var lblTime = UILabel(frame: CGRectMake(135, 31, 180, textHeight(strTime, width: 180, size: 14)))
         lblTime.font = UIFont.systemFontOfSize(14)
         lblTime.numberOfLines = 0

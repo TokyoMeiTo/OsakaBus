@@ -118,7 +118,7 @@ class Main: UIViewController,UIScrollViewDelegate {
             nav.navigationBar.titleTextAttributes = mDictColor
             
             self.navigationController!.presentViewController(nav, animated: true, completion: nil)
-        }else{
+        } else{
             self.mImgLineGraph.image =  "MetroCH".image("LineGraph")
         }
         
@@ -126,7 +126,7 @@ class Main: UIViewController,UIScrollViewDelegate {
         self.mScreenSize = UIScreen.mainScreen().bounds.size
         
         // ScrollView
-        self.mScrollView.minimumZoomScale = 0.3
+        self.mScrollView.minimumZoomScale = 0.5
         self.mScrollView.maximumZoomScale = 1.5
         self.mScrollView.zoomScale = 1
         self.mScrollView.contentSize = CGSizeMake(1773, 1300)
@@ -200,7 +200,7 @@ class Main: UIViewController,UIScrollViewDelegate {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-        if (mImgLineGraph.image == nil) {
+ //       if (mImgLineGraph.image == nil) {
             self.mImgLineGraph.image =  "MetroCH".image("LineGraph")
             
             self.mScrollView.contentSize = CGSizeMake(1772, 1299)
@@ -209,7 +209,7 @@ class Main: UIViewController,UIScrollViewDelegate {
             
             // MainWrapper
             self.mImgLineGraph.frame = CGRectMake(0, 0, 1772, 1299)
-        }
+//        }
         
         //接受从站点列表中传递过来的站点ID
         if (!stationIdFromStationList.isEmpty){
@@ -219,21 +219,7 @@ class Main: UIViewController,UIScrollViewDelegate {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-//       
-//        if (mImgLineGraph.image == nil) {
-//            self.mImgLineGraph.image =  "MetroCH".image("LineGraph")
-//            
-//            self.mScrollView.contentSize = CGSizeMake(1772, 1299)
-//            // MainWrapper
-//            self.mMainWrapper.frame = CGRectMake(0, 0, 1772, 1299)
-//            
-//            // MainWrapper
-//            self.mImgLineGraph.frame = CGRectMake(0, 0, 1772, 1299)
-//        }
-//        // 接受从站点列表中传递过来的站点ID
-//        if (!stationIdFromStationList.isEmpty){
-//            showPopViewByStationId(stationIdFromStationList)
-//        }
+
     }
     
     /*******************************************************************************
@@ -269,7 +255,7 @@ class Main: UIViewController,UIScrollViewDelegate {
     }
     
     func scrollViewDidEndZooming(scrollView: UIScrollView, withView view: UIView!, atScale scale: CGFloat) {
-        if ((self.mScrollView.zoomScale > 0.3) && (self.mScrollView.zoomScale < 1.5)) {
+        if ((self.mScrollView.zoomScale > 0.5) && (self.mScrollView.zoomScale < 1.5)) {
            
             self.mBtnImgDec.enabled = true
             self.mBtnImgAdd.enabled = true
@@ -672,7 +658,7 @@ class Main: UIViewController,UIScrollViewDelegate {
         
         for (var i = 0; i < mFindeStationLines.count; i++) {
             var mlinesLineImg: UIImageView = UIImageView()
-            mlinesLineImg.frame = CGRectMake(CGFloat(190 - i * 20), 0, 25, 25)
+            mlinesLineImg.frame = CGRectMake(CGFloat(190 - i * 25), 0, 25, 25)
             mlinesLineImg.image = (mFindeStationLines[i] as String).getLineImage()
             mPopupLineView.addSubview(mlinesLineImg)
         }
@@ -785,11 +771,11 @@ class Main: UIViewController,UIScrollViewDelegate {
             mlblShowCount.textAlignment = NSTextAlignment.Center
             mlblShowCount.backgroundColor = UIColor(patternImage: "mpop_point".getImage())
             if (viewTag == 2002) {
-                mlblShowCount.frame = CGRectMake(71,156,11,11)
+                mlblShowCount.frame = CGRectMake(71,156,18,11)
             } else if (viewTag == 2003) {
-                mlblShowCount.frame = CGRectMake(141,156,11,11)
+                mlblShowCount.frame = CGRectMake(141,156,18,11)
             } else if (viewTag == 2004) {
-                mlblShowCount.frame = CGRectMake(211,156,11,11)
+                mlblShowCount.frame = CGRectMake(211,156,18,11)
             }
             self.mPopupStationView.addSubview(mlblShowCount)
         }

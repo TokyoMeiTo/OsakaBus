@@ -79,9 +79,9 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
     /* 通知 */
     let MSG_0002 = "USR002_19".localizedString()
     /* 确定 */
-    let MSG_0003 = "USR002_20".localizedString()
+    let MSG_0003 = "PUBLIC_06".localizedString()
     /* 取消 */
-    let MSG_0004 = "USR002_21".localizedString()
+    let MSG_0004 = "PUBLIC_07".localizedString()
     /* 到站提醒 */
     let ARRIVE_STATION_TITLE = "USR002_22".localizedString()
     /* 末班车提醒 */
@@ -96,7 +96,10 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
 
     var routeStatTable01:MstT02StationTable?
     var routeStatTable02:MstT02StationTable?
-
+    
+    var endLineId:String?
+    var endStationId:String?
+    
     
     /*******************************************************************************
     * Private Properties
@@ -244,11 +247,11 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
             pushNotificationLastMetro("\(items[indexPath.section][0])的\(items[indexPath.section][3][indexPath.row])即将发车", notifyTime:"\(items[indexPath.section][3][indexPath.row])",soundId:0)
         }
         
-        var lblMetroType = UILabel(frame: CGRect(x:15,y:50,width:230,height:30))
+        var lblMetroType = UILabel(frame: CGRect(x:200,y:50,width:105,height:30))
         lblMetroType.font = UIFont.systemFontOfSize(14)
         lblMetroType.textColor = UIColor.lightGrayColor()
         lblMetroType.text = items[indexPath.section][2][0] as? String
-        lblMetroType.textAlignment = NSTextAlignment.Left
+        lblMetroType.textAlignment = NSTextAlignment.Right
         
         var lblLastMetroTime:UILabel? = cell!.contentView.viewWithTag(111) as? UILabel
         if(lblLastMetroTime == nil){
@@ -258,17 +261,19 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
         lblLastMetroTime!.text = items[indexPath.section][3][indexPath.row] as? String
         lblLastMetroTime!.textAlignment = NSTextAlignment.Left
         
-        var lblLastMetroDirt = UILabel(frame: CGRect(x:200,y:50,width:105,height:30))
+        var lblLastMetroDirt = UILabel(frame: CGRect(x:160,y:50,width:105,height:30))
         lblLastMetroDirt.font = UIFont.systemFontOfSize(14)
         lblLastMetroDirt.textColor = UIColor.blackColor()
         lblLastMetroDirt.text = items[indexPath.section][1][indexPath.row] as? String
-        lblLastMetroDirt.textAlignment = NSTextAlignment.Right
+        lblLastMetroDirt.textAlignment = NSTextAlignment.Left
+        lblLastMetroDirt.adjustsFontSizeToFitWidth = true
         
-        var lblStatInfo = UILabel(frame: CGRect(x:75,y:50,width:230,height:30))
+        var lblStatInfo = UILabel(frame: CGRect(x:15,y:50,width:230,height:30))
         lblStatInfo.font = UIFont.systemFontOfSize(14)
         lblStatInfo.textColor = UIColor.blackColor()
-        lblStatInfo.text = items[indexPath.section][0] as? String
+        lblStatInfo.text = "\(items[indexPath.section][0])" + "USR002_29".localizedString()
         lblStatInfo.textAlignment = NSTextAlignment.Left
+        lblStatInfo.adjustsFontSizeToFitWidth = true
         
         var switchAralm = UISwitch(frame: CGRect(x:255,y:20,width:60,height:30))
         switchAralm.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.ValueChanged)
@@ -454,6 +459,9 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
             lblEnd.textColor = UIColor.blackColor()
             lblEnd.text = alarmEnd!.lineToId.line() + " " + alarmEnd!.statToId.station()
             lblEnd.textAlignment = NSTextAlignment.Right
+            
+            endLineId = alarmEnd!.lineToId
+            endStationId = alarmEnd!.statToId
 
             lblArriveInfo.text = "USR002_28".localizedString()
             var imgBeep = UIImage(named: "usr007")
@@ -567,6 +575,8 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
                 remindDetailController.usrT01Data = nil
             }else{
                 remindDetailController.usrT01Data = mAlarm!
+                remindDetailController.endLineId = endLineId
+                remindDetailController.endStationId = endStationId
             }
             // 返回按钮点击事件
             var bakButtonStyle:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton

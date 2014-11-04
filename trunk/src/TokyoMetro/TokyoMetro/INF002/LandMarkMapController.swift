@@ -11,7 +11,7 @@ import UIKit
 import MapKit
 import CoreLocation
 
-class LandMarkMapController: UIViewController, MKMapViewDelegate, UIActionSheetDelegate{
+class LandMarkMapController: UIViewController, MKMapViewDelegate, UIActionSheetDelegate, GPSDelegate{
     
     /*******************************************************************************
     * IBOutlets
@@ -25,6 +25,8 @@ class LandMarkMapController: UIViewController, MKMapViewDelegate, UIActionSheetD
     * Global
     *******************************************************************************/
 
+    /* GPSHelper */
+    let GPS_HELPER:GPSHelper = GPSHelper()
     let BTN_Location_TAG:Int = 120
     
     /*******************************************************************************
@@ -50,6 +52,16 @@ class LandMarkMapController: UIViewController, MKMapViewDelegate, UIActionSheetD
     var landMarkLocation:CLLocation?
     
     var statId:String?
+    
+    /* 当前位置 */
+    var currentLocation:CLLocation?
+    
+    var mAnnotation:MKPointAnnotation?
+    
+    /*******************************************************************************
+    * Overrides From UIViewController
+    *******************************************************************************/
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -93,7 +105,7 @@ class LandMarkMapController: UIViewController, MKMapViewDelegate, UIActionSheetD
                 default:
                     println("nothing")
                 }
-                if(annotation.title != "\(landMark!.item(MSTT04_LANDMARK_LMAK_NAME))"){
+                if(annotation.title != "\(landMark!.item(MSTT04_LANDMARK_LMAK_NAME_EXT1))"){
                     img = UIImage(named: "STA00301")
                 }
             }else if(statId != nil){
@@ -103,19 +115,24 @@ class LandMarkMapController: UIViewController, MKMapViewDelegate, UIActionSheetD
                     
                     img = UIImage(named: "STA00301")
                 } else {
-                    
-                    switch (annotation.subtitle! as String) {
-                    case "1":
-                        img = UIImage(named: "INF00204")
-                    case "2":
-                        img = UIImage(named: "INF00203")
-                    case "3":
-                        img = UIImage(named: "INF00205")
-                    default:
-                        println("nothing")
+                    if(!(annotation.subtitle == nil)){
+                        switch (annotation.subtitle! as String) {
+                        case "PUBLIC_12".localizedString():
+                            img = UIImage(named: "INF00204")
+                        case "PUBLIC_13".localizedString():
+                            img = UIImage(named: "INF00203")
+                        case "PUBLIC_14".localizedString():
+                            img = UIImage(named: "INF00205")
+                        default:
+                            println("nothing")
+                        }
                     }
                 }
 
+            }
+            
+            if(annotation.title == "STA003_02".localizedString()){
+                img = UIImage(named: "STA00302")
             }
             
             pinView!.pinColor = .Red
@@ -126,6 +143,46 @@ class LandMarkMapController: UIViewController, MKMapViewDelegate, UIActionSheetD
             return pinView!
     }
 
+    /*******************************************************************************
+    *      Implements Of GPSDelegate
+    *******************************************************************************/
+    
+    /**
+     * 位置定位完成
+     */
+    func locationUpdateComplete(location: CLLocation){
+        currentLocation = location
+        
+        if(!checkLocation(currentLocation!.coordinate.latitude, longitude: currentLocation!.coordinate.longitude)){
+            return
+        }
+        if(mAnnotation == nil){
+            mAnnotation = MKPointAnnotation()
+        }else{
+            mkMap.removeAnnotation(mAnnotation!)
+        }
+        
+        var coordinateOnEarth = currentLocation!.coordinate
+            
+        mAnnotation!.title = "STA003_02".localizedString()
+        mAnnotation!.subtitle = ""
+        
+        mAnnotation!.coordinate = coordinateOnEarth
+        mkMap.addAnnotation(mAnnotation!)
+        
+        mkMap.setCenterCoordinate(coordinateOnEarth, animated:true)
+        
+        var span: MKCoordinateSpan = MKCoordinateSpanMake(0.01, 0.01)
+        var region : MKCoordinateRegion = MKCoordinateRegionMake(coordinateOnEarth, span)
+        mkMap.setRegion(region, animated:true)
+    }
+    
+    /**
+     * 位置定位完成
+     */
+    func locationUpdateError(){
+    }
+    
     
     /*******************************************************************************
     *    Private Methods
@@ -138,14 +195,14 @@ class LandMarkMapController: UIViewController, MKMapViewDelegate, UIActionSheetD
         mkMap.delegate = self
         // 设置地图显示类型
         mkMap.mapType = MKMapType.Standard
-        mkMap.showsUserLocation = true
+        //mkMap.showsUserLocation = true
 
         var span: MKCoordinateSpan = MKCoordinateSpanMake(0.01, 0.01)
         
         // 查询按钮点击事件
         var searchButtonTemp:UIButton? = UIButton.buttonWithType(UIButtonType.System) as? UIButton
         searchButtonTemp!.frame = CGRect(x:0,y:0,width:25,height:25)
-        var imgLandMark = UIImage(named: "station_local")
+        var imgLandMark = UIImage(named: "sta00303")
         searchButtonTemp!.setBackgroundImage(imgLandMark, forState: UIControlState.Normal)
         searchButtonTemp!.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
         searchButtonTemp!.tag = BTN_Location_TAG
@@ -178,19 +235,27 @@ class LandMarkMapController: UIViewController, MKMapViewDelegate, UIActionSheetD
             for key in stations!{
                 var statLat:Double? = (key.statLat as NSString).doubleValue
                 var statLon:Double? = (key.statLon as NSString).doubleValue
+                
+                if(!checkLocation(statLat!, longitude: statLon!)){
+                    continue
+                }
+                
                 var annotation = MKPointAnnotation()
                 annotation.coordinate = CLLocationCoordinate2D(latitude:statLat! as CLLocationDegrees, longitude:statLon! as CLLocationDegrees)
 
                 annotation.title = key.statId.station()
+                println(key.statAddr)
+                annotation.subtitle = key.statAddr
                 mkMap.addAnnotation(annotation)
                 var region : MKCoordinateRegion = MKCoordinateRegionMake(annotation.coordinate, span)
                 mkMap.setRegion(region, animated:true)
             }
             
-            annotation.title = "\(landMark!.item(MSTT04_LANDMARK_LMAK_NAME))"
+            annotation.title = "\(landMark!.item(MSTT04_LANDMARK_LMAK_NAME_EXT1))"
             annotation.subtitle = "\(landMark!.item(MSTT04_LANDMARK_LMAK_ADDR))"
         } else if(statId != nil) {
             annotation.title = statId!.station()
+            
             
             if (landMarkArr != nil) {
                 for(var i=0; i < landMarkArr!.count; i++){
@@ -198,10 +263,17 @@ class LandMarkMapController: UIViewController, MKMapViewDelegate, UIActionSheetD
                     var statLat:AnyObject? = key.item(MSTT04_LANDMARK_LMAK_LAT)
                     var statLon:AnyObject? = key.item(MSTT04_LANDMARK_LMAK_LON)
                     
+                    if(!checkLocation((statLat as NSString).doubleValue, longitude: (statLon as NSString).doubleValue)){
+                        continue
+                    }
+                    
                     var annotation = MKPointAnnotation()
                     annotation.coordinate = CLLocation(latitude: (statLat as NSString).doubleValue, longitude: (statLon as NSString).doubleValue).coordinate
-                    annotation.title = "\(key.item(MSTT04_LANDMARK_LMAK_NAME))"
-                    annotation.subtitle = "\(key.item(MSTT04_LANDMARK_LMAK_TYPE))"
+                    if(!(key.item(MSTT04_LANDMARK_LMAK_NAME_EXT1) == nil)){
+                        annotation.title = "\(key.item(MSTT04_LANDMARK_LMAK_NAME_EXT1))"
+                        annotation.subtitle = "\(key.item(MSTT04_LANDMARK_LMAK_ADDR))"
+                    }
+                    
                     mkMap.addAnnotation(annotation)
                     var region : MKCoordinateRegion = MKCoordinateRegionMake(annotation.coordinate, span)
                     mkMap.setRegion(region, animated:true)
@@ -225,7 +297,7 @@ class LandMarkMapController: UIViewController, MKMapViewDelegate, UIActionSheetD
     func buttonAction(sender: UIButton){
         switch sender.tag{
         case BTN_Location_TAG:
-            println("nothing")
+            loadLocation()
         default:
             println("nothing")
         }
@@ -236,8 +308,18 @@ class LandMarkMapController: UIViewController, MKMapViewDelegate, UIActionSheetD
      * @param latitude,longitude
      *  -> Bool
      */
-    func checkLocation(latitude: Double, longitude: Double) -> Bool{
-        return latitude > 0 && latitude < 90 && longitude > 0 && longitude < 180
+    func checkLocation(latitude: Double?, longitude: Double?) -> Bool{
+        return latitude != nil && longitude != nil && latitude > 0 && latitude < 90 && longitude > 0 && longitude < 180
+    }
+    
+    /**
+     * 加载当前位置
+     */
+    func loadLocation(){
+        if(GPS_HELPER.delegate == nil){
+            GPS_HELPER.delegate = self
+        }
+        GPS_HELPER.updateLocation()
     }
     
     

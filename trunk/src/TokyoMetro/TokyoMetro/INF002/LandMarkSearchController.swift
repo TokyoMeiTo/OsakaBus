@@ -8,8 +8,9 @@
 
 import Foundation
 import UIKit
+import CoreLocation
 
-class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectProtocol, UIScrollViewDelegate, UITableViewDataSource, UIPickerViewDelegate, UIPickerViewDataSource{
+class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectProtocol, UIScrollViewDelegate, UITableViewDataSource, UIPickerViewDelegate, UIPickerViewDataSource, GPSDelegate{
     
     /*******************************************************************************
     * IBOutlets
@@ -17,11 +18,17 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
 
     /* 设置选项 */
     @IBOutlet weak var tbList: UITableView!
-    
+    /* 设置选项 */
+    @IBOutlet weak var wrapView: UIView!
+    /* 加载进度条ActivityIndicatorView */
+    @IBOutlet weak var gaiLoading: UIActivityIndicatorView!
     
     /*******************************************************************************
     * Global
     *******************************************************************************/
+    
+    /* GPSHelper */
+    let GPS_HELPER:GPSHelper = GPSHelper()
     
     let SAVE_BUTTON_TAG:Int = 200201
     let BTN_ALL:Int = 101
@@ -37,11 +44,15 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
     var landMarkSpecialWard:String? = ""
     var landMarkRange:Int = 100000
     var landMarkStatId:String? = ""
-    // 美食
     var landMarkSubType:String = ""
     var landMarkPrice:Int = 0
     var landMarkMiciRank:String = ""
     var landMarkRank:String = ""
+    var landMarkShowStatId:String = "2800101"
+    var landMarkShowSpecialWard:String = "INF002_19".localizedString()
+
+    /* 当前位置 */
+    var currentLocation:CLLocation?
     
     /*******************************************************************************
     * Private Properties
@@ -58,9 +69,6 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
     var landMarksRange:Array<String> = ["INF002_14".localizedString(),"INF002_15".localizedString(),"INF002_16".localizedString(),"INF002_19".localizedString()]
     var pickerViewIsOpen = false
     
-    var landMarkShowStatId:String = "2800101"
-    var landMarkShowSpecialWard:String = "INF002_19".localizedString()
-    
     /* 起点軽度 */
     var fromLat = 35.672737//31.23312372 // 天地科技广场1号楼
     /* 起点緯度 */
@@ -74,18 +82,20 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        disMissProgress(gaiLoading)
+        
         var mstT04Table:MstT04LandMarkTable = MstT04LandMarkTable()
         //var inf002Dao:INF002Dao = INF002Dao()
         var subTypeTemp:NSArray = mstT04Table.querySubType()
 
-        loadItems()
-        
-        tbList.delegate = self
-        tbList.dataSource = self
-        tbList.reloadData()
-        
-        pickerSpecialWard.dataSource = self
-        pickerSpecialWard.delegate = self
+//        loadItems()
+//        
+//        tbList.delegate = self
+//        tbList.dataSource = self
+//        tbList.reloadData()
+//        
+//        pickerSpecialWard.dataSource = self
+//        pickerSpecialWard.delegate = self
         
         // 完成按钮点击事件
         var saveButton:UIBarButtonItem = UIBarButtonItem(title: "筛选", style: UIBarButtonItemStyle.Bordered, target:self, action: "buttonAction:")
@@ -97,7 +107,13 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
     
     override func viewWillAppear(animated: Bool) {
         loadItems()
+        
+        tbList.delegate = self
+        tbList.dataSource = self
         tbList.reloadData()
+        
+        pickerSpecialWard.dataSource = self
+        pickerSpecialWard.delegate = self
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -151,17 +167,36 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
                     UITableViewCellAccessoryType.Checkmark
             }
             
+//        case 2:
+//            switch didSelectRowAtIndexPath.row{
+//            case 0:
+//                // 加载当前位置
+//                loadLocation()
+//                landMarkRange = 1000
+//            case 1:
+//                // 加载当前位置
+//                loadLocation()
+//                landMarkRange = 500
+//            case 2:
+//                // 加载当前位置
+//                loadLocation()
+//                landMarkRange = 100
+//            case 3:
+//                landMarkRange = 100000
+//            default:
+//                println("nothing")
+//            }
+//            for(var i=0; i < items[didSelectRowAtIndexPath.section][1].count;i++){
+//                var indexPath = NSIndexPath(forRow: i, inSection: 2)
+//                var cell = tableView.cellForRowAtIndexPath(indexPath)
+//                if(cell != nil){
+//                    cell!.accessoryType = UITableViewCellAccessoryType.None
+//                }
+//            }
+//            tableView.cellForRowAtIndexPath(didSelectRowAtIndexPath)!.accessoryType =
+//                UITableViewCellAccessoryType.Checkmark
         case 2:
-            switch didSelectRowAtIndexPath.row{
-            case 0:
-                landMarkRange = 1000
-            case 1:
-                landMarkRange = 500
-            case 2:
-                landMarkRange = 100
-            default:
-                println("nothing")
-            }
+            landMarkSubType = "\(items[didSelectRowAtIndexPath.section][1][didSelectRowAtIndexPath.row])"
             for(var i=0; i < items[didSelectRowAtIndexPath.section][1].count;i++){
                 var indexPath = NSIndexPath(forRow: i, inSection: 2)
                 var cell = tableView.cellForRowAtIndexPath(indexPath)
@@ -174,13 +209,13 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
         case 3:
             switch didSelectRowAtIndexPath.row{
             case 0:
-                landMarkSubType = "INF002_21".localizedString()
+                landMarkPrice = 1
             case 1:
-                landMarkSubType = "INF002_22".localizedString()
+                landMarkPrice = 2
             case 2:
-                landMarkSubType = "INF002_23".localizedString()
+                landMarkPrice = 3
             default:
-                landMarkSubType = ""
+                landMarkPrice = 0
             }
             for(var i=0; i < items[didSelectRowAtIndexPath.section][1].count;i++){
                 var indexPath = NSIndexPath(forRow: i, inSection: 3)
@@ -194,13 +229,13 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
         case 4:
             switch didSelectRowAtIndexPath.row{
             case 0:
-                landMarkPrice = 1
+                landMarkMiciRank = "1"
             case 1:
-                landMarkPrice = 2
+                landMarkMiciRank = "2"
             case 2:
-                landMarkPrice = 3
+                landMarkMiciRank = "3"
             default:
-                landMarkPrice = 0
+                landMarkMiciRank = ""
             }
             for(var i=0; i < items[didSelectRowAtIndexPath.section][1].count;i++){
                 var indexPath = NSIndexPath(forRow: i, inSection: 4)
@@ -214,26 +249,6 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
         case 5:
             switch didSelectRowAtIndexPath.row{
             case 0:
-                landMarkMiciRank = "1"
-            case 1:
-                landMarkMiciRank = "2"
-            case 2:
-                landMarkMiciRank = "3"
-            default:
-                landMarkMiciRank = ""
-            }
-            for(var i=0; i < items[didSelectRowAtIndexPath.section][1].count;i++){
-                var indexPath = NSIndexPath(forRow: i, inSection: 5)
-                var cell = tableView.cellForRowAtIndexPath(indexPath)
-                if(cell != nil){
-                    cell!.accessoryType = UITableViewCellAccessoryType.None
-                }
-            }
-            tableView.cellForRowAtIndexPath(didSelectRowAtIndexPath)!.accessoryType =
-                UITableViewCellAccessoryType.Checkmark
-        case 6:
-            switch didSelectRowAtIndexPath.row{
-            case 0:
                 landMarkRank = "2"
             case 1:
                 landMarkRank = "3"
@@ -245,7 +260,7 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
                 landMarkRank = ""
             }
             for(var i=0; i < items[didSelectRowAtIndexPath.section][1].count;i++){
-                var indexPath = NSIndexPath(forRow: i, inSection: 6)
+                var indexPath = NSIndexPath(forRow: i, inSection: 5)
                 var cell = tableView.cellForRowAtIndexPath(indexPath)
                 if(cell != nil){
                     cell!.accessoryType = UITableViewCellAccessoryType.None
@@ -317,27 +332,28 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
             var imageViewAlarm = UIImageView(frame: CGRectMake(15, 5, 25, 25))
             imageViewAlarm.image = imgAlarm
             UIHeader.addSubview(imageViewAlarm)
+//        case 2:
+//            return  UIView(frame: CGRectMake(0, 0, 0, 0))
+//            var imgAlarm = UIImage(named: "inf00215")
+//            var imageViewAlarm = UIImageView(frame: CGRectMake(15, 5, 25, 25))
+//            imageViewAlarm.image = imgAlarm
+//            UIHeader.addSubview(imageViewAlarm)
         case 2:
-            var imgAlarm = UIImage(named: "inf00215")
-            var imageViewAlarm = UIImageView(frame: CGRectMake(15, 5, 25, 25))
-            imageViewAlarm.image = imgAlarm
-            UIHeader.addSubview(imageViewAlarm)
-        case 3:
             var img = UIImage(named: "inf00217")
             var imageView = UIImageView(frame: CGRectMake(15, 5, 25, 25))
             imageView.image = img
             UIHeader.addSubview(imageView)
-        case 4:
+        case 3:
             var img = UIImage(named: "inf00220")
             var imageView = UIImageView(frame: CGRectMake(15, 5, 25, 25))
             imageView.image = img
             UIHeader.addSubview(imageView)
-        case 5:
+        case 4:
             var img = UIImage(named: "inf00218")
             var imageView = UIImageView(frame: CGRectMake(15, 5, 25, 25))
             imageView.image = img
             UIHeader.addSubview(imageView)
-        case 6:
+        case 5:
             var img = UIImage(named: "inf00221")
             var imageView = UIImageView(frame: CGRectMake(15, 5, 25, 25))
             imageView.image = img
@@ -372,7 +388,7 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
                 reuseIdentifier:cellIdentifier)
         }
         
-        cell!.backgroundColor = UIColor.whiteColor()
+        cell!.textLabel!.textColor = UIColor.blackColor()
         cell!.accessoryType = UITableViewCellAccessoryType.None
         for subview in cell!.contentView.subviews{
             if(subview.isKindOfClass(UIPickerView) || subview.isKindOfClass(UIButton)){
@@ -385,12 +401,12 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
             cell!.textLabel!.text = items[indexPath.section][1][indexPath.row] as? String
             
             if(!(classType == nil)){
-                cell!.backgroundColor = UIColor.grayColor()
+                cell!.textLabel!.textColor = UIColor.lightGrayColor()
             }
             
             if("\(items[indexPath.section][1][indexPath.row])" != "INF002_19".localizedString() && classType == nil){
                 var btnAll:UIButton = UIButton.buttonWithType(UIButtonType.Custom) as UIButton
-                btnAll.frame = CGRect(x:tableView.frame.size.width - 50,y:7,width:30,height:30)
+                btnAll.frame = CGRect(x:tableView.frame.size.width - 50,y:10,width:20,height:20)
                 btnAll.setBackgroundImage(UIImage(named: "inf00222"), forState: UIControlState.Normal)
                 btnAll.tag = BTN_ALL
                 
@@ -405,7 +421,7 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
             cell!.textLabel!.text = items[indexPath.section][1][indexPath.row] as? String
             
             if(!(classType == nil)){
-                cell!.backgroundColor = UIColor.grayColor()
+                cell!.textLabel!.textColor = UIColor.lightGrayColor()
             }
             
             if(indexPath.row == 1){
@@ -415,7 +431,7 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
             }else if(indexPath.row == 0){
                 if("\(items[indexPath.section][1][indexPath.row])" != "INF002_19".localizedString() && classType == nil){
                     var btnAll:UIButton = UIButton.buttonWithType(UIButtonType.Custom) as UIButton
-                    btnAll.frame = CGRect(x:tableView.frame.size.width - 50,y:7,width:30,height:30)
+                    btnAll.frame = CGRect(x:tableView.frame.size.width - 50,y:10,width:20,height:20)
                     btnAll.setBackgroundImage(UIImage(named: "inf00222"), forState: UIControlState.Normal)
                     btnAll.tag = BTN_ALL_SPEACIAL
                     
@@ -424,19 +440,49 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
                 }
             }
             
+//        case 2:
+//            println("nothing")
+//            cell!.textLabel!.text = items[indexPath.section][1][indexPath.row] as? String
+//            if(landMarkRange == 100000 && indexPath.row == 3){
+//                cell!.accessoryType = UITableViewCellAccessoryType.Checkmark
+//            }else if(landMarkRange == 1000 && indexPath.row == 0){
+//                cell!.accessoryType = UITableViewCellAccessoryType.Checkmark
+//            }else if(landMarkRange == 500 && indexPath.row == 1){
+//                cell!.accessoryType = UITableViewCellAccessoryType.Checkmark
+//            }else if(landMarkRange == 100 && indexPath.row == 2){
+//                cell!.accessoryType = UITableViewCellAccessoryType.Checkmark
+//            }
         case 2:
             cell!.textLabel!.text = items[indexPath.section][1][indexPath.row] as? String
-            if(indexPath.row == 3){
+            if("\(items[indexPath.section][1][indexPath.row])" == landMarkSubType){
                 cell!.accessoryType = UITableViewCellAccessoryType.Checkmark
             }else{
                 cell!.accessoryType = UITableViewCellAccessoryType.None
             }
-        case 6:
+        case 3:
             cell!.textLabel!.text = items[indexPath.section][1][indexPath.row] as? String
-            if(indexPath.row == 4){
+            if(landMarkPrice == 0 && indexPath.row == 3){
                 cell!.accessoryType = UITableViewCellAccessoryType.Checkmark
-            }else{
-                cell!.accessoryType = UITableViewCellAccessoryType.None
+            }else if(landMarkPrice == 1 && indexPath.row == 0){
+                cell!.accessoryType = UITableViewCellAccessoryType.Checkmark
+            }else if(landMarkPrice == 2 && indexPath.row == 1){
+                cell!.accessoryType = UITableViewCellAccessoryType.Checkmark
+            }else if(landMarkPrice == 3 && indexPath.row == 2){
+                cell!.accessoryType = UITableViewCellAccessoryType.Checkmark
+            }
+        case 4:
+            cell!.textLabel!.text = items[indexPath.section][1][indexPath.row] as? String
+            if((landMarkMiciRank as NSString).integerValue == indexPath.row + 1){
+                cell!.accessoryType = UITableViewCellAccessoryType.Checkmark
+            }else if(landMarkMiciRank == "" && indexPath.row == 3){
+                cell!.accessoryType = UITableViewCellAccessoryType.Checkmark
+            }
+        case 5:
+            cell!.textLabel!.text = items[indexPath.section][1][indexPath.row] as? String
+            if((landMarkRank as NSString).integerValue == indexPath.row + 2){
+                cell!.accessoryType = UITableViewCellAccessoryType.Checkmark
+            }else if(landMarkRank == "" && indexPath.row == 4){
+                cell!.accessoryType = UITableViewCellAccessoryType.Checkmark
             }
         default:
             cell!.textLabel!.text = items[indexPath.section][1][indexPath.row] as? String
@@ -501,6 +547,24 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
         return "$".getDistrict().count
     }
 
+    /*******************************************************************************
+    *      Implements Of GPSDelegate
+    *******************************************************************************/
+    
+    /**
+     * 位置定位完成
+     */
+    func locationUpdateComplete(location: CLLocation){
+        disMissProgress(self.gaiLoading)
+        currentLocation = location
+    }
+    
+    /**
+     * 位置定位完成
+     */
+    func locationUpdateError(){
+    }
+    
     
     /*******************************************************************************
     *    Private Methods
@@ -513,20 +577,36 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
     func buttonAction(sender: UIButton){
         switch sender.tag{
         case SAVE_BUTTON_TAG:
+            if(currentLocation == nil){
+                currentLocation = CLLocation(latitude: 0, longitude: 0)
+            }
+            
             var controllers:AnyObject? = self.navigationController!.viewControllers
             var lastController:LandMarkListController = controllers![controllers!.count - 2] as LandMarkListController
             var mstT04Table:MstT04LandMarkTable = MstT04LandMarkTable()
             //var inf002Dao:INF002Dao = INF002Dao()
             switch landMarkType{
             case 0:
-                lastController.landMarks = mstT04Table.queryLandMarksFilter("1",lon: 0, lat: 0, distance: 0, sataId: landMarkStatId!, specialWard: landMarkSpecialWard!) as? Array<MstT04LandMarkTable>
+                lastController.landMarks = mstT04Table.queryLandMarksFilter("1",lon: 0, lat: 0, distance: 100000, sataId: landMarkStatId!, specialWard: landMarkSpecialWard!) as? Array<MstT04LandMarkTable>
+                lastController.landMarkType = 0
             case 1:
-                lastController.landMarks = mstT04Table.queryLandMarksFilter("2",lon: 0, lat: 0, distance: 0, sataId: landMarkStatId!, specialWard: landMarkSpecialWard!, subType:landMarkSubType, price:landMarkPrice, miciRank:landMarkMiciRank, rank:landMarkRank) as? Array<MstT04LandMarkTable>
+                lastController.landMarks = mstT04Table.queryLandMarksFilter("2",lon: 0, lat: 0, distance: 100000, sataId: landMarkStatId!, specialWard: landMarkSpecialWard!, subType:landMarkSubType, price:landMarkPrice, miciRank:landMarkMiciRank, rank:landMarkRank) as? Array<MstT04LandMarkTable>
+                lastController.landMarkType = 1
             case 2:
-                lastController.landMarks = mstT04Table.queryLandMarksFilter("3",lon: 0, lat: 0, distance: 0, sataId: landMarkStatId!, specialWard: landMarkSpecialWard!) as? Array<MstT04LandMarkTable>
+                lastController.landMarks = mstT04Table.queryLandMarksFilter("3",lon: 0, lat: 0, distance: 100000, sataId: landMarkStatId!, specialWard: landMarkSpecialWard!) as? Array<MstT04LandMarkTable>
+                lastController.landMarkType = 2
             default:
                 println("nothing")
             }
+            
+            lastController.landMarkStatId = landMarkStatId
+            lastController.landMarkSpecialWard = landMarkSpecialWard
+            lastController.landMarkShowSpecialWard = landMarkShowSpecialWard
+            lastController.landMarkRange = landMarkRange
+            lastController.landMarkSubType = landMarkSubType
+            lastController.landMarkPrice = landMarkPrice
+            lastController.landMarkMiciRank = landMarkMiciRank
+            lastController.landMarkRank = landMarkRank
             
             lastController.viewDidLoad()
             self.navigationController!.popViewControllerAnimated(true)
@@ -561,8 +641,19 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
             }else{
                 items.addObject(["INF002_12".localizedString(),[landMarkShowSpecialWard.specialWard(),""]])
             }
-            items.addObject(["INF002_13".localizedString(),landMarksRange])
-            items.addObject(["INF002_20".localizedString(),["INF002_21".localizedString(),"INF002_22".localizedString(),"INF002_23".localizedString(),"INF002_19".localizedString()]])
+
+            //items.addObject(["INF002_13".localizedString(),landMarksRange])
+            var mMstT04Dao:MstT04LandMarkTable = MstT04LandMarkTable()
+            var mLandMarkTypes:[String]? = mMstT04Dao.querySubType()
+            
+            if(!(mLandMarkTypes == nil)){
+                mLandMarkTypes!.append("INF002_19".localizedString())
+            }else{
+                mLandMarkTypes = Array<String>()
+                mLandMarkTypes!.append("INF002_19".localizedString())
+            }
+            items.addObject(["INF002_20".localizedString(),mLandMarkTypes!])
+
             var priceStr:String = "INF002_24".localizedString()
             items.addObject(["INF002_25".localizedString(),["5000" + priceStr,"1000" + priceStr,"INF002_26".localizedString(),"INF002_19".localizedString()]])
             items.addObject(["INF002_27".localizedString(), ["INF002_28".localizedString(),"INF002_29".localizedString(),"INF002_30".localizedString(),"INF002_19".localizedString()]])
@@ -580,9 +671,54 @@ class LandMarkSearchController: UIViewController, UITableViewDelegate, NSObjectP
             }else{
                 items.addObject(["INF002_12".localizedString(),[landMarkShowSpecialWard.specialWard(),""]])
             }
-            items.addObject(["INF002_13".localizedString(),landMarksRange])
+            //items.addObject(["INF002_13".localizedString(),landMarksRange])
         }
     }
+    
+    /**
+     * 加载当前位置
+     */
+    func loadLocation(){
+        loadProgress(self.gaiLoading)
+        if(GPS_HELPER.delegate == nil){
+            GPS_HELPER.delegate = self
+        }
+        GPS_HELPER.updateLocation()
+        if(!GPS_HELPER.checkGPSStatus()){
+            GPS_HELPER.alertGPSTip()
+            disMissProgress(self.gaiLoading)
+        }
+    }
+    
+    func loadProgress(gaiLoading: UIActivityIndicatorView) ->
+        Bool{
+            gaiLoading.hidden = false
+            gaiLoading.startAnimating()
+            addWrap(self.wrapView)
+            return false
+    }
+    
+    func disMissProgress(gaiLoading: UIActivityIndicatorView) ->
+        Bool{
+            gaiLoading.stopAnimating()
+            gaiLoading.hidden = true
+            removeWrap(self.wrapView)
+            return false
+    }
+
+    func addWrap(wrapView:UIView){
+        wrapView.hidden = false
+        wrapView.backgroundColor = UIColor(red: 239/255,
+            green: 239/255,
+            blue: 244/255,
+            alpha: 0.5)
+    }
+    
+    func removeWrap(wrapView:UIView){
+        wrapView.hidden = true
+        wrapView.backgroundColor = UIColor.clearColor()
+    }
+    
     
     /*******************************************************************************
     *    Unused Codes

@@ -45,10 +45,17 @@ extension MstT04LandMarkTable {
         return self.excuteQuery( queryFiter, withArgumentsInArray: arr);
     }
     
-    func querySubType() ->NSArray {
-        let QUERY_LANDMARK_SUBTYPE = "select * , ROWID from MSTT04_LANDMARK where  LMAK_ID in (select min(LMAK_ID) from MSTT04_LANDMARK group by LMAK_SUB_TYPE)"
-
-        return self.excuteQuery( QUERY_LANDMARK_SUBTYPE);
+    func querySubType() ->Array<String> {
+        let QUERY_LANDMARK_SUBTYPE = "select * , ROWID from MSTT04_LANDMARK where LMAK_ID in (select min(LMAK_ID) from MSTT04_LANDMARK where LMAK_TYPE = '2' group by LMAK_SUB_TYPE)"
+        var mMstT04Daos:[MstT04LandMarkTable] = self.excuteQuery(QUERY_LANDMARK_SUBTYPE) as Array<MstT04LandMarkTable>
+        var mSubTypes:Array<String> = Array<String>()
+        for mMstT04Dao in mMstT04Daos{
+            if(mMstT04Dao.item(MSTT04_LANDMARK_LMAK_SUB_TYPE) == nil){
+                continue
+            }
+            mSubTypes.append("\(mMstT04Dao.item(MSTT04_LANDMARK_LMAK_SUB_TYPE))")
+        }
+        return mSubTypes
     }
     
     func queryLandMarkStations(landMark:MstT04LandMarkTable) -> Array<MstT02StationTable> {
@@ -86,7 +93,7 @@ extension MstT04LandMarkTable {
         var arr:NSMutableArray = NSMutableArray.array();
         arr.addObject(type!);
         
-        if(lon != 0 && lat != 0 && distance != 0){
+        if(lon != 0 && lat != 0 && distance != 100000){
             arr.addObject(lon!);
             arr.addObject(lat!);
             arr.addObject(distance!);
@@ -103,7 +110,7 @@ extension MstT04LandMarkTable {
             queryFiter = queryFiter + " AND LMAK_WARD = ?"
         }
         
-        if(subType != ""){
+        if(subType != "INF002_19".localizedString()){
             arr.addObject(subType);
             queryFiter = queryFiter + " AND LMAK_SUB_TYPE = ?"
         }
@@ -130,7 +137,6 @@ extension MstT04LandMarkTable {
         }
         
         if(rank != ""){
-            arr.addObject(rank);
             var mRank:Int = (rank as NSString).integerValue
             queryFiter = queryFiter + " AND LMAK_RANK IS NOT NULL"
             queryFiter = queryFiter + " AND " + "LMAK_RANK >= " + "\(mRank - 1)" + " AND " + "LMAK_RANK < " + "\(mRank)"
@@ -140,7 +146,7 @@ extension MstT04LandMarkTable {
     }
     
     func queryLandMarkByStatId(statId: String, lmakType: String) -> NSArray {
-        var queryFiter = "select * , ROWID from MSTT04_LANDMARK where STAT_ID = ? AND LMAK_ID in (select min(LMAK_ID) from MSTT04_LANDMARK group by LMAK_NAME_EXT1) AND IMAG_ID1 IS NOT NULL"
+        var queryFiter = "select * , ROWID from MSTT04_LANDMARK where STAT_ID = ? AND LMAK_ID in (select min(LMAK_ID) from MSTT04_LANDMARK group by LMAK_NAME) AND IMAG_ID1 IS NOT NULL"
         
         var arr:NSMutableArray = NSMutableArray.array();
         arr.addObject(statId);
