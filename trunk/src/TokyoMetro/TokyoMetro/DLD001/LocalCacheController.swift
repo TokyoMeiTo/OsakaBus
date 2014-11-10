@@ -41,7 +41,7 @@ class LocalCacheController: UIViewController, UIAlertViewDelegate{
     // "http://osakabus.sinaapp.com/Resource.zip"
     // "http://192.168.1.84/Resource.zip"
     // "http://www.okasan.net/Resource.zip"
-    let uri:String = "http://www.okasan.net/Resource.zip"
+    let uri:String = "http://192.168.1.84/Resource.zip"
     
     let filePath:String = "Resource.zip"
     let unZipPath:String = "TokyoMetroCache"
@@ -431,6 +431,21 @@ class LocalCacheController: UIViewController, UIAlertViewDelegate{
         return formatter.stringFromNumber(("\(freeSpace!)" as NSString).doubleValue/1024.0/1024.0/1024.0)
     }
     
+    /**
+     * 将文件解压并拷贝到指定路径
+     */
+    func copyResource2Cache(unZipPath:String){
+        //将文件拷贝到路径
+        let fileMan:NSFileManager = NSFileManager.defaultManager();
+        let mDocumentFolder = NSHomeDirectory() + "/Documents/"
+        let path = mDocumentFolder.stringByAppendingPathComponent(unZipPath)
+        // 文件不存在
+        if(!fileMan.fileExistsAtPath(path)){
+            let resourcePath = NSBundle.mainBundle().pathForResource("Resource", ofType: "zip")
+            
+        }
+    }
+    
     func load(gaiLoading: UIActivityIndicatorView) ->
         Bool{
             gaiLoading.hidden = false
@@ -444,7 +459,7 @@ class LocalCacheController: UIViewController, UIAlertViewDelegate{
             gaiLoading.hidden = true
             return false
     }
-
+    
     
     /*******************************************************************************
     *    Unused Codes

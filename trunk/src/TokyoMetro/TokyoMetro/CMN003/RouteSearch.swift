@@ -1006,8 +1006,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             errAlertView("CMN003_12".localizedString(), errMgs: "CMN003_11".localizedString(), errBtnTitle: "PUBLIC_06".localizedString())
             return
         }
-        
-        getRouteIdByStationId(startStationText as NSString, endStationId: endStationText as NSString)
+        self.routeID = getRouteIdByStationId(self.startStationText as NSString ,endStationId:self.endStationText as NSString)
         getRouteline()
         showTipBtn("1")
         self.pageTag = "2"
@@ -1024,8 +1023,8 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
     }
 
     /**
-    *   展示和收起底部提醒和收藏
-    */
+     *  展示和收起底部提醒和收藏
+     */
     func showTipBtn(index : String) {
         mTipView()
         if (index == "0") {
@@ -1291,6 +1290,9 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
             var resultExchType = key2.item(LINT05_ROUTE_DETAIL_EXCH_TYPE) as? String
             
             var resultExchStatId = key2.item(LINT05_ROUTE_DETAIL_EXCH_STAT_ID) as? NSString
+            
+            println("resultExchStatId   ======\(resultExchStatId)")
+            
             var resultExchlineId = key2.item(LINT05_ROUTE_DETAIL_EXCH_LINE_ID) as? NSString
             var resultExchDestId = key2.item(LINT05_ROUTE_DETAIL_EXCH_DEST_ID) as? NSString
             var resultExchSeq : AnyObject = key2.item(LINT05_ROUTE_DETAIL_EXCH_SEQ)
@@ -1334,7 +1336,7 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
                 var statSeqArr:NSArray = NSArray.array()
                 
                 var mst02table:MstT02StationTable = MstT02StationTable()
-                statSeqArr = mst02table.excuteQuery("select LINE_ID, ROWID from MSTT02_STATION where 1 = 1 and STAT_GROUP_ID = \(nearlystation.statGroupId)")
+                statSeqArr = mst02table.excuteQuery("select LINE_ID, ROWID from MSTT02_STATION where 1 = 1 and STAT_ID = \(nearlystation.statId)")
                 var stationNameKanatemp:AnyObject = nearlystation.statNameKana
 
                 self.allOfNearlylineImageItems.addObject(statSeqArr)
@@ -1375,6 +1377,9 @@ class RouteSearch : UIViewController, UITableViewDelegate, UITableViewDataSource
         
         self.appDelegate.startStatId = startStationText
         self.appDelegate.endStatId = endStationText
+        
+        
+        
         
         if (focusNumber == "1"){
             if (startStationText != "" && statIsCollected(startStationText)){

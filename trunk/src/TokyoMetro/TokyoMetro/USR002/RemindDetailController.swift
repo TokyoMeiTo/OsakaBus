@@ -798,7 +798,6 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
      * 保存到站提醒
      */
     func saveArriveStation(){
-        println(usrT01Data!.statToId)
         if(usrT01Data!.statFromId == "2800101" && usrT01Data!.statToId == "2800101"){
             self.navigationController!.popViewControllerAnimated(true)
             return
@@ -1078,7 +1077,7 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
     }
 
     func deleteAlarm(){
-         var tableUsrT01 = UsrT01ArrivalAlarmTable()
+        var tableUsrT01 = UsrT01ArrivalAlarmTable()
         var arrivalAlarms:Array<UsrT01ArrivalAlarmTable> = tableUsrT01.selectAll() as Array<UsrT01ArrivalAlarmTable>
         for arrivalAlarm in arrivalAlarms{
             arrivalAlarm.delete()
@@ -1165,8 +1164,8 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
     }
     
     /**
-    * 本地推送消息
-    */
+     * 本地推送消息
+     */
     func pushNotification(Msg: String?, min:Int?, beep: Bool){
         var mDeviceVersion:Double = (UIDevice.currentDevice().systemVersion as NSString).doubleValue
         // 通知
@@ -1198,8 +1197,6 @@ class RemindDetailController: UIViewController, UITableViewDelegate, UITableView
         app.scheduleLocalNotification(localNotif)
     }
 
-    
-    
     /**
      * alertView
      * @param msg

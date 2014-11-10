@@ -29,6 +29,7 @@ class LineStationList: UIViewController, UITableViewDelegate, UITableViewDataSou
     // 该条线的车站信息数据
     var stationArr: NSMutableArray = NSMutableArray.array()
     // 换乘线路
+    
     var changeLineArr: NSMutableArray = NSMutableArray.array()
     // 判断是否反向设置线路
     var isReverse = false
@@ -89,6 +90,7 @@ class LineStationList: UIViewController, UITableViewDelegate, UITableViewDataSou
         textJPName.text = (map.item(MSTT02_STAT_NAME) as String) + "（" + (map.item(MSTT02_STAT_NAME_KANA) as String) + "）"
         
         var btnImg: UIImageView = cell.viewWithTag(203) as UIImageView
+        
         btnImg.image = lineStationImage(map.item(MSTT02_STAT_ID) as String)
         
         var view = cell.viewWithTag(202) as UIView!
@@ -213,10 +215,14 @@ class LineStationList: UIViewController, UITableViewDelegate, UITableViewDataSou
         if (isReverse) {
             
             image = lineNum.getStationIconImage("d")
-            println(image.size.height)
-            if (image.size.height > 0) {
+            if(!(image.images == nil)){
+                println(image.images!.count)
+            }
             
+            if (image.size.height >= 30) {
+                println(image.size.height)
             } else {
+                println("no d")
                 image = lineNum.getStationIconImage()
             }
         } else {
@@ -225,4 +231,19 @@ class LineStationList: UIViewController, UITableViewDelegate, UITableViewDataSou
         return image
     }
  
+    /**
+     * Images文件夹中是否含有png图片
+     */
+    func haveImage(imgNm:String) -> Bool {
+        let fileMan:NSFileManager = NSFileManager.defaultManager();
+        // 图片路径 "station_icon_\(self)\(type)"
+        let resourcePath:String? = NSBundle.mainBundle().resourcePath!.stringByAppendingPathComponent("/Images.xcassets/station_icon_\(imgNm)d.imageset")
+        var photos = fileMan.subpathsOfDirectoryAtPath(NSBundle.mainBundle().resourcePath!, error: NSErrorPointer())
+        println(photos!)
+        if(resourcePath == nil){
+            return false
+        }
+        return fileMan.fileExistsAtPath(resourcePath!)
+    }
+
 }

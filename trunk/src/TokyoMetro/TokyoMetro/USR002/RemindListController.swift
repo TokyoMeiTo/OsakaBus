@@ -644,7 +644,7 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
             self.showTime(times)
             if(time == self.NUM_0){
                 if(self.mAlarm!.beepFlag == "0"){
-                     self.pushNotification("USR002_25".localizedString() + self.mAlarm!.statToId.station(),min: self.NUM_NEGATIVE_1,soundId: 1007)
+                    self.pushNotification("USR002_25".localizedString() + self.mAlarm!.statToId.station(),min: self.NUM_NEGATIVE_1,soundId: 1007)
                 }else{
                     self.pushNotification("USR002_25".localizedString() + self.mAlarm!.statToId.station(),min: self.NUM_NEGATIVE_1,soundId: 4095)
                 }
