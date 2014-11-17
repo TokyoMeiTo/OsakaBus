@@ -41,7 +41,7 @@ class LocalCacheController: UIViewController, UIAlertViewDelegate{
     // "http://osakabus.sinaapp.com/Resource.zip"
     // "http://192.168.1.84/Resource.zip"
     // "http://www.okasan.net/Resource.zip"
-    let uri:String = "http://192.168.1.84/Resource.zip"
+    let uri:String = "http://www.okasan.net/Resource.zip"
     
     let filePath:String = "Resource.zip"
     let unZipPath:String = "TokyoMetroCache"
@@ -73,6 +73,9 @@ class LocalCacheController: UIViewController, UIAlertViewDelegate{
     /* 线程池 */
     var mQueue:NSOperationQueue = NSOperationQueue()
     
+    var mDownloadTask:NSURLSessionDownloadTask?
+    var mDownloadData:NSData?
+    
     /*******************************************************************************
     * Overrides From UIViewController
     *******************************************************************************/
@@ -86,6 +89,10 @@ class LocalCacheController: UIViewController, UIAlertViewDelegate{
         super.viewWillAppear(animated)
         // 画面内容变更
         // 设置数据
+        var appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+        if(!(appDelegate.downloadData == nil)){
+            mDownloadData = appDelegate.downloadData
+        }
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -96,6 +103,17 @@ class LocalCacheController: UIViewController, UIAlertViewDelegate{
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    override func viewWillDisappear(animated: Bool) {
+        if(mDownloadTask == nil){
+            return
+        }
+        var appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+        mDownloadTask!.cancelByProducingResumeData { (resumeData) -> Void in
+            appDelegate.downloadData = resumeData
+        }
+    }
+    
     
     /**
      * NSProgress监听事件
@@ -139,7 +157,7 @@ class LocalCacheController: UIViewController, UIAlertViewDelegate{
 //                    threadIsNoRunning(mDownloadThread)
 //                }
 //            }
-            runInBackground()
+//            runInBackground()
         default:
             println("nothing")
         }
@@ -206,7 +224,7 @@ class LocalCacheController: UIViewController, UIAlertViewDelegate{
 //                            threadIsNoRunning(mDownloadThread)
 //                        }
 //                    }
-                    runInBackground()
+//                    runInBackground()
                 }else if(!downloading && updateComplete){
                     if(mainController != nil){
                         mainController!.viewDidLoad()
@@ -316,7 +334,7 @@ class LocalCacheController: UIViewController, UIAlertViewDelegate{
         updateComplete = false
         self.lblProgress.text = ""
         
-        let folder = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String
+        let folder = NSSearchPathForDirectoriesInDomains(.CachesDirectory, .UserDomainMask, true)[0] as String
         let unzipPath = folder.stringByAppendingPathComponent(filePath)
         // 删除文件
         fileManager.removeItemAtPath(unzipPath, error: nil)
@@ -324,29 +342,52 @@ class LocalCacheController: UIViewController, UIAlertViewDelegate{
         load(gaiLoading)
         
         self.showProgress()
-        var downloadTask = session.downloadTaskWithRequest(request, progress: &mProgress, destination: {(file, response) in self.pathUrl},
-            completionHandler:{
+        
+        if(!(mDownloadData == nil)){
+            mDownloadTask = session.downloadTaskWithResumeData(mDownloadData!, progress: &mProgress, destination: {(file, response) in self.pathUrl}, completionHandler:{
                 response, localfile, error in
-                if(error == nil){
-                    println("下载成功解压文件")
-                    self.unzipFile()
-                }else{
-                    println("下载失败")
-                    println(error)
-                    self.downloading = false
-                    self.loadProgress = "DLD001_03".localizedString()
-                    self.lblProgress.text = self.loadProgress
-                    self.showDownloadBtn()
-                    self.disMiss(self.gaiLoading)
-                }
-        })
-        downloadTask.resume()
+                    if(error == nil){
+                        println("下载成功解压文件")
+                        self.unzipFile()
+                    }else{
+                        println("下载失败")
+                        println(error)
+                        self.downloading = false
+                        self.loadProgress = "DLD001_03".localizedString()
+                        self.lblProgress.text = self.loadProgress
+                        self.showDownloadBtn()
+                        self.disMiss(self.gaiLoading)
+                    }
+            })
+        }else{
+            mDownloadTask = session.downloadTaskWithRequest(request, progress: &mProgress, destination: {(file, response) in self.pathUrl},
+                completionHandler:{
+                    response, localfile, error in
+                    if(error == nil){
+                        println("下载成功解压文件")
+                        self.unzipFile()
+                    }else{
+                        println("下载失败")
+                        println(error)
+                        self.downloading = false
+                        self.loadProgress = "DLD001_03".localizedString()
+                        self.lblProgress.text = self.loadProgress
+                        self.showDownloadBtn()
+                        self.disMiss(self.gaiLoading)
+                    }
+                })
+            }
+        
+        mDownloadTask!.resume()
+        
+        var appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+        appDelegate.downloadTask = mDownloadTask!
+        appDelegate.localCacheController = self
         
         hideDownloadBtn()
         
         // 设置这个progress的唯一标示符
         mProgress!.setUserInfoObject("DO SOME", forKey: "11111")
-        downloadTask.resume()
         
         // 给这个progress添加监听任务
         mProgress!.addObserver(self, forKeyPath: "fractionCompleted", options: NSKeyValueObservingOptions.New | NSKeyValueObservingOptions.Old, context: nil)
@@ -356,7 +397,7 @@ class LocalCacheController: UIViewController, UIAlertViewDelegate{
      * 获取文件路径
      */
     var pathUrl: NSURL{
-        let folder = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String
+        let folder = NSSearchPathForDirectoriesInDomains(.CachesDirectory, .UserDomainMask, true)[0] as String
             let path = folder.stringByAppendingPathComponent(filePath)
             let url = NSURL(fileURLWithPath: path)
             return url
@@ -367,9 +408,10 @@ class LocalCacheController: UIViewController, UIAlertViewDelegate{
      */
     func unzipFile(){
         var unzip:ZipArchive = ZipArchive()
-        let folder = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String
-        let zipPath = folder.stringByAppendingPathComponent(filePath)
-        let unzipPath = folder.stringByAppendingPathComponent(unZipPath)
+//        let folder = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String
+        let mDocumentFolder = NSHomeDirectory() + "/Library/Caches"
+        let zipPath = mDocumentFolder.stringByAppendingPathComponent(filePath)
+        let unzipPath = mDocumentFolder.stringByAppendingPathComponent(unZipPath)
         // 删除文件夹
         fileManager.removeItemAtPath(unzipPath, error: nil)
         // 创建文件夹
@@ -407,12 +449,12 @@ class LocalCacheController: UIViewController, UIAlertViewDelegate{
     /**
      * 在后台执行
      */
-    func runInBackground(){
-        let app = UIApplication.sharedApplication()
-        var backgroundTask = app.beginBackgroundTaskWithExpirationHandler { () -> Void in
-            println("run in background...Over")
-        }
-    }
+//    func runInBackground(){
+//        let app = UIApplication.sharedApplication()
+//        var backgroundTask = app.beginBackgroundTaskWithExpirationHandler { () -> Void in
+//            println("run in background...Over")
+//        }
+//    }
     
     /**
      * 获取设备剩余存储空间

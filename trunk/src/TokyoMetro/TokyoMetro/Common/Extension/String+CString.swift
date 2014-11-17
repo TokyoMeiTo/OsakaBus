@@ -133,7 +133,7 @@ extension String {
      * 获取Resource下的图片
      */
     func image(folderNm:String) -> UIImage {
-        let mDocumentFolder = NSHomeDirectory() + "/Documents/"
+        let mDocumentFolder = NSHomeDirectory() + "/Library/Caches"
         let path = mDocumentFolder.stringByAppendingPathComponent("TokyoMetroCache/Resource/" +
             folderNm + "/" + self + ".png")
         var fileExists = NSFileManager().fileExistsAtPath(path)

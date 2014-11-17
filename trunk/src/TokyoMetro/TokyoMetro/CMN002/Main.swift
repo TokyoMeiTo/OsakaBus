@@ -103,7 +103,7 @@ class Main: UIViewController,UIScrollViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let folder = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String
+        let folder = NSSearchPathForDirectoriesInDomains(.CachesDirectory, .UserDomainMask, true)[0] as String
         let path = folder.stringByAppendingPathComponent("TokyoMetroCache")
         var fileExists = NSFileManager().fileExistsAtPath(path)
         

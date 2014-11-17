@@ -559,7 +559,9 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
                 mAlarm!.onboardTime = RemindDetailController.convertDate2LocalTime(NSDate.date())
                 mUsr002Model.updateUsrT01(mAlarm!)
                 queue.addOperation(timerThread)
-                runInBackground()
+                var appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+                appDelegate.remindListController = self
+//                runInBackground()
             }else{
                 // 线程已经运行,显示当前剩余时间
                 showTime(mUsr002Model.convertTime(timerThread.surplusTime))
@@ -675,13 +677,13 @@ class RemindListController: UIViewController, UITableViewDelegate, UITableViewDa
     /**
      * 在后台执行
      */
-    func runInBackground(){
-        let app = UIApplication.sharedApplication()
-        var controller:RemindListController = self
-        var backgroundTask = app.beginBackgroundTaskWithExpirationHandler { () -> Void in
-            println("run in background...Over")
-        }
-    }
+//    func runInBackground(){
+//        let app = UIApplication.sharedApplication()
+//        var controller:RemindListController = self
+//        var backgroundTask = app.beginBackgroundTaskWithExpirationHandler { () -> Void in
+//            println("run in background...Over")
+//        }
+//    }
     
     /**
      * 本地推送消息

@@ -624,14 +624,18 @@ class LandMarkDetailController: UIViewController, UITableViewDelegate, UITableVi
         
         if(landMark!.item(MSTT04_LANDMARK_STAT_EXIT_ID) != nil && "\(landMark!.item(MSTT04_LANDMARK_STAT_EXIT_ID))" != "0" && "\(landMark!.item(MSTT04_LANDMARK_STAT_EXIT_ID))" != ""){
             // 查询按钮点击事件
-            var searchButtonTemp:UIButton? = UIButton.buttonWithType(UIButtonType.System) as? UIButton
-            searchButtonTemp!.frame = CGRect(x:0,y:0,width:25,height:25)
-            var imgLandMark = UIImage(named: "inf00223")
-            searchButtonTemp!.setBackgroundImage(imgLandMark, forState: UIControlState.Normal)
-            searchButtonTemp!.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
-            searchButtonTemp!.tag = BTN_ROUTE_TAG
-            var searchButton:UIBarButtonItem = UIBarButtonItem(customView: searchButtonTemp!)
-            self.navigationItem.rightBarButtonItem = searchButton
+//            var searchButtonTemp:UIButton? = UIButton.buttonWithType(UIButtonType.System) as? UIButton
+//            searchButtonTemp!.frame = CGRect(x:5,y:0,width:50,height:25)
+//            var imgLandMark = UIImage(named: "inf00223")
+//            searchButtonTemp!.setBackgroundImage(imgLandMark, forState: UIControlState.Normal)
+//            searchButtonTemp!.setTitle("INF002_37".localizedString(), forState: UIControlState.Normal)
+//            searchButtonTemp!.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
+//            searchButtonTemp!.tag = BTN_ROUTE_TAG
+//            var searchButton:UIBarButtonItem = UIBarButtonItem(customView: searchButtonTemp!)
+            // 完成按钮点击事件
+            var saveButton:UIBarButtonItem = UIBarButtonItem(title: "INF002_37".localizedString(), style: UIBarButtonItemStyle.Bordered, target:self, action: "buttonAction:")
+            self.navigationItem.rightBarButtonItem = saveButton
+            self.navigationItem.rightBarButtonItem!.tag = BTN_ROUTE_TAG
         }
     }
     

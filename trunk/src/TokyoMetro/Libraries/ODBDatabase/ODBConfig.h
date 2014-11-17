@@ -10,7 +10,8 @@
 #define ODBConfig_h
 
 //App's document folder path 
-#define ODB_APP_DOC_PATH [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0]
+//#define ODB_APP_DOC_PATH [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0]
+#define ODB_APP_DOC_PATH [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0]
 
 //Sqlite Version
 #define ODB_DATABASE_SQLITE_VERSION 3

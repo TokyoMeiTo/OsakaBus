@@ -48,7 +48,8 @@ class TimerThread: NSOperation{
             var surplusTime = arriveTime - i
             self.surplusTime = surplusTime
             sender!.updateTime(surplusTime)
-            println(surplusTime)
+//            println("surplusTime" + "\(surplusTime)")
+//            println("arriveTime" + "\(arriveTime)")
             sleep(1)
         }
     }
@@ -56,5 +57,7 @@ class TimerThread: NSOperation{
     override func cancel() {
         super.cancel()
         arriveTime = -1
+        var appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+        appDelegate.remindListController = nil
     }
 }
