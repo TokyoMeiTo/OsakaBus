@@ -263,7 +263,11 @@ class LandMarkMapController: UIViewController, MKMapViewDelegate, UIActionSheetD
                     var statLat:AnyObject? = key.item(MSTT04_LANDMARK_LMAK_LAT)
                     var statLon:AnyObject? = key.item(MSTT04_LANDMARK_LMAK_LON)
                     
-                    if(!checkLocation((statLat as NSString).doubleValue, longitude: (statLon as NSString).doubleValue)){
+                    if(key.item(MSTT04_LANDMARK_LMAK_LAT) != nil && key.item(MSTT04_LANDMARK_LMAK_LON) != nil){
+                        if(!checkLocation((statLat as NSString).doubleValue, longitude: (statLon as NSString).doubleValue)){
+                            continue
+                        }
+                    }else{
                         continue
                     }
                     

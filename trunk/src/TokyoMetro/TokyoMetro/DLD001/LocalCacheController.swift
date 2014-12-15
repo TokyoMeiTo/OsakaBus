@@ -41,7 +41,7 @@ class LocalCacheController: UIViewController, UIAlertViewDelegate{
     // "http://osakabus.sinaapp.com/Resource.zip"
     // "http://192.168.1.84/Resource.zip"
     // "http://www.okasan.net/Resource.zip"
-    let uri:String = "http://www.okasan.net/Resource.zip"
+    let uri:String = "http://192.168.1.84/Resource.zip"
     
     let filePath:String = "Resource.zip"
     let unZipPath:String = "TokyoMetroCache"
